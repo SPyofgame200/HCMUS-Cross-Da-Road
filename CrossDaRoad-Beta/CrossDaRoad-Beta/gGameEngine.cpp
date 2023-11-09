@@ -570,6 +570,10 @@ namespace app
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		if (msg.message == -1) {
+			std::cerr << "GetMessage failed with error code: " << std::to_string(GetLastError()) << std::endl;
+			return false;
+		}
 		return true;
 	}
 
