@@ -429,6 +429,10 @@ bool cApp::OnGameLoad()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent()
 {
+	if (bPause && IsKeyReleased(app::Key::ESCAPE)) {
+		bPause = false;
+		return true;
+	}
 	if (bPause || (Menu.eAppOption != cMenu::Option::APP_MENU && IsKeyReleased(app::Key::ESCAPE))) {
 		DisplayPauseMenu();
 		bPause = true;

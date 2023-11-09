@@ -522,7 +522,7 @@ namespace app
 				fLastRunTime = frame.GetTickTime();
 				OnFixedUpdateEvent(engine::AFTER_POST_PROCCESSING_EVENT);
 				const float fStartPauseTime = frame.GetTickTime();
-				while (!OnPauseEvent()) {
+				while (bEngineRunning && !OnPauseEvent()) {
 					frame.WaitMicroseconds(frame.GetDelay());
 					RenderTexture();
 					UpdateKeyboardInput();
