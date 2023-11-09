@@ -433,7 +433,7 @@ namespace app
 			std::cerr << "Successfully loaded engine icon (path = \""
 				<< engine::ICON_FILE_PATH << "\")" << std::endl;
 			SendMessage(windowHandler, WM_SETICON, ICON_SMALL,
-						reinterpret_cast<LPARAM>(hIcon));
+				reinterpret_cast<LPARAM>(hIcon));
 		}
 		else {
 			std::cerr << "Can not open engine icon (path = \"" << engine::ICON_FILE_PATH
@@ -443,11 +443,11 @@ namespace app
 
 		if (auto hFavicon = static_cast<HICON>(
 			LoadImage(nullptr, to_text(engine::FAVICON_FILE_PATH), IMAGE_ICON, 0,
-					  0, LR_LOADFROMFILE))) {
+				0, LR_LOADFROMFILE))) {
 			std::cerr << "Successfully loaded engine favicon (path = \""
 				<< engine::FAVICON_FILE_PATH << "\")" << std::endl;
 			SendMessage(windowHandler, WM_SETICON, ICON_BIG,
-						reinterpret_cast<LPARAM>(hFavicon));
+				reinterpret_cast<LPARAM>(hFavicon));
 		}
 		else {
 			std::cerr << "Can not open engine favicon (path = \""
@@ -455,7 +455,7 @@ namespace app
 			std::cerr << ", switching to the usable engine icon (path = \""
 				<< engine::ICON_FILE_PATH << "\")" << std::endl;
 			SendMessage(windowHandler, WM_SETICON, ICON_BIG,
-						reinterpret_cast<LPARAM>(hIcon));
+				reinterpret_cast<LPARAM>(hIcon));
 			return false;
 		}
 
@@ -535,8 +535,7 @@ namespace app
 		}
 
 		OnFixedUpdateEvent(engine::BEFORE_DESTROY_EVENT);
-		const bool result =
-			!OnDestroyEvent(); // Continue the thread until it gets destroyed
+		const bool result = !OnDestroyEvent(); // Continue the thread until it gets destroyed
 		OnFixedUpdateEvent(engine::AFTER_DESTROY_EVENT);
 
 		return result;
@@ -557,8 +556,7 @@ namespace app
 	bool GameEngine::HandleEngineThread()
 	{
 		InitEngineThread();
-		while ((bEngineRunning = UpdateEngineEvent()))
-			Sleep(270); /// basic minor delay that user cant differentiate
+		while ((bEngineRunning = UpdateEngineEvent())) Sleep(270); /// basic minor delay that user cant differentiate
 		ExitEngineThread();
 		return true;
 	}
@@ -718,8 +716,8 @@ namespace app
 	}
 
 	LRESULT CALLBACK GameEngine::WindowEvent(const HWND windowHandler,
-											 const UINT uMsg, const WPARAM wParam,
-											 const LPARAM lParam)
+		const UINT uMsg, const WPARAM wParam,
+		const LPARAM lParam)
 	{
 		static GameEngine* sge;
 
@@ -727,35 +725,35 @@ namespace app
 		if (sge)
 			sge->OnFixedUpdateEvent(engine::PRE_WINDOW_EVENT);
 		switch (uMsg) {
-			case WM_CREATE:
-				sge = static_cast<GameEngine*>(
-					reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
-				return 0;
-			case WM_CLOSE:
-				sge->bEngineRunning = false;
-				return 0;
-			case WM_DESTROY:
-				sge->OnForceDestroyEvent();
-				PostQuitMessage(0);
-				return 0;
+		case WM_CREATE:
+			sge = static_cast<GameEngine*>(
+				reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
+			return 0;
+		case WM_CLOSE:
+			sge->bEngineRunning = false;
+			return 0;
+		case WM_DESTROY:
+			sge->OnForceDestroyEvent();
+			PostQuitMessage(0);
+			return 0;
 		}
 
 		/// Load keyboard
 		if (sge) {
 			sge->OnFixedUpdateEvent(engine::BEFORE_LOAD_KEYBOARD_EVENT);
 			switch (uMsg) {
-				case WM_SETFOCUS:
-					sge->keyboard.SetFocus(true);
-					return 0;
-				case WM_KILLFOCUS:
-					sge->keyboard.SetFocus(false);
-					return 0;
-				case WM_KEYDOWN:
-					sge->keyboard.UpdateKey(wParam, true);
-					return 0;
-				case WM_KEYUP:
-					sge->keyboard.UpdateKey(wParam, false);
-					return 0;
+			case WM_SETFOCUS:
+				sge->keyboard.SetFocus(true);
+				return 0;
+			case WM_KILLFOCUS:
+				sge->keyboard.SetFocus(false);
+				return 0;
+			case WM_KEYDOWN:
+				sge->keyboard.UpdateKey(wParam, true);
+				return 0;
+			case WM_KEYUP:
+				sge->keyboard.UpdateKey(wParam, false);
+				return 0;
 			}
 		}
 
