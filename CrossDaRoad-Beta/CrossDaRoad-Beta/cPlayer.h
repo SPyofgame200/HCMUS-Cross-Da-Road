@@ -45,12 +45,15 @@ private:
 private:
 	frame_t frame4_id;
 	frame_t frame4_id_limit;
+	frame_t frame4_val;
+
 	frame_t frame6_id;
-	frame_t frame6_id_safe; // the smaller the stricter
+	frame_t frame6_id_animation;
+	frame_t frame6_id_animation_safe; // the smaller the stricter
 	frame_t frame6_id_limit; /// ehmmm, unneeded to separate to another struct for now
 	frame_t frame6_val;
-	frame_t frame6_val_cur;
-	frame_t frame6_val_last;
+	frame_t frame6_val_animation_cur;
+	frame_t frame6_val_animation_last;
 
 private:
 	Direction eDirection;
