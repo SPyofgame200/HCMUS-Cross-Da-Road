@@ -1,0 +1,36 @@
+whwwhwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
+,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  3.0
+ttttppfpgggpgggfpgggpgggpppfpgggpgggpgggpgggpgggpgggpgggpgggpggg  0.0
+,,pggg,,,,,pggg,,,,,pp,,,,,pggp,,,pgpgp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0
+,,,pp,,,,,gpgg,,,,,,,gpgg,,,,,pp,,,,,,pp,,,,,,pp,,,,pgggpp,,,,,, -3.0
+,,,,pggg,,,,,pggg,,,,pgggp,,,,,,,,pggg,,,,,pp,,,,,,,,pggg,,,,,,,  3.0
+f,,t,,fptttppfpgggpgggppfpgggpgggpgggpgggpgggpgggpgggpgggpgggppp  0.0
+,,pp,,,,pp,,,,,pp,,pp,,,,,,,,,pp,,,,,,,,,pp,,,,pp,,,,pp,,,,,pp,, -4.0
+,,pggg,,,,,pggg,,,gggg,,,,,,,,,,,,pggg,,,,,,,,,pggg,,,pggg,,,,,,  1.0
+ttqtqttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt  0.0
+#
+$ , background=magma
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ p sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spriteX=0 spriteY=0
+: summon=f duration=10s cooldown=5s chance=1%
+$ g sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spriteX=0 spriteY=0
+$ q sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spriteX=0 spriteY=0
+$ t sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spriteX=0 spriteY=0
+$ w sprite=wall
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ h sprite=soil
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ f sprite=fire background=wall id=4
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0

@@ -1,0 +1,23 @@
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+sscssscssssscccssssscsssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssbsssssbsssssbssssbsssssbsssssbsssssbssssssssssssssssssss  5.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
+#
+$ h background=ocean
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ s background=sand
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ c sprite=coconut
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ b sprite=crab background=sand id=4
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0

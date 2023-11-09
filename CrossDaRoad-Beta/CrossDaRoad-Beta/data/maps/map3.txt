@@ -1,0 +1,26 @@
+whwwhwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
+,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  3.0
+ppppppfppppppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
+,,pppp,,,,,pppp,,,,,pp,,,,,pppp,,,ppppp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0
+,,,pp,,,,,pppp,,,,,,,pppp,,,,,pp,,,,,,pp,,,,,,pp,,,,pppppp,,,,,, -3.0
+,,,,pppp,,,,,pppp,,,,pppp,,,,,,,,,pppp,,,,,pp,,,,,,,,pppp,,,,,,,  3.0
+fpppppfppppppfppppppppppfppppppppppppppppppppppppppppppppppppppp  0.0
+,,pp,,,,pp,,,,,pp,,pp,,,,,,,,,pp,,,,,,,,,pp,,,,pp,,,,pp,,,,,pp,, -4.0
+,,,pppp,,,,pppp,,,,,,,,,pppp,,,,,,pppp,,,,,,,,,pppp,,,pppp,,,,,, -3.0
+pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
+#
+$ , background=magma
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ p sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spriteX=0 spriteY=0
+$ w sprite=wall
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ h sprite=soil
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ f sprite=fire background=wall id=4
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
