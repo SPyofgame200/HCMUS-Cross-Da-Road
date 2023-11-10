@@ -482,6 +482,52 @@ bool cApp::OnForceDestroyEvent()
 /////////////////////////////////// FILE MANAGEMENT ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog) const
+{
+	char previousDir[MAX_PATH];
+
+	if (GetCurrentDirectoryA(MAX_PATH, previousDir) == 0) {
+		std::cerr << "Error getting the current directory." << std::endl;
+		return "";
+	}
+
+	OPENFILENAMEA ofn = {};
+	char filePath[MAX_PATH] = "";
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFile = filePath;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrFilter = filter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = nullptr;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = initialDir; // Set the initial directory
+
+	if (saveDialog) {
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+		if (!GetSaveFileNameA(&ofn)) {
+			std::cerr << "User canceled the operation." << std::endl;
+			return "";
+		}
+	}
+	else {
+		ofn.Flags = OFN_FILEMUSTEXIST;
+		if (!GetOpenFileNameA(&ofn)) {
+			std::cerr << "User canceled the operation." << std::endl;
+			return "";
+		}
+	}
+
+	// Restore the previous working directory
+	if (!SetCurrentDirectoryA(previousDir)) {
+		std::cerr << "Error restoring the previous working directory." << std::endl;
+	}
+
+	const std::string sFilePath = (filePath);
+	return sFilePath;
+}
+
 /// @brief 
 /// @param initialDir 
 /// @param sDefaultFilePath 

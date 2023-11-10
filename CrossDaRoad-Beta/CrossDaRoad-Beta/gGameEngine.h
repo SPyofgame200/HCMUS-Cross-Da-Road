@@ -85,7 +85,6 @@ namespace app
 		int GetAppFPS() const;
 		bool SetFrameDelay(FrameDelay eFrameDelay);
 		bool RenderTexture() const;
-		std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false) const;
 
 	private: // Engine Internalities
 		ScreenState screen;

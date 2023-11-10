@@ -83,6 +83,7 @@ protected: /// Game Updates
 	bool OnForceDestroyEvent() override;
 
 protected: // File Management
+	std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false) const;
 	std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "") const;
 	std::string GetFilePartLocation(bool isSave);
 
