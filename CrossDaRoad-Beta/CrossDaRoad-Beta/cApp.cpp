@@ -363,8 +363,8 @@ bool cApp::OnRenderEvent()
 /// @return 
 bool cApp::OnGameSave()
 {
-	const std::string sSaveFilePath = SelectTextFilePath("./data/save", "./data/save/save_data.txt");
-	if (sSaveFilePath.size() > 0) {
+	const std::string sSaveFilePath = GetFilePartLocation(true);
+	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);
 		if (fout.is_open()) {
 			fout << MapLoader.GetMapLevel() << std::endl;
@@ -391,10 +391,10 @@ bool cApp::OnGameSave()
 /// @return 
 bool cApp::OnGameLoad()
 {
-	const std::string sFilePath = GetFilePartLocation(false);
+	const std::string sLoadFilePath = GetFilePartLocation(false);
 
-	if (!sFilePath.empty()) {
-		std::ifstream fin(sFilePath);
+	if (!sLoadFilePath.empty()) {
+		std::ifstream fin(sLoadFilePath);
 		if (fin.is_open()) {
 			float VelocityX;
 			float VelocityY;
@@ -491,10 +491,10 @@ std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& 
 	const char* cTextFilePatterns = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
 	const std::string& sFilePath = SelectFilePath(cTextFilePatterns, initialDir);
 	if (sFilePath.empty()) { // The user didnt select any file
-		return "...";
+		return sDefaultFilePath;
 	}
 	else { // File Path is selected
-		return "...";
+		return sFilePath;
 	}
 }
 /// @brief 
