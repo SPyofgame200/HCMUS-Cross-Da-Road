@@ -118,6 +118,7 @@ public: // Getters
 	float GetPlayerVelocityY()const;
 
 public: // Setters
+	float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
 	void SetAnimation(Animation eNewAnimation);
 	void SetPlayerVelocityX(float fVelocityX);

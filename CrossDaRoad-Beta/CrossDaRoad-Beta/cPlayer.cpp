@@ -74,8 +74,8 @@ void cPlayer::ResetPosition()
 /// @brief Reset player velocity
 void cPlayer::ResetVelocity()
 {
-	fFrogVelocityX = 1;
-	fFrogVelocityY = 1;
+	fFrogVelocityX = app_const::FROG_X_VELOCITY;
+	fFrogVelocityY = app_const::FROG_Y_VELOCITY;
 }
 /// @brief Reset player properties
 void cPlayer::Reset()
@@ -343,6 +343,12 @@ float cPlayer::GetPlayerVelocityY() const
 ///////////////////////////////////////////// SETTERS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// Make the float [fValue] to only care about first [nDigits] digits after decimal points, others remain closest to ,...00000
+float cPlayer::FixFloat(float fValue, int nDigits)
+{
+	return ldexpf(roundf(ldexpf(fValue, nDigits)), -nDigits);
+}
+
 void cPlayer::SetDirection(Direction eNewDirection)
 {
 	eDirection = eNewDirection;
@@ -355,50 +361,50 @@ void cPlayer::SetAnimation(Animation eNewAnimation)
 
 void cPlayer::SetPlayerVelocityX(float fVelocityX)
 {
-	fFrogVelocityX = fVelocityX;
+	fFrogVelocityX = FixFloat(fVelocityX);
 }
 
 void cPlayer::SetPlayerVelocityY(float fVelocityY)
 {
-	fFrogVelocityY = fVelocityY;
+	fFrogVelocityY = FixFloat(fVelocityY);
 }
 
 void cPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
 {
-	fFrogVelocityX = fVelocityX;
-	fFrogVelocityY = fVelocityY;
+	SetPlayerVelocityX(fVelocityX);
+	SetPlayerVelocityY(fVelocityY);
 }
 
 void cPlayer::SetPlayerAnimationPositionX(float fPositionX)
 {
-	fFrogAnimPosX = fPositionX;
+	fFrogAnimPosX = FixFloat(fPositionX);
 }
 
 void cPlayer::SetPlayerAnimationPositionY(float fPositionY)
 {
-	fFrogAnimPosY = fPositionY;
+	fFrogAnimPosY = FixFloat(fPositionY);
 }
 
 void cPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
 {
-	fFrogAnimPosX = fPositionX;
-	fFrogAnimPosY = fPositionY;
+	SetPlayerAnimationPositionX(fPositionX);
+	SetPlayerAnimationPositionY(fPositionY);
 }
 
 void cPlayer::SetPlayerLogicPositionX(float fPositionX)
 {
-	fFrogLogicPosX = fPositionX;
+	fFrogLogicPosX = FixFloat(fPositionX);
 }
 
 void cPlayer::SetPlayerLogicPositionY(float fPositionY)
 {
-	fFrogLogicPosY = fPositionY;
+	fFrogLogicPosY = FixFloat(fPositionY);
 }
 
 void cPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 {
-	fFrogLogicPosX = fPositionX;
-	fFrogLogicPosY = fPositionY;
+	SetPlayerLogicPositionX(fPositionX);
+	SetPlayerLogicPositionY(fPositionY);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,7 +416,8 @@ bool cPlayer::PlayerMoveX(float fFactorX, int nStep)
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialX = app_const::FROG_X_VELOCITY * fFactorX * nPos / nStep;
+		const float fPartial = (nPos == nStep ? 1.0f : nPos / nStep);
+		const float fOffsetPartialX = fFrogVelocityX * fFactorX * fPartial;
 		SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
 		if (!IsBlocked() && !IsPlayerOutOfBounds()) {
 			break;
@@ -418,12 +425,14 @@ bool cPlayer::PlayerMoveX(float fFactorX, int nStep)
 	}
 	return true;
 }
+
 bool cPlayer::PlayerMoveY(float fFactorY, int nStep)
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialY = app_const::FROG_Y_VELOCITY * fFactorY * nPos / nStep;
+		const float fPartial = (nPos == nStep ? 1.0f : nPos / nStep);
+		const float fOffsetPartialY = fFrogVelocityY * fFactorY * fPartial;
 		SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
 		if (!IsBlocked() && !IsPlayerOutOfBounds()) {
 			break;
@@ -516,9 +525,9 @@ bool cPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
 	const float fRealPosY = GetPlayerLogicPositionY();
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	const float fOffsetX = app_const::FROG_X_VELOCITY * fFactorX;
+	const float fOffsetX = fFrogVelocityX * fFactorX;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialX = app_const::FROG_X_VELOCITY * fFactorX * nPos / nStep;
+		const float fOffsetPartialX = fFrogVelocityX * fFactorX * nPos / nStep;
 		SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
 		SetPlayerLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
 		if (!IsBlocked()) {
@@ -533,9 +542,9 @@ bool cPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
 	const float fRealPosY = GetPlayerLogicPositionY();
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	const float fOffsetY = app_const::FROG_Y_VELOCITY * fFactorY;
+	const float fOffsetY = fFrogVelocityY * fFactorY;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialY = app_const::FROG_Y_VELOCITY * fFactorY * nPos / nStep;
+		const float fOffsetPartialY = fFrogVelocityY * fFactorY * nPos / nStep;
 		SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
 		SetPlayerLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
 		if (!IsBlocked()) {
@@ -555,8 +564,8 @@ bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 
 bool cPlayer::OnUpdatePlayerLane()
 {
-	const float fFixedX = std::clamp(GetPlayerAnimationPositionX(), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
-	const float fFixedY = std::round(GetPlayerAnimationPositionY());
+	const float fFixedX = std::clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
+	const float fFixedY = std::clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
 	SetPlayerAnimationPosition(fFixedX, fFixedY);
 	return true;
 }
@@ -569,22 +578,22 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 	if (frame6_val_animation_cur < frame6_val) {
 		frame6_val_animation_cur = frame6_val;
 		if (GetDirection() == LEFT) {
-			if (!PlayerMoveLeft(fFrogVelocityX / frame6_id_limit, true)) {
+			if (!PlayerMoveLeft(1.0f / frame6_id_limit, true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == RIGHT) {
-			if (!PlayerMoveRight(fFrogVelocityX / frame6_id_limit, true)) {
+			if (!PlayerMoveRight(1.0f / frame6_id_limit, true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!PlayerMoveUp(fFrogVelocityY / frame6_id_limit, true)) {
+			if (!PlayerMoveUp(1.0f / frame6_id_limit, true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!PlayerMoveDown(fFrogVelocityY / frame6_id_limit, true)) {
+			if (!PlayerMoveDown(1.0f / frame6_id_limit, true)) {
 				return false;
 			}
 		}
@@ -594,6 +603,7 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 
 bool cPlayer::OnUpdatePlayerJumpStop()
 {
+	std::cerr << "Stop" << std::endl;
 	OnUpdatePlayerLane();
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	if (GetAnimation() == JUMP) {
