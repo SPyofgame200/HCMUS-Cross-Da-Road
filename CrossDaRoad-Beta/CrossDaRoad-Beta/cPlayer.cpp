@@ -603,7 +603,6 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 
 bool cPlayer::OnUpdatePlayerJumpStop()
 {
-	std::cerr << "Stop" << std::endl;
 	OnUpdatePlayerLane();
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	if (GetAnimation() == JUMP) {
@@ -740,8 +739,8 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4_val = static_cast<int>(std::floor(fTickTime / (0.0006f * 1000000 / app->GetFrameDelay())));
-	frame6_val = static_cast<int>(std::floor(fTickTime / (0.0004f * 1000000 / app->GetFrameDelay())));
+	frame4_val = static_cast<int>(std::floor(fTickTime / 600.0f * app->GetFrameDelay()));
+	frame6_val = static_cast<int>(std::floor(fTickTime / 400.0f * app->GetFrameDelay()));
 	frame4_id = frame4_val % frame4_id_limit + 1;
 	frame6_id = frame6_val % frame6_id_limit + 1;
 	return true;
