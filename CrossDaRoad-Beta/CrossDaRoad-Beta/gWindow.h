@@ -10,13 +10,18 @@ namespace app
 	class GameEngine;
 	class Window
 	{
-	private: /// Window Internality
-		HWND windowHandler = nullptr;
+	private: /// Properties
+		HWND windowHandler;
 		static GameEngine* sge;
-		bool SetTarget(GameEngine* sge);
-		bool RegisterWindowClass();
-		bool CreateMainWindow();
-		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	public: // Constructors & Destructor
+		Window();
+		Window(GameEngine* sge);
+		~Window();
+
+	public: // Constructor & Destructor functions
+		bool Create(GameEngine* sge);
+		bool Destroy() const;
 
 	public: // Getters
 		HWND GetWindowHandler() const;
@@ -28,8 +33,15 @@ namespace app
 
 	public: /// Window Event
 		bool HandleWindowMessage();
-		bool Create(GameEngine* sge);
-		bool Destroy() const;
+
+	private: /// Internalities
+		bool SetTarget(GameEngine* sge);
+		bool RegisterWindowClass();
+		bool CreateMainWindow();
+
+	private: /// Static Internalities
+		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 	};
 }
 
