@@ -143,7 +143,7 @@ namespace app
 
 	/// @brief Handles Windows messages in the main application window.
 	/// @return True if message handling was successful.
-	bool Window::HandleWindowMessage()
+	bool Window::HandleMessage()
 	{
 		MSG msg;
 		while (GetMessage(&msg, nullptr, 0, 0) > 0) {
@@ -176,7 +176,11 @@ namespace app
 
 		// Specify window styles, including redrawing when resized and owning the
 		// device context
-		windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+		windowClass.style = 0
+			| CS_HREDRAW   // Redraw the entire window if the horizontal size changes.
+			| CS_VREDRAW   // Redraw the entire window if the vertical size changes.
+			| CS_OWNDC;    // Allocate a unique device context for each window in the class.
+
 
 		// Get the module handle for the application
 		windowClass.hInstance = GetModuleHandle(nullptr);
@@ -204,9 +208,17 @@ namespace app
 	// Function to create the window
 	bool Window::CreateMainWindow()
 	{
-		constexpr DWORD extendedStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-		constexpr DWORD style = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
-		constexpr int cosmeticOffset = 27;
+		constexpr DWORD extendedStyle = 0
+			| WS_EX_APPWINDOW   // Place the window in the taskbar.
+			| WS_EX_WINDOWEDGE; // Give the window a border with a raised edge.
+
+		constexpr DWORD style = 0
+			| WS_CAPTION       // Give the window a title bar (caption).
+			| WS_SYSMENU       // Include a system menu in the window's title bar.
+			| WS_VISIBLE;      // Make the window initially visible.
+
+		constexpr int windowX = 0;
+		constexpr int windowY = 0;
 
 		// Calculate the window client size
 		RECT windowRect = { 0, 0, sge->WindowWidth(), sge->WindowHeight() };
@@ -216,12 +228,12 @@ namespace app
 
 		// Create the application's main window
 		windowHandler = CreateWindowEx(
-			extendedStyle,                  // Extended window style
-			engine::ENGINE_WIDE_NAME,       // Window class name
-			engine::ENGINE_WIDE_NAME,       // Window default title
-			style,                          // Window style
-			cosmeticOffset, cosmeticOffset, // (X, Y) position of the window
-			width, height,                  // Window size
+			extendedStyle,            // Extended window style
+			engine::ENGINE_WIDE_NAME, // Window class name
+			engine::ENGINE_WIDE_NAME, // Window default title
+			style,                    // Window style
+			windowX, windowY,	      // (X Y) position of the window
+			width, height,            // Window size
 			nullptr,                  // Handle to parent window (none in this case)
 			nullptr,                  // Handle to menu (none in this case)
 			GetModuleHandle(nullptr), // Handle to application instance
@@ -243,11 +255,14 @@ namespace app
 			return 0;
 		}
 
-		/// Engine events
-		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_EVENT);
+		// Handle Window Event
+		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_UPDATE_EVENT);
 		bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
-		sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
-		if (bNoEvent) { // Calling handling function on default
+		sge->OnFixedUpdateEvent(engine::POST_WINDOW_UPDATE_EVENT);
+
+		// Calling handling function on default
+		if (bNoEvent) { 
+			sge->OnFixedUpdateEvent(engine::NO_WINDOW_UPDATE_EVENT);
 			return DefWindowProc(windowHandler, uMsg, wParam, lParam);
 		}
 		return 0;

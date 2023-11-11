@@ -32,7 +32,7 @@ namespace app
 		bool SetFavicon(const std::string& sFilePath) const;
 
 	public: /// Window Event
-		bool HandleWindowMessage();
+		bool HandleMessage();
 
 	private: /// Internalities
 		bool SetTarget(GameEngine* sge);

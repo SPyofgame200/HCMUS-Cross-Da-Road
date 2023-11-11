@@ -535,7 +535,7 @@ namespace app
 	bool GameEngine::StartEngineThread()
 	{
 		auto thread = std::thread(&GameEngine::HandleEngineThread, this);
-		window.HandleWindowMessage();
+		window.HandleMessage();
 		thread.join();
 		return true;
 	}
