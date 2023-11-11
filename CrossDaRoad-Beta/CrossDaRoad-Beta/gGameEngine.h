@@ -114,8 +114,7 @@ namespace app
 
 		// Windows specific window handling
 		void CreateMainWindow();
-		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg,
-			WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};
 } // namespace app
 #endif // G_GAME_ENGINE_DEF

@@ -607,9 +607,7 @@ namespace app
 		);
 	}
 
-	LRESULT CALLBACK GameEngine::WindowEvent(const HWND windowHandler,
-		const UINT uMsg, const WPARAM wParam,
-		const LPARAM lParam)
+	LRESULT CALLBACK GameEngine::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
 		static GameEngine* sge;
 
@@ -622,10 +620,14 @@ namespace app
 				reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
 			return 0;
 		case WM_CLOSE:
-			sge->bEngineRunning = false;
+			if (sge) {
+				sge->bEngineRunning = false;
+			}
 			return 0;
 		case WM_DESTROY:
-			sge->OnForceDestroyEvent();
+			if (sge) {
+				sge->OnForceDestroyEvent();
+			}
 			PostQuitMessage(0);
 			return 0;
 		}
