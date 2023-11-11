@@ -7,7 +7,6 @@
 #pragma once
 
 #include "gConst.h"
-#include "gUtils.h"
 #include <iostream>
 
 /**
@@ -539,14 +538,6 @@ namespace app
 		thread.join();
 		return true;
 	}
-} // namespace app
-
-/**
- * @namespace app
- * @brief Window functions
- **/
-namespace app
-{
 } // namespace app
 
 #endif // G_GAME_ENGINE_CPP

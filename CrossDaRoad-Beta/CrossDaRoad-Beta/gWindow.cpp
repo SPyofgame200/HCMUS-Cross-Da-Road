@@ -181,7 +181,6 @@ namespace app
 			| CS_VREDRAW   // Redraw the entire window if the vertical size changes.
 			| CS_OWNDC;    // Allocate a unique device context for each window in the class.
 
-
 		// Get the module handle for the application
 		windowClass.hInstance = GetModuleHandle(nullptr);
 
@@ -215,6 +214,7 @@ namespace app
 		constexpr DWORD style = 0
 			| WS_CAPTION       // Give the window a title bar (caption).
 			| WS_SYSMENU       // Include a system menu in the window's title bar.
+			| WS_MINIMIZEBOX   // The window has a minimize button
 			| WS_VISIBLE;      // Make the window initially visible.
 
 		constexpr int windowX = 0;
