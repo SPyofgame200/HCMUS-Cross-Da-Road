@@ -217,8 +217,8 @@ namespace app
 			| WS_MINIMIZEBOX   // The window has a minimize button
 			| WS_VISIBLE;      // Make the window initially visible.
 
-		constexpr int windowX = 0;
-		constexpr int windowY = 0;
+		constexpr int windowX = 27;
+		constexpr int windowY = 27;
 
 		// Calculate the window client size
 		RECT windowRect = { 0, 0, sge->WindowWidth(), sge->WindowHeight() };
