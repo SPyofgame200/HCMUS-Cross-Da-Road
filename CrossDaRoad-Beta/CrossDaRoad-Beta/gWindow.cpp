@@ -134,8 +134,7 @@ namespace app
 			sge->OnFixedUpdateEvent(engine::PRE_WINDOW_EVENT);
 		switch (uMsg) {
 		case WM_CREATE:
-			sge = static_cast<GameEngine*>(
-				reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
+			sge = static_cast<GameEngine*>(reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
 			return 0;
 		case WM_CLOSE:
 			if (sge) {
