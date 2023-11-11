@@ -52,8 +52,7 @@ namespace app
 		}
 
 		// Update viewport
-		sge->screen.SetupWindowSize();
-		sge->viewport.UpdateByScreen(sge->screen);
+		sge->CreateViewport();
 
 		// Create the main window
 		if (!CreateMainWindow()) {

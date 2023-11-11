@@ -102,12 +102,12 @@ namespace app
 		bool UpdateKeyboardInput();
 		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix) const;
 		bool CreateWindowIcon() const;
+		bool CreateViewport();
 		bool InitEngineThread();
 		bool ExitEngineThread() const;
 		bool UpdateEngineEvent();
 		bool HandleEngineThread();
 		bool StartEngineThread();
-
 		// If anything sets this flag to false the engine "should" shut down
 		// gracefully
 		std::atomic<bool> bEngineRunning;

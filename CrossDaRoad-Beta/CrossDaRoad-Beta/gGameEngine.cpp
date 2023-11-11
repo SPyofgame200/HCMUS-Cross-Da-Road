@@ -430,6 +430,13 @@ namespace app
 			&& window.SetFavicon(engine::FAVICON_FILE_PATH);
 	}
 
+	bool GameEngine::CreateViewport()
+	{
+		screen.SetupWindowSize();
+		viewport.UpdateByScreen(screen);
+		return true;
+	}
+
 	/// @brief Initializes the engine thread.
 	/// @return True if initialization was successful.
 	bool GameEngine::InitEngineThread()
