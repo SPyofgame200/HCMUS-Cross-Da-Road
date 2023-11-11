@@ -4,6 +4,7 @@
 
 namespace app
 {
+	GameEngine* Window::sge = nullptr;
 	/// @brief Handles Windows messages in the main application window.
 	/// @return True if message handling was successful.
 	bool Window::HandleWindowMessage()
@@ -39,7 +40,7 @@ namespace app
 		windowClass.hInstance = GetModuleHandle(nullptr);
 
 		// Set the window procedure for handling window events
-		windowClass.lpfnWndProc = sge->WindowEvent;
+		windowClass.lpfnWndProc = WindowEvent;
 
 		// These two values are typically not used in modern applications
 		windowClass.cbClsExtra = 0;
@@ -104,4 +105,51 @@ namespace app
 		);
 	}
 
+	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
+	{
+		/// Engine events
+		if (sge)
+			sge->OnFixedUpdateEvent(engine::PRE_WINDOW_EVENT);
+		switch (uMsg) {
+		case WM_CREATE:
+			sge = static_cast<GameEngine*>(
+				reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
+			return 0;
+		case WM_CLOSE:
+			if (sge) {
+				sge->bEngineRunning = false;
+			}
+			return 0;
+		case WM_DESTROY:
+			if (sge) {
+				sge->OnForceDestroyEvent();
+			}
+			PostQuitMessage(0);
+			return 0;
+		}
+
+		/// Load keyboard
+		if (sge) {
+			sge->OnFixedUpdateEvent(engine::BEFORE_LOAD_KEYBOARD_EVENT);
+			switch (uMsg) {
+			case WM_SETFOCUS:
+				sge->keyboard.SetFocus(true);
+				return 0;
+			case WM_KILLFOCUS:
+				sge->keyboard.SetFocus(false);
+				return 0;
+			case WM_KEYDOWN:
+				sge->keyboard.UpdateKey(wParam, true);
+				return 0;
+			case WM_KEYUP:
+				sge->keyboard.UpdateKey(wParam, false);
+				return 0;
+			}
+		}
+
+		// Calling handling function on default
+		if (sge)
+			sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
+		return DefWindowProc(windowHandler, uMsg, wParam, lParam);
+	}
 }

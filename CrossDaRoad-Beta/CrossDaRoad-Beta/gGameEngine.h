@@ -111,9 +111,6 @@ namespace app
 		// If anything sets this flag to false the engine "should" shut down
 		// gracefully
 		std::atomic<bool> bEngineRunning;
-
-		// Windows specific window handling
-		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};
 } // namespace app
 #endif // G_GAME_ENGINE_DEF
