@@ -5,6 +5,12 @@
 namespace app
 {
 	GameEngine* Window::sge = nullptr;
+
+	HWND Window::GetWindowHandler() const
+	{
+		return windowHandler;
+	}
+
 	/// @brief Handles Windows messages in the main application window.
 	/// @return True if message handling was successful.
 	bool Window::HandleWindowMessage()
@@ -62,39 +68,6 @@ namespace app
 		// Register the window class
 		RegisterClass(&windowClass);
 
-		return true;
-	}
-
-	// Main function for creating the window
-	bool Window::WindowCreate(GameEngine *sge)
-	{
-
-		// Setup Window Target for Event Handling
-		if (!SetTarget(sge)) {
-			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
-			std::cerr << "Failed to setup a window target" << std::endl;
-			return false;
-		}
-		
-		// Register the window class
-		if (!RegisterWindowClass()) {
-			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
-			std::cerr << "Failed to register a window class" << std::endl;
-			return false;
-		}
-
-		// Update viewport
-		sge->screen.SetupWindowSize();
-		sge->viewport.UpdateByScreen(sge->screen);
-
-		// Create the main window
-		if (!CreateMainWindow()) {
-			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
-			std::cerr << "Failed to create a main window" << std::endl;
-			return false;
-		}
-
-		// Return the window handler
 		return true;
 	}
 
@@ -172,5 +145,98 @@ namespace app
 		if (sge)
 			sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
 		return DefWindowProc(windowHandler, uMsg, wParam, lParam);
+	}
+
+
+
+	// Main function for creating the window
+	bool Window::Create(GameEngine* sge)
+	{
+
+		// Setup Window Target for Event Handling
+		if (!SetTarget(sge)) {
+			std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to setup a window target" << std::endl;
+			return false;
+		}
+
+		// Register the window class
+		if (!RegisterWindowClass()) {
+			std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to register a window class" << std::endl;
+			return false;
+		}
+
+		// Update viewport
+		sge->screen.SetupWindowSize();
+		sge->viewport.UpdateByScreen(sge->screen);
+
+		// Create the main window
+		if (!CreateMainWindow()) {
+			std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to create a main window" << std::endl;
+			return false;
+		}
+
+		// Return the window handler
+		return true;
+	}
+
+	bool Window::Destroy() const
+	{
+		PostMessage(windowHandler, WM_DESTROY, 0, 0);
+		return true;
+	}
+
+	bool Window::SetTitle(const std::string& sTitle) const
+	{
+		SetWindowText(windowHandler, to_text(sTitle));
+		return true;
+	}
+
+	bool Window::SetIcon(const std::string& sFilePath) const
+	{
+		HANDLE hLoader = LoadImage(
+			nullptr,                            // Module handle (nullptr for current process)
+			to_text(engine::ICON_FILE_PATH),    // File path of the favicon
+			IMAGE_ICON,                         // Specifies that an icon is being loaded
+			0, 0,                               // Default width and height of the icon
+			LR_LOADFROMFILE                     // Load the icon from a file
+		);
+
+		HICON hIcon = static_cast<HICON>(hLoader);
+
+		if (!hIcon) {
+			std::cerr << "Window::SetFavicon(sFilePath=\"" << engine::ICON_FILE_PATH << "\"): ";
+			std::cerr << "Failed to load the icon" << std::endl;
+			return false;
+		}
+		std::cerr << "Window::SetFavicon(sFilePath=\"" << engine::ICON_FILE_PATH << "\"): ";
+		std::cerr << "Successfully loaded the application icon " << std::endl;
+		SendMessage(windowHandler, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
+		return true;
+	}
+
+	bool Window::SetFavicon(const std::string& sFilePath) const
+	{
+		HANDLE hLoader = LoadImage(
+			nullptr,                            // Module handle (nullptr for current process)
+			to_text(engine::FAVICON_FILE_PATH), // File path of the favicon
+			IMAGE_ICON,                         // Specifies that an icon is being loaded
+			0, 0,                               // Default width and height of the icon
+			LR_LOADFROMFILE                     // Load the icon from a file
+		);
+
+		HICON hFavicon = static_cast<HICON>(hLoader);
+
+		if (!hFavicon) {
+			std::cerr << "Can not open engine favicon (path = \"" << sFilePath << "\")" << std::endl;
+			std::cerr << "Failed to load the favicon" << std::endl;
+			return false;
+		}
+		std::cerr << "Window::SetFavicon(sFilePath=\"" << engine::FAVICON_FILE_PATH << "\"): ";
+		std::cerr << "Successfully loaded the application favicon " << std::endl;
+		SendMessage(windowHandler, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hFavicon));
+		return true;
 	}
 }

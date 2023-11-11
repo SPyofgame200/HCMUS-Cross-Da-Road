@@ -110,7 +110,7 @@ namespace app
 	engine::Code GameEngine::Start()
 	{
 		// Construct the window.
-		if (!window.WindowCreate(this)) {
+		if (!window.Create(this)) {
 			std::cerr << "Error: Failed to create the window." << std::endl;
 			return engine::FAILURE;
 		}
@@ -422,44 +422,13 @@ namespace app
 		const std::string& sTitleSuffix) const
 	{
 		const std::string sTitle = sAppName + sTitleSuffix;
-		SetWindowText(window.windowHandler, to_text(sTitle));
-		return true;
+		return window.SetTitle(sTitle);
 	}
 
 	bool GameEngine::CreateWindowIcon() const
 	{
-		auto hIcon = static_cast<HICON>(LoadImage(nullptr, to_text(engine::ICON_FILE_PATH), IMAGE_ICON, 0, 0, LR_LOADFROMFILE));
-		if (hIcon) {
-			std::cerr << "Successfully loaded engine icon (path = \""
-				<< engine::ICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(window.windowHandler, WM_SETICON, ICON_SMALL,
-				reinterpret_cast<LPARAM>(hIcon));
-		}
-		else {
-			std::cerr << "Can not open engine icon (path = \"" << engine::ICON_FILE_PATH
-				<< "\")" << std::endl;
-			return false;
-		}
-
-		if (auto hFavicon = static_cast<HICON>(
-			LoadImage(nullptr, to_text(engine::FAVICON_FILE_PATH), IMAGE_ICON, 0,
-				0, LR_LOADFROMFILE))) {
-			std::cerr << "Successfully loaded engine favicon (path = \""
-				<< engine::FAVICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(window.windowHandler, WM_SETICON, ICON_BIG,
-				reinterpret_cast<LPARAM>(hFavicon));
-		}
-		else {
-			std::cerr << "Can not open engine favicon (path = \""
-				<< engine::FAVICON_FILE_PATH << "\")";
-			std::cerr << ", switching to the usable engine icon (path = \""
-				<< engine::ICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(window.windowHandler, WM_SETICON, ICON_BIG,
-				reinterpret_cast<LPARAM>(hIcon));
-			return false;
-		}
-
-		return true;
+		return window.SetIcon(engine::ICON_FILE_PATH)
+			&& window.SetFavicon(engine::FAVICON_FILE_PATH);
 	}
 
 	/// @brief Initializes the engine thread.
@@ -467,7 +436,7 @@ namespace app
 	bool GameEngine::InitEngineThread()
 	{
 		CreateWindowIcon();
-		texture.CreateDeviceContext(window.windowHandler);
+		texture.CreateDeviceContext(window.GetWindowHandler());
 		texture.CreateTexture2D(ScreenWidth(), ScreenHeight(), viewport);
 		return true;
 	}
@@ -546,7 +515,7 @@ namespace app
 	bool GameEngine::ExitEngineThread() const
 	{
 		texture.ExitDevice();
-		PostMessage(window.windowHandler, WM_DESTROY, 0, 0);
+		window.Destroy();
 		return true;
 	}
 

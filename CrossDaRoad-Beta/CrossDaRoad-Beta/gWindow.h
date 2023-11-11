@@ -3,25 +3,33 @@
 
 #pragma comment(lib, "user32.lib")
 #include <windows.h>
+#include <string>
 
 namespace app
 {
 	class GameEngine;
 	class Window
 	{
-	public:
+	private: /// Window Internality
 		HWND windowHandler = nullptr;
-
-	private:
 		static GameEngine* sge;
 		bool SetTarget(GameEngine* sge);
 		bool RegisterWindowClass();
 		bool CreateMainWindow();
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	public:
+	public: // Getters
+		HWND GetWindowHandler() const;
+
+	public: // Setters
+		bool SetTitle(const std::string& sTitle) const;
+		bool SetIcon(const std::string& sFilePath) const;
+		bool SetFavicon(const std::string& sFilePath) const;
+
+	public: /// Window Event
 		bool HandleWindowMessage();
-		bool WindowCreate(GameEngine* sge);
+		bool Create(GameEngine* sge);
+		bool Destroy() const;
 	};
 }
 
