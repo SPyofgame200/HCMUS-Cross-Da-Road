@@ -42,6 +42,10 @@ namespace app
 	private: /// Static Internalities
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		static bool HandleWindowEvent(UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static bool HandleWindowLifecycleEvent(UINT uMsg);
+		static bool HandleWindowKeyboardEvent(UINT uMsg, WPARAM wParam);
+		static bool HandleWindowResizeEvent(WPARAM wParam, LPARAM lParam);
+		static bool HandleWindowMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};
 }
 
