@@ -10,14 +10,18 @@ namespace app
 	class Window
 	{
 	public:
-		static GameEngine* sge;
 		HWND windowHandler = nullptr;
-		bool HandleWindowMessage();
+
+	private:
+		static GameEngine* sge;
 		void SetTarget(GameEngine* sge);
 		void RegisterWindowClass(WNDCLASS& wc);
-		HWND WindowCreate(GameEngine* sge);
 		void CreateMainWindow();
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	public:
+		bool HandleWindowMessage();
+		HWND WindowCreate(GameEngine* sge);
 	};
 }
 
