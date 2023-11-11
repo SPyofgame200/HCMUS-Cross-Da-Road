@@ -249,8 +249,9 @@ namespace app
 
 	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
-		if (uMsg == WM_CREATE) { // *sge is now existed
-			sge = static_cast<GameEngine*>(reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
+		if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
+			LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
+			sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
 			sge->OnFixedUpdateEvent(engine::CREATE_WINDOW_EVENT);
 			return 0;
 		}
@@ -356,7 +357,8 @@ namespace app
 
 	bool Window::HandleWindowMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		std::cerr << "Error: Currently unused" << std::endl;
+		std::cerr << "Window::HandleWindowMouseEvent(): ";
+		std::cerr << "Error, unexpected uses of mouse events handler" << std::endl;
 		return true;
 	}
 }
