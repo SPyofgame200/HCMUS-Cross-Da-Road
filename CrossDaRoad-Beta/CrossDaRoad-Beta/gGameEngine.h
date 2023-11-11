@@ -113,7 +113,6 @@ namespace app
 		std::atomic<bool> bEngineRunning;
 
 		// Windows specific window handling
-		void CreateMainWindow();
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};
 } // namespace app

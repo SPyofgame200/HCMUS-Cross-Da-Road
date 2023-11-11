@@ -16,6 +16,7 @@ namespace app
 		void SetTarget(GameEngine* sge);
 		void RegisterWindowClass(WNDCLASS& wc);
 		HWND WindowCreate(GameEngine* sge);
+		void CreateMainWindow();
 	};
 }
 

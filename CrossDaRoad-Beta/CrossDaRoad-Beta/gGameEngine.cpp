@@ -578,35 +578,6 @@ namespace app
  **/
 namespace app
 {
-	// Function to create the window
-	void GameEngine::CreateMainWindow()
-	{
-		constexpr DWORD extendedStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-		constexpr DWORD style = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
-		constexpr int cosmeticOffset = 27;
-
-		// Calculate the window client size
-		RECT windowRect = { 0, 0, WindowWidth(), WindowHeight() };
-		AdjustWindowRectEx(&windowRect, style, FALSE, extendedStyle);
-		const int width = windowRect.right - windowRect.left;
-		const int height = windowRect.bottom - windowRect.top;
-
-		// Create the application's main window
-		window.windowHandler = CreateWindowEx(
-			extendedStyle,                  // Extended window style
-			engine::ENGINE_WIDE_NAME,       // Window class name
-			engine::ENGINE_WIDE_NAME,       // Window default title
-			style,                          // Window style
-			cosmeticOffset, cosmeticOffset, // (X, Y) position of the window
-			width, height,                  // Window size
-			nullptr,                  // Handle to parent window (none in this case)
-			nullptr,                  // Handle to menu (none in this case)
-			GetModuleHandle(nullptr), // Handle to application instance
-			this // Pointer to user-defined data (typically used for storing object
-				 // instance)
-		);
-	}
-
 	LRESULT CALLBACK GameEngine::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
 		static GameEngine* sge;
