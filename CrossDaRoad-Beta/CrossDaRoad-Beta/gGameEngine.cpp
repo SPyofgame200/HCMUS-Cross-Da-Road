@@ -200,12 +200,22 @@ namespace app
 		return true;
 	}
 
+	/// @brief Called suddenly during the running time, to force pause the app
+	/// @return Always returns true by default.
+	bool GameEngine::OnForcePauseEvent()
+	{
+		// TODO: Perform force pausing, force stop updating and rendering events
+		// actions If force pausing is successful, return true; otherwise return false
+		return true;
+	}
+
 	/// @brief Called suddenly during the running time, to force close the app
 	/// @return Always returns true by default.
 	bool GameEngine::OnForceDestroyEvent()
 	{
 		// TODO: Perform force cleanup, force release resources and ignore all other
-		// actions If cleanup is successful, return true; otherwise, return false.
+		// actions If cleanup is successful, return true;
+		// ....... otherwise, return false and detecting issues and EXIT BUG.
 		return true;
 	}
 } // namespace app

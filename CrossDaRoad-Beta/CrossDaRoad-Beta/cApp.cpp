@@ -465,6 +465,15 @@ bool cApp::OnPauseEvent()
 	}
 	return true; // succesfully handle the pause event
 }
+/// @brief Event that called when application is force paused
+bool cApp::OnForcePauseEvent()
+{
+	if (Menu.eAppOption == cMenu::Option::APP_MENU) {
+		return false;
+	}
+	PauseEngine();
+	return true;
+}
 /// @brief Event that called when application is destroyed normally
 bool cApp::OnDestroyEvent()
 {

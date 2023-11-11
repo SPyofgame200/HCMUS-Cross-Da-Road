@@ -49,6 +49,7 @@ namespace app
 		virtual bool OnRenderEvent();
 		virtual bool OnPauseEvent();
 		virtual bool OnDestroyEvent();
+		virtual bool OnForcePauseEvent();
 		virtual bool OnForceDestroyEvent();
 
 	public: // Hardware Interfaces

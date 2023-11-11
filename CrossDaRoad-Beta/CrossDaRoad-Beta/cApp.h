@@ -78,6 +78,7 @@ protected: /// Game Updates
 	bool OnGameLoad();
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
+	bool OnForcePauseEvent() override;
 	bool OnDestroyEvent() override;
 	bool OnForceDestroyEvent() override;
 
