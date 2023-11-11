@@ -266,7 +266,7 @@ bool cApp::OnCreateEvent()
 ///	@param eTickMessage - Tick message that contains information about tick
 bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
-	if (!bPause && !bDeath) {
+	if (!IsEnginePause() && !bDeath) {
 		fTimeSinceStart = fTickTime;
 		Player.OnUpdateFrame(fTickTime);
 	}
@@ -429,13 +429,13 @@ bool cApp::OnGameLoad()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent()
 {
-	if (bPause && IsKeyReleased(app::Key::ESCAPE)) {
-		bPause = false;
+	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
+		ResumeEngine();
 		return true;
 	}
-	if (bPause || (Menu.eAppOption != cMenu::Option::APP_MENU && IsKeyReleased(app::Key::ESCAPE))) {
+	if (IsEnginePause() || (Menu.eAppOption != cMenu::Option::APP_MENU && IsKeyReleased(app::Key::ESCAPE))) {
 		DisplayPauseMenu();
-		bPause = true;
+		PauseEngine();
 		// Load option pause menu
 		if (IsKeyReleased(app::Key::UP)) {
 			pauseOption--;
@@ -452,15 +452,15 @@ bool cApp::OnPauseEvent()
 				{
 					Menu.OpenMenu(this);
 					Menu.eAppOption = cMenu::Option::APP_MENU;
-					bPause = false;
+					ResumeEngine();
 					break;
 				}
-				case 1: bPause = false; break;
+				case 1: ResumeEngine(); break;
 				case 2: OnGameSave(); break;
 			}
 		}
 	}
-	if (bPause) { // continue the pause event
+	if (IsEnginePause()) { // continue the pause event
 		return false;
 	}
 	return true; // succesfully handle the pause event

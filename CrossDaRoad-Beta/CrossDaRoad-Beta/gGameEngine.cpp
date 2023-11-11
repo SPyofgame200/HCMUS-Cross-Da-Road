@@ -68,6 +68,8 @@ namespace app
 	GameEngine::GameEngine()
 	{
 		sAppName = engine::ENGINE_NAME;
+		bEngineRunning = false;
+		bEnginePausing = false;
 	}
 
 	/// @brief Construct the game engine with specified parameters.
@@ -383,6 +385,20 @@ namespace app
 	bool GameEngine::SetFrameDelay(FrameDelay eFrameDelay)
 	{
 		return frame.SetDelay(eFrameDelay);
+	}
+	bool GameEngine::IsEnginePause() const
+	{
+		return bEnginePausing;
+	}
+
+	void GameEngine::ResumeEngine()
+	{
+		bEnginePausing = false;
+	}
+	
+	void GameEngine::PauseEngine()
+	{
+		bEnginePausing = true;
 	}
 } // namespace app
 

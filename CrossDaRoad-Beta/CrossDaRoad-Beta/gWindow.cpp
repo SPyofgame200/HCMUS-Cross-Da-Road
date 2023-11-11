@@ -150,7 +150,8 @@ namespace app
 			DispatchMessage(&msg);
 		}
 		if (msg.message == -1) {
-			std::cerr << "GetMessage failed with error code: " << std::to_string(GetLastError()) << std::endl;
+			std::cerr << "GetMessage failed with error code: ";
+			std::cerr << std::to_string(GetLastError()) << std::endl;
 			return false;
 		}
 		return true;
@@ -290,6 +291,24 @@ namespace app
 			return true;
 		case WM_KEYUP:
 			sge->keyboard.UpdateKey(wParam, false);
+			return true;
+		case WM_SIZE:
+			int width = LOWORD(lParam); 
+			int height = HIWORD(lParam);
+			switch (wParam)
+			{
+			case SIZE_MAXIMIZED:
+				std::cerr << "Window::HandleWindowEvent(uMsg, wParam, lParam): " << std::endl;
+				std::cerr << "The app is unexpectedly maximized" << std::endl;
+				break;
+			case SIZE_MINIMIZED:
+				std::cerr << "The window is minimized: Automatically pausing the game" << std::endl;
+				sge->PauseEngine();
+				break;
+			case SIZE_RESTORED:
+				break;
+			}
+			sge->OnFixedUpdateEvent(engine::RESIZE_WINDOW_EVENT);
 			return true;
 		}
 		return false;

@@ -36,9 +36,8 @@ private: // Event timers
 	float fTimeSinceStart;
 	float fTimeSinceLastDrawn;
 
-private: // Special states (applied to freeze frames)
-	bool bPause = false;
-	bool bDeath = false;
+private: // Special variables
+	std::atomic<bool> bDeath;
 
 private:
 	int pauseOption = 1;

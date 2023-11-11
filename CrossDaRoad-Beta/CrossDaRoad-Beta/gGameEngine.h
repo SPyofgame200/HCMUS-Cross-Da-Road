@@ -88,6 +88,9 @@ namespace app
 		int GetAppFPS() const;
 		bool SetFrameDelay(FrameDelay eFrameDelay);
 		bool RenderTexture() const;
+		bool IsEnginePause() const;
+		void ResumeEngine();
+		void PauseEngine();
 
 	private: // Engine Internalities
 		ScreenState screen;
@@ -111,6 +114,7 @@ namespace app
 		// If anything sets this flag to false the engine "should" shut down
 		// gracefully
 		std::atomic<bool> bEngineRunning;
+		std::atomic<bool> bEnginePausing;
 	};
 } // namespace app
 #endif // G_GAME_ENGINE_DEF
