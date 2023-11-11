@@ -143,6 +143,7 @@
     <ClCompile Include="gState.cpp" />
     <ClCompile Include="gTexture.cpp" />
     <ClCompile Include="gUtils.cpp" />
+    <ClCompile Include="gWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uSound.cpp" />
     <ClCompile Include="uStringUtils.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="gState.h" />
     <ClInclude Include="gTexture.h" />
     <ClInclude Include="gUtils.h" />
+    <ClInclude Include="gWindow.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uSound.h" />
     <ClInclude Include="uStringUtils.h" />

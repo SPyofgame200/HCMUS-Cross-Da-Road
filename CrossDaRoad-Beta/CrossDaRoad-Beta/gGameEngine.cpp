@@ -110,7 +110,7 @@ namespace app
 	engine::Code GameEngine::Start()
 	{
 		// Construct the window.
-		if (!WindowCreate()) {
+		if (!window.WindowCreate(this)) {
 			std::cerr << "Error: Failed to create the window." << std::endl;
 			return engine::FAILURE;
 		}
@@ -422,7 +422,7 @@ namespace app
 		const std::string& sTitleSuffix) const
 	{
 		const std::string sTitle = sAppName + sTitleSuffix;
-		SetWindowText(windowHandler, to_text(sTitle));
+		SetWindowText(window.windowHandler, to_text(sTitle));
 		return true;
 	}
 
@@ -432,7 +432,7 @@ namespace app
 		if (hIcon) {
 			std::cerr << "Successfully loaded engine icon (path = \""
 				<< engine::ICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(windowHandler, WM_SETICON, ICON_SMALL,
+			SendMessage(window.windowHandler, WM_SETICON, ICON_SMALL,
 				reinterpret_cast<LPARAM>(hIcon));
 		}
 		else {
@@ -446,7 +446,7 @@ namespace app
 				0, LR_LOADFROMFILE))) {
 			std::cerr << "Successfully loaded engine favicon (path = \""
 				<< engine::FAVICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(windowHandler, WM_SETICON, ICON_BIG,
+			SendMessage(window.windowHandler, WM_SETICON, ICON_BIG,
 				reinterpret_cast<LPARAM>(hFavicon));
 		}
 		else {
@@ -454,7 +454,7 @@ namespace app
 				<< engine::FAVICON_FILE_PATH << "\")";
 			std::cerr << ", switching to the usable engine icon (path = \""
 				<< engine::ICON_FILE_PATH << "\")" << std::endl;
-			SendMessage(windowHandler, WM_SETICON, ICON_BIG,
+			SendMessage(window.windowHandler, WM_SETICON, ICON_BIG,
 				reinterpret_cast<LPARAM>(hIcon));
 			return false;
 		}
@@ -467,7 +467,7 @@ namespace app
 	bool GameEngine::InitEngineThread()
 	{
 		CreateWindowIcon();
-		texture.CreateDeviceContext(windowHandler);
+		texture.CreateDeviceContext(window.windowHandler);
 		texture.CreateTexture2D(ScreenWidth(), ScreenHeight(), viewport);
 		return true;
 	}
@@ -546,7 +546,7 @@ namespace app
 	bool GameEngine::ExitEngineThread() const
 	{
 		texture.ExitDevice();
-		PostMessage(windowHandler, WM_DESTROY, 0, 0);
+		PostMessage(window.windowHandler, WM_DESTROY, 0, 0);
 		return true;
 	}
 
@@ -561,28 +561,12 @@ namespace app
 		return true;
 	}
 
-	/// @brief Handles Windows messages in the main application window.
-	/// @return True if message handling was successful.
-	bool GameEngine::HandleWindowMessage()
-	{
-		MSG msg;
-		while (GetMessage(&msg, nullptr, 0, 0) > 0) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		if (msg.message == -1) {
-			std::cerr << "GetMessage failed with error code: " << std::to_string(GetLastError()) << std::endl;
-			return false;
-		}
-		return true;
-	}
-
 	/// @brief Starts the engine thread and message handling.
 	/// @return True if thread startup and message handling were successful.
 	bool GameEngine::StartEngineThread()
 	{
 		auto thread = std::thread(&GameEngine::HandleEngineThread, this);
-		HandleWindowMessage();
+		window.HandleWindowMessage();
 		thread.join();
 		return true;
 	}
@@ -594,37 +578,6 @@ namespace app
  **/
 namespace app
 {
-	// Function to register the window class
-	void GameEngine::RegisterWindowClass(WNDCLASS& windowClass)
-	{
-		// Set the window's cursor to the arrow cursor
-		windowClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
-		// Specify window styles, including redrawing when resized and owning the
-		// device context
-		windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-
-		// Get the module handle for the application
-		windowClass.hInstance = GetModuleHandle(nullptr);
-
-		// Set the window procedure for handling window events
-		windowClass.lpfnWndProc = WindowEvent;
-
-		// These two values are typically not used in modern applications
-		windowClass.cbClsExtra = 0;
-		windowClass.cbWndExtra = 0;
-
-		// Set the window's menu name and background brush (none in this case)
-		windowClass.lpszMenuName = nullptr;
-		windowClass.hbrBackground = nullptr;
-
-		// Set the window class name (converted from ENGINE_NAME)
-		windowClass.lpszClassName = to_text(engine::ENGINE_NAME);
-
-		// Register the window class
-		RegisterClass(&windowClass);
-	}
-
 	// Function to create the window
 	void GameEngine::CreateMainWindow()
 	{
@@ -639,7 +592,7 @@ namespace app
 		const int height = windowRect.bottom - windowRect.top;
 
 		// Create the application's main window
-		windowHandler = CreateWindowEx(
+		window.windowHandler = CreateWindowEx(
 			extendedStyle,                  // Extended window style
 			engine::ENGINE_WIDE_NAME,       // Window class name
 			engine::ENGINE_WIDE_NAME,       // Window default title
@@ -652,25 +605,6 @@ namespace app
 			this // Pointer to user-defined data (typically used for storing object
 				 // instance)
 		);
-	}
-
-	// Main function for creating the window
-	HWND GameEngine::WindowCreate()
-	{
-		WNDCLASS windowClass = {};
-
-		// Register the window class
-		RegisterWindowClass(windowClass);
-
-		// Update viewport
-		screen.SetupWindowSize();
-		viewport.UpdateByScreen(screen);
-
-		// Create the main window
-		CreateMainWindow();
-
-		// Return the window handler
-		return windowHandler;
 	}
 
 	LRESULT CALLBACK GameEngine::WindowEvent(const HWND windowHandler,

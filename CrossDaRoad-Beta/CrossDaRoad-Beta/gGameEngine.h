@@ -13,6 +13,7 @@
 #include "gSprite.h"
 #include "gState.h"
 #include "gTexture.h"
+#include "gWindow.h"
 
 #ifndef G_GAME_ENGINE_DEF
 #define G_GAME_ENGINE_DEF
@@ -25,6 +26,8 @@ namespace app
 {
 	class GameEngine
 	{
+		friend class Window;
+
 	public: // Branding
 		std::string sAppName;
 
@@ -92,6 +95,7 @@ namespace app
 		KeyboardState keyboard;
 		Texture texture;
 		FrameState frame;
+		Window window;
 		// MouseState mouse; [unused]
 
 		bool OnFixedUpdateEvent(const engine::Tick& eTickMessage);
@@ -102,7 +106,6 @@ namespace app
 		bool ExitEngineThread() const;
 		bool UpdateEngineEvent();
 		bool HandleEngineThread();
-		bool HandleWindowMessage();
 		bool StartEngineThread();
 
 		// If anything sets this flag to false the engine "should" shut down
@@ -110,10 +113,6 @@ namespace app
 		static std::atomic<bool> bEngineRunning;
 
 		// Windows specific window handling
-		HWND windowHandler = nullptr;
-		HWND WindowCreate();
-		void RegisterWindowClass(WNDCLASS& wc);
-
 		void CreateMainWindow();
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg,
 			WPARAM wParam, LPARAM lParam);
