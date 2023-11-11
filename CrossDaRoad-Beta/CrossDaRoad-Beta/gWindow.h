@@ -14,14 +14,14 @@ namespace app
 
 	private:
 		static GameEngine* sge;
-		void SetTarget(GameEngine* sge);
-		void RegisterWindowClass(WNDCLASS& wc);
-		void CreateMainWindow();
+		bool SetTarget(GameEngine* sge);
+		bool RegisterWindowClass();
+		bool CreateMainWindow();
 		static LRESULT CALLBACK WindowEvent(HWND windowHandler, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	public:
 		bool HandleWindowMessage();
-		HWND WindowCreate(GameEngine* sge);
+		bool WindowCreate(GameEngine* sge);
 	};
 }
 

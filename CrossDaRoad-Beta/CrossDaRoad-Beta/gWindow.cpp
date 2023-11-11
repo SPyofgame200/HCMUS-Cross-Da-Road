@@ -21,14 +21,20 @@ namespace app
 		return true;
 	}
 
-	void Window::SetTarget(GameEngine* sge)
+	bool Window::SetTarget(GameEngine* sge)
 	{
+		if (sge == nullptr) {
+			return false;
+		}
 		this->sge = sge;
+		return true;
 	}
 
 	// Function to register the window class
-	void Window::RegisterWindowClass(WNDCLASS& windowClass)
+	bool Window::RegisterWindowClass()
 	{
+		WNDCLASS windowClass = {};
+
 		// Set the window's cursor to the arrow cursor
 		windowClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
@@ -55,30 +61,45 @@ namespace app
 
 		// Register the window class
 		RegisterClass(&windowClass);
+
+		return true;
 	}
 
 	// Main function for creating the window
-	HWND Window::WindowCreate(GameEngine *sge)
+	bool Window::WindowCreate(GameEngine *sge)
 	{
-		WNDCLASS windowClass = {};
 
+		// Setup Window Target for Event Handling
+		if (!SetTarget(sge)) {
+			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to setup a window target" << std::endl;
+			return false;
+		}
+		
 		// Register the window class
-		SetTarget(sge);
-		RegisterWindowClass(windowClass);
+		if (!RegisterWindowClass()) {
+			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to register a window class" << std::endl;
+			return false;
+		}
 
 		// Update viewport
 		sge->screen.SetupWindowSize();
 		sge->viewport.UpdateByScreen(sge->screen);
 
 		// Create the main window
-		CreateMainWindow();
+		if (!CreateMainWindow()) {
+			std::cerr << "Window::WindowCreate(GameEngine* sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+			std::cerr << "Failed to create a main window" << std::endl;
+			return false;
+		}
 
 		// Return the window handler
-		return windowHandler;
+		return true;
 	}
 
 	// Function to create the window
-	void Window::CreateMainWindow()
+	bool Window::CreateMainWindow()
 	{
 		constexpr DWORD extendedStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 		constexpr DWORD style = WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
@@ -103,6 +124,7 @@ namespace app
 			GetModuleHandle(nullptr), // Handle to application instance
 			sge // Pointer to user-defined data (typically used for storing object instance)
 		);
+		return true;
 	}
 
 	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
