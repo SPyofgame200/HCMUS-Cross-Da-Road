@@ -654,8 +654,6 @@ namespace app
 			sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
 		return DefWindowProc(windowHandler, uMsg, wParam, lParam);
 	}
-
-	std::atomic<bool> GameEngine::bEngineRunning{ false };
 } // namespace app
 
 #endif // G_GAME_ENGINE_CPP

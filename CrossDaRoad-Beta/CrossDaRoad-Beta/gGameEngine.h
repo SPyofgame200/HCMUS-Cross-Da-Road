@@ -110,7 +110,7 @@ namespace app
 
 		// If anything sets this flag to false the engine "should" shut down
 		// gracefully
-		static std::atomic<bool> bEngineRunning;
+		std::atomic<bool> bEngineRunning;
 
 		// Windows specific window handling
 		void CreateMainWindow();
