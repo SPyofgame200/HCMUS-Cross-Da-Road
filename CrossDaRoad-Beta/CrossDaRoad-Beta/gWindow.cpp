@@ -245,31 +245,39 @@ namespace app
 
 		/// Engine events
 		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_EVENT);
+		bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
+		sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
+		if (bNoEvent) { // Calling handling function on default
+			return DefWindowProc(windowHandler, uMsg, wParam, lParam);
+		}
+		return 0;
+	}
 
+
+	bool Window::HandleWindowEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
 		switch (uMsg) {
 		case WM_CLOSE:
 			sge->bEngineRunning = false;
-			return 0;
+			return true;
 		case WM_DESTROY:
 			sge->OnFixedUpdateEvent(engine::DESTROY_WINDOW_EVENT);
 			sge->OnForceDestroyEvent();
 			PostQuitMessage(0);
-			return 0;
+			return true;
 		case WM_SETFOCUS:
 			sge->keyboard.SetFocus(true);
-			return 0;
+			return true;
 		case WM_KILLFOCUS:
 			sge->keyboard.SetFocus(false);
-			return 0;
+			return true;
 		case WM_KEYDOWN:
 			sge->keyboard.UpdateKey(wParam, true);
-			return 0;
+			return true;
 		case WM_KEYUP:
 			sge->keyboard.UpdateKey(wParam, false);
-			return 0;
+			return true;
 		}
-
-		sge->OnFixedUpdateEvent(engine::POST_WINDOW_EVENT);
-		return DefWindowProc(windowHandler, uMsg, wParam, lParam); // Calling handling function on default
+		return false;
 	}
 }
