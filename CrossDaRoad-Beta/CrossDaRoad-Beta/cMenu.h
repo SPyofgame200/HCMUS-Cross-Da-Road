@@ -33,9 +33,9 @@ public:
 	};
 	enum PauseOption
 	{
-		RESUMING = 0,
-		APP_SAVE = 1,
-		APP_BACK = 2,
+		RESUMING = 0, ///< Resume game 
+		APP_SAVE = 1, ///< Save game
+		APP_BACK = 2, ///< Back to menu
 	};
 
 private: /// Target
@@ -54,10 +54,10 @@ private: /// Menu HUD
 	int nAppOptionValue; 						 ///< Current option index
 
 private: /// Pause HUD
-	PauseOption ePauseOption;
-	std::string sPauseOptionLabels[3] = {"resume", "save", "exit"};
-	int nPauseOptionValue;
-	int nPauseOptionLimit;
+	PauseOption ePauseOption; ///< Current option 
+	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
+	int nPauseOptionValue; ///< Current option index
+	int nPauseOptionLimit; ///< Maximum number of options
 
 public: // Constructor & Destructor
 	cMenu();
