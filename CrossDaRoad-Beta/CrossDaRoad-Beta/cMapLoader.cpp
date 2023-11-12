@@ -104,7 +104,7 @@ void SpriteData::debug(char end) const
 std::default_random_engine generator(std::random_device{}());
 std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 std::map<int, float> mapLastSummon;
-bool SpriteData::SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps) const
+bool SpriteData::SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const
 {
 	if (summon == nullptr || fChance <= 0) {
 		return false; // Summon is not enabled or chance is zero or negative
@@ -130,6 +130,10 @@ bool SpriteData::SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps) 
 			//std::cerr << "Stoped" << std::endl;
 			return false;
 		}
+	}
+
+	if (!bCreateAllow) {
+		return false;
 	}
 
 	const auto fProbability = static_cast<float>(fChance / 100.0 / (fps == 0 ? 1 : fps));

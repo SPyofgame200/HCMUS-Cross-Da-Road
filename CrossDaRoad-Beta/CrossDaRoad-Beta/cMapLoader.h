@@ -44,7 +44,7 @@ struct SpriteData
 	SpriteData();						///< Constructor
 	~SpriteData();					 	///< Destructor
 	void debug(char end = '\n') const;  ///< Debug
-	bool SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps) const;
+	bool SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
 };
 
 /// @brief Class for lane object in game
