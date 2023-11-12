@@ -89,7 +89,9 @@ bool cMenu::LoadAppOption(cApp* App)
 		eMenuOption = AppOption::APP_EXIT;
 		break;
 	default:
-		break;
+		std::cerr << "cMenu::LoadAppOption(): ";
+		std::cerr << "Unknown option = " << nOption << ", expected [0.." << nAppOptionLimit - 1 << "]" << std::endl;
+		return false;
 	}
 
 	return true;
@@ -97,7 +99,8 @@ bool cMenu::LoadAppOption(cApp* App)
 
 bool cMenu::LoadPauseOption(cApp* App)
 {
-	switch (nPauseOptionValue) 
+	int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit);
+	switch (nOption)
 	{
 	case RESUMING:
 		App->ResumeEngine();
@@ -109,6 +112,10 @@ bool cMenu::LoadPauseOption(cApp* App)
 		App->ResumeEngine();
 		OpenMenu(App);
 		break;
+	default:
+		std::cerr << "cMenu::LoadPauseOption(): ";
+		std::cerr << "Unknown option = " << nOption << ", expected [0.." << nPauseOptionLimit - 1 << "]" << std::endl;
+		return false;
 	}
 	return true;
 }
