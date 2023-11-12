@@ -35,7 +35,7 @@ cMenu::~cMenu()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// MENU MANAGEMENT //////////////////////////////////////////////////////
+///////////////////////////// INITIALIZATION & CLEAN-UP ////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Set pointer to application 
@@ -87,6 +87,20 @@ bool cMenu::ExitMenu()
 {
 	sAppOptionLabels.clear();
 	//sPauseOptionLabels.clear();
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// MANAGEMENTS //////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Open menu on screen
+/// @return Always return true by default
+bool cMenu::OpenMenu()
+{
+	ResetMenu();
+	RenderAppMenu();
+	eMenuOption = AppOption::APP_MENU;
 	return true;
 }
 
@@ -150,12 +164,29 @@ bool cMenu::LoadPauseOption()
 	return true;
 }
 
+/// @brief Close menu on screen
+/// @param app Pointer to application
+/// @return Always return true by default
+bool cMenu::CloseMenu()
+{
+	app->Clear(app::BLACK);
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// CHECKERS ////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Check if current option is menu or not
 /// @return True if current option is menu, false otherwise
 bool cMenu::IsOnMenu() const
 {
 	return eMenuOption == AppOption::APP_MENU;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// VALIDATORS //////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief  Fix option value to be in range [0, limit)
 /// @param value Value to be fixed
@@ -170,56 +201,9 @@ int cMenu::FixOption(int& value, int limit)
 	return value;
 }
 
-/// @brief Display menu on screen
-/// @param app Pointer to application
-/// @return Always return true by default
-bool cMenu::RenderAppMenu()
-{
-	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
-
-	app->Clear(app::BLACK);
-	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
-	for (int id = 0; id < nAppOptionLimit; id++) {
-		const std::string optionName = std::string(sAppOptionLabels[id]) + (id == nAppOptionValue ? "_chosen" : "");
-		const app::Sprite* optionSprite = cAssetManager::GetInstance().GetSprite(optionName);
-		app->SetPixelMode(app::Pixel::MASK);
-		app->DrawSprite(146, 65 + id * 10, optionSprite);
-		if (id == nAppOptionValue) {
-			app->SetPixelMode(app::Pixel::NORMAL);
-		}
-	}
-	return true;
-}
-bool cMenu::RenderAboutUs() const
-{
-	app->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + app->Player.ShowFrameID(4);
-	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
-	app->DrawSprite(0, 0, object);
-	return true;
-}
-
-bool cMenu::RenderAppExit() const
-{
-	app->Clear(app::BLACK);
-	if (bWantToExit) {
-		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
-	}
-	else {
-		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
-	}
-	return true;
-}
-/// @brief Open and display menu on screen
-/// @param app Pointer to application
-/// @return Always return true by default
-bool cMenu::OpenMenu()
-{
-	ResetMenu();
-	RenderAppMenu();
-	eMenuOption = AppOption::APP_MENU;
-	return true;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// UPDATERS ////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Update menu on screen when user press key
 /// @param app Pointer to application
@@ -235,15 +219,6 @@ bool cMenu::UpdateAppMenu()
 	if (app->IsKeyReleased(app::Key::ENTER)) {
 		LoadAppOption();
 	}
-	return true;
-}
-
-/// @brief Close menu on screen
-/// @param app Pointer to application
-/// @return Always return true by default
-bool cMenu::CloseMenu()
-{
-	app->Clear(app::BLACK);
 	return true;
 }
 
@@ -340,24 +315,6 @@ bool cMenu::UpdatePausing()
 	return true; // succesfully handle the pause event
 }
 
-/// @brief Pause game and display pause window on screen
-/// @return Always return true by default
-bool cMenu::RenderPausing()
-{
-	app->OnGameRender();
-	app->SetPixelMode(app::Pixel::ALPHA);
-	app->SetBlendFactor(170.0f / 255.0f);
-	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
-	app->SetBlendFactor(255.0f / 255.0f);
-	app->SetPixelMode(app::Pixel::NORMAL);
-	const std::string sSelectedLabel = sPauseOptionLabels[nPauseOptionValue];
-	const std::string sOptionName = "pause_" + sSelectedLabel;
-	app->SetPixelMode(app::Pixel::MASK);
-	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sOptionName));
-	app->SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
-
 /// @brief Update all app screen (menu, pause, about us, exit)
 /// @param fElapsedTime Time elapsed since last frame
 /// @return True if update successfully, false otherwise
@@ -382,6 +339,74 @@ bool cMenu::Update(const float fElapsedTime)
 			return false;
 	}
 	return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// RENDERERS ///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Display menu on screen
+/// @param app Pointer to application
+/// @return Always return true by default
+bool cMenu::RenderAppMenu()
+{
+	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
+
+	app->Clear(app::BLACK);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
+	for (int id = 0; id < nAppOptionLimit; id++) {
+		const std::string optionName = std::string(sAppOptionLabels[id]) + (id == nAppOptionValue ? "_chosen" : "");
+		const app::Sprite* optionSprite = cAssetManager::GetInstance().GetSprite(optionName);
+		app->SetPixelMode(app::Pixel::MASK);
+		app->DrawSprite(146, 65 + id * 10, optionSprite);
+		if (id == nAppOptionValue) {
+			app->SetPixelMode(app::Pixel::NORMAL);
+		}
+	}
+	return true;
+}
+
+/// @brief Render about us on screen
+/// @return Always return true by default
+bool cMenu::RenderAboutUs() const
+{
+	app->Clear(app::BLACK);
+	const std::string about_us_dynamic = "about_us_page" + app->Player.ShowFrameID(4);
+	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
+	app->DrawSprite(0, 0, object);
+	return true;
+}
+
+/// @brief Render exit window on screen
+/// @return Always return true by default
+bool cMenu::RenderAppExit() const
+{
+	app->Clear(app::BLACK);
+	if (bWantToExit) {
+		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
+	}
+	else {
+		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
+	}
+	return true;
+}
+
+/// @brief Pause game and display pause window on screen
+/// @return Always return true by default
+bool cMenu::RenderPausing()
+{
+	app->OnGameRender();
+	app->SetPixelMode(app::Pixel::ALPHA);
+	app->SetBlendFactor(170.0f / 255.0f);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	app->SetBlendFactor(255.0f / 255.0f);
+	app->SetPixelMode(app::Pixel::NORMAL);
+	const std::string sSelectedLabel = sPauseOptionLabels[nPauseOptionValue];
+	const std::string sOptionName = "pause_" + sSelectedLabel;
+	app->SetPixelMode(app::Pixel::MASK);
+	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sOptionName));
+	app->SetPixelMode(app::Pixel::NORMAL);
+	return true;
 }
 
 /// @brief Render all app screen (menu, pause, about us, exit)
