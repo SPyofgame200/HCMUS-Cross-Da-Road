@@ -30,7 +30,7 @@ private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
-	bool wantToExit = true;
+	bool bWantToExit = true;
 
 private: // Event timers
 	float fTimeSinceStart;
@@ -69,7 +69,7 @@ protected: // Collision Detection
 protected: /// Game Updates
 	bool OnPlayerUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
-	bool OnGameUpdate();
+	bool OnGameRender();
 	bool OnCreateEvent() override;
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;

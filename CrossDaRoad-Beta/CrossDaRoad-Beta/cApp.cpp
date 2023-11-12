@@ -246,7 +246,7 @@ bool cApp::OnPlayerDeath()
 	return true;
 }
 /// @brief Draw all lanes, render Player, draw status bar
-bool cApp::OnGameUpdate()
+bool cApp::OnGameRender()
 {
 	DrawAllLanes();
 	Player.OnRenderPlayer();
@@ -280,12 +280,9 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 		OnPlayerUpdate(fElapsedTime);
 	}
 	else if (Menu.eAppOption == cMenu::Option::SETTINGS) {
-		Menu.DisplaySettings(this);
-
 		if (IsKeyReleased(app::Key::ENTER)) {
 			Menu.UpdateSettings(this);
 		}
-
 		if (IsKeyReleased(app::Key::ESCAPE)) {
 			Menu.OpenMenu(this);
 			Menu.eAppOption = cMenu::Option::APP_MENU;
@@ -293,11 +290,6 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 		}
 	}
 	else if (Menu.eAppOption == cMenu::Option::ABOUT_US) {
-		Clear(app::BLACK);
-		const std::string about_us_dynamic = "about_us_page" + Player.ShowFrameID(4);
-		const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
-		DrawSprite(0, 0, object);
-
 		if (IsKeyReleased(app::Key::ESCAPE)) {
 			Menu.OpenMenu(this);
 			Menu.eAppOption = cMenu::Option::APP_MENU;
@@ -305,20 +297,14 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 		}
 	}
 	else if (Menu.eAppOption == cMenu::Option::EXIT_APP) {
-		Clear(app::BLACK);
-
-		if (wantToExit)
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
-		else
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
-
-		if (IsKeyReleased(app::Key::RIGHT))
-			wantToExit = false;
-		if (IsKeyReleased(app::Key::LEFT))
-			wantToExit = true;
-
+		if (IsKeyReleased(app::Key::RIGHT)) {
+			bWantToExit = false;
+		}
+		if (IsKeyReleased(app::Key::LEFT)) {
+			bWantToExit = true;
+		}
 		if (IsKeyReleased(app::Key::ENTER)) {
-			if (wantToExit) {
+			if (bWantToExit) {
 				OnDestroyEvent();
 				return false;
 			}
@@ -328,11 +314,10 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 				return true;
 			}
 		}
-
 		if (IsKeyReleased(app::Key::ESCAPE)) {
 			Menu.OpenMenu(this);
 			Menu.eAppOption = cMenu::Option::APP_MENU;
-			wantToExit = true;
+			bWantToExit = true;
 			return true;
 		}
 	}
@@ -355,7 +340,26 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 bool cApp::OnRenderEvent()
 {
 	if (Menu.eAppOption == cMenu::Option::NEW_GAME || Menu.eAppOption == cMenu::Option::CONTINUE) {
-		OnGameUpdate();
+		OnGameRender();
+	}
+	else if (Menu.eAppOption == cMenu::Option::SETTINGS) {
+		Menu.DisplaySettings(this);
+	}
+	else if (Menu.eAppOption == cMenu::Option::ABOUT_US) {
+		Clear(app::BLACK);
+		const std::string about_us_dynamic = "about_us_page" + Player.ShowFrameID(4);
+		const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
+		DrawSprite(0, 0, object);
+
+	}
+	else if (Menu.eAppOption == cMenu::Option::EXIT_APP) {
+		Clear(app::BLACK);
+		if (bWantToExit) {
+			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
+		}
+		else {
+			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
+		}
 	}
 	return true;
 }
@@ -601,8 +605,8 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 	// Find lane offset start
 	int nStartPos = static_cast<int>(fTimeSinceStart * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
 	const int nCellOffset = static_cast<int>(static_cast<float>(nCellSize) * fTimeSinceStart * lane.GetVelocity()) % nCellSize;
-	if (nStartPos < 0)
-		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
+	if (nStartPos < 0) nStartPos %= app_const::MAP_WIDTH_LIMIT;
+	if (nStartPos < 0) nStartPos += app_const::MAP_WIDTH_LIMIT;
 
 	fTimeSinceLastDrawn = fTimeSinceStart;
 	auto drawCharacter = [&](const int nLaneIndex, SpriteData& sprite, const int sx, const int sy, bool drawBackground) {
@@ -699,11 +703,12 @@ bool cApp::DrawStatusBar()
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
+
 /// @brief 
 /// @return 
 bool cApp::DisplayPauseMenu()
 {
-	OnGameUpdate();
+	OnGameRender();
 	SetPixelMode(app::Pixel::ALPHA);
 	SetBlendFactor(170.0f / 255.0f);
 	DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
