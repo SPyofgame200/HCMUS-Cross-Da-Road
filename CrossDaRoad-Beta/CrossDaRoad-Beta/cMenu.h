@@ -38,11 +38,12 @@ private:
 	int nPauseOption;
 	std::string choices[3] = { "exit", "resume", "save" };
 
-public:
+private:
 	Option eAppOption; ///< Current option
 	int nOption; 	 ///< Current option index
 	bool isMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
 
+private:
 	std::vector<const char*> sOptionLabels;  ///< Option labels for menu window
 	int nOptionLimit;                        ///< Maximum number of options
 
@@ -52,12 +53,16 @@ public: // Constructor & Destructor
 
 public: // Initialization & Clean-up
 	bool InitMenu();
+	bool ResetMenu();
 	bool ExitMenu();
 
 public: // Managements
 	bool CloseMenu(cApp* App);
 	bool LoadOption(cApp* App);
 	bool OpenMenu(cApp* App);
+
+public: // Checkers
+	bool IsOnMenu() const;
 
 public: // Updaters
 	bool UpdateAppMenu(cApp* App);

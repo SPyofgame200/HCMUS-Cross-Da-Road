@@ -36,7 +36,6 @@ bool cApp::GameInit()
 	using namespace app_const;
 	fTimeSinceStart = 0;
 	fTimeSinceLastDrawn = 0;
-	Menu.eAppOption = cMenu::Option::APP_MENU;
 	sAppName = APP_NAME;
 	nLaneWidth = LANE_WIDTH;
 	nCellSize = CELL_SIZE;
@@ -375,7 +374,7 @@ bool cApp::OnPauseEvent()
 /// @brief Event that called when application is force paused
 bool cApp::OnForcePauseEvent()
 {
-	if (Menu.eAppOption == cMenu::Option::APP_MENU) {
+	if (Menu.IsOnMenu()) {
 		return false;
 	}
 	PauseEngine();

@@ -36,13 +36,21 @@ cMenu::~cMenu()
 bool cMenu::InitMenu()
 {
 	using namespace app_const;
-	nOption = INIT_MENU_OPTION;
-	bWantToExit = false;
-	nPauseOption = 1;
+	eAppOption = Option::APP_MENU;
 	nOptionLimit = static_cast<int>(std::size(MENU_OPTIONS));
 	sOptionLabels = { MENU_OPTIONS, MENU_OPTIONS + nOptionLimit };
+	ResetMenu();
 	return true;
 }
+
+bool cMenu::ResetMenu()
+{
+	nOption = app_const::INIT_MENU_OPTION;
+	bWantToExit = false;
+	nPauseOption = 1;
+	return true;
+}
+
 /// @brief Free memory of option when exit
 /// @return Always return true by default
 bool cMenu::ExitMenu()
@@ -84,6 +92,11 @@ bool cMenu::LoadOption(cApp* App)
 
 	RenderAppMenu(App);
 	return true;
+}
+
+bool cMenu::IsOnMenu() const
+{
+	return eAppOption == Option::APP_MENU;
 }
 
 /// @brief Display menu on screen
@@ -131,6 +144,7 @@ bool cMenu::RenderAppExit(cApp* App) const
 /// @return Always return true by default
 bool cMenu::OpenMenu(cApp* App)
 {
+	ResetMenu();
 	RenderAppMenu(App);
 	eAppOption = cMenu::Option::APP_MENU;
 	return true;
