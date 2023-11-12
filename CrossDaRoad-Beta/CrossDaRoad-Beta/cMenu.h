@@ -45,24 +45,28 @@ public: // Constructor & Destructor
 	cMenu();
 	~cMenu();
 
-public: // Menu management
+public: // Initialization & Clean-up
 	bool InitMenu();
 	bool ExitMenu();
 
-	bool DisplayMenu(cApp* App);
-	bool DisplaySettings(cApp* App) const;
-	bool DisplayAboutUs(cApp* App) const;
-	bool DisplayAppExit(cApp* App) const;
-
+public: // Managements
 	bool CloseMenu(cApp* App);
 	bool LoadOption(cApp* App);
 	bool OpenMenu(cApp* App);
-	bool Update(cApp* App, const float fElapsedTime);
 
-	bool UpdateMenu(cApp* App);
+public: // Updaters
+	bool UpdateAppMenu(cApp* App);
 	bool UpdateSettings(cApp* App);
 	bool UpdateAboutUs(cApp* App);
 	bool UpdateAppExit(cApp* App);
+	bool Update(cApp* App, const float fElapsedTime);
+
+public: // Renderers
+	bool RenderAppMenu(cApp* App);
+	bool RenderSettings(cApp* App) const;
+	bool RenderAboutUs(cApp* App) const;
+	bool RenderAppExit(cApp* App) const;
+	bool Render(cApp* App);
 };
 
 #endif // C_MENU_H

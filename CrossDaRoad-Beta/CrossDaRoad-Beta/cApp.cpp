@@ -219,7 +219,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @brief 
 /// @param fElapsedTime 
 /// @return 
-bool cApp::OnPlayerUpdate(const float fElapsedTime)
+bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
 	if (IsOnPlatform()) { // Frog is moved by platforms
@@ -291,23 +291,8 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 /// @brief Rendering menu and game (if game is running)
 bool cApp::OnRenderEvent()
 {
-	switch (Menu.eAppOption)
-	{
-	case cMenu::Option::NEW_GAME:
-		OnGameRender();
-		break;
-	case cMenu::Option::CONTINUE:
-		OnGameRender();
-		break;
-	case cMenu::Option::SETTINGS:
-		Menu.DisplaySettings(this);
-		break;
-	case cMenu::Option::ABOUT_US:
-		Menu.DisplayAboutUs(this);
-		break;
-	case cMenu::Option::APP_EXIT:
-		Menu.DisplayAppExit(this);
-		break;
+	if (!Menu.Render(this)) {
+		return false;
 	}
 	return true;
 }

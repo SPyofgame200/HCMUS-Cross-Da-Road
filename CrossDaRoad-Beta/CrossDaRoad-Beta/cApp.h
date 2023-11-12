@@ -67,7 +67,7 @@ protected: // Collision Detection
 	bool IsOnPlatform() const;
 	
 protected: /// Game Updates
-	bool OnPlayerUpdate(float fElapsedTime);
+	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
 	bool OnGameRender();
 	bool OnCreateEvent() override;
