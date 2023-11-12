@@ -345,7 +345,7 @@ namespace app
 			break;
 		case SIZE_MINIMIZED:
 			std::cerr << "The window is minimized: Automatically pausing the game" << std::endl;
-			sge->PauseEngine();
+			sge->OnForcePauseEvent();
 			break;
 		case SIZE_RESTORED:
 			std::cerr << "The window is reopened (width=" << width << ", height=" << height << ")" << std::endl;
