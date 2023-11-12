@@ -368,6 +368,7 @@ bool cApp::OnGameLoad()
 bool cApp::OnPauseEvent()
 {
 	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
+		Menu.ResetMenu();
 		ResumeEngine();
 	}
 	else if (!Menu.IsOnMenu() && IsKeyReleased(app::Key::ESCAPE)) {
