@@ -365,7 +365,14 @@ bool cApp::OnGameLoad()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent()
 {
-	if (!Menu.UpdatePausing(this)) {
+	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
+		ResumeEngine();
+	}
+	else if (!Menu.IsOnMenu() && IsKeyReleased(app::Key::ESCAPE)) {
+		PauseEngine();
+	}
+	if (IsEnginePause()) { // continue the pause event
+		Menu.UpdatePausing(this);
 		Menu.RenderPausing(this);
 		return false;
 	}

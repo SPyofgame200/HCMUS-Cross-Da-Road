@@ -182,13 +182,13 @@ bool cMenu::OpenMenu(cApp* App)
 /// @return Always return true by default
 bool cMenu::UpdateAppMenu(cApp* App)
 {
-	if (App->GetKey(app::Key::UP) == Button::RELEASED) {
+	if (App->IsKeyReleased(app::Key::UP)) {
 		FixOption(--nAppOptionValue, nAppOptionLimit);
 	}
-	if (App->GetKey(app::Key::DOWN) == Button::RELEASED) {
+	if (App->IsKeyReleased(app::Key::DOWN)) {
 		FixOption(++nAppOptionValue, nAppOptionLimit);
 	}
-	if (App->GetKey(app::Key::ENTER) == Button::RELEASED) {
+	if (App->IsKeyReleased(app::Key::ENTER)) {
 		LoadAppOption(App);
 	}
 	return true;
@@ -278,27 +278,14 @@ bool cMenu::UpdateAppExit(cApp* App)
 
 bool cMenu::UpdatePausing(cApp *App)
 {
-	if (App->IsEnginePause() && App->IsKeyReleased(app::Key::ESCAPE)) {
-		App->ResumeEngine();
-		return true;
+	if (App->IsKeyReleased(app::Key::UP)) {
+		FixOption(--nPauseOptionValue, nPauseOptionLimit);
 	}
-	bool bToPause = (!IsOnMenu() && App->IsKeyReleased(app::Key::ESCAPE));
-	if (App->IsEnginePause() || bToPause) {
-		App->PauseEngine();
-		// Load option pause menu
-
-		if (App->IsKeyReleased(app::Key::UP)) {
-			FixOption(--nPauseOptionValue, nPauseOptionLimit);
-		}
-		else if (App->IsKeyReleased(app::Key::DOWN)) {
-			FixOption(++nPauseOptionValue, nPauseOptionLimit);
-		}
-		else if (App->IsKeyReleased(app::Key::ENTER)) {
-			LoadPauseOption(App);
-		}
+	else if (App->IsKeyReleased(app::Key::DOWN)) {
+		FixOption(++nPauseOptionValue, nPauseOptionLimit);
 	}
-	if (App->IsEnginePause()) { // continue the pause event
-		return false;
+	else if (App->IsKeyReleased(app::Key::ENTER)) {
+		LoadPauseOption(App);
 	}
 	return true; // succesfully handle the pause event
 }
