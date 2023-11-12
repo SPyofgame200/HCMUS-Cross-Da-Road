@@ -117,7 +117,7 @@ namespace app_sound
 
 	/// @brief Checks if the music is playing
 	/// @return True if the music is playing, false otherwise
-	bool IsMusicPlaying()
+	bool bMusicPlaying()
 	{
 		MCI_STATUS_PARMS statusParams;
 		statusParams.dwItem = MCI_STATUS_MODE;

@@ -22,7 +22,7 @@ class cMenu
 {
 public:
 	/// @brief  Enumeration for menu options 
-	enum Option
+	enum MenuOption
 	{
 		APP_MENU, ///< Menu window
 		NEW_GAME, ///< New game window
@@ -33,19 +33,22 @@ public:
 		GAMEPLAY  ///< Gameplay window
 	};
 
-private:
+private: /// Checker
 	bool bWantToExit;
-	int nPauseOption;
-	std::string choices[3] = { "exit", "resume", "save" };
 
-private:
-	Option eAppOption; ///< Current option
-	int nOption; 	 ///< Current option index
-	bool isMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
+private: /// Music
+	bool bMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
 
-private:
-	std::vector<const char*> sOptionLabels;  ///< Option labels for menu window
-	int nOptionLimit;                        ///< Maximum number of options
+private: /// Menu HUD
+	MenuOption eMenuOption;							 ///< Current option
+	std::vector<const char*> sMenuOptionLabels;  ///< MenuOption labels for menu window
+	int nMenuOptionLimit;						 ///< Maximum number of options
+	int nMenuOptionValue; 						 ///< Current option index
+
+private: /// Pause HUD
+	std::string sPauseOptionLabels[3] = { "exit", "resume", "save" };
+	int nPauseOptionValue;
+	int nPauseOptionLimit;
 
 public: // Constructor & Destructor
 	cMenu();
