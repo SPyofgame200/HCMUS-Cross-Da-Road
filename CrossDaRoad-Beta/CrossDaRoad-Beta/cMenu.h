@@ -29,7 +29,7 @@ public:
 		CONTINUE, ///< Continue game window
 		SETTINGS, ///< Settings window
 		ABOUT_US, ///< About us window
-		EXIT_APP, ///< Exit application window
+		APP_EXIT, ///< Exit application window
 		GAMEPLAY  ///< Gameplay window
 	};
 
@@ -51,16 +51,18 @@ public: // Menu management
 
 	bool DisplayMenu(cApp* App);
 	bool DisplaySettings(cApp* App) const;
+	bool DisplayAboutUs(cApp* App) const;
+	bool DisplayAppExit(cApp* App) const;
 
 	bool CloseMenu(cApp* App);
 	bool LoadOption(cApp* App);
 	bool OpenMenu(cApp* App);
-	bool MenuHandler(cApp* App, const float fElapsedTime);
+	bool Update(cApp* App, const float fElapsedTime);
 
 	bool UpdateMenu(cApp* App);
 	bool UpdateSettings(cApp* App);
 	bool UpdateAboutUs(cApp* App);
-	bool UpdateExitApp(cApp* App);
+	bool UpdateAppExit(cApp* App);
 };
 
 #endif // C_MENU_H

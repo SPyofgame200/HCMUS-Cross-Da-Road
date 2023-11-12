@@ -73,7 +73,7 @@ bool cMenu::LoadOption(cApp* App)
 			eAppOption = cMenu::Option::ABOUT_US;
 			break;
 		case 4:
-			eAppOption = cMenu::Option::EXIT_APP;
+			eAppOption = cMenu::Option::APP_EXIT;
 			break;
 		default:
 			break;
@@ -103,7 +103,26 @@ bool cMenu::DisplayMenu(cApp* App)
 	}
 	return true;
 }
+bool cMenu::DisplayAboutUs(cApp* App) const
+{
+	App->Clear(app::BLACK);
+	const std::string about_us_dynamic = "about_us_page" + App->Player.ShowFrameID(4);
+	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
+	App->DrawSprite(0, 0, object);
+	return true;
+}
 
+bool cMenu::DisplayAppExit(cApp* App) const
+{
+	App->Clear(app::BLACK);
+	if (App->bWantToExit) {
+		App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
+	}
+	else {
+		App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
+	}
+	return true;
+}
 /// @brief Open and display menu on screen
 /// @param App Pointer to application
 /// @return Always return true by default
@@ -188,7 +207,7 @@ bool cMenu::UpdateAboutUs(cApp* App)
 	return true;
 }
 
-bool cMenu::UpdateExitApp(cApp* App)
+bool cMenu::UpdateAppExit(cApp* App)
 {
 	if (App->IsKeyReleased(app::Key::RIGHT)) {
 		App->bWantToExit = false;
@@ -215,7 +234,7 @@ bool cMenu::UpdateExitApp(cApp* App)
 	return true;
 }
 
-bool cMenu::MenuHandler(cApp* App, const float fElapsedTime)
+bool cMenu::Update(cApp* App, const float fElapsedTime)
 {
 	switch (eAppOption)
 	{
@@ -227,12 +246,12 @@ bool cMenu::MenuHandler(cApp* App, const float fElapsedTime)
 		return UpdateSettings(App);
 	case cMenu::Option::ABOUT_US:
 		return UpdateAboutUs(App);
-	case cMenu::Option::EXIT_APP:
-		return UpdateExitApp(App);
+	case cMenu::Option::APP_EXIT:
+		return UpdateAppExit(App);
 	case cMenu::Option::APP_MENU:
 		return UpdateMenu(App);
 	default:
-		std::cerr << "cMenu::MenuHandler(*App, fElapsedTime=" << fElapsedTime << "):";
+		std::cerr << "cMenu::Update(*App, fElapsedTime=" << fElapsedTime << "):";
 		std::cerr << "Menu went wrong" << std::endl;
 		return false;
 	}

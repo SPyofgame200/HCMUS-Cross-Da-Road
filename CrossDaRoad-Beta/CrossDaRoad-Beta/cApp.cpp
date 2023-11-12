@@ -276,7 +276,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 ///	@parma fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-	if (!Menu.MenuHandler(this, fElapsedTime)) {
+	if (!Menu.Update(this, fElapsedTime)) {
 		return false;
 	}
 	return true;
@@ -291,27 +291,23 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 /// @brief Rendering menu and game (if game is running)
 bool cApp::OnRenderEvent()
 {
-	if (Menu.eAppOption == cMenu::Option::NEW_GAME || Menu.eAppOption == cMenu::Option::CONTINUE) {
+	switch (Menu.eAppOption)
+	{
+	case cMenu::Option::NEW_GAME:
 		OnGameRender();
-	}
-	else if (Menu.eAppOption == cMenu::Option::SETTINGS) {
+		break;
+	case cMenu::Option::CONTINUE:
+		OnGameRender();
+		break;
+	case cMenu::Option::SETTINGS:
 		Menu.DisplaySettings(this);
-	}
-	else if (Menu.eAppOption == cMenu::Option::ABOUT_US) {
-		Clear(app::BLACK);
-		const std::string about_us_dynamic = "about_us_page" + Player.ShowFrameID(4);
-		const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
-		DrawSprite(0, 0, object);
-
-	}
-	else if (Menu.eAppOption == cMenu::Option::EXIT_APP) {
-		Clear(app::BLACK);
-		if (bWantToExit) {
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
-		}
-		else {
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
-		}
+		break;
+	case cMenu::Option::ABOUT_US:
+		Menu.DisplayAboutUs(this);
+		break;
+	case cMenu::Option::APP_EXIT:
+		Menu.DisplayAppExit(this);
+		break;
 	}
 	return true;
 }
