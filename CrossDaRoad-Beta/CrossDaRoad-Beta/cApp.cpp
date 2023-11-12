@@ -90,7 +90,6 @@ SpriteData cApp::GetHitBox(float x, float y) const
 {
 	const cLane lane = MapLoader.GetLaneRound(y);
 	int nStartPos = static_cast<int>(x + fTimeSinceLastDrawn * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	const int nCellOffset = static_cast<int>(static_cast<float>(nCellSize) * fTimeSinceStart * lane.GetVelocity()) % nCellSize;
 	if (nStartPos < 0) {
 		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
 	}
