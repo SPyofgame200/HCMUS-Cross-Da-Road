@@ -327,7 +327,7 @@ bool cMenu::Update(const float fElapsedTime)
 		case AppOption::APP_MENU:
 			return UpdateAppMenu();
 		default:
-			std::cerr << "cMenu::Update(*app, fElapsedTime=" << fElapsedTime << "):";
+			std::cerr << "cMenu::Update(fElapsedTime=" << fElapsedTime << "):";
 			std::cerr << "Menu went wrong" << std::endl;
 			return false;
 	}
