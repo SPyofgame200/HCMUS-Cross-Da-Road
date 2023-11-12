@@ -33,6 +33,11 @@ public:
 		GAMEPLAY  ///< Gameplay window
 	};
 
+private:
+	bool bWantToExit;
+	int nPauseOption;
+	std::string choices[3] = { "exit", "resume", "save" };
+
 public:
 	Option eAppOption; ///< Current option
 	int nOption; 	 ///< Current option index

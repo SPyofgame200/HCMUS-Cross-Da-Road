@@ -30,7 +30,6 @@ private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
-	bool bWantToExit = true;
 
 private: // Event timers
 	float fTimeSinceStart;
@@ -38,10 +37,6 @@ private: // Event timers
 
 private: // Special variables
 	std::atomic<bool> bDeath;
-
-private:
-	int pauseOption = 1;
-	std::string choices[3] = { "exit", "resume", "save" };
 
 public: // Constructor & Destructor
 	cApp();
