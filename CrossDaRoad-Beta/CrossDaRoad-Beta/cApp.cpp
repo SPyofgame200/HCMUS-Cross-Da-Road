@@ -276,57 +276,31 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 ///	@parma fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-	if (Menu.eAppOption == cMenu::Option::NEW_GAME) {
+	switch (Menu.eAppOption) 
+	{
+	case cMenu::Option::NEW_GAME:
 		OnPlayerUpdate(fElapsedTime);
-	}
-	else if (Menu.eAppOption == cMenu::Option::SETTINGS) {
-		if (IsKeyReleased(app::Key::ENTER)) {
-			Menu.UpdateSettings(this);
-		}
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::ABOUT_US) {
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::EXIT_APP) {
-		if (IsKeyReleased(app::Key::RIGHT)) {
-			bWantToExit = false;
-		}
-		if (IsKeyReleased(app::Key::LEFT)) {
-			bWantToExit = true;
-		}
-		if (IsKeyReleased(app::Key::ENTER)) {
-			if (bWantToExit) {
-				OnDestroyEvent();
-				return false;
-			}
-			else {
-				Menu.OpenMenu(this);
-				Menu.eAppOption = cMenu::Option::APP_MENU;
-				return true;
-			}
-		}
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			bWantToExit = true;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::CONTINUE) {
+		break;
+	case cMenu::Option::CONTINUE:
 		OnPlayerUpdate(fElapsedTime);
-	}
-	else {
+		break;
+	case cMenu::Option::SETTINGS:
+		Menu.UpdateSettings(this);
+		break;
+	case cMenu::Option::ABOUT_US:
+		Menu.UpdateAboutUs(this);
+		break;
+	case cMenu::Option::EXIT_APP:
+		Menu.UpdateExitApp(this);
+		break;
+	case cMenu::Option::APP_MENU:
 		Menu.UpdateMenu(this);
+		break;
+	default:
+		std::cerr << "Menu went wrong" << std::endl;
+		return false;
 	}
+
 	return true;
 }
 /// @brief

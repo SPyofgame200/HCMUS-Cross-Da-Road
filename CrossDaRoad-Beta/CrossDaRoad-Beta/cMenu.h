@@ -58,6 +58,9 @@ public: // Menu management
 
 	bool DisplaySettings(cApp* App) const;
 	bool UpdateSettings(cApp* App);
+
+	bool UpdateAboutUs(cApp* App);
+	bool UpdateExitApp(cApp* App);
 };
 
 #endif // C_MENU_H

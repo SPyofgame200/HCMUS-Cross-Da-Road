@@ -161,15 +161,59 @@ bool cMenu::DisplaySettings(cApp* App) const
 /// @return Always return true by default
 bool cMenu::UpdateSettings(cApp* App)
 {
-	if (isMusicPlaying) {
-		app_sound::StopMusic();
-		isMusicPlaying = false;
+	if (App->IsKeyReleased(app::Key::ENTER)) {
+		if (isMusicPlaying) {
+			app_sound::StopMusic();
+			isMusicPlaying = false;
+		}
+		else {
+			app_sound::PlayMusic("ncs0");
+			isMusicPlaying = true;
+		}
 	}
-	else {
-		app_sound::PlayMusic("ncs0");
-		isMusicPlaying = true;
+	if (App->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu(App);
+		eAppOption = cMenu::Option::APP_MENU;
+		return true;
 	}
+	return true;
+}
 
+bool cMenu::UpdateAboutUs(cApp* App)
+{
+	if (App->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu(App);
+		eAppOption = cMenu::Option::APP_MENU;
+		return true;
+	}
+	return true;
+}
+
+bool cMenu::UpdateExitApp(cApp* App)
+{
+	if (App->IsKeyReleased(app::Key::RIGHT)) {
+		App->bWantToExit = false;
+	}
+	if (App->IsKeyReleased(app::Key::LEFT)) {
+		App->bWantToExit = true;
+	}
+	if (App->IsKeyReleased(app::Key::ENTER)) {
+		if (App->bWantToExit) {
+			App->OnDestroyEvent();
+			return false;
+		}
+		else {
+			OpenMenu(App);
+			eAppOption = cMenu::Option::APP_MENU;
+			return true;
+		}
+	}
+	if (App->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu(App);
+		eAppOption = cMenu::Option::APP_MENU;
+		App->bWantToExit = true;
+		return true;
+	}
 	return true;
 }
 
