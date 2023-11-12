@@ -140,11 +140,9 @@ bool cMenu::UpdateAppMenu(cApp* App)
 {
 	if (App->GetKey(app::Key::UP) == Button::RELEASED) {
 		--nOption;
-		RenderAppMenu(App);
 	}
 	if (App->GetKey(app::Key::DOWN) == Button::RELEASED) {
 		++nOption;
-		RenderAppMenu(App);
 	}
 	if (App->GetKey(app::Key::ENTER) == Button::RELEASED) {
 		LoadOption(App);
@@ -272,8 +270,14 @@ bool cMenu::Render(cApp* App)
 		return RenderAboutUs(App);
 	case cMenu::Option::APP_EXIT:
 		return RenderAppExit(App);
+	case cMenu::Option::APP_MENU:
+		return RenderAppMenu(App);
+	default:
+		std::cerr << "cMenu::Render(*App):";
+		std::cerr << "Menu went wrong" << std::endl;
+		return false;
 	}
-	return true;
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
