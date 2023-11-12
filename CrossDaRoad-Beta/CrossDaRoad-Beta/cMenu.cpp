@@ -70,26 +70,26 @@ bool cMenu::LoadAppOption(cApp* App)
 	int nOption = FixOption(nAppOptionValue, nAppOptionLimit);
 	switch (nOption)
 	{
-		case NEW_GAME:
-			eMenuOption = AppOption::NEW_GAME;
-			App->GameReset();
-			break;
-		case CONTINUE:
-			eMenuOption = AppOption::CONTINUE;
-			App->GameReset();
-			App->OnGameLoad();
-			break;
-		case SETTINGS:
-			eMenuOption = AppOption::SETTINGS;
-			break;
-		case ABOUT_US:
-			eMenuOption = AppOption::ABOUT_US;
-			break;
-		case APP_EXIT:
-			eMenuOption = AppOption::APP_EXIT;
-			break;
-		default:
-			break;
+	case NEW_GAME:
+		eMenuOption = AppOption::NEW_GAME;
+		App->GameReset();
+		break;
+	case CONTINUE:
+		eMenuOption = AppOption::CONTINUE;
+		App->GameReset();
+		App->OnGameLoad();
+		break;
+	case SETTINGS:
+		eMenuOption = AppOption::SETTINGS;
+		break;
+	case ABOUT_US:
+		eMenuOption = AppOption::ABOUT_US;
+		break;
+	case APP_EXIT:
+		eMenuOption = AppOption::APP_EXIT;
+		break;
+	default:
+		break;
 	}
 
 	return true;
@@ -99,15 +99,16 @@ bool cMenu::LoadPauseOption(cApp* App)
 {
 	switch (nPauseOptionValue) 
 	{
-	case 0:
-	{
-		OpenMenu(App);
-		eMenuOption = AppOption::APP_MENU;
+	case RESUMING:
 		App->ResumeEngine();
 		break;
-	}
-	case 1: App->ResumeEngine(); break;
-	case 2: App->OnGameSave(); break;
+	case APP_SAVE:
+		App->OnGameSave();
+		break;
+	case APP_BACK:
+		App->ResumeEngine();
+		OpenMenu(App);
+		break;
 	}
 	return true;
 }

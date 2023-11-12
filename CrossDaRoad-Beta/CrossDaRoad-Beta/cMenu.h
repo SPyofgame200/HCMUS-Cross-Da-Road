@@ -31,6 +31,12 @@ public:
 		APP_EXIT = 4, ///< Exit application window
 		APP_MENU = 5, ///< Menu window
 	};
+	enum PauseOption
+	{
+		RESUMING = 0,
+		APP_SAVE = 1,
+		APP_BACK = 2,
+	};
 
 private: /// Checker
 	bool bWantToExit;
@@ -45,7 +51,8 @@ private: /// Menu HUD
 	int nAppOptionValue; 						 ///< Current option index
 
 private: /// Pause HUD
-	std::string sPauseOptionLabels[3] = { "exit", "resume", "save" };
+	PauseOption ePauseOption;
+	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };
 	int nPauseOptionValue;
 	int nPauseOptionLimit;
 
