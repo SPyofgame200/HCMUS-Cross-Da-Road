@@ -205,7 +205,7 @@ bool cMenu::CloseMenu(cApp* App)
 /// @brief Display settings on screen (sound on/off)
 /// @param App Pointer to application
 /// @return Always return true by default
-bool cMenu::RenderSettings(cApp* App) const
+bool cMenu::RenderSetting(cApp* App) const
 {
 	App->Clear(app::BLACK);
 	App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
@@ -221,7 +221,7 @@ bool cMenu::RenderSettings(cApp* App) const
 /// @brief Check if music is playing or not, then turn on/off music (until now)
 /// @param App Pointer to application
 /// @return Always return true by default
-bool cMenu::UpdateSettings(cApp* App)
+bool cMenu::UpdateSetting(cApp* App)
 {
 	if (App->IsKeyReleased(app::Key::ENTER)) {
 		if (bMusicPlaying) {
@@ -314,7 +314,7 @@ bool cMenu::Update(cApp* App, const float fElapsedTime)
 	case AppOption::CONTINUE:
 		return App->OnGameUpdate(fElapsedTime);
 	case AppOption::SETTINGS:
-		return UpdateSettings(App);
+		return UpdateSetting(App);
 	case AppOption::ABOUT_US:
 		return UpdateAboutUs(App);
 	case AppOption::APP_EXIT:
@@ -338,7 +338,7 @@ bool cMenu::Render(cApp* App)
 	case AppOption::CONTINUE:
 		return App->OnGameRender();
 	case AppOption::SETTINGS:
-		return RenderSettings(App);
+		return RenderSetting(App);
 	case AppOption::ABOUT_US:
 		return RenderAboutUs(App);
 	case AppOption::APP_EXIT:

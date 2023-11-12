@@ -72,7 +72,7 @@ public: // Validators
 
 public: // Updaters
 	bool UpdateAppMenu(cApp* App);
-	bool UpdateSettings(cApp* App);
+	bool UpdateSetting(cApp* App);
 	bool UpdateAboutUs(cApp* App);
 	bool UpdateAppExit(cApp* App);
 	bool UpdatePausing(cApp* App);
@@ -80,7 +80,7 @@ public: // Updaters
 
 public: // Renderers
 	bool RenderAppMenu(cApp* App);
-	bool RenderSettings(cApp* App) const;
+	bool RenderSetting(cApp* App) const;
 	bool RenderAboutUs(cApp* App) const;
 	bool RenderAppExit(cApp* App) const;
 	bool RenderPausing(cApp* App);
