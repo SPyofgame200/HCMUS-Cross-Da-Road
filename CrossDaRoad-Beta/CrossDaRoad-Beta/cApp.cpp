@@ -533,7 +533,7 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 				DrawPartialSprite(nPosX, nPosY, object, sx, sy, nWidth, nHeight);
 				SetPixelMode(app::Pixel::NORMAL);
 			}
-			if (sprite.SuccessSummon(nStartPos + nLaneIndex, nRow, fTimeSinceLastDrawn, GetAppFPS())) {
+			if (!IsEnginePause() && sprite.SuccessSummon(nStartPos + nLaneIndex, nRow, fTimeSinceLastDrawn, GetAppFPS())) {
 				const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : Player.ShowFrameID(sprite.summon->nID));
 				if (sSummonName.size()) {
 					const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
