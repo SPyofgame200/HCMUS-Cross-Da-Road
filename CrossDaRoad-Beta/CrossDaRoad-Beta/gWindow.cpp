@@ -92,7 +92,7 @@ namespace app
 
 	bool Window::SetIcon(const std::string& sFilePath) const
 	{
-		HANDLE hLoader = LoadImage(
+		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
 			to_text(engine::ICON_FILE_PATH),    // File path of the favicon
 			IMAGE_ICON,                         // Specifies that an icon is being loaded
@@ -115,7 +115,7 @@ namespace app
 
 	bool Window::SetFavicon(const std::string& sFilePath) const
 	{
-		HANDLE hLoader = LoadImage(
+		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
 			to_text(engine::FAVICON_FILE_PATH), // File path of the favicon
 			IMAGE_ICON,                         // Specifies that an icon is being loaded
@@ -250,7 +250,7 @@ namespace app
 	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
 		if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
-			LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
+			const LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
 			sge->OnFixedUpdateEvent(engine::CREATE_WINDOW_EVENT);
 			return 0;
@@ -258,7 +258,7 @@ namespace app
 
 		// Handle Window Event
 		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_UPDATE_EVENT);
-		bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
+		const bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
 		sge->OnFixedUpdateEvent(engine::POST_WINDOW_UPDATE_EVENT);
 
 		// Calling handling function on default
@@ -335,8 +335,8 @@ namespace app
 
 	bool Window::HandleWindowResizeEvent(WPARAM wParam, LPARAM lParam)
 	{
-		int width = LOWORD(lParam);
-		int height = HIWORD(lParam);
+		const int width = LOWORD(lParam);
+		const int height = HIWORD(lParam);
 		switch (wParam)
 		{
 		case SIZE_MAXIMIZED:

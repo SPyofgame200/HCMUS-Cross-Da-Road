@@ -111,7 +111,7 @@ bool cMenu::LoadAppOption()
 {
 	CloseMenu();
 
-	int nOption = FixOption(nAppOptionValue, nAppOptionLimit);
+	const int nOption = FixOption(nAppOptionValue, nAppOptionLimit);
 	switch (nOption) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
@@ -144,7 +144,7 @@ bool cMenu::LoadAppOption()
 /// @return True if option is valid, false otherwise
 bool cMenu::LoadPauseOption()
 {
-	int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit);
+	const int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit);
 	switch (nOption) {
 		case RESUMING:
 			app->ResumeEngine();
@@ -167,7 +167,7 @@ bool cMenu::LoadPauseOption()
 /// @brief Close menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::CloseMenu()
+bool cMenu::CloseMenu() const
 {
 	app->Clear(app::BLACK);
 	return true;
@@ -393,7 +393,7 @@ bool cMenu::RenderAppExit() const
 
 /// @brief Pause game and display pause window on screen
 /// @return Always return true by default
-bool cMenu::RenderPausing()
+bool cMenu::RenderPausing() const
 {
 	app->OnGameRender();
 	app->SetPixelMode(app::Pixel::ALPHA);

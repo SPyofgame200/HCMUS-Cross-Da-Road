@@ -74,7 +74,7 @@ public: // Managements
 	bool OpenMenu();
 	bool LoadAppOption();
 	bool LoadPauseOption();
-	bool CloseMenu();
+	bool CloseMenu() const;
 
 public: // Checkers
 	bool IsOnMenu() const;
@@ -95,7 +95,7 @@ public: // Renderers
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
-	bool RenderPausing();
+	bool RenderPausing() const;
 	bool Render();
 };
 

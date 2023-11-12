@@ -521,7 +521,7 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 	if (nStartPos < 0) nStartPos += app_const::MAP_WIDTH_LIMIT;
 
 	fTimeSinceLastDrawn = fTimeSinceStart;
-	auto drawCharacter = [&](const int nLaneIndex, SpriteData& sprite, const int sx, const int sy, bool drawBackground) {
+	auto drawCharacter = [&](const int nLaneIndex, const SpriteData& sprite, const int sx, const int sy, bool drawBackground) {
 		const int32_t nPosX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
 		const int32_t nPosY = nRow * nCellSize;
 		constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
