@@ -83,7 +83,7 @@ bool cZone::CreateZone(const int nWidth, const int nHeight)
 /// @param graphic graphic to check 
 /// @param danger_pattern danger pattern to check 
 /// @return true if graphic is danger, false otherwise
-bool cZone::IsDanger(const char& graphic, const char* danger_pattern) const
+bool cZone::IsDanger(const char& graphic, const char* danger_pattern)
 {
 	return strchr(danger_pattern, graphic) != nullptr;
 }
@@ -91,7 +91,7 @@ bool cZone::IsDanger(const char& graphic, const char* danger_pattern) const
 /// @param graphic graphic to check
 /// @param danger_pattern danger pattern to check
 /// @return true if graphic is safe, false otherwise
-bool cZone::IsSafe(const char& graphic, const char* danger_pattern) const
+bool cZone::IsSafe(const char& graphic, const char* danger_pattern)
 {
 	return !IsDanger(graphic, danger_pattern);
 }
@@ -99,14 +99,14 @@ bool cZone::IsSafe(const char& graphic, const char* danger_pattern) const
 /// @param graphic graphic to check
 /// @param block_pattern block pattern to check
 /// @return true if graphic is blocked, false otherwise
-bool cZone::IsBlocked(const char& graphic, const char* block_pattern) const
+bool cZone::IsBlocked(const char& graphic, const char* block_pattern)
 {
 	return strchr(block_pattern, graphic) != nullptr;
 }
 /// @brief Check if graphic is unblocked
 /// @param graphic graphic to check
 /// @param block_pattern block pattern to check
-bool cZone::IsUnblocked(const char& graphic, const char* block_pattern) const
+bool cZone::IsUnblocked(const char& graphic, const char* block_pattern)
 {
 	return !IsBlocked(graphic, block_pattern);
 }

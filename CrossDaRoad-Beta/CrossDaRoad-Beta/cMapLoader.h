@@ -126,7 +126,7 @@ public: // Loaders
 	bool LoadMapName(const std::string& sFileName);
 	bool LoadMapLevel(const int& nMapLevel);
 	bool LoadMapLevel();
-	float ExtractTime(const std::string& timeStr);
+	static float ExtractTime(const std::string& timeStr);
 };
 
 #endif // C_MAP_LOADER_H

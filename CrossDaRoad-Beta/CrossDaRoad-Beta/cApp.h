@@ -69,7 +69,7 @@ protected: /// Game Updates
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;
 	bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime) override;
-	bool OnGameSave();
+	bool OnGameSave() const;
 	bool OnGameLoad();
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
@@ -78,9 +78,9 @@ protected: /// Game Updates
 	bool OnForceDestroyEvent() override;
 
 protected: // File Management
-	std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false) const;
-	std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "") const;
-	std::string GetFilePartLocation(bool isSave);
+	static std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false);
+	static std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "");
+	static std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
 	bool DrawLane(const cLane& lane, int nRow, int nCol);

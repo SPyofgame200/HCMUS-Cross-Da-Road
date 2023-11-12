@@ -299,7 +299,7 @@ bool cApp::OnRenderEvent()
 }
 /// @brief 
 /// @return 
-bool cApp::OnGameSave()
+bool cApp::OnGameSave() const
 {
 	const std::string sSaveFilePath = GetFilePartLocation(true);
 	if (!sSaveFilePath.empty()) {
@@ -408,7 +408,7 @@ bool cApp::OnForceDestroyEvent()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog) const
+std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog)
 {
 	char previousDir[MAX_PATH];
 
@@ -457,7 +457,7 @@ std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bo
 /// @param initialDir 
 /// @param sDefaultFilePath 
 /// @return 
-std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath) const
+std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath)
 {
 	const char* cTextFilePatterns = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
 	const std::string& sFilePath = SelectFilePath(cTextFilePatterns, initialDir);

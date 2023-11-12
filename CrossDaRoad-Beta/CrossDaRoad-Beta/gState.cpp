@@ -335,7 +335,7 @@ bool FrameState::Rewind(float fRewind)
 }
 /// @brief Wait microseconds for the frame timer to be stable before continuing
 /// @param nWait The time to wait
-void FrameState::WaitMicroseconds(const int32_t& nWait) const
+void FrameState::WaitMicroseconds(const int32_t& nWait)
 {
 	if (nWait <= 0) {
 		return;
@@ -351,7 +351,7 @@ void FrameState::WaitMicroseconds(const int32_t& nWait) const
 }
 /// @brief Wait microseconds for the frame timer to be stable before continuing
 /// @param nWait The time to wait
-void FrameState::WaitMicroseconds(const int32_t& nWait, const float& fPassedTime) const
+void FrameState::WaitMicroseconds(const int32_t& nWait, const float& fPassedTime)
 {
 	if (nWait <= static_cast<int32_t>(fPassedTime)) {
 		return;

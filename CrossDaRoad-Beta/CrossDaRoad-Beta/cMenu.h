@@ -80,7 +80,7 @@ public: // Checkers
 	bool IsOnMenu() const;
 
 public: // Validators
-	int FixOption(int& value, int limit);
+	static int FixOption(int& value, int limit);
 
 public: // Updaters
 	bool UpdateAppMenu();

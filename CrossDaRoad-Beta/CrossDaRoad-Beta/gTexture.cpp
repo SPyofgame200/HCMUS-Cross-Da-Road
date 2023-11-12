@@ -261,7 +261,7 @@ namespace app
 
 	/// @brief Set the viewport for rendering based on the specified viewport state
 	/// @param viewport Viewport state for the rendering context
-	void Texture::SetViewport(const ViewportState viewport) const
+	void Texture::SetViewport(const ViewportState viewport)
 	{
 		glViewport(viewport.GetX(), viewport.GetY(), viewport.GetWidth(), viewport.GetHeight());
 	}
@@ -269,12 +269,12 @@ namespace app
 	/// @param width Width of the texture
 	/// @param height Height of the texture
 	/// @param data Pixel data for the texture
-	void Texture::UpdateTexture(const int width, const int height, const Pixel* data) const
+	void Texture::UpdateTexture(const int width, const int height, const Pixel* data)
 	{
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
 	/// @brief Display the texture on the screen
-	void Texture::DrawTextureOnScreen() const
+	void Texture::DrawTextureOnScreen()
 	{
 		glBegin(GL_QUADS);
 

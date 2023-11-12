@@ -229,8 +229,8 @@ public: // Getters
 public: // Update & Wait methods
 	bool FrameUpdate(float fElapsedTime);
 	bool Rewind(float fRewind);
-	void WaitMicroseconds(const int32_t& nWait) const;
-	void WaitMicroseconds(const int32_t& nWait, const float& fPassedTime) const;
+	static void WaitMicroseconds(const int32_t& nWait);
+	static void WaitMicroseconds(const int32_t& nWait, const float& fPassedTime);
 };
 #endif // FRAME_STATE
 

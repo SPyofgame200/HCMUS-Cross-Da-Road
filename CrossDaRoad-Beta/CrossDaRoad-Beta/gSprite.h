@@ -43,7 +43,7 @@ namespace app
 	public: // Loaders & Savers
 		engine::Code ReadData(std::istream& is);
 		engine::Code LoadFromFile(const std::string& s_image_file, app::ResourcePack* pack = nullptr);
-		engine::Code GetSpriteStream(std::istream& stream, const std::string& sImageFile, app::ResourcePack* pack);
+		static engine::Code GetSpriteStream(std::istream& stream, const std::string& sImageFile, app::ResourcePack* pack);
 		engine::Code LoadSpriteFile(const std::string& sImageFile, app::ResourcePack* pack = nullptr);
 		engine::Code SaveSpriteFile(const std::string& sImageFile);
 

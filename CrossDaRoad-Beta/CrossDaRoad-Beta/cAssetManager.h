@@ -25,7 +25,7 @@ public: // Constructor & Destructor
 	~cAssetManager();
 
 private: // Debugging purposes
-	bool ReportLoadingResult(bool bSuccess, const std::string& sSpriteCategory);
+	static bool ReportLoadingResult(bool bSuccess, const std::string& sSpriteCategory);
 
 public: // Avoid conflicts
 	cAssetManager(cAssetManager const&) = delete;
