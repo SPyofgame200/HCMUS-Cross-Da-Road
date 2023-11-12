@@ -387,12 +387,13 @@ bool cMenu::RenderAppExit() const
 /// @return Always return true by default
 bool cMenu::RenderPausing() const
 {
-	app->OnGameRender();
+	/// Overlay
 	app->SetPixelMode(app::Pixel::ALPHA);
 	app->SetBlendFactor(170.0f / 255.0f);
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
 	app->SetBlendFactor(255.0f / 255.0f);
 	app->SetPixelMode(app::Pixel::NORMAL);
+	/// Pause Selection
 	const std::string sSelectedLabel = sPauseOptionLabels[nPauseOptionValue];
 	const std::string sOptionName = "pause_" + sSelectedLabel;
 	app->SetPixelMode(app::Pixel::MASK);
