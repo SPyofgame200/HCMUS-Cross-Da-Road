@@ -38,6 +38,9 @@ public:
 		APP_BACK = 2,
 	};
 
+private: /// Target
+	cApp* app;
+
 private: /// Checker
 	bool bWantToExit;
 
@@ -58,18 +61,20 @@ private: /// Pause HUD
 
 public: // Constructor & Destructor
 	cMenu();
+	cMenu(cApp* app);
 	~cMenu();
 
 public: // Initialization & Clean-up
+	bool SetTarget(cApp* app);
 	bool InitMenu();
 	bool ResetMenu();
 	bool ExitMenu();
 
 public: // Managements
-	bool CloseMenu(cApp* App);
-	bool LoadAppOption(cApp* App);
-	bool LoadPauseOption(cApp* App);
-	bool OpenMenu(cApp* App);
+	bool CloseMenu();
+	bool LoadAppOption();
+	bool LoadPauseOption();
+	bool OpenMenu();
 
 public: // Checkers
 	bool IsOnMenu() const;
@@ -78,20 +83,20 @@ public: // Validators
 	int FixOption(int& value, int limit);
 
 public: // Updaters
-	bool UpdateAppMenu(cApp* App);
-	bool UpdateSetting(cApp* App);
-	bool UpdateAboutUs(cApp* App);
-	bool UpdateAppExit(cApp* App);
-	bool UpdatePausing(cApp* App);
-	bool Update(cApp* App, const float fElapsedTime);
+	bool UpdateAppMenu();
+	bool UpdateSetting();
+	bool UpdateAboutUs();
+	bool UpdateAppExit();
+	bool UpdatePausing();
+	bool Update(const float fElapsedTime);
 
 public: // Renderers
-	bool RenderAppMenu(cApp* App);
-	bool RenderSetting(cApp* App) const;
-	bool RenderAboutUs(cApp* App) const;
-	bool RenderAppExit(cApp* App) const;
-	bool RenderPausing(cApp* App);
-	bool Render(cApp* App);
+	bool RenderAppMenu();
+	bool RenderSetting() const;
+	bool RenderAboutUs() const;
+	bool RenderAppExit() const;
+	bool RenderPausing();
+	bool Render();
 };
 
 #endif // C_MENU_H

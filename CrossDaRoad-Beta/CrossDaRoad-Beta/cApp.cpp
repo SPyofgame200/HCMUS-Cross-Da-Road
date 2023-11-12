@@ -43,6 +43,7 @@ bool cApp::GameInit()
 	MapLoader.Init();
 	return true;
 }
+
 /// @brief Exit game, clear data
 bool cApp::GameExit()
 {
@@ -255,9 +256,10 @@ bool cApp::OnGameRender()
 // @brief Set frame delay, load all sprites, open menu
 bool cApp::OnCreateEvent()
 {
+	Menu.SetTarget(this);
 	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
 	cAssetManager::GetInstance().LoadAllSprites();
-	Menu.OpenMenu(this);
+	Menu.OpenMenu();
 	return true;
 }
 /// @brief
@@ -275,7 +277,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 ///	@parma fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-	if (!Menu.Update(this, fElapsedTime)) {
+	if (!Menu.Update(fElapsedTime)) {
 		return false;
 	}
 	return true;
@@ -290,7 +292,7 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 /// @brief Rendering menu and game (if game is running)
 bool cApp::OnRenderEvent()
 {
-	if (!Menu.Render(this)) {
+	if (!Menu.Render()) {
 		return false;
 	}
 	return true;
@@ -372,8 +374,8 @@ bool cApp::OnPauseEvent()
 		PauseEngine();
 	}
 	if (IsEnginePause()) { // continue the pause event
-		Menu.UpdatePausing(this);
-		Menu.RenderPausing(this);
+		Menu.UpdatePausing();
+		Menu.RenderPausing();
 		return false;
 	}
 	return true; // succesfully handle the pause event

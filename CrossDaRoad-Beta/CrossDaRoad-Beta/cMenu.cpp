@@ -20,6 +20,12 @@ cMenu::cMenu()
 	InitMenu();
 }
 
+cMenu::cMenu(cApp* app)
+{
+	SetTarget(app);
+	InitMenu();
+}
+
 /// @brief Destructor
 cMenu::~cMenu()
 {
@@ -30,6 +36,14 @@ cMenu::~cMenu()
 ///////////////////////////// MENU MANAGEMENT //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool cMenu::SetTarget(cApp* app)
+{
+	if (app == nullptr) {
+		return false;
+	}
+	this->app = app;
+	return true;
+}
 
 /// @brief Initialize properties of option for menu management
 /// @return Always return true by default
@@ -61,23 +75,23 @@ bool cMenu::ExitMenu()
 	return true;
 }
 /// @brief Load option and draw it on screen
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::LoadAppOption(cApp* App)
+bool cMenu::LoadAppOption()
 {
-	CloseMenu(App);
+	CloseMenu();
 
 	int nOption = FixOption(nAppOptionValue, nAppOptionLimit);
 	switch (nOption)
 	{
 	case NEW_GAME:
 		eMenuOption = AppOption::NEW_GAME;
-		App->GameReset();
+		app->GameReset();
 		break;
 	case CONTINUE:
 		eMenuOption = AppOption::CONTINUE;
-		App->GameReset();
-		App->OnGameLoad();
+		app->GameReset();
+		app->OnGameLoad();
 		break;
 	case SETTINGS:
 		eMenuOption = AppOption::SETTINGS;
@@ -97,20 +111,20 @@ bool cMenu::LoadAppOption(cApp* App)
 	return true;
 }
 
-bool cMenu::LoadPauseOption(cApp* App)
+bool cMenu::LoadPauseOption()
 {
 	int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit);
 	switch (nOption)
 	{
 	case RESUMING:
-		App->ResumeEngine();
+		app->ResumeEngine();
 		break;
 	case APP_SAVE:
-		App->OnGameSave();
+		app->OnGameSave();
 		break;
 	case APP_BACK:
-		App->ResumeEngine();
-		OpenMenu(App);
+		app->ResumeEngine();
+		OpenMenu();
 		break;
 	default:
 		std::cerr << "cMenu::LoadPauseOption(): ";
@@ -135,103 +149,103 @@ int cMenu::FixOption(int& value, int limit)
 }
 
 /// @brief Display menu on screen
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::RenderAppMenu(cApp* App)
+bool cMenu::RenderAppMenu()
 {
 	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
 
-	App->Clear(app::BLACK);
-	App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
+	app->Clear(app::BLACK);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
 	for (int id = 0; id < nAppOptionLimit; id++) {
 		const std::string optionName = std::string(sAppOptionLabels[id]) + (id == nAppOptionValue ? "_chosen" : "");
 		const app::Sprite* optionSprite = cAssetManager::GetInstance().GetSprite(optionName);
-		App->SetPixelMode(app::Pixel::MASK);
-		App->DrawSprite(146, 65 + id * 10, optionSprite);
+		app->SetPixelMode(app::Pixel::MASK);
+		app->DrawSprite(146, 65 + id * 10, optionSprite);
 		if (id == nAppOptionValue) {
-			App->SetPixelMode(app::Pixel::NORMAL);
+			app->SetPixelMode(app::Pixel::NORMAL);
 		}
 	}
 	return true;
 }
-bool cMenu::RenderAboutUs(cApp* App) const
+bool cMenu::RenderAboutUs() const
 {
-	App->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + App->Player.ShowFrameID(4);
+	app->Clear(app::BLACK);
+	const std::string about_us_dynamic = "about_us_page" + app->Player.ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
-	App->DrawSprite(0, 0, object);
+	app->DrawSprite(0, 0, object);
 	return true;
 }
 
-bool cMenu::RenderAppExit(cApp* App) const
+bool cMenu::RenderAppExit() const
 {
-	App->Clear(app::BLACK);
+	app->Clear(app::BLACK);
 	if (bWantToExit) {
-		App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
+		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
 	}
 	else {
-		App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
+		app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
 	}
 	return true;
 }
 /// @brief Open and display menu on screen
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::OpenMenu(cApp* App)
+bool cMenu::OpenMenu()
 {
 	ResetMenu();
-	RenderAppMenu(App);
+	RenderAppMenu();
 	eMenuOption = AppOption::APP_MENU;
 	return true;
 }
 
 /// @brief Update menu on screen when user press key
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::UpdateAppMenu(cApp* App)
+bool cMenu::UpdateAppMenu()
 {
-	if (App->IsKeyReleased(app::Key::UP)) {
+	if (app->IsKeyReleased(app::Key::UP)) {
 		FixOption(--nAppOptionValue, nAppOptionLimit);
 	}
-	if (App->IsKeyReleased(app::Key::DOWN)) {
+	if (app->IsKeyReleased(app::Key::DOWN)) {
 		FixOption(++nAppOptionValue, nAppOptionLimit);
 	}
-	if (App->IsKeyReleased(app::Key::ENTER)) {
-		LoadAppOption(App);
+	if (app->IsKeyReleased(app::Key::ENTER)) {
+		LoadAppOption();
 	}
 	return true;
 }
 
 /// @brief Close menu on screen
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::CloseMenu(cApp* App)
+bool cMenu::CloseMenu()
 {
-	App->Clear(app::BLACK);
+	app->Clear(app::BLACK);
 	return true;
 }
 /// @brief Display settings on screen (sound on/off)
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::RenderSetting(cApp* App) const
+bool cMenu::RenderSetting() const
 {
-	App->Clear(app::BLACK);
-	App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
+	app->Clear(app::BLACK);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
 	if (bMusicPlaying) {
-		App->DrawSprite(146, 65, cAssetManager::GetInstance().GetSprite("sound_on"));
+		app->DrawSprite(146, 65, cAssetManager::GetInstance().GetSprite("sound_on"));
 	}
 	else {
-		App->DrawSprite(146, 65, cAssetManager::GetInstance().GetSprite("sound_off"));
+		app->DrawSprite(146, 65, cAssetManager::GetInstance().GetSprite("sound_off"));
 	}
 	return true;
 }
 
 /// @brief Check if music is playing or not, then turn on/off music (until now)
-/// @param App Pointer to application
+/// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::UpdateSetting(cApp* App)
+bool cMenu::UpdateSetting()
 {
-	if (App->IsKeyReleased(app::Key::ENTER)) {
+	if (app->IsKeyReleased(app::Key::ENTER)) {
 		if (bMusicPlaying) {
 			app_sound::StopMusic();
 			bMusicPlaying = false;
@@ -241,120 +255,120 @@ bool cMenu::UpdateSetting(cApp* App)
 			bMusicPlaying = true;
 		}
 	}
-	if (App->IsKeyReleased(app::Key::ESCAPE)) {
-		OpenMenu(App);
+	if (app->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu();
 		return true;
 	}
 	return true;
 }
 
-bool cMenu::UpdateAboutUs(cApp* App)
+bool cMenu::UpdateAboutUs()
 {
-	if (App->IsKeyReleased(app::Key::ESCAPE)) {
-		OpenMenu(App);
+	if (app->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu();
 		return true;
 	}
 	return true;
 }
 
-bool cMenu::UpdateAppExit(cApp* App)
+bool cMenu::UpdateAppExit()
 {
-	if (App->IsKeyReleased(app::Key::RIGHT)) {
+	if (app->IsKeyReleased(app::Key::RIGHT)) {
 		bWantToExit = false;
 	}
-	if (App->IsKeyReleased(app::Key::LEFT)) {
+	if (app->IsKeyReleased(app::Key::LEFT)) {
 		bWantToExit = true;
 	}
-	if (App->IsKeyReleased(app::Key::ENTER)) {
+	if (app->IsKeyReleased(app::Key::ENTER)) {
 		if (bWantToExit) {
-			App->OnDestroyEvent();
+			app->OnDestroyEvent();
 			return false;
 		}
 		else {
-			OpenMenu(App);
+			OpenMenu();
 			eMenuOption = AppOption::APP_MENU;
 			return true;
 		}
 	}
-	if (App->IsKeyReleased(app::Key::ESCAPE)) {
-		OpenMenu(App);
+	if (app->IsKeyReleased(app::Key::ESCAPE)) {
+		OpenMenu();
 		bWantToExit = true;
 		return true;
 	}
 	return true;
 }
 
-bool cMenu::UpdatePausing(cApp *App)
+bool cMenu::UpdatePausing()
 {
-	if (App->IsKeyReleased(app::Key::UP)) {
+	if (app->IsKeyReleased(app::Key::UP)) {
 		FixOption(--nPauseOptionValue, nPauseOptionLimit);
 	}
-	else if (App->IsKeyReleased(app::Key::DOWN)) {
+	else if (app->IsKeyReleased(app::Key::DOWN)) {
 		FixOption(++nPauseOptionValue, nPauseOptionLimit);
 	}
-	else if (App->IsKeyReleased(app::Key::ENTER)) {
-		LoadPauseOption(App);
+	else if (app->IsKeyReleased(app::Key::ENTER)) {
+		LoadPauseOption();
 	}
 	return true; // succesfully handle the pause event
 }
 
-bool cMenu::RenderPausing(cApp* App)
+bool cMenu::RenderPausing()
 {
-	App->OnGameRender();
-	App->SetPixelMode(app::Pixel::ALPHA);
-	App->SetBlendFactor(170.0f / 255.0f);
-	App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
-	App->SetBlendFactor(255.0f / 255.0f);
-	App->SetPixelMode(app::Pixel::NORMAL);
+	app->OnGameRender();
+	app->SetPixelMode(app::Pixel::ALPHA);
+	app->SetBlendFactor(170.0f / 255.0f);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	app->SetBlendFactor(255.0f / 255.0f);
+	app->SetPixelMode(app::Pixel::NORMAL);
 	const std::string sPauseOptionName = "pause_" + sPauseOptionLabels[nPauseOptionValue];
-	App->SetPixelMode(app::Pixel::MASK);
-	App->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sPauseOptionName));
-	App->SetPixelMode(app::Pixel::NORMAL);
+	app->SetPixelMode(app::Pixel::MASK);
+	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sPauseOptionName));
+	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
 
-bool cMenu::Update(cApp* App, const float fElapsedTime)
+bool cMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption)
 	{
 	case AppOption::NEW_GAME:
-		return App->OnGameUpdate(fElapsedTime);
+		return app->OnGameUpdate(fElapsedTime);
 	case AppOption::CONTINUE:
-		return App->OnGameUpdate(fElapsedTime);
+		return app->OnGameUpdate(fElapsedTime);
 	case AppOption::SETTINGS:
-		return UpdateSetting(App);
+		return UpdateSetting();
 	case AppOption::ABOUT_US:
-		return UpdateAboutUs(App);
+		return UpdateAboutUs();
 	case AppOption::APP_EXIT:
-		return UpdateAppExit(App);
+		return UpdateAppExit();
 	case AppOption::APP_MENU:
-		return UpdateAppMenu(App);
+		return UpdateAppMenu();
 	default:
-		std::cerr << "cMenu::Update(*App, fElapsedTime=" << fElapsedTime << "):";
+		std::cerr << "cMenu::Update(*app, fElapsedTime=" << fElapsedTime << "):";
 		std::cerr << "Menu went wrong" << std::endl;
 		return false;
 	}
 	return false;
 }
 
-bool cMenu::Render(cApp* App)
+bool cMenu::Render()
 {
 	switch (eMenuOption)
 	{
 	case AppOption::NEW_GAME:
-		return App->OnGameRender();
+		return app->OnGameRender();
 	case AppOption::CONTINUE:
-		return App->OnGameRender();
+		return app->OnGameRender();
 	case AppOption::SETTINGS:
-		return RenderSetting(App);
+		return RenderSetting();
 	case AppOption::ABOUT_US:
-		return RenderAboutUs(App);
+		return RenderAboutUs();
 	case AppOption::APP_EXIT:
-		return RenderAppExit(App);
+		return RenderAppExit();
 	case AppOption::APP_MENU:
-		return RenderAppMenu(App);
+		return RenderAppMenu();
 	default:
-		std::cerr << "cMenu::Render(*App):";
+		std::cerr << "cMenu::Render(*app):";
 		std::cerr << "Menu went wrong" << std::endl;
 		return false;
 	}
