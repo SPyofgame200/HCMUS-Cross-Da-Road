@@ -111,8 +111,7 @@ bool cMenu::LoadAppOption()
 {
 	CloseMenu();
 
-	const int nOption = FixOption(nAppOptionValue, nAppOptionLimit);
-	switch (nOption) {
+	switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
 			app->GameReset();
@@ -144,8 +143,7 @@ bool cMenu::LoadAppOption()
 /// @return True if option is valid, false otherwise
 bool cMenu::LoadPauseOption()
 {
-	const int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit);
-	switch (nOption) {
+	switch (const int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit)) {
 		case RESUMING:
 			app->ResumeEngine();
 			break;
