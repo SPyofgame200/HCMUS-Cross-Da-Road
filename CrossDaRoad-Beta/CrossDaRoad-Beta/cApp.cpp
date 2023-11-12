@@ -366,38 +366,8 @@ bool cApp::OnGameLoad()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent()
 {
-	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
-		ResumeEngine();
-		return true;
-	}
-	if (IsEnginePause() || (Menu.eAppOption != cMenu::Option::APP_MENU && IsKeyReleased(app::Key::ESCAPE))) {
-		DisplayPauseMenu();
-		PauseEngine();
-		// Load option pause menu
-		if (IsKeyReleased(app::Key::UP)) {
-			pauseOption--;
-			DisplayPauseMenu();
-		}
-		else if (IsKeyReleased(app::Key::DOWN)) {
-			pauseOption++;
-			DisplayPauseMenu();
-		}
-		else if (IsKeyReleased(app::Key::ENTER)) {
-			pauseOption = (pauseOption % 3 + 3) % 3;
-			switch (pauseOption) {
-				case 0:
-				{
-					Menu.OpenMenu(this);
-					Menu.eAppOption = cMenu::Option::APP_MENU;
-					ResumeEngine();
-					break;
-				}
-				case 1: ResumeEngine(); break;
-				case 2: OnGameSave(); break;
-			}
-		}
-	}
-	if (IsEnginePause()) { // continue the pause event
+	if (!Menu.UpdatePausing(this)) {
+		Menu.RenderPausing(this);
 		return false;
 	}
 	return true; // succesfully handle the pause event
@@ -633,23 +603,6 @@ bool cApp::DrawStatusBar()
 	DrawPartialSprite(272, 0, object, 0, 0, 80, 160);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(MapLoader.ShowMapLevel(), 321, 80);
-	SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
-
-/// @brief 
-/// @return 
-bool cApp::DisplayPauseMenu()
-{
-	OnGameRender();
-	SetPixelMode(app::Pixel::ALPHA);
-	SetBlendFactor(170.0f / 255.0f);
-	DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
-	SetBlendFactor(255.0f / 255.0f);
-	SetPixelMode(app::Pixel::NORMAL);
-	const std::string pauseOptionName = "pause_" + choices[(pauseOption % 3 + 3) % 3];
-	SetPixelMode(app::Pixel::MASK);
-	DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(pauseOptionName));
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }

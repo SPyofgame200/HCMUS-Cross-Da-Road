@@ -59,6 +59,7 @@ public: // Updaters
 	bool UpdateSettings(cApp* App);
 	bool UpdateAboutUs(cApp* App);
 	bool UpdateAppExit(cApp* App);
+	bool UpdatePausing(cApp* App);
 	bool Update(cApp* App, const float fElapsedTime);
 
 public: // Renderers
@@ -66,6 +67,7 @@ public: // Renderers
 	bool RenderSettings(cApp* App) const;
 	bool RenderAboutUs(cApp* App) const;
 	bool RenderAppExit(cApp* App) const;
+	bool RenderPausing(cApp* App);
 	bool Render(cApp* App);
 };
 

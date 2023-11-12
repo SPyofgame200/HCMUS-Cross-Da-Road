@@ -232,6 +232,58 @@ bool cMenu::UpdateAppExit(cApp* App)
 	return true;
 }
 
+bool cMenu::UpdatePausing(cApp *App)
+{
+	if (App->IsEnginePause() && App->IsKeyReleased(app::Key::ESCAPE)) {
+		App->ResumeEngine();
+		return true;
+	}
+	bool bToPause = (eAppOption != cMenu::Option::APP_MENU && App->IsKeyReleased(app::Key::ESCAPE));
+	if (App->IsEnginePause() || bToPause) {
+		App->PauseEngine();
+		// Load option pause menu
+		if (App->IsKeyReleased(app::Key::UP)) {
+			App->pauseOption--;
+		}
+		else if (App->IsKeyReleased(app::Key::DOWN)) {
+			App->pauseOption++;
+		}
+		else if (App->IsKeyReleased(app::Key::ENTER)) {
+			App->pauseOption = (App->pauseOption % 3 + 3) % 3;
+			switch (App->pauseOption) {
+			case 0:
+			{
+				OpenMenu(App);
+				eAppOption = cMenu::Option::APP_MENU;
+				App->ResumeEngine();
+				break;
+			}
+			case 1: App->ResumeEngine(); break;
+			case 2: App->OnGameSave(); break;
+			}
+		}
+	}
+	if (App->IsEnginePause()) { // continue the pause event
+		return false;
+	}
+	return true; // succesfully handle the pause event
+}
+
+bool cMenu::RenderPausing(cApp* App)
+{
+	App->OnGameRender();
+	App->SetPixelMode(app::Pixel::ALPHA);
+	App->SetBlendFactor(170.0f / 255.0f);
+	App->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	App->SetBlendFactor(255.0f / 255.0f);
+	App->SetPixelMode(app::Pixel::NORMAL);
+	const std::string pauseOptionName = "pause_" + App->choices[(App->pauseOption % 3 + 3) % 3];
+	App->SetPixelMode(app::Pixel::MASK);
+	App->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(pauseOptionName));
+	App->SetPixelMode(app::Pixel::NORMAL);
+	return true;
+}
+
 bool cMenu::Update(cApp* App, const float fElapsedTime)
 {
 	switch (eAppOption)

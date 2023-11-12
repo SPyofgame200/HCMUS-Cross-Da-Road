@@ -88,7 +88,6 @@ protected: // File Management
 	std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
-	bool DisplayPauseMenu();
 	bool DrawLane(const cLane& lane, int nRow, int nCol);
 	bool DrawAllLanes();
 	bool DrawBigText(const std::string& sText, int x, int y);
