@@ -88,7 +88,7 @@ public: // Updaters
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
 	bool UpdatePausing();
-	bool Update(const float fElapsedTime);
+	bool Update(float fElapsedTime);
 
 public: // Renderers
 	bool RenderAppMenu();
