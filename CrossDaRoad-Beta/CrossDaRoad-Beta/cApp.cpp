@@ -374,6 +374,7 @@ bool cApp::OnPauseEvent()
 	}
 	if (IsEnginePause()) { // continue the pause event
 		Menu.UpdatePausing();
+		OnGameRender();
 		Menu.RenderPausing();
 		return false;
 	}
