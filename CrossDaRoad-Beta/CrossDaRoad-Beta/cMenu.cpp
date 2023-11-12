@@ -60,11 +60,6 @@ bool cMenu::InitMenu()
 	sAppOptionLabels = { APP_OPTIONS, APP_OPTIONS + nAppOptionLimit };
 	nPauseOptionLimit = static_cast<int>(std::size(PAUSE_OPTIONS));
 	//sPauseOptionLabels = { PAUSE_OPTIONS, PAUSE_OPTIONS + nPauseOptionLimit };
-
-	for (int i = 0; i < 3; ++i) {
-		std::cerr << "i=" << i << " -> \"" << sPauseOptionLabels[i] << "\"" << std::endl;
-	}
-
 	ResetMenu();
 	return true;
 }
