@@ -51,8 +51,15 @@ bool cMenu::InitMenu()
 {
 	using namespace app_const;
 	eMenuOption = AppOption::APP_MENU;
-	nAppOptionLimit = static_cast<int>(std::size(MENU_OPTIONS));
-	sAppOptionLabels = { MENU_OPTIONS, MENU_OPTIONS + nAppOptionLimit };
+	nAppOptionLimit = static_cast<int>(std::size(APP_OPTIONS));
+	sAppOptionLabels = { APP_OPTIONS, APP_OPTIONS + nAppOptionLimit };
+	nPauseOptionLimit = static_cast<int>(std::size(PAUSE_OPTIONS));
+	//sPauseOptionLabels = { PAUSE_OPTIONS, PAUSE_OPTIONS + nPauseOptionLimit };
+
+	for (int i = 0; i < 3; ++i) {
+		std::cerr << "i=" << i << " -> \"" << sPauseOptionLabels[i] << "\"" << std::endl;
+	}
+
 	ResetMenu();
 	return true;
 }
@@ -72,6 +79,7 @@ bool cMenu::ResetMenu()
 bool cMenu::ExitMenu()
 {
 	sAppOptionLabels.clear();
+	//sPauseOptionLabels.clear();
 	return true;
 }
 /// @brief Load option and draw it on screen
@@ -320,9 +328,10 @@ bool cMenu::RenderPausing()
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
 	app->SetBlendFactor(255.0f / 255.0f);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	const std::string sPauseOptionName = "pause_" + sPauseOptionLabels[nPauseOptionValue];
+	const std::string sSelectedLabel = sPauseOptionLabels[nPauseOptionValue];
+	const std::string sOptionName = "pause_" + sSelectedLabel;
 	app->SetPixelMode(app::Pixel::MASK);
-	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sPauseOptionName));
+	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sOptionName));
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }

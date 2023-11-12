@@ -55,7 +55,7 @@ private: /// Menu HUD
 
 private: /// Pause HUD
 	PauseOption ePauseOption;
-	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };
+	std::string sPauseOptionLabels[3] = {"resume", "save", "exit"};
 	int nPauseOptionValue;
 	int nPauseOptionLimit;
 
