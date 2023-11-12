@@ -71,10 +71,10 @@ public: // Initialization & Clean-up
 	bool ExitMenu();
 
 public: // Managements
-	bool CloseMenu();
+	bool OpenMenu();
 	bool LoadAppOption();
 	bool LoadPauseOption();
-	bool OpenMenu();
+	bool CloseMenu();
 
 public: // Checkers
 	bool IsOnMenu() const;
