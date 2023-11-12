@@ -49,16 +49,16 @@ public: // Menu management
 	bool InitMenu();
 	bool ExitMenu();
 
-	bool LoadOption(cApp* App);
-
 	bool DisplayMenu(cApp* App);
-	bool OpenMenu(cApp* App);
-	bool UpdateMenu(cApp* App);
-	bool CloseMenu(cApp* App);
-
 	bool DisplaySettings(cApp* App) const;
-	bool UpdateSettings(cApp* App);
 
+	bool CloseMenu(cApp* App);
+	bool LoadOption(cApp* App);
+	bool OpenMenu(cApp* App);
+	bool MenuHandler(cApp* App, const float fElapsedTime);
+
+	bool UpdateMenu(cApp* App);
+	bool UpdateSettings(cApp* App);
 	bool UpdateAboutUs(cApp* App);
 	bool UpdateExitApp(cApp* App);
 };

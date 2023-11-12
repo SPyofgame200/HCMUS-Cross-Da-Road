@@ -79,7 +79,7 @@ bool cMenu::LoadOption(cApp* App)
 			break;
 	}
 
-	OpenMenu(App);
+	DisplayMenu(App);
 	return true;
 }
 
@@ -110,6 +110,7 @@ bool cMenu::DisplayMenu(cApp* App)
 bool cMenu::OpenMenu(cApp* App)
 {
 	DisplayMenu(App);
+	eAppOption = cMenu::Option::APP_MENU;
 	return true;
 }
 
@@ -173,7 +174,6 @@ bool cMenu::UpdateSettings(cApp* App)
 	}
 	if (App->IsKeyReleased(app::Key::ESCAPE)) {
 		OpenMenu(App);
-		eAppOption = cMenu::Option::APP_MENU;
 		return true;
 	}
 	return true;
@@ -183,7 +183,6 @@ bool cMenu::UpdateAboutUs(cApp* App)
 {
 	if (App->IsKeyReleased(app::Key::ESCAPE)) {
 		OpenMenu(App);
-		eAppOption = cMenu::Option::APP_MENU;
 		return true;
 	}
 	return true;
@@ -210,11 +209,33 @@ bool cMenu::UpdateExitApp(cApp* App)
 	}
 	if (App->IsKeyReleased(app::Key::ESCAPE)) {
 		OpenMenu(App);
-		eAppOption = cMenu::Option::APP_MENU;
 		App->bWantToExit = true;
 		return true;
 	}
 	return true;
+}
+
+bool cMenu::MenuHandler(cApp* App, const float fElapsedTime)
+{
+	switch (eAppOption)
+	{
+	case cMenu::Option::NEW_GAME:
+		return App->OnPlayerUpdate(fElapsedTime);
+	case cMenu::Option::CONTINUE:
+		return App->OnPlayerUpdate(fElapsedTime);
+	case cMenu::Option::SETTINGS:
+		return UpdateSettings(App);
+	case cMenu::Option::ABOUT_US:
+		return UpdateAboutUs(App);
+	case cMenu::Option::EXIT_APP:
+		return UpdateExitApp(App);
+	case cMenu::Option::APP_MENU:
+		return UpdateMenu(App);
+	default:
+		std::cerr << "cMenu::MenuHandler(*App, fElapsedTime=" << fElapsedTime << "):";
+		std::cerr << "Menu went wrong" << std::endl;
+		return false;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

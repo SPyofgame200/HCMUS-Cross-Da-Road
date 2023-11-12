@@ -276,31 +276,9 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 ///	@parma fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-	switch (Menu.eAppOption) 
-	{
-	case cMenu::Option::NEW_GAME:
-		OnPlayerUpdate(fElapsedTime);
-		break;
-	case cMenu::Option::CONTINUE:
-		OnPlayerUpdate(fElapsedTime);
-		break;
-	case cMenu::Option::SETTINGS:
-		Menu.UpdateSettings(this);
-		break;
-	case cMenu::Option::ABOUT_US:
-		Menu.UpdateAboutUs(this);
-		break;
-	case cMenu::Option::EXIT_APP:
-		Menu.UpdateExitApp(this);
-		break;
-	case cMenu::Option::APP_MENU:
-		Menu.UpdateMenu(this);
-		break;
-	default:
-		std::cerr << "Menu went wrong" << std::endl;
+	if (!Menu.MenuHandler(this, fElapsedTime)) {
 		return false;
 	}
-
 	return true;
 }
 /// @brief
