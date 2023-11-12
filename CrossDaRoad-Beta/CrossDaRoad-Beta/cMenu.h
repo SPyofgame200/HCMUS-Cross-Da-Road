@@ -22,15 +22,14 @@ class cMenu
 {
 public:
 	/// @brief  Enumeration for menu options 
-	enum MenuOption
+	enum AppOption
 	{
-		APP_MENU, ///< Menu window
-		NEW_GAME, ///< New game window
-		CONTINUE, ///< Continue game window
-		SETTINGS, ///< Settings window
-		ABOUT_US, ///< About us window
-		APP_EXIT, ///< Exit application window
-		GAMEPLAY  ///< Gameplay window
+		NEW_GAME = 0, ///< New game window
+		CONTINUE = 1, ///< Continue game window
+		SETTINGS = 2, ///< Settings window
+		ABOUT_US = 3, ///< About us window
+		APP_EXIT = 4, ///< Exit application window
+		APP_MENU = 5, ///< Menu window
 	};
 
 private: /// Checker
@@ -40,10 +39,10 @@ private: /// Music
 	bool bMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
 
 private: /// Menu HUD
-	MenuOption eMenuOption;							 ///< Current option
-	std::vector<const char*> sMenuOptionLabels;  ///< MenuOption labels for menu window
-	int nMenuOptionLimit;						 ///< Maximum number of options
-	int nMenuOptionValue; 						 ///< Current option index
+	AppOption eMenuOption;							 ///< Current option
+	std::vector<const char*> sAppOptionLabels;  ///< AppOption labels for menu window
+	int nAppOptionLimit;						 ///< Maximum number of options
+	int nAppOptionValue; 						 ///< Current option index
 
 private: /// Pause HUD
 	std::string sPauseOptionLabels[3] = { "exit", "resume", "save" };
@@ -61,11 +60,15 @@ public: // Initialization & Clean-up
 
 public: // Managements
 	bool CloseMenu(cApp* App);
-	bool LoadOption(cApp* App);
+	bool LoadAppOption(cApp* App);
+	bool LoadPauseOption(cApp* App);
 	bool OpenMenu(cApp* App);
 
 public: // Checkers
 	bool IsOnMenu() const;
+
+public: // Validators
+	int FixOption(int& value, int limit);
 
 public: // Updaters
 	bool UpdateAppMenu(cApp* App);
