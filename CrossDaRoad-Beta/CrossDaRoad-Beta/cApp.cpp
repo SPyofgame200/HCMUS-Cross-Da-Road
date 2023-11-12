@@ -164,7 +164,6 @@ std::string cApp::GetPlayerDeathMessage() const
 			return "Player has been killed by " + sRight;
 		}
 	}
-	return "Player has been killed both " + sLeft + " & " + sRight;
 }
 /// @brief 
 /// @return 
