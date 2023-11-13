@@ -50,24 +50,24 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLane()[(nStartPos + nCol) % app_const::MAP_WIDTH_LIMIT];
-		DrawCharacter(graphic, true, lane, nRow, nCol);
+		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
+		DrawCharacter(cGraphic, true, lane, nRow, nCol);
 	}
 
 	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLane()[(nStartPos + nCol) % app_const::MAP_WIDTH_LIMIT];
-		DrawCharacter(graphic, false, lane, nRow, nCol);
+		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
+		DrawCharacter(cGraphic, false, lane, nRow, nCol);
 	}
 
 	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLane()[(nStartPos + nCol) % app_const::MAP_WIDTH_LIMIT];
+		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = (nCol + nCol) * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
 		const int nBottomRightX = (nCol + nCol + 1) * app->nCellSize - nCellOffset;
 		const int nBottomRightY = (nRow + 1) * app->nCellSize;
 
-		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetDangerPattern().c_str());
-		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetBlockPattern().c_str());
+		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetDangerPattern().c_str());
+		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetBlockPattern().c_str());
 	}
 
 	return true;

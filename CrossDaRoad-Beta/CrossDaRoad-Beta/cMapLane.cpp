@@ -42,6 +42,23 @@ int cMapLane::GetID() const
 	return nID;
 }
 
+int cMapLane::GetLaneSize() const
+{
+	return sLane.size();
+}
+
+char cMapLane::GetLaneGraphic(int nPos, bool bWrapAroundPosition) const
+{
+	if (bWrapAroundPosition && abs(nPos) >= GetLaneSize()) {
+		nPos %= GetLaneSize(); /// (-size, +size)
+		if (nPos < 0) {
+			nPos += GetLaneSize(); /// [0, +size)
+		}
+	}
+	char cGraphic = sLane[nPos];
+	return cGraphic;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// SETTERS ///////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
