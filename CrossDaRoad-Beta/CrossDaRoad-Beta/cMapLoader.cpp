@@ -1,6 +1,5 @@
 #include "cMapLoader.h"
 #include <iostream>
-#include <filesystem>
 
 /**
  * @file cMapLoader.cpp
@@ -79,8 +78,8 @@ void cMapLoader::UpdatePattern()
 {
 	dangerPattern.clear();
 	blockPattern.clear();
-	for (auto [fst, snd] : mapSprites) {
-		auto sprite = snd;
+	for (const auto& pair : mapSprites) {
+		const auto& sprite = pair.second;
 		if (sprite.isBlocked) {
 			blockPattern += sprite.encode;
 		}
@@ -252,12 +251,12 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 		vecLanes.push_back(lane);
 		return true;
 	}
-	catch ([[maybe_unused]] const std::invalid_argument& e) {
+	catch (const std::invalid_argument& e) {
 		std::cout << "Error: Invalid velocity value in line: " << sLine
 			<< std::endl;
 		return false;
 	}
-	catch ([[maybe_unused]] const std::out_of_range& e) {
+	catch (const std::out_of_range& e) {
 		std::cout << "Error: Velocity value is out of range in line: " << sLine
 			<< std::endl;
 		return false;
@@ -420,7 +419,6 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	if (!ifs.is_open()) {
 		std::cout << "Failed to open file: " << sFileName << std::endl;
 		std::cerr << "Error state: " << ifs.rdstate() << std::endl;
-		std::cout << "Current Working Directory: " << std::filesystem::current_path() << std::endl;
 		const std::string& sFileName = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
 		std::cout << "File Path: " << sFileName << std::endl;
 		return false;

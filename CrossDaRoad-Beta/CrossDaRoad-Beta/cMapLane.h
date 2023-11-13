@@ -20,7 +20,7 @@ public: // Getters
 	float GetVelocity() const;
 	std::string GetLane() const;
 	int GetID() const;
-	int GetLaneSize() const;
+	size_t GetLaneSize() const;
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
 
 public:	// Setters

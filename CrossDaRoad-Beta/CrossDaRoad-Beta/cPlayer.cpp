@@ -1,6 +1,7 @@
 #include "cPlayer.h"
 #include "cZone.h"
 #include "cApp.h"
+#include "uAppUtils.h"
 #include "uAppConst.h"
 
 /**
@@ -573,8 +574,8 @@ bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 
 bool cPlayer::OnUpdatePlayerLane()
 {
-	const float fFixedX = std::clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
-	const float fFixedY = std::clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
+	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
+	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
 	SetPlayerAnimationPosition(fFixedX, fFixedY);
 	return true;
 }

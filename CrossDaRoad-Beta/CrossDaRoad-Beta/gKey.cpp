@@ -12,6 +12,11 @@
 
 namespace app
 {
+	template <typename key_t, typename data_t>
+	void MergeMapKey(std::map<key_t, data_t>& dest, const std::map<key_t, data_t>& source) {
+		dest.insert(source.begin(), source.end());
+	}
+
 	/// @brief Create the map for the alphabet category. This contains 26 keys {
 	/// @brief     A, B, C, D, E, F, G, H, I, J, K, L, M,
 	/// @brief     N, O, P, Q, R, S, T, U, V, W, X, Y, Z
@@ -263,16 +268,16 @@ namespace app
 		std::map<uint16_t, uint8_t> mapKeys;
 
 		mapKeys[0x00] = NONE;
-		mapKeys.merge(CreateMapKeyAlphabet());
-		mapKeys.merge(CreateMapKeyNumeric());
-		mapKeys.merge(CreateMapKeyFunction());
-		mapKeys.merge(CreateMapKeyArrow());
-		mapKeys.merge(CreateMapKeySpecial());
-		mapKeys.merge(CreateMapKeyNumpad());
-		mapKeys.merge(CreateMapKeyOperator());
-		mapKeys.merge(CreateMapKeyAdditional());
-		mapKeys.merge(CreateMapKeyMedia());
-		mapKeys.merge(CreateMapKeyVendor());
+		MergeMapKey(mapKeys, CreateMapKeyAlphabet());
+		MergeMapKey(mapKeys, CreateMapKeyNumeric());
+		MergeMapKey(mapKeys, CreateMapKeyFunction());
+		MergeMapKey(mapKeys, CreateMapKeyArrow());
+		MergeMapKey(mapKeys, CreateMapKeySpecial());
+		MergeMapKey(mapKeys, CreateMapKeyNumpad());
+		MergeMapKey(mapKeys, CreateMapKeyOperator());
+		MergeMapKey(mapKeys, CreateMapKeyAdditional());
+		MergeMapKey(mapKeys, CreateMapKeyMedia());
+		MergeMapKey(mapKeys, CreateMapKeyVendor());
 		mapKeys[0xFF] = UNDEFINED;
 
 		return mapKeys;

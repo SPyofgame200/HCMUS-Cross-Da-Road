@@ -1,35 +1,62 @@
-whwwhwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
-,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  2.0
-ttttppfpgggpgggfpgggpgggpppfpgggpgggpgggpgggpgggpgggpgggpgggpggg  0.0
-,,pggg,,,,,pggg,,,,,pp,,,,,pggp,,,pgpgp,,,,pp,,,,ppp,,,,,,,pp,,,  1.0
-,,,pp,,,,,gpgg,,,,,,,gpgg,,,,,pp,,,,,,pp,,,,,,pp,,,,pgggpp,,,,,, -3.0
-,,,,pggg,,,,,pggg,,,,pgggp,,,,,,,,pggg,,,,,pp,,,,,,,,pggg,,,,,,,  3.0
-f,,t,,fptttppfpgggpgggppfpgggpgggpgggpgggpgggpgggpgggpgggpgggppp  0.0
-,,pp,,,,pp,,,,,pp,,pp,,,,,,,,,pp,,,,,,,,,pp,,,,pp,,,,pp,,,,,pp,, -2.0
-,,pggg,,,,,pggg,,,gggg,,,,,,,,,,,,pggg,,,,,,,,,pggg,,,pggg,,,,,,  2.0
-ttqtqttttttttt  0.0
+wwwhhwwwhhwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 
+,,,jllk,,jllllk,,,,,,,jllk,,,,,ii,,,jlllk,,,,jllllk,,,,jlllk,,,, -3.0 
+,,,,jllk,,,,,jllk,,,,jllk,,,,,,,,,jllk,,,,,ii,,,,,,jllllk,,,,,,,  3.0 
+,,jlk,,,,,jlk,,,,,ii,,,,,jlk,,,jlk,,,,ii,,,,jllk,,,,ii,,,,,,ii,,  2.0 
+pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0 
+....asd.......asd....asd..........asd........asd.......asd......  3.0 
+.....t........................t.............................t... -25.0 
+..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
+..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
+pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
-$ , background=magma
+$ a sprite=alligator background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ p sprite=wall background=magma
-: block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
-$ g sprite=wall background=magma
-: block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
-$ q sprite=wall background=magma
-: block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
-$ t sprite=wall background=magma
-: block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
-$ w sprite=wall
-: block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ h sprite=soil
-: block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ f sprite=fire background=wall id=4
+$ s sprite=alligator background=soil
 : block=false danger=true platformspeed=0.0
+: spriteX=1 spriteY=0
+$ d sprite=alligator background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=2 spriteY=0
+$ z sprite=alligator_1 background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ x sprite=alligator_1 background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=1 spriteY=0
+$ c sprite=alligator_1 background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=2 spriteY=0
+$ j sprite=wood1
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ l sprite=wood2
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ k sprite=wood3
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ i sprite=lilypad
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ n sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ w sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ t sprite=kiwi background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ h sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ p sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ , sprite=water category="environment"
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ . background=soil
+: block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
