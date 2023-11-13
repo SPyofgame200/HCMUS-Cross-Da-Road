@@ -74,7 +74,7 @@ public: // Setters
 	bool SetMapLevel(int MapLevel);
 
 public: // Loaders
-	bool LoadMapLane(const std::string& sLine, bool bDebug = false);
+	bool LoadMapLane(const std::string& sLine, int nLineID = 0, bool bDebug = false);
 	bool LoadMapSprite(const std::string& sLine, bool bDebug = false);
 	bool LoadMapName(const std::string& sFileName);
 	bool LoadMapLevel(const int& nMapLevel);

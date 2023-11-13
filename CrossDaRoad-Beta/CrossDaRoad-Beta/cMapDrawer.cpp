@@ -43,8 +43,9 @@ int cMapDrawer::GetCellOffset(const cMapLane& lane) const
 	return nCellOffset;
 }
 
-bool cMapDrawer::DrawLane(const cMapLane& lane, const int nRow)
+bool cMapDrawer::DrawLane(const cMapLane& lane)
 {
+	int nRow = lane.GetID();
 	int nStartPos = GetStartPos(lane);
 	int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
@@ -77,7 +78,7 @@ bool cMapDrawer::DrawAllLanes()
 	int nRow = 0;
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
 	for (const cMapLane& lane : vecLanes) {
-		DrawLane(lane, nRow++);
+		DrawLane(lane);
 	}
 
 	return true;

@@ -236,9 +236,9 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @param sLine Line of the map lane 
 /// @param bDebug Whether to print debug message or not
 /// @return True if map lane was loaded successfully, false otherwise
-bool cMapLoader::LoadMapLane(const std::string& sLine, bool bDebug)
+bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 {
-	std::cout << sLine << std::endl;
+	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
 	const size_t spacePos = sLine.find(' ');
 	if (spacePos == std::string::npos) {
 		std::cout << "Error: Space not found in line: " << sLine << std::endl;
@@ -246,9 +246,9 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, bool bDebug)
 	}
 
 	try {
-		const float velocity = std::stof(sLine.substr(spacePos + 1));
-		const std::string laneString = sLine.substr(0, spacePos);
-		const cMapLane lane(velocity, laneString);
+		const float fVelocity = std::stof(sLine.substr(spacePos + 1));
+		const std::string sLane = sLine.substr(0, spacePos);
+		const cMapLane lane(fVelocity, sLane, nLaneID);
 		vecLanes.push_back(lane);
 		return true;
 	}
@@ -426,7 +426,8 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 		return false;
 	}
 
-	bool isLoadingSprite = false;
+	int nLaneID = 0;
+	bool bLoadingSprite = false;
 	for (std::string sLine; std::getline(ifs, sLine);) {
 		strutil::deduplicate(sLine, " ");
 		strutil::trim(sLine);
@@ -434,18 +435,18 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 			break;
 
 		if (sLine.front() == '#') {
-			if (isLoadingSprite) {
+			if (bLoadingSprite) {
 				break;
 			}
-			isLoadingSprite = true;
+			bLoadingSprite = true;
 			continue;
 		}
 
-		if (isLoadingSprite) {
+		if (bLoadingSprite) {
 			LoadMapSprite(sLine);
 		}
 		else {
-			LoadMapLane(sLine);
+			LoadMapLane(sLine, nLaneID++);
 		}
 	}
 	UpdatePattern();
