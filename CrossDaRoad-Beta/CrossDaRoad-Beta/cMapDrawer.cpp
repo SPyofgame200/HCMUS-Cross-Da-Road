@@ -50,23 +50,23 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawBackground(cGraphic, nCellOffset, nRow, nCol);
+		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
+		DrawBackground(graphic, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawObject(cGraphic, nCellOffset, nRow, nCol);
+		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
+		DrawObject(graphic, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
-		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
+		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = nCol * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
 		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
 		const int nBottomRightY = (nRow + 1) * app->nCellSize;
-		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetDangerPattern().c_str());
-		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetBlockPattern().c_str());
+		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetDangerPattern().c_str());
+		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetBlockPattern().c_str());
 	}
 
 	return true;
@@ -119,7 +119,6 @@ bool cMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCo
 	const int32_t nPosY = nRow * app->nCellSize;
 	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
 	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
-
 	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 	const std::string sName = sprite.sBackgroundName;
