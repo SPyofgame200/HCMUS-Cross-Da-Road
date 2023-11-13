@@ -12,10 +12,12 @@
  /// @brief Namespace for application constants
 namespace app_const
 {
-	constexpr int INIT_MENU_OPTION = 0; ///< Initial menu option (new_game)
+	constexpr int INIT_MENU_OPTION = 0; ///< Initial app option (new_game)
 	constexpr const char* APP_OPTIONS[] = {
 		"new_game", "continue", "setting", "about_us", "exit"
 	};
+
+	constexpr int INIT_PAUSE_OPTION = 0; ///< Initial pause option (resume)
 	constexpr const char* PAUSE_OPTIONS[] = {
 		"resume", "save", "exit"
 	};

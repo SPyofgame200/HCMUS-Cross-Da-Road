@@ -70,7 +70,7 @@ bool cMenu::InitMenu()
 bool cMenu::ResetMenu()
 {
 	nAppOptionValue = app_const::INIT_MENU_OPTION;
-	nPauseOptionValue = 1;
+	nPauseOptionValue = app_const::INIT_PAUSE_OPTION;
 	bWantToExit = false;
 
 	nPauseOptionLimit = 3;
