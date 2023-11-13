@@ -19,9 +19,10 @@ public:
 
 public: 
 	bool SetTarget(cApp* app);
-
-	bool DrawLane(const cMapLane& lane, int nRow, int nCol = 0);
-	bool DrawCharacter(int nLaneIndex, char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol, int nCellOffset);
+	int GetStartPos(const cMapLane& lane) const;
+	int GetCellOffset(const cMapLane& lane) const;
+	bool DrawLane(const cMapLane& lane, int nRow);
+	bool DrawCharacter(char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol);
 
 public: // Drawers
 	bool DrawAllLanes();
