@@ -22,7 +22,7 @@ public:
 	int GetStartPos(const cMapLane& lane) const;
 	int GetCellOffset(const cMapLane& lane) const;
 	bool DrawLane(const cMapLane& lane);
-	bool DrawCharacter(char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol);
+	bool DrawCharacter(char graphic, bool drawBackground, int nCellOffset, int nRow, int nCol);
 
 public: // Drawers
 	bool DrawAllLanes();

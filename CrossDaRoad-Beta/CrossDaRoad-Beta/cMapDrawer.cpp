@@ -51,12 +51,12 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawCharacter(cGraphic, true, lane, nRow, nCol);
+		DrawCharacter(cGraphic, true, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawCharacter(cGraphic, false, lane, nRow, nCol);
+		DrawCharacter(cGraphic, false, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
@@ -65,7 +65,6 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 		const int nTopLeftY = nRow * app->nCellSize;
 		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
 		const int nBottomRightY = (nRow + 1) * app->nCellSize;
-
 		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetDangerPattern().c_str());
 		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetBlockPattern().c_str());
 	}
@@ -84,9 +83,8 @@ bool cMapDrawer::DrawAllLanes()
 	return true;
 }
 
-bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol)
+bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, int nCellOffset, int nRow, int nCol)
 {
-	int nCellOffset = GetCellOffset(lane);
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
