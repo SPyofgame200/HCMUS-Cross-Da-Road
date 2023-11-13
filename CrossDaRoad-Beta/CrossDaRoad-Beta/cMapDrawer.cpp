@@ -45,21 +45,21 @@ int cMapDrawer::GetCellOffset(const cMapLane& lane) const
 
 bool cMapDrawer::DrawLane(const cMapLane& lane)
 {
-	int nRow = lane.GetID();
+	int nRow = lane.GetLaneID();
 	int nStartPos = GetStartPos(lane);
 	int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
-	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
 		DrawCharacter(cGraphic, true, lane, nRow, nCol);
 	}
 
-	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
 		DrawCharacter(cGraphic, false, lane, nRow, nCol);
 	}
 
-	for (int nCol = 0; nCol <= app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = (nCol + nCol) * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;

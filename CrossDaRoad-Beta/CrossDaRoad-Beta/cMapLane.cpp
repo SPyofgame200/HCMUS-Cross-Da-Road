@@ -37,7 +37,7 @@ std::string cMapLane::GetLane() const
 	return sLane;
 }
 
-int cMapLane::GetID() const
+int cMapLane::GetLaneID() const
 {
 	return nID;
 }
@@ -47,10 +47,13 @@ size_t cMapLane::GetLaneSize() const
 	return sLane.size();
 }
 
+#include <iostream>
 char cMapLane::GetLaneGraphic(int nPos, bool bWrapAroundPosition) const
 {
-	if (bWrapAroundPosition && abs(nPos) >= GetLaneSize()) {
-		nPos %= GetLaneSize(); /// (-size, +size)
+	if (bWrapAroundPosition) {
+		if (abs(nPos) >= GetLaneSize()) {
+			nPos %= GetLaneSize(); /// (-size, +size)
+		}
 		if (nPos < 0) {
 			nPos += static_cast<int>(GetLaneSize()); /// [0, +size)
 		}

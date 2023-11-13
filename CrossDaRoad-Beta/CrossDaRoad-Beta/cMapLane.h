@@ -19,7 +19,7 @@ public: // Constructors & Destructor
 public: // Getters
 	float GetVelocity() const;
 	std::string GetLane() const;
-	int GetID() const;
+	int GetLaneID() const;
 	size_t GetLaneSize() const;
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
 
