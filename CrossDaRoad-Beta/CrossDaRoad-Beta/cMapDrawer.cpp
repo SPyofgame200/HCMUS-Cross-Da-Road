@@ -61,9 +61,9 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 
 	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		const int nTopLeftX = (nCol + nCol) * app->nCellSize - nCellOffset;
+		const int nTopLeftX = nCol * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
-		const int nBottomRightX = (nCol + nCol + 1) * app->nCellSize - nCellOffset;
+		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
 		const int nBottomRightY = (nRow + 1) * app->nCellSize;
 
 		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, cGraphic, app->MapLoader.GetDangerPattern().c_str());
