@@ -28,6 +28,7 @@ namespace app
 	Window::~Window()
 	{
 		Destroy();
+		std::cerr << "app::Window::~Window(): Successfully destructed" << std::endl;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -40,6 +40,7 @@ cZone::~cZone()
 		delete[] bBlocks;
 		bBlocks = nullptr;
 	}
+	std::cerr << "cZone::~cZone(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////

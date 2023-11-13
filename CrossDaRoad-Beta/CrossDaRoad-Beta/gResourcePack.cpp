@@ -21,6 +21,7 @@ namespace app
 	ResourcePack::~ResourcePack()
 	{
 		ClearPack();
+		std::cerr << "app::ResourcePack::~ResourcePack(): Successfully destructed" << std::endl;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

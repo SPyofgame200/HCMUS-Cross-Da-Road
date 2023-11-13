@@ -23,6 +23,7 @@ cMapLoader::cMapLoader()
 cMapLoader::~cMapLoader()
 {
 	Destruct();
+	std::cerr << "cMapLoader::~cMapLoader(): Successfully destructed" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

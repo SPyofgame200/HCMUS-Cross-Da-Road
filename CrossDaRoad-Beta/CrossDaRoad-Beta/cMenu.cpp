@@ -32,6 +32,7 @@ cMenu::cMenu(cApp* app)
 cMenu::~cMenu()
 {
 	ExitMenu();
+	std::cerr << "cMenu::~cMenu(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

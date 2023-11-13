@@ -33,6 +33,7 @@ cPlayer::~cPlayer()
 {
 	// No, we are not deleting anything, cApp* app is controlled by cApp
 	app = nullptr;
+	std::cerr << "cPlayer::~cPlayer(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

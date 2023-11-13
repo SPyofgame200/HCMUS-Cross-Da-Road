@@ -30,6 +30,7 @@ namespace app
 	Texture::~Texture()
 	{
 		ExitDevice();
+		std::cerr << "app::Texture::~Texture(): Successfully destructed" << std::endl;
 	}
 	/// @brief Initialize the device context
 	/// @return Always returns true by default

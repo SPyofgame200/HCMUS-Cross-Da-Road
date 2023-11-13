@@ -392,6 +392,7 @@ KeyboardState::KeyboardState()
 KeyboardState::~KeyboardState()
 {
 	mapKeys.clear();
+	std::cerr << "app::KeyboardState::~KeyboardState(): Successfully destructed" << std::endl;
 }
 
 /// @brief Setter to reset the keyboard state object
