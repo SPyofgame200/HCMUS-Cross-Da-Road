@@ -59,7 +59,7 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 		DrawCharacter(cGraphic, false, lane, nRow, nCol);
 	}
 
-	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
+	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = (nCol + nCol) * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
