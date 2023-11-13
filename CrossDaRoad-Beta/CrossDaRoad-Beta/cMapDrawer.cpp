@@ -90,12 +90,12 @@ bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, const cMapLane
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
-	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
-	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
 	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
 
 	if (drawBackground) {
+		const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
+		const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 		const std::string sName = sprite.sBackgroundName;
 		if (sName.size()) {
 			const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
@@ -105,6 +105,8 @@ bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, const cMapLane
 		}
 	}
 	else {
+		const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
+		const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
 		const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
 		if (sName.size()) {
 			const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
