@@ -131,7 +131,11 @@
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cAssetManager.cpp" />
+    <ClCompile Include="cMapDrawer.cpp" />
+    <ClCompile Include="cMapEditor.cpp" />
+    <ClCompile Include="cMapLane.cpp" />
     <ClCompile Include="cMapLoader.cpp" />
+    <ClCompile Include="cMapObject.cpp" />
     <ClCompile Include="cMenu.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cZone.cpp" />
@@ -151,7 +155,11 @@
   <ItemGroup>
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cAssetManager.h" />
+    <ClInclude Include="cMapDrawer.h" />
+    <ClInclude Include="cMapEditor.h" />
+    <ClInclude Include="cMapLane.h" />
     <ClInclude Include="cMapLoader.h" />
+    <ClInclude Include="cMapObject.h" />
     <ClInclude Include="cMenu.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cZone.h" />

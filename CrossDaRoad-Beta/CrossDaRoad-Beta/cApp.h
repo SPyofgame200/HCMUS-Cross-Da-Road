@@ -1,13 +1,22 @@
 #ifndef C_APP_H
 #define C_APP_H
 
-#include "cPlayer.h"
-#include "cAssetManager.h"
-#include "cMapLoader.h"
-#include "cMenu.h"
-#include "cZone.h"
+// Core game
 #include "gGameEngine.h"
+// Utilities
 #include "uAppConst.h"
+// Objects & Hitboxes
+#include "cPlayer.h"
+#include "cMapObject.h"
+#include "cZone.h"
+// Assets
+#include "cAssetManager.h"
+// Maps
+#include "cMapLoader.h"
+#include "cMapDrawer.h"
+// HUD
+#include "cMenu.h"
+// Standard
 #include <map>
 #include <string>
 #include <vector>
@@ -50,8 +59,8 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	SpriteData GetHitBox(float x, float y) const;
-	SpriteData GetHitBox() const;
+	MapObject GetHitBox(float x, float y) const;
+	MapObject GetHitBox() const;
 	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
 
@@ -83,7 +92,7 @@ protected: // File Management
 	static std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
-	bool DrawLane(const cLane& lane, int nRow, int nCol);
+	bool DrawLane(const cMapLane& lane, int nRow, int nCol);
 	bool DrawAllLanes();
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();

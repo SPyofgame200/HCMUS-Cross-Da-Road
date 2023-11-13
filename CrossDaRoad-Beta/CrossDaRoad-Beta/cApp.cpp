@@ -85,10 +85,10 @@ bool cApp::GameReset()
 /// @brief 
 ///	@param x - X position of Player
 ///	@param y - Y position of Player
-///	@return SpriteData of hitbox of Player
-SpriteData cApp::GetHitBox(float x, float y) const
+///	@return MapObject of hitbox of Player
+MapObject cApp::GetHitBox(float x, float y) const
 {
-	const cLane lane = MapLoader.GetLaneRound(y);
+	const cMapLane lane = MapLoader.GetLaneRound(y);
 	int nStartPos = static_cast<int>(x + fTimeSinceLastDrawn * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
 	if (nStartPos < 0) {
 		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
@@ -97,7 +97,7 @@ SpriteData cApp::GetHitBox(float x, float y) const
 	return MapLoader.GetSpriteData(graphic);
 }
 /// @brief 
-SpriteData cApp::GetHitBox() const
+MapObject cApp::GetHitBox() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
@@ -115,8 +115,8 @@ bool cApp::IsKilled(bool bDebug) const
 		return false;
 	}
 
-	const SpriteData dataLeft = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const SpriteData dataRight = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject dataLeft = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject dataRight = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	if (bDebug) {
 		std::cerr << "Left touching[" << dataLeft.encode << "]: ";
 		std::cerr << "sprite \"" << dataLeft.sSpriteName << "\" ";
@@ -147,8 +147,8 @@ std::string cApp::GetPlayerDeathMessage() const
 {
 	float fPosX = Player.GetPlayerLogicPositionX();
 	float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const SpriteData rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	const std::string sLeft = leftData.sSpriteName;
 	const std::string sRight = rightData.sSpriteName;
 
@@ -170,7 +170,7 @@ bool cApp::IsPlatformLeft() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
 	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
 }
 /// @brief 
@@ -179,7 +179,7 @@ bool cApp::IsPlatformRight() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief 
@@ -188,7 +188,7 @@ bool cApp::IsPlatformCenter() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData rightData = GetHitBox(fPosX, fPosY);
+	const MapObject rightData = GetHitBox(fPosX, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief 
@@ -511,7 +511,7 @@ std::string cApp::GetFilePartLocation(bool isSave)
 ///	@param nRow - Row to draw lane on
 ///	@param nCol - Column to draw lane on (default: -1)
 ///	@return true if lane was drawn successfully, false otherwise
-bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
+bool cApp::DrawLane(const cMapLane& lane, const int nRow, const int nCol = -1)
 {
 	// Find lane offset start
 	int nStartPos = static_cast<int>(fTimeSinceStart * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
@@ -520,9 +520,11 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 	if (nStartPos < 0) nStartPos += app_const::MAP_WIDTH_LIMIT;
 
 	fTimeSinceLastDrawn = fTimeSinceStart;
-	auto drawCharacter = [&](const int nLaneIndex, const SpriteData& sprite, const int sx, const int sy, bool drawBackground) {
+	auto drawCharacter = [&](const int nLaneIndex, const MapObject& sprite, bool drawBackground) {
 		const int32_t nPosX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
 		const int32_t nPosY = nRow * nCellSize;
+		const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
+		const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 		constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
 		constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
 		if (drawBackground) {
@@ -530,7 +532,7 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 			if (sName.size()) {
 				const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
 				SetPixelMode(app::Pixel::NORMAL);
-				DrawPartialSprite(nPosX + nCellOffset, nPosY, background, sx, sy, nWidth, nHeight);
+				DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY, nWidth, nHeight);
 				SetPixelMode(app::Pixel::NORMAL);
 			}
 		}
@@ -539,7 +541,7 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 			if (sName.size()) {
 				const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
 				SetPixelMode(app::Pixel::MASK);
-				DrawPartialSprite(nPosX, nPosY, object, sx, sy, nWidth, nHeight);
+				DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY, nWidth, nHeight);
 				SetPixelMode(app::Pixel::NORMAL);
 			}
 			if (sprite.SuccessSummon(nStartPos + nLaneIndex, nRow, fTimeSinceLastDrawn, GetAppFPS(), !IsEnginePause())) {
@@ -547,22 +549,23 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 				if (sSummonName.size()) {
 					const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
 					SetPixelMode(app::Pixel::MASK);
-					DrawPartialSprite(nPosX, nPosY, summoned_object, sx, sy, nWidth, nHeight);
+					DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY, nWidth, nHeight);
 					SetPixelMode(app::Pixel::NORMAL);
 				}
 			}
 		}
-		};
+	};
 	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
 		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		SpriteData data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, data.nBackgroundPosX * app_const::SPRITE_WIDTH, data.nBackgroundPosY * app_const::SPRITE_HEIGHT, true);
+		MapObject data = MapLoader.GetSpriteData(graphic);
+		drawCharacter(nLaneIndex, data, true);
 	}
 	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
 		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		SpriteData data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, data.nSpritePosX * app_const::SPRITE_WIDTH, data.nSpritePosY * app_const::SPRITE_HEIGHT, false);
+		MapObject data = MapLoader.GetSpriteData(graphic);
+		drawCharacter(nLaneIndex, data, false);
 	}
+
 	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
 		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
 		// Fill Danger buffer
@@ -580,8 +583,8 @@ bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
 bool cApp::DrawAllLanes()
 {
 	int nRow = 0;
-	const std::vector<cLane> vecLanes = MapLoader.GetLanes();
-	for (const cLane& lane : vecLanes) {
+	const std::vector<cMapLane> vecLanes = MapLoader.GetLanes();
+	for (const cMapLane& lane : vecLanes) {
 		DrawLane(lane, nRow++);
 	}
 
@@ -596,9 +599,9 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 {
 	int i = 0;
 	for (const auto c : sText) {
-		const int sx = ((c - 32) % 16) * app_const::FONT_WIDTH;  // 16: number of characters in a nRow
-		const int sy = ((c - 32) / 16) * app_const::FONT_HEIGHT; // 32: ASCII code of the first character in the font
-		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), sx, sy, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+		const int nDrawX = ((c - 32) % 16) * app_const::FONT_WIDTH;  // 16: number of characters in a nRow
+		const int nDrawY = ((c - 32) / 16) * app_const::FONT_HEIGHT; // 32: ASCII code of the first character in the font
+		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
 		i++;
 	}
 	return true;
