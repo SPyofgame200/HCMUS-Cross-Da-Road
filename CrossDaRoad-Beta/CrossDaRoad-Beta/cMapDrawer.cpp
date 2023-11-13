@@ -37,14 +37,12 @@ bool cMapDrawer::DrawLane(const cMapLane& lane, const int nRow, const int nCol)
 
 	for (int nLaneIndex = 0; nLaneIndex <= app->nLaneWidth; nLaneIndex++) {
 		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		MapObject data = app->MapLoader.GetSpriteData(graphic);
-		DrawCharacter(nLaneIndex, data, true, lane, nRow, nCol, nCellOffset);
+		DrawCharacter(nLaneIndex, graphic, true, lane, nRow, nCol, nCellOffset);
 	}
 
 	for (int nLaneIndex = 0; nLaneIndex <= app->nLaneWidth; nLaneIndex++) {
 		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		MapObject data = app->MapLoader.GetSpriteData(graphic);
-		DrawCharacter(nLaneIndex, data, false, lane, nRow, nCol, nCellOffset);
+		DrawCharacter(nLaneIndex, graphic, false, lane, nRow, nCol, nCellOffset);
 	}
 
 	for (int nLaneIndex = 0; nLaneIndex <= app->nLaneWidth; nLaneIndex++) {
@@ -72,8 +70,9 @@ bool cMapDrawer::DrawAllLanes()
 	return true;
 }
 
-bool cMapDrawer::DrawCharacter(int nLaneIndex, const MapObject& sprite, bool drawBackground, const cMapLane& lane, int nRow, int nCol, int nCellOffset)
+bool cMapDrawer::DrawCharacter(int nLaneIndex, char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol, int nCellOffset)
 {
+	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = (nCol + nLaneIndex) * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;

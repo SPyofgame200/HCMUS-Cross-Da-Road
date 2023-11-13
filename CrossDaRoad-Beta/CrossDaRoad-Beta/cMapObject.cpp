@@ -32,7 +32,7 @@ MapObject::MapObject()
 MapObject::~MapObject()
 {
 	sSpriteName.clear();
-	std::cerr << "MapObject::~MapObject(): Successfully destructed" << std::endl;
+	//std::cerr << "MapObject::~MapObject(): Successfully destructed" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -21,7 +21,7 @@ public:
 	bool SetTarget(cApp* app);
 
 	bool DrawLane(const cMapLane& lane, int nRow, int nCol = 0);
-	bool DrawCharacter(int nLaneIndex, const MapObject& sprite, bool drawBackground, const cMapLane& lane, int nRow, int nCol, int nCellOffset);
+	bool DrawCharacter(int nLaneIndex, char graphic, bool drawBackground, const cMapLane& lane, int nRow, int nCol, int nCellOffset);
 
 public: // Drawers
 	bool DrawAllLanes();
