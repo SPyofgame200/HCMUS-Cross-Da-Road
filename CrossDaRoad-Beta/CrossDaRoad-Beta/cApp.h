@@ -26,6 +26,7 @@ class cApp : public app::GameEngine
 {
 	friend class cMenu;
 	friend class cPlayer;
+	friend class cMapDrawer;
 
 private: // Interactive Properties (control the map)
 	cMenu Menu; 
@@ -34,6 +35,7 @@ private: // Interactive Properties (control the map)
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
+	cMapDrawer MapDrawer;
 
 private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
@@ -92,7 +94,6 @@ protected: // File Management
 	static std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
-	bool DrawLane(const cMapLane& lane, int nRow, int nCol);
 	bool DrawAllLanes();
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();

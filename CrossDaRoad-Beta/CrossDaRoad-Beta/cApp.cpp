@@ -15,6 +15,7 @@
 cApp::cApp()
 {
 	Player = cPlayer(this);
+	MapDrawer = cMapDrawer(this);
 	Menu.InitMenu();
 	GameInit();
 }
@@ -506,90 +507,11 @@ std::string cApp::GetFilePartLocation(bool isSave)
 ////////////////////////////////////// GAME RENDERING ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Draw a lane to the screen
-///	@param lane - Lane to draw
-///	@param nRow - Row to draw lane on
-///	@param nCol - Column to draw lane on (default: -1)
-///	@return true if lane was drawn successfully, false otherwise
-bool cApp::DrawLane(const cMapLane& lane, const int nRow, const int nCol = -1)
-{
-	// Find lane offset start
-	int nStartPos = static_cast<int>(fTimeSinceStart * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	const int nCellOffset = static_cast<int>(static_cast<float>(nCellSize) * fTimeSinceStart * lane.GetVelocity()) % nCellSize;
-	if (nStartPos < 0) nStartPos %= app_const::MAP_WIDTH_LIMIT;
-	if (nStartPos < 0) nStartPos += app_const::MAP_WIDTH_LIMIT;
-
-	fTimeSinceLastDrawn = fTimeSinceStart;
-	auto drawCharacter = [&](const int nLaneIndex, const MapObject& sprite, bool drawBackground) {
-		const int32_t nPosX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
-		const int32_t nPosY = nRow * nCellSize;
-		const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
-		const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
-		constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
-		constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
-		if (drawBackground) {
-			const std::string sName = sprite.sBackgroundName;
-			if (sName.size()) {
-				const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-				SetPixelMode(app::Pixel::NORMAL);
-				DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY, nWidth, nHeight);
-				SetPixelMode(app::Pixel::NORMAL);
-			}
-		}
-		else {
-			const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : Player.ShowFrameID(sprite.nID));
-			if (sName.size()) {
-				const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
-				SetPixelMode(app::Pixel::MASK);
-				DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY, nWidth, nHeight);
-				SetPixelMode(app::Pixel::NORMAL);
-			}
-			if (sprite.SuccessSummon(nStartPos + nLaneIndex, nRow, fTimeSinceLastDrawn, GetAppFPS(), !IsEnginePause())) {
-				const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : Player.ShowFrameID(sprite.summon->nID));
-				if (sSummonName.size()) {
-					const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
-					SetPixelMode(app::Pixel::MASK);
-					DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY, nWidth, nHeight);
-					SetPixelMode(app::Pixel::NORMAL);
-				}
-			}
-		}
-	};
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		MapObject data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, true);
-	}
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		MapObject data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, false);
-	}
-
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		// Fill Danger buffer
-		const int nTopLeftX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
-		const int nTopLeftY = nRow * nCellSize;
-		const int nBottomRightX = (nCol + nLaneIndex + 1) * nCellSize - nCellOffset;
-		const int nBottomRightY = (nRow + 1) * nCellSize;
-		// std::cerr << "block pattern: \"" << blockPattern << "\"" << std::endl;
-		Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, MapLoader.GetDangerPattern().c_str());
-		Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, MapLoader.GetBlockPattern().c_str());
-	}
-	return true;
-}
-/// @brief Draw all lanes  to screen
 bool cApp::DrawAllLanes()
 {
-	int nRow = 0;
-	const std::vector<cMapLane> vecLanes = MapLoader.GetLanes();
-	for (const cMapLane& lane : vecLanes) {
-		DrawLane(lane, nRow++);
-	}
-
-	return true;
+	return MapDrawer.DrawAllLanes();
 }
+
 /// @brief Draw text to screen at (x, y) position
 /// @param sText Text (std::string) (in bytes)
 /// @param x X (int) (in bytes)

@@ -14,8 +14,8 @@
  * This file contains menu class for menu window management.
 **/
 
-
-class cApp; // Forward declaration of cApp class
+// Forward declaration
+class cApp; 
 
 /// @brief Class for menu window management
 class cMenu
