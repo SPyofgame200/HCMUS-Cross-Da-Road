@@ -23,6 +23,7 @@ public: // Getters
 	size_t GetLaneSize() const;
 	float GetLaneOffset(float fCurrentTime) const;
 	int GetStartPos(float fCurrentTime) const;
+	int GetCellOffset(int nCellSize, float fCurrentTime) const;
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
 
 private: // Utilities

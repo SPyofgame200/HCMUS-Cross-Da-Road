@@ -34,10 +34,7 @@ int cMapDrawer::GetStartPos(const cMapLane& lane) const
 
 int cMapDrawer::GetCellOffset(const cMapLane& lane) const
 {
-	float fCellOffset = static_cast<float>(app->nCellSize) * lane.GetLaneOffset(app->fTimeSinceStart);
-	int nCellOffset = static_cast<int>(fCellOffset);
-	nCellOffset %= app->nCellSize;
-	return nCellOffset;
+	return lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 }
 
 bool cMapDrawer::DrawLane(const cMapLane& lane)
@@ -46,6 +43,7 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	int nStartPos = GetStartPos(lane);
 	int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
+
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		DrawBackground(graphic, nCellOffset, nRow, nCol);

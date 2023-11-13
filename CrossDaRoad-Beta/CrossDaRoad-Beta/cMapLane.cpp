@@ -58,6 +58,12 @@ int cMapLane::GetStartPos(float fCurrentTime) const
 	return FixValue(nStartPos, GetLaneSize());
 }
 
+int cMapLane::GetCellOffset(int nCellSize, float fCurrentTime) const
+{
+	float fCellOffset = nCellSize * GetLaneOffset(fCurrentTime);
+	return static_cast<int>(fCellOffset) % nCellSize;
+}
+
 char cMapLane::GetLaneGraphic(int nPos, bool bWrapAroundPosition) const
 {
 	if (bWrapAroundPosition) {
