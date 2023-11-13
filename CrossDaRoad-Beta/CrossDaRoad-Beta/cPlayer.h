@@ -48,8 +48,12 @@ private:
 	frame_t frame4_val;
 
 	frame_t frame6_id;
-	frame_t frame6_id_limit; 
+	frame_t frame6_id_limit;
 	frame_t frame6_val;
+
+	frame_t frame8_id;
+	frame_t frame8_id_limit;
+	frame_t frame8_val;
 	
 	frame_t frame6_id_animation;
 	frame_t frame6_id_animation_safe;
@@ -109,6 +113,7 @@ public: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
+	float GetFrameTick(frame_t frame) const;
 	int GetFrameID(frame_t frame) const;
 	std::string ShowFrameID(frame_t frame) const;
 	float GetPlayerAnimationPositionX() const;
@@ -119,7 +124,7 @@ public: // Getters
 	float GetPlayerVelocityY()const;
 
 public: // Setters
-	float FixFloat(float fValue, int nDigits = 9);
+	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
 	void SetAnimation(Animation eNewAnimation);
 	void SetPlayerVelocityX(float fVelocityX);

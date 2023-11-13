@@ -46,14 +46,14 @@ namespace app
 	public: // Setup enviroment
 		bool SetupFormatter() const;
 		bool SetupRendering(ViewportState viewport);
-		bool SetupTexturing();
+		static bool SetupTexturing();
 		bool SetupEnvironment(int width, int height) const;
 		bool CreateTexture2D(int width, int height, ViewportState viewport);
 
 	public: // Updater
-		void SetViewport(ViewportState viewport) const;
-		void UpdateTexture(int width, int height, const Pixel* data) const;
-		void DrawTextureOnScreen() const;
+		static void SetViewport(ViewportState viewport);
+		static void UpdateTexture(int width, int height, const Pixel* data);
+		static void DrawTextureOnScreen();
 		bool RenderTexture(int width, int height, ViewportState viewport) const;
 
 	public: // Drawing Getters

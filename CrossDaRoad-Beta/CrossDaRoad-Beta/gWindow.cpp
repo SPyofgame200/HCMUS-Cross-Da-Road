@@ -28,6 +28,7 @@ namespace app
 	Window::~Window()
 	{
 		Destroy();
+		std::cerr << "app::Window::~Window(): Successfully destructed" << std::endl;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ namespace app
 
 	bool Window::SetIcon(const std::string& sFilePath) const
 	{
-		HANDLE hLoader = LoadImage(
+		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
 			to_text(engine::ICON_FILE_PATH),    // File path of the favicon
 			IMAGE_ICON,                         // Specifies that an icon is being loaded
@@ -115,7 +116,7 @@ namespace app
 
 	bool Window::SetFavicon(const std::string& sFilePath) const
 	{
-		HANDLE hLoader = LoadImage(
+		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
 			to_text(engine::FAVICON_FILE_PATH), // File path of the favicon
 			IMAGE_ICON,                         // Specifies that an icon is being loaded
@@ -250,7 +251,7 @@ namespace app
 	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
 		if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
-			LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
+			const LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
 			sge->OnFixedUpdateEvent(engine::CREATE_WINDOW_EVENT);
 			return 0;
@@ -258,7 +259,7 @@ namespace app
 
 		// Handle Window Event
 		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_UPDATE_EVENT);
-		bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
+		const bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
 		sge->OnFixedUpdateEvent(engine::POST_WINDOW_UPDATE_EVENT);
 
 		// Calling handling function on default
@@ -273,28 +274,28 @@ namespace app
 	bool Window::HandleWindowEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (uMsg) {
-		case WM_CLOSE:
-		case WM_DESTROY:
-			return HandleWindowLifecycleEvent(uMsg);
-		case WM_SETFOCUS:
-		case WM_KILLFOCUS:
-		case WM_KEYDOWN:
-		case WM_KEYUP:
-			return HandleWindowKeyboardEvent(uMsg, wParam);
-		case WM_SIZE:
-			return HandleWindowResizeEvent(wParam, lParam);
-			/*
-		case WM_MOUSEMOVE:
-		case WM_LBUTTONDOWN:
-		case WM_LBUTTONUP:
-		case WM_RBUTTONDOWN:
-		case WM_RBUTTONUP:
-		case WM_MBUTTONDOWN:
-		case WM_MBUTTONUP:
-		case WM_MOUSEWHEEL:
-		case WM_MOUSEHWHEEL:
-			return HandleWindowMouseEvent(uMsg, wParam, lParam);
-			*/
+			case WM_CLOSE:
+			case WM_DESTROY:
+				return HandleWindowLifecycleEvent(uMsg);
+			case WM_SETFOCUS:
+			case WM_KILLFOCUS:
+			case WM_KEYDOWN:
+			case WM_KEYUP:
+				return HandleWindowKeyboardEvent(uMsg, wParam);
+			case WM_SIZE:
+				return HandleWindowResizeEvent(wParam, lParam);
+				/*
+			case WM_MOUSEMOVE:
+			case WM_LBUTTONDOWN:
+			case WM_LBUTTONUP:
+			case WM_RBUTTONDOWN:
+			case WM_RBUTTONUP:
+			case WM_MBUTTONDOWN:
+			case WM_MBUTTONUP:
+			case WM_MOUSEWHEEL:
+			case WM_MOUSEHWHEEL:
+				return HandleWindowMouseEvent(uMsg, wParam, lParam);
+				*/
 		}
 		return false;
 	}
@@ -302,14 +303,14 @@ namespace app
 	bool Window::HandleWindowLifecycleEvent(UINT uMsg)
 	{
 		switch (uMsg) {
-		case WM_CLOSE:
-			sge->bEngineRunning = false;
-			return true;
-		case WM_DESTROY:
-			sge->OnFixedUpdateEvent(engine::DESTROY_WINDOW_EVENT);
-			sge->OnForceDestroyEvent();
-			PostQuitMessage(0);
-			return true;
+			case WM_CLOSE:
+				sge->bEngineRunning = false;
+				return true;
+			case WM_DESTROY:
+				sge->OnFixedUpdateEvent(engine::DESTROY_WINDOW_EVENT);
+				sge->OnForceDestroyEvent();
+				PostQuitMessage(0);
+				return true;
 		}
 		return false;
 	}
@@ -317,39 +318,38 @@ namespace app
 	bool Window::HandleWindowKeyboardEvent(UINT uMsg, WPARAM wParam)
 	{
 		switch (uMsg) {
-		case WM_SETFOCUS:
-			sge->keyboard.SetFocus(true);
-			return true;
-		case WM_KILLFOCUS:
-			sge->keyboard.SetFocus(false);
-			return true;
-		case WM_KEYDOWN:
-			sge->keyboard.UpdateKey(wParam, true);
-			return true;
-		case WM_KEYUP:
-			sge->keyboard.UpdateKey(wParam, false);
-			return true;
+			case WM_SETFOCUS:
+				sge->keyboard.SetFocus(true);
+				return true;
+			case WM_KILLFOCUS:
+				sge->keyboard.SetFocus(false);
+				return true;
+			case WM_KEYDOWN:
+				sge->keyboard.UpdateKey(wParam, true);
+				return true;
+			case WM_KEYUP:
+				sge->keyboard.UpdateKey(wParam, false);
+				return true;
 		}
 		return false;
 	}
 
 	bool Window::HandleWindowResizeEvent(WPARAM wParam, LPARAM lParam)
 	{
-		int width = LOWORD(lParam);
-		int height = HIWORD(lParam);
-		switch (wParam)
-		{
-		case SIZE_MAXIMIZED:
-			std::cerr << "Window::HandleWindowEvent(uMsg, wParam, lParam): " << std::endl;
-			std::cerr << "The app is unexpectedly maximized" << std::endl;
-			break;
-		case SIZE_MINIMIZED:
-			std::cerr << "The window is minimized: Automatically pausing the game" << std::endl;
-			sge->PauseEngine();
-			break;
-		case SIZE_RESTORED:
-			std::cerr << "The window is reopened (width=" << width << ", height=" << height << ")" << std::endl;
-			break;
+		const int width = LOWORD(lParam);
+		const int height = HIWORD(lParam);
+		switch (wParam) {
+			case SIZE_MAXIMIZED:
+				std::cerr << "Window::HandleWindowEvent(uMsg, wParam, lParam): " << std::endl;
+				std::cerr << "The app is unexpectedly maximized" << std::endl;
+				break;
+			case SIZE_MINIMIZED:
+				std::cerr << "The window is minimized: Automatically pausing the game" << std::endl;
+				sge->OnForcePauseEvent();
+				break;
+			case SIZE_RESTORED:
+				std::cerr << "The window is reopened (width=" << width << ", height=" << height << ")" << std::endl;
+				break;
 		}
 		sge->OnFixedUpdateEvent(engine::RESIZE_WINDOW_EVENT);
 		return true;

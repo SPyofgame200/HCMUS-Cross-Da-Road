@@ -13,9 +13,12 @@
 namespace app_const
 {
 	constexpr int INIT_MENU_OPTION = 0; ///< Initial menu option (new_game)
-	constexpr const char* MENU_OPTIONS[] = {
+	constexpr const char* APP_OPTIONS[] = {
 		"new_game", "continue", "setting", "about_us", "exit"
-	}; ///< Menu options (new_game, continue, setting, about_us, exit)
+	};
+	constexpr const char* PAUSE_OPTIONS[] = {
+		"resume", "save", "exit"
+	};
 
 	constexpr const char* APP_NAME = "Cross Da Road";          ///< Application name (Cross Da Road)
 	constexpr const char* GAME_NAME = "Playing Cross Da Road"; ///< Game name (Playing Cross Da Road)

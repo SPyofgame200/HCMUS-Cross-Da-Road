@@ -1,210 +1,13 @@
 #include "cMapLoader.h"
 #include <iostream>
-#include <filesystem>
 
 /**
  * @file cMapLoader.cpp
  *
- * @brief Contains SpriteData struct, cLane class, and cMapLoader class implementation
+ * @brief Contains cMapLoader class implementation
  *
- * This file implements SpriteData struct, cLane class, and cMapLoader class for map loading and manipulation in game.
+ * This file implements cMapLoader class for map loading and manipulation in game.
 **/
-
-// ==================================================================================================
-// ===================================== SpriteData =================================================
-// ==================================================================================================
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Default constructor 
-SpriteData::SpriteData()
-{
-	encode = 0;
-	sSpriteName = "";
-	sBackgroundName = "";
-	sCategory = "";
-	isBlocked = false;
-	isDanger = false;
-	fPlatform = 0.0;
-	nSpritePosX = 0;
-	nSpritePosY = 0;
-	nBackgroundPosX = 0;
-	nBackgroundPosY = 0;
-	nID = 0;
-	summon = nullptr;
-	fDuration = 0;
-	fCooldown = 0;
-	fChance = 0;
-}
-
-/// @brief Destructor (clears the strings)
-SpriteData::~SpriteData()
-{
-	sSpriteName.clear();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// METHODS ///////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Function for debugging
-/// @param end character to end the line
-void SpriteData::debug(char end) const
-{
-	std::cerr << "Sprite[" << encode << "]= {\n";
-	{
-		std::cerr << "    [";
-		std::cerr << "name=" << (sSpriteName.empty() ? "NULL" : sSpriteName);
-		std::cerr << ", ";
-		std::cerr << "background="
-			<< (sBackgroundName.empty() ? "NULL" : sBackgroundName);
-		std::cerr << ", ";
-		std::cerr << "category=" << (sCategory.empty() ? "NULL" : sCategory);
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "isBlocked=" << std::boolalpha << isBlocked;
-		std::cerr << ", ";
-		std::cerr << "isDanger=" << std::boolalpha << isDanger;
-		std::cerr << ", ";
-		std::cerr << "platformSpeed=" << fPlatform;
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "spriteX=" << nSpritePosX;
-		std::cerr << ", ";
-		std::cerr << "spriteY=" << nSpritePosY;
-		std::cerr << ", ";
-		std::cerr << "backgroundX=" << nBackgroundPosX;
-		std::cerr << ", ";
-		std::cerr << "backgroundY=" << nBackgroundPosY;
-		std::cerr << ", ";
-		std::cerr << "id=" << nID;
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "summon=" << (summon == nullptr ? "NULL" : "\'" + std::string(1, summon->encode) + "\'");
-		std::cerr << ", ";
-		std::cerr << "duration=" << fDuration << "s";
-		std::cerr << ", ";
-		std::cerr << "cooldown=" << fCooldown << "s";
-		std::cerr << ", ";
-		std::cerr << "chance=" << fChance << "%";
-		std::cerr << "]\n";
-	}
-	std::cerr << "}" << end;
-}
-#include <random>
-#include <iomanip>
-std::default_random_engine generator(std::random_device{}());
-std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-std::map<int, float> mapLastSummon;
-bool SpriteData::SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps) const
-{
-	if (summon == nullptr || fChance <= 0) {
-		return false; // Summon is not enabled or chance is zero or negative
-	}
-
-	const int id = static_cast<int>(nCol * 1e4 + nRow);
-	if (mapLastSummon.count(id) == false) {
-		std::uniform_real_distribution<float> initialDistribution(fDuration, 2 * fDuration + fCooldown);
-		mapLastSummon[id] = initialDistribution(generator);
-		//std::cerr << "map[" << id << "] = " << fDuration + fCooldown << std::endl;
-	}
-	float& fLastSummon = mapLastSummon[id];
-	const float fDeltaTime = fCurrentTime - fLastSummon;
-
-	//std::cerr << nCol << " " << nRow << " id=" << id << ": ";
-	//std::cerr << "delta=" << fDeltaTime << " current=" << fCurrentTime << " " << "last=" << fLastSummon << " -> ";
-	if (fDeltaTime >= 0) {
-		if (fDeltaTime <= fDuration) {
-			//std::cerr << "Continue" << std::endl;
-			return true;
-		}
-		else if (fDeltaTime < fDuration + fCooldown) {
-			//std::cerr << "Stoped" << std::endl;
-			return false;
-		}
-	}
-
-	const auto fProbability = static_cast<float>(fChance / 100.0 / (fps == 0 ? 1 : fps));
-	const float fGenerated = distribution(generator);
-	if (fGenerated < fProbability) {
-		fLastSummon = fCurrentTime;
-		//std::cerr << "Recreated" << std::endl;
-		return true;
-	}
-	//std::cerr << "Failed" << std::endl;
-	return false; // Summon is not successful
-}
-
-// ==================================================================================================
-// ===================================== cLane ======================================================
-// ==================================================================================================
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Parameterized constructor
-/// @param velocity velocity of the lane
-/// @param lane character representation of the lane ()
-cLane::cLane(const float velocity, const std::string& lane)
-{
-	fVelocity = velocity;
-	sLane = lane;
-}
-
-/// @brief Copy constructor
-/// @param other the other lane to copy from
-cLane::cLane(const cLane& other)
-{
-	fVelocity = other.fVelocity;
-	sLane = other.sLane;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Getter for velocity of the lane
-float cLane::GetVelocity() const
-{
-	return fVelocity;
-}
-
-/// @brief Getter for character representation of the lane
-std::string cLane::GetLane() const
-{
-	return sLane;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// SETTERS ///////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Setter for velocity of the lane
-/// @param velocity velocity of the lane
-void cLane::SetVelocity(const float velocity)
-{
-	fVelocity = velocity;
-}
-
-/// @brief Setter for character representation of the lane
-/// @param lane character representation of the lane
-void cLane::SetLane(const std::string& lane)
-{
-	sLane = lane;
-}
-
-// ==================================================================================================
-// ===================================== cMapLoader =================================================
-// ==================================================================================================
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////
@@ -219,6 +22,7 @@ cMapLoader::cMapLoader()
 cMapLoader::~cMapLoader()
 {
 	Destruct();
+	std::cerr << "cMapLoader::~cMapLoader(): Successfully destructed" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,8 +78,8 @@ void cMapLoader::UpdatePattern()
 {
 	dangerPattern.clear();
 	blockPattern.clear();
-	for (auto [fst, snd] : mapSprites) {
-		auto sprite = snd;
+	for (const auto& pair : mapSprites) {
+		const auto& sprite = pair.second;
 		if (sprite.isBlocked) {
 			blockPattern += sprite.encode;
 		}
@@ -301,7 +105,7 @@ int cMapLoader::GetMapCount() const
 	return static_cast<int>(vecMapNames.size());
 }
 /// @brief Getter for lanes of the map
-std::vector<cLane> cMapLoader::GetLanes() const
+std::vector<cMapLane> cMapLoader::GetLanes() const
 {
 	return vecLanes;
 }
@@ -339,14 +143,14 @@ std::string cMapLoader::GetMapDescription() const
 }
 /// @brief Getter for sprite data by graphic
 /// @param graphic Graphic of the sprite
-SpriteData cMapLoader::GetSpriteData(char graphic) const
+MapObject cMapLoader::GetSpriteData(char graphic) const
 {
 	const auto spriteIter = mapSprites.find(graphic);
 	if (spriteIter != mapSprites.end()) {
 		return spriteIter->second;
 	}
 	else {
-		return SpriteData();
+		return MapObject();
 	}
 }
 /// @brief Getter for danger pattern
@@ -361,25 +165,25 @@ std::string cMapLoader::GetBlockPattern()
 }
 /// @brief Getter for lane by position
 /// @param fPos Index of the lane in vector
-cLane cMapLoader::GetLane(int fPos) const
+cMapLane cMapLoader::GetLane(int fPos) const
 {
 	return vecLanes[fPos];
 }
 /// @brief Getter for lane by position (floor)
 /// @param fPos Index of the lane in vector
-cLane cMapLoader::GetLaneFloor(float fPos) const
+cMapLane cMapLoader::GetLaneFloor(float fPos) const
 {
 	return GetLane(static_cast<int>(std::floor(fPos)));
 }
 /// @brief Getter for lane by position (round)
 /// @param fPos Index of the lane in vector
-cLane cMapLoader::GetLaneRound(float fPos) const
+cMapLane cMapLoader::GetLaneRound(float fPos) const
 {
 	return GetLane(static_cast<int>(std::round(fPos)));
 }
 /// @brief Getter for lane by position (ceil)
 /// @param fPos Index of the lane in vector
-cLane cMapLoader::GetLaneCeil(float fPos) const
+cMapLane cMapLoader::GetLaneCeil(float fPos) const
 {
 	return GetLane(static_cast<int>(std::ceil(fPos)));
 }
@@ -407,7 +211,7 @@ std::string cMapLoader::ShowMapInfo() const
 /// @brief Setter for sprite data
 /// @param data Sprite data
 /// @return True if sprite data was set successfully, false otherwise
-bool cMapLoader::SetSpriteData(const SpriteData& data)
+bool cMapLoader::SetSpriteData(const MapObject& data)
 {
 	const bool bOverwrite = mapSprites.count(data.encode);
 	mapSprites[data.encode] = data;
@@ -431,9 +235,9 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @param sLine Line of the map lane 
 /// @param bDebug Whether to print debug message or not
 /// @return True if map lane was loaded successfully, false otherwise
-bool cMapLoader::LoadMapLane(const std::string& sLine, bool bDebug)
+bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 {
-	std::cout << sLine << std::endl;
+	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
 	const size_t spacePos = sLine.find(' ');
 	if (spacePos == std::string::npos) {
 		std::cout << "Error: Space not found in line: " << sLine << std::endl;
@@ -441,18 +245,18 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, bool bDebug)
 	}
 
 	try {
-		const float velocity = std::stof(sLine.substr(spacePos + 1));
-		const std::string laneString = sLine.substr(0, spacePos);
-		const cLane lane(velocity, laneString);
+		const float fVelocity = std::stof(sLine.substr(spacePos + 1));
+		const std::string sLane = sLine.substr(0, spacePos);
+		const cMapLane lane(fVelocity, sLane, nLaneID);
 		vecLanes.push_back(lane);
 		return true;
 	}
-	catch ([[maybe_unused]] const std::invalid_argument& e) {
+	catch (const std::invalid_argument& e) {
 		std::cout << "Error: Invalid velocity value in line: " << sLine
 			<< std::endl;
 		return false;
 	}
-	catch ([[maybe_unused]] const std::out_of_range& e) {
+	catch (const std::out_of_range& e) {
 		std::cout << "Error: Velocity value is out of range in line: " << sLine
 			<< std::endl;
 		return false;
@@ -473,7 +277,7 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 	}
 
 	if (token == '$') { // New Sprite
-		currentSprite = SpriteData();
+		currentSprite = MapObject();
 		iss >> currentSprite.encode;
 		if (bDebug) {
 			std::cerr << "Create new Sprite('" << currentSprite.encode << "')" << std::endl;
@@ -615,13 +419,13 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	if (!ifs.is_open()) {
 		std::cout << "Failed to open file: " << sFileName << std::endl;
 		std::cerr << "Error state: " << ifs.rdstate() << std::endl;
-		std::cout << "Current Working Directory: " << std::filesystem::current_path() << std::endl;
 		const std::string& sFileName = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
 		std::cout << "File Path: " << sFileName << std::endl;
 		return false;
 	}
 
-	bool isLoadingSprite = false;
+	int nLaneID = 0;
+	bool bLoadingSprite = false;
 	for (std::string sLine; std::getline(ifs, sLine);) {
 		strutil::deduplicate(sLine, " ");
 		strutil::trim(sLine);
@@ -629,18 +433,18 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 			break;
 
 		if (sLine.front() == '#') {
-			if (isLoadingSprite) {
+			if (bLoadingSprite) {
 				break;
 			}
-			isLoadingSprite = true;
+			bLoadingSprite = true;
 			continue;
 		}
 
-		if (isLoadingSprite) {
+		if (bLoadingSprite) {
 			LoadMapSprite(sLine);
 		}
 		else {
-			LoadMapLane(sLine);
+			LoadMapLane(sLine, nLaneID++);
 		}
 	}
 	UpdatePattern();
@@ -714,3 +518,4 @@ float cMapLoader::ExtractTime(const std::string& timeStr)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// END OF FILE /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+

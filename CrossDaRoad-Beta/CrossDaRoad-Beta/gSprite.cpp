@@ -108,7 +108,11 @@ namespace app
 	/// @brief Destructor
 	Sprite::~Sprite()
 	{
-		delete pColData;
+		if (pColData) {
+			delete pColData;
+			pColData = nullptr;
+		}
+		std::cerr << "app::Sprite::~Sprite(): Successfully destructed" << std::endl;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////

@@ -14,50 +14,89 @@
  * This file contains menu class for menu window management.
 **/
 
-
-class cApp; // Forward declaration of cApp class
+// Forward declaration
+class cApp; 
 
 /// @brief Class for menu window management
 class cMenu
 {
 public:
 	/// @brief  Enumeration for menu options 
-	enum Option
+	enum AppOption
 	{
-		APP_MENU, ///< Menu window
-		NEW_GAME, ///< New game window
-		CONTINUE, ///< Continue game window
-		SETTINGS, ///< Settings window
-		ABOUT_US, ///< About us window
-		EXIT_APP, ///< Exit application window
-		GAMEPLAY  ///< Gameplay window
+		NEW_GAME = 0, ///< New game window
+		CONTINUE = 1, ///< Continue game window
+		SETTINGS = 2, ///< Settings window
+		ABOUT_US = 3, ///< About us window
+		APP_EXIT = 4, ///< Exit application window
+		APP_MENU = 5, ///< Menu window
+	};
+	enum PauseOption
+	{
+		RESUMING = 0, ///< Resume game 
+		APP_SAVE = 1, ///< Save game
+		APP_BACK = 2, ///< Back to menu
 	};
 
-public:
-	Option eAppOption; ///< Current option
-	int nOption; 	 ///< Current option index
-	bool isMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
+private: /// Target
+	cApp* app;
 
-	std::vector<const char*> sOptionLabels;  ///< Option labels for menu window
-	int nOptionLimit;                        ///< Maximum number of options
+private: /// Checker
+	bool bWantToExit;
+
+private: /// Music
+	bool bMusicPlaying = false; ///< Flag for music playing state (true = playing, false = not playing)
+
+private: /// Menu HUD
+	AppOption eMenuOption;							 ///< Current option
+	std::vector<const char*> sAppOptionLabels;  ///< AppOption labels for menu window
+	int nAppOptionLimit;						 ///< Maximum number of options
+	int nAppOptionValue; 						 ///< Current option index
+
+private: /// Pause HUD
+	PauseOption ePauseOption; ///< Current option 
+	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
+	int nPauseOptionValue; ///< Current option index
+	int nPauseOptionLimit; ///< Maximum number of options
 
 public: // Constructor & Destructor
 	cMenu();
+	cMenu(cApp* app);
 	~cMenu();
 
-public: // Menu management
+public: // Initialization & Clean-up
+	bool SetTarget(cApp* app);
 	bool InitMenu();
+	bool ResetMenu();
 	bool ExitMenu();
 
-	bool LoadOption(cApp* App);
+public: // Managements
+	bool OpenMenu();
+	bool LoadAppOption();
+	bool LoadPauseOption();
+	bool CloseMenu() const;
 
-	bool DisplayMenu(cApp* App);
-	bool OpenMenu(cApp* App);
-	bool UpdateMenu(cApp* App);
-	bool CloseMenu(cApp* App);
+public: // Checkers
+	bool IsOnMenu() const;
 
-	bool DisplaySettings(cApp* App) const;
-	bool UpdateSettings(cApp* App);
+public: // Validators
+	static int FixOption(int& value, int limit);
+
+public: // Updaters
+	bool UpdateAppMenu();
+	bool UpdateSetting();
+	bool UpdateAboutUs();
+	bool UpdateAppExit();
+	bool UpdatePausing();
+	bool Update(float fElapsedTime);
+
+public: // Renderers
+	bool RenderAppMenu();
+	bool RenderSetting() const;
+	bool RenderAboutUs() const;
+	bool RenderAppExit() const;
+	bool RenderPausing() const;
+	bool Render();
 };
 
 #endif // C_MENU_H

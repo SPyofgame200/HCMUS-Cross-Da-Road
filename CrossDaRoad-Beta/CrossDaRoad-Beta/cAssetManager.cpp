@@ -16,6 +16,7 @@ cAssetManager::~cAssetManager()
     mapSprites.clear();
     sDirectoryPath.clear();
     sFileExtension.clear();
+    std::cerr << "cAssetManager::~cAssetManager(): Successfully destructed" << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////

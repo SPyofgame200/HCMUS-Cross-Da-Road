@@ -15,6 +15,7 @@
 cApp::cApp()
 {
 	Player = cPlayer(this);
+	MapDrawer = cMapDrawer(this);
 	Menu.InitMenu();
 	GameInit();
 }
@@ -23,6 +24,7 @@ cApp::~cApp()
 {
 	Menu.ExitMenu();
 	GameExit();
+	std::cerr << "cApp::~cApp(): Successfully destructed" << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +38,6 @@ bool cApp::GameInit()
 	using namespace app_const;
 	fTimeSinceStart = 0;
 	fTimeSinceLastDrawn = 0;
-	Menu.eAppOption = cMenu::Option::APP_MENU;
 	sAppName = APP_NAME;
 	nLaneWidth = LANE_WIDTH;
 	nCellSize = CELL_SIZE;
@@ -44,6 +45,7 @@ bool cApp::GameInit()
 	MapLoader.Init();
 	return true;
 }
+
 /// @brief Exit game, clear data
 bool cApp::GameExit()
 {
@@ -85,12 +87,11 @@ bool cApp::GameReset()
 /// @brief 
 ///	@param x - X position of Player
 ///	@param y - Y position of Player
-///	@return SpriteData of hitbox of Player
-SpriteData cApp::GetHitBox(float x, float y) const
+///	@return MapObject of hitbox of Player
+MapObject cApp::GetHitBox(float x, float y) const
 {
-	const cLane lane = MapLoader.GetLaneRound(y);
+	const cMapLane lane = MapLoader.GetLaneRound(y);
 	int nStartPos = static_cast<int>(x + fTimeSinceLastDrawn * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	const int nCellOffset = static_cast<int>(static_cast<float>(nCellSize) * fTimeSinceStart * lane.GetVelocity()) % nCellSize;
 	if (nStartPos < 0) {
 		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
 	}
@@ -98,7 +99,7 @@ SpriteData cApp::GetHitBox(float x, float y) const
 	return MapLoader.GetSpriteData(graphic);
 }
 /// @brief 
-SpriteData cApp::GetHitBox() const
+MapObject cApp::GetHitBox() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
@@ -116,8 +117,8 @@ bool cApp::IsKilled(bool bDebug) const
 		return false;
 	}
 
-	const SpriteData dataLeft = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const SpriteData dataRight = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject dataLeft = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject dataRight = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	if (bDebug) {
 		std::cerr << "Left touching[" << dataLeft.encode << "]: ";
 		std::cerr << "sprite \"" << dataLeft.sSpriteName << "\" ";
@@ -148,8 +149,8 @@ std::string cApp::GetPlayerDeathMessage() const
 {
 	float fPosX = Player.GetPlayerLogicPositionX();
 	float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const SpriteData rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	const std::string sLeft = leftData.sSpriteName;
 	const std::string sRight = rightData.sSpriteName;
 
@@ -164,7 +165,6 @@ std::string cApp::GetPlayerDeathMessage() const
 			return "Player has been killed by " + sRight;
 		}
 	}
-	return "Player has been killed both " + sLeft + " & " + sRight;
 }
 /// @brief 
 /// @return 
@@ -172,7 +172,7 @@ bool cApp::IsPlatformLeft() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
 	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
 }
 /// @brief 
@@ -181,7 +181,7 @@ bool cApp::IsPlatformRight() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief 
@@ -190,7 +190,7 @@ bool cApp::IsPlatformCenter() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const SpriteData rightData = GetHitBox(fPosX, fPosY);
+	const MapObject rightData = GetHitBox(fPosX, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief 
@@ -219,7 +219,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @brief 
 /// @param fElapsedTime 
 /// @return 
-bool cApp::OnPlayerUpdate(const float fElapsedTime)
+bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
 	if (IsOnPlatform()) { // Frog is moved by platforms
@@ -246,7 +246,7 @@ bool cApp::OnPlayerDeath()
 	return true;
 }
 /// @brief Draw all lanes, render Player, draw status bar
-bool cApp::OnGameUpdate()
+bool cApp::OnGameRender()
 {
 	DrawAllLanes();
 	Player.OnRenderPlayer();
@@ -256,9 +256,10 @@ bool cApp::OnGameUpdate()
 // @brief Set frame delay, load all sprites, open menu
 bool cApp::OnCreateEvent()
 {
+	Menu.SetTarget(this);
 	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
 	cAssetManager::GetInstance().LoadAllSprites();
-	Menu.OpenMenu(this);
+	Menu.OpenMenu();
 	return true;
 }
 /// @brief
@@ -276,71 +277,8 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 ///	@parma fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-	if (Menu.eAppOption == cMenu::Option::NEW_GAME) {
-		OnPlayerUpdate(fElapsedTime);
-	}
-	else if (Menu.eAppOption == cMenu::Option::SETTINGS) {
-		Menu.DisplaySettings(this);
-
-		if (IsKeyReleased(app::Key::ENTER)) {
-			Menu.UpdateSettings(this);
-		}
-
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::ABOUT_US) {
-		Clear(app::BLACK);
-		const std::string about_us_dynamic = "about_us_page" + Player.ShowFrameID(4);
-		const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
-		DrawSprite(0, 0, object);
-
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::EXIT_APP) {
-		Clear(app::BLACK);
-
-		if (wantToExit)
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_yes"));
-		else
-			DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("exit_no"));
-
-		if (IsKeyReleased(app::Key::RIGHT))
-			wantToExit = false;
-		if (IsKeyReleased(app::Key::LEFT))
-			wantToExit = true;
-
-		if (IsKeyReleased(app::Key::ENTER)) {
-			if (wantToExit) {
-				OnDestroyEvent();
-				return false;
-			}
-			else {
-				Menu.OpenMenu(this);
-				Menu.eAppOption = cMenu::Option::APP_MENU;
-				return true;
-			}
-		}
-
-		if (IsKeyReleased(app::Key::ESCAPE)) {
-			Menu.OpenMenu(this);
-			Menu.eAppOption = cMenu::Option::APP_MENU;
-			wantToExit = true;
-			return true;
-		}
-	}
-	else if (Menu.eAppOption == cMenu::Option::CONTINUE) {
-		OnPlayerUpdate(fElapsedTime);
-	}
-	else {
-		Menu.UpdateMenu(this);
+	if (!Menu.Update(fElapsedTime)) {
+		return false;
 	}
 	return true;
 }
@@ -354,14 +292,14 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 /// @brief Rendering menu and game (if game is running)
 bool cApp::OnRenderEvent()
 {
-	if (Menu.eAppOption == cMenu::Option::NEW_GAME || Menu.eAppOption == cMenu::Option::CONTINUE) {
-		OnGameUpdate();
+	if (!Menu.Render()) {
+		return false;
 	}
 	return true;
 }
 /// @brief 
 /// @return 
-bool cApp::OnGameSave()
+bool cApp::OnGameSave() const
 {
 	const std::string sSaveFilePath = GetFilePartLocation(true);
 	if (!sSaveFilePath.empty()) {
@@ -430,37 +368,16 @@ bool cApp::OnGameLoad()
 bool cApp::OnPauseEvent()
 {
 	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
+		Menu.ResetMenu();
 		ResumeEngine();
-		return true;
 	}
-	if (IsEnginePause() || (Menu.eAppOption != cMenu::Option::APP_MENU && IsKeyReleased(app::Key::ESCAPE))) {
-		DisplayPauseMenu();
+	else if (!Menu.IsOnMenu() && IsKeyReleased(app::Key::ESCAPE)) {
 		PauseEngine();
-		// Load option pause menu
-		if (IsKeyReleased(app::Key::UP)) {
-			pauseOption--;
-			DisplayPauseMenu();
-		}
-		else if (IsKeyReleased(app::Key::DOWN)) {
-			pauseOption++;
-			DisplayPauseMenu();
-		}
-		else if (IsKeyReleased(app::Key::ENTER)) {
-			pauseOption = (pauseOption % 3 + 3) % 3;
-			switch (pauseOption) {
-				case 0:
-				{
-					Menu.OpenMenu(this);
-					Menu.eAppOption = cMenu::Option::APP_MENU;
-					ResumeEngine();
-					break;
-				}
-				case 1: ResumeEngine(); break;
-				case 2: OnGameSave(); break;
-			}
-		}
 	}
 	if (IsEnginePause()) { // continue the pause event
+		Menu.UpdatePausing();
+		OnGameRender();
+		Menu.RenderPausing();
 		return false;
 	}
 	return true; // succesfully handle the pause event
@@ -468,7 +385,7 @@ bool cApp::OnPauseEvent()
 /// @brief Event that called when application is force paused
 bool cApp::OnForcePauseEvent()
 {
-	if (Menu.eAppOption == cMenu::Option::APP_MENU) {
+	if (Menu.IsOnMenu()) {
 		return false;
 	}
 	PauseEngine();
@@ -492,7 +409,7 @@ bool cApp::OnForceDestroyEvent()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog) const
+std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog)
 {
 	char previousDir[MAX_PATH];
 
@@ -541,7 +458,7 @@ std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bo
 /// @param initialDir 
 /// @param sDefaultFilePath 
 /// @return 
-std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath) const
+std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath)
 {
 	const char* cTextFilePatterns = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
 	const std::string& sFilePath = SelectFilePath(cTextFilePatterns, initialDir);
@@ -591,87 +508,11 @@ std::string cApp::GetFilePartLocation(bool isSave)
 ////////////////////////////////////// GAME RENDERING ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Draw a lane to the screen
-///	@param lane - Lane to draw
-///	@param nRow - Row to draw lane on
-///	@param nCol - Column to draw lane on (default: -1)
-///	@return true if lane was drawn successfully, false otherwise
-bool cApp::DrawLane(const cLane& lane, const int nRow, const int nCol = -1)
-{
-	// Find lane offset start
-	int nStartPos = static_cast<int>(fTimeSinceStart * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	const int nCellOffset = static_cast<int>(static_cast<float>(nCellSize) * fTimeSinceStart * lane.GetVelocity()) % nCellSize;
-	if (nStartPos < 0)
-		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
-
-	fTimeSinceLastDrawn = fTimeSinceStart;
-	auto drawCharacter = [&](const int nLaneIndex, SpriteData& sprite, const int sx, const int sy, bool drawBackground) {
-		const int32_t nPosX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
-		const int32_t nPosY = nRow * nCellSize;
-		constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
-		constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
-		if (drawBackground) {
-			const std::string sName = sprite.sBackgroundName;
-			if (sName.size()) {
-				const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-				SetPixelMode(app::Pixel::NORMAL);
-				DrawPartialSprite(nPosX + nCellOffset, nPosY, background, sx, sy, nWidth, nHeight);
-				SetPixelMode(app::Pixel::NORMAL);
-			}
-		}
-		else {
-			const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : Player.ShowFrameID(sprite.nID));
-			if (sName.size()) {
-				const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
-				SetPixelMode(app::Pixel::MASK);
-				DrawPartialSprite(nPosX, nPosY, object, sx, sy, nWidth, nHeight);
-				SetPixelMode(app::Pixel::NORMAL);
-			}
-			if (sprite.SuccessSummon(nStartPos + nLaneIndex, nRow, fTimeSinceLastDrawn, GetAppFPS())) {
-				const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : Player.ShowFrameID(sprite.summon->nID));
-				if (sSummonName.size()) {
-					const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
-					SetPixelMode(app::Pixel::MASK);
-					DrawPartialSprite(nPosX, nPosY, summoned_object, sx, sy, nWidth, nHeight);
-					SetPixelMode(app::Pixel::NORMAL);
-				}
-			}
-		}
-		};
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		SpriteData data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, data.nBackgroundPosX * app_const::SPRITE_WIDTH, data.nBackgroundPosY * app_const::SPRITE_HEIGHT, true);
-	}
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		SpriteData data = MapLoader.GetSpriteData(graphic);
-		drawCharacter(nLaneIndex, data, data.nSpritePosX * app_const::SPRITE_WIDTH, data.nSpritePosY * app_const::SPRITE_HEIGHT, false);
-	}
-	for (int nLaneIndex = 0; nLaneIndex <= nLaneWidth; nLaneIndex++) {
-		const char graphic = lane.GetLane()[(nStartPos + nLaneIndex) % app_const::MAP_WIDTH_LIMIT];
-		// Fill Danger buffer
-		const int nTopLeftX = (nCol + nLaneIndex) * nCellSize - nCellOffset;
-		const int nTopLeftY = nRow * nCellSize;
-		const int nBottomRightX = (nCol + nLaneIndex + 1) * nCellSize - nCellOffset;
-		const int nBottomRightY = (nRow + 1) * nCellSize;
-		// std::cerr << "block pattern: \"" << blockPattern << "\"" << std::endl;
-		Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, MapLoader.GetDangerPattern().c_str());
-		Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, MapLoader.GetBlockPattern().c_str());
-	}
-	return true;
-}
-/// @brief Draw all lanes  to screen
 bool cApp::DrawAllLanes()
 {
-	int nRow = 0;
-	const std::vector<cLane> vecLanes = MapLoader.GetLanes();
-	for (const cLane& lane : vecLanes) {
-		DrawLane(lane, nRow++);
-	}
-
-	return true;
+	return MapDrawer.DrawAllLanes();
 }
+
 /// @brief Draw text to screen at (x, y) position
 /// @param sText Text (std::string) (in bytes)
 /// @param x X (int) (in bytes)
@@ -681,9 +522,9 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 {
 	int i = 0;
 	for (const auto c : sText) {
-		const int sx = ((c - 32) % 16) * app_const::FONT_WIDTH;  // 16: number of characters in a nRow
-		const int sy = ((c - 32) / 16) * app_const::FONT_HEIGHT; // 32: ASCII code of the first character in the font
-		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), sx, sy, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+		const int nDrawX = ((c - 32) % 16) * app_const::FONT_WIDTH;  // 16: number of characters in a nRow
+		const int nDrawY = ((c - 32) / 16) * app_const::FONT_HEIGHT; // 32: ASCII code of the first character in the font
+		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
 		i++;
 	}
 	return true;
@@ -696,22 +537,6 @@ bool cApp::DrawStatusBar()
 	DrawPartialSprite(272, 0, object, 0, 0, 80, 160);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(MapLoader.ShowMapLevel(), 321, 80);
-	SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
-/// @brief 
-/// @return 
-bool cApp::DisplayPauseMenu()
-{
-	OnGameUpdate();
-	SetPixelMode(app::Pixel::ALPHA);
-	SetBlendFactor(170.0f / 255.0f);
-	DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
-	SetBlendFactor(255.0f / 255.0f);
-	SetPixelMode(app::Pixel::NORMAL);
-	const std::string pauseOptionName = "pause_" + choices[(pauseOption % 3 + 3) % 3];
-	SetPixelMode(app::Pixel::MASK);
-	DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(pauseOptionName));
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }

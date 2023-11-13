@@ -1,13 +1,22 @@
 #ifndef C_APP_H
 #define C_APP_H
 
-#include "cPlayer.h"
-#include "cAssetManager.h"
-#include "cMapLoader.h"
-#include "cMenu.h"
-#include "cZone.h"
+// Core game
 #include "gGameEngine.h"
+// Utilities
 #include "uAppConst.h"
+// Objects & Hitboxes
+#include "cPlayer.h"
+#include "cMapObject.h"
+#include "cZone.h"
+// Assets
+#include "cAssetManager.h"
+// Maps
+#include "cMapLoader.h"
+#include "cMapDrawer.h"
+// HUD
+#include "cMenu.h"
+// Standard
 #include <map>
 #include <string>
 #include <vector>
@@ -17,6 +26,7 @@ class cApp : public app::GameEngine
 {
 	friend class cMenu;
 	friend class cPlayer;
+	friend class cMapDrawer;
 
 private: // Interactive Properties (control the map)
 	cMenu Menu; 
@@ -25,12 +35,12 @@ private: // Interactive Properties (control the map)
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
+	cMapDrawer MapDrawer;
 
 private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
-	bool wantToExit = true;
 
 private: // Event timers
 	float fTimeSinceStart;
@@ -38,10 +48,6 @@ private: // Event timers
 
 private: // Special variables
 	std::atomic<bool> bDeath;
-
-private:
-	int pauseOption = 1;
-	std::string choices[3] = { "exit", "resume", "save" };
 
 public: // Constructor & Destructor
 	cApp();
@@ -55,8 +61,8 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	SpriteData GetHitBox(float x, float y) const;
-	SpriteData GetHitBox() const;
+	MapObject GetHitBox(float x, float y) const;
+	MapObject GetHitBox() const;
 	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
 
@@ -67,14 +73,14 @@ protected: // Collision Detection
 	bool IsOnPlatform() const;
 	
 protected: /// Game Updates
-	bool OnPlayerUpdate(float fElapsedTime);
+	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
-	bool OnGameUpdate();
+	bool OnGameRender();
 	bool OnCreateEvent() override;
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;
 	bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime) override;
-	bool OnGameSave();
+	bool OnGameSave() const;
 	bool OnGameLoad();
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
@@ -83,13 +89,11 @@ protected: /// Game Updates
 	bool OnForceDestroyEvent() override;
 
 protected: // File Management
-	std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false) const;
-	std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "") const;
-	std::string GetFilePartLocation(bool isSave);
+	static std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false);
+	static std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "");
+	static std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
-	bool DisplayPauseMenu();
-	bool DrawLane(const cLane& lane, int nRow, int nCol);
 	bool DrawAllLanes();
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();

@@ -1,6 +1,7 @@
 #include "cPlayer.h"
 #include "cZone.h"
 #include "cApp.h"
+#include "uAppUtils.h"
 #include "uAppConst.h"
 
 /**
@@ -33,6 +34,7 @@ cPlayer::~cPlayer()
 {
 	// No, we are not deleting anything, cApp* app is controlled by cApp
 	app = nullptr;
+	std::cerr << "cPlayer::~cPlayer(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,13 +295,21 @@ cPlayer::Animation cPlayer::GetAnimation() const
 	return eAnimation;
 }
 
+float cPlayer::GetFrameTick(const frame_t frame) const
+{
+	return (24.0f / frame) / (app->GetFrameDelay() / 100.0f);
+}
+
 int cPlayer::GetFrameID(const frame_t frame) const
 {
 	if (frame == frame4_id_limit) {
 		return frame4_id;
 	}
 	else if (frame == frame6_id_limit) {
-		return frame6_id_animation;
+		return frame6_id;
+	}
+	else if (frame == frame8_id_limit) {
+		return frame8_id;
 	}
 	return 0;
 }
@@ -564,8 +574,8 @@ bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 
 bool cPlayer::OnUpdatePlayerLane()
 {
-	const float fFixedX = std::clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
-	const float fFixedY = std::clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
+	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
+	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
 	SetPlayerAnimationPosition(fFixedX, fFixedY);
 	return true;
 }
@@ -739,10 +749,12 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4_val = static_cast<int>(std::floor(fTickTime / 600.0f * app->GetFrameDelay()));
-	frame6_val = static_cast<int>(std::floor(fTickTime / 400.0f * app->GetFrameDelay()));
+	frame4_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame4_id_limit)));
+	frame6_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame6_id_limit)));
+	frame8_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame8_id_limit)));
 	frame4_id = frame4_val % frame4_id_limit + 1;
 	frame6_id = frame6_val % frame6_id_limit + 1;
+	frame8_id = frame8_val % frame8_id_limit + 1;
 	return true;
 }
 

@@ -1,3 +1,5 @@
+// uStringUtils.h
+
 #ifndef U_STRING_UTILS_H
 #define U_STRING_UTILS_H
 
@@ -15,11 +17,10 @@
  * This file contains string utility function prototypes and constants for string manipulation.
  **/
 
-
  /// @brief String utilities
 namespace strutil
 {
-	inline const char* sSpacePattern = " "; ///< Pattern for space characters
+	extern const char* sSpacePattern; ///< Pattern for space characters
 
 	std::string& ltrim(std::string& raw, const char* pattern = sSpacePattern);
 	std::string& rtrim(std::string& raw, const char* pattern = sSpacePattern);

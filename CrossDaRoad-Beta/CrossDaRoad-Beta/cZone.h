@@ -28,10 +28,10 @@ public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
 public: // Checkers
-	bool IsDanger(const char& graphic, const char* danger_pattern) const;
-	bool IsSafe(const char& graphic, const char* danger_pattern) const;
-	bool IsBlocked(const char& graphic, const char* block_pattern) const;
-	bool IsUnblocked(const char& graphic, const char* block_pattern) const;
+	static bool IsDanger(const char& graphic, const char* danger_pattern);
+	static bool IsSafe(const char& graphic, const char* danger_pattern);
+	static bool IsBlocked(const char& graphic, const char* block_pattern);
+	static bool IsUnblocked(const char& graphic, const char* block_pattern);
 	bool IsInside(int x, int y) const;
 
 public: // Setters 

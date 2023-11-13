@@ -28,7 +28,7 @@ namespace app_sound
 	bool PlayWAV(const std::string& audioFilePath);
 	bool PlayMusic(const std::string& musicName);
 	bool CloseMusicThread();
-	bool IsMusicPlaying();
+	bool bMusicPlaying();
 };
 
 #endif // U_SOUND_H
