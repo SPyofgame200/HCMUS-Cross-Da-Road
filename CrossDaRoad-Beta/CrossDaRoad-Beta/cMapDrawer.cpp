@@ -51,12 +51,12 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawCharacter(cGraphic, true, nCellOffset, nRow, nCol);
+		DrawBackground(cGraphic, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char cGraphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawCharacter(cGraphic, false, nCellOffset, nRow, nCol);
+		DrawObject(cGraphic, nCellOffset, nRow, nCol);
 	}
 
 	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
@@ -83,7 +83,36 @@ bool cMapDrawer::DrawAllLanes()
 	return true;
 }
 
-bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, int nCellOffset, int nRow, int nCol)
+bool cMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
+{
+	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
+	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
+	const int32_t nPosY = nRow * app->nCellSize;
+	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
+	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
+	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
+	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
+	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
+	if (sName.size()) {
+		const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
+		app->SetPixelMode(app::Pixel::MASK);
+		app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY, nWidth, nHeight);
+		app->SetPixelMode(app::Pixel::NORMAL);
+	}
+
+	if (sprite.SuccessSummon(nCol, nRow, app->fTimeSinceLastDrawn, app->GetAppFPS(), !app->IsEnginePause())) {
+		const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : app->Player.ShowFrameID(sprite.summon->nID));
+		if (sSummonName.size()) {
+			const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
+			app->SetPixelMode(app::Pixel::MASK);
+			app->DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY, nWidth, nHeight);
+			app->SetPixelMode(app::Pixel::NORMAL);
+		}
+	}
+	return true;
+}
+
+bool cMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
@@ -91,37 +120,14 @@ bool cMapDrawer::DrawCharacter(char graphic, bool drawBackground, int nCellOffse
 	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
 	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
 
-	if (drawBackground) {
-		const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
-		const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
-		const std::string sName = sprite.sBackgroundName;
-		if (sName.size()) {
-			const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-			app->SetPixelMode(app::Pixel::NORMAL);
-			app->DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY, nWidth, nHeight);
-			app->SetPixelMode(app::Pixel::NORMAL);
-		}
-	}
-	else {
-		const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
-		const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
-		const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
-		if (sName.size()) {
-			const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
-			app->SetPixelMode(app::Pixel::MASK);
-			app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY, nWidth, nHeight);
-			app->SetPixelMode(app::Pixel::NORMAL);
-		}
-
-		if (sprite.SuccessSummon(nCol, nRow, app->fTimeSinceLastDrawn, app->GetAppFPS(), !app->IsEnginePause())) {
-			const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : app->Player.ShowFrameID(sprite.summon->nID));
-			if (sSummonName.size()) {
-				const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
-				app->SetPixelMode(app::Pixel::MASK);
-				app->DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY, nWidth, nHeight);
-				app->SetPixelMode(app::Pixel::NORMAL);
-			}
-		}
+	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
+	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
+	const std::string sName = sprite.sBackgroundName;
+	if (sName.size()) {
+		const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
+		app->SetPixelMode(app::Pixel::NORMAL);
+		app->DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY, nWidth, nHeight);
+		app->SetPixelMode(app::Pixel::NORMAL);
 	}
 	return true;
 }
