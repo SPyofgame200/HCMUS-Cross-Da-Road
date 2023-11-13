@@ -70,8 +70,8 @@ namespace app
 	bool Texture::SetupFormatter() const
 	{
 		// Define a combination of window and OpenGL flags
-		constexpr DWORD WindowGraphicFlags =
-			0 | PFD_DRAW_TO_WINDOW // Allow drawing to a window
+		constexpr DWORD WindowGraphicFlags = 0
+			| PFD_DRAW_TO_WINDOW   // Allow drawing to a window
 			| PFD_SUPPORT_OPENGL   // Support for OpenGL
 			| PFD_DOUBLEBUFFER     // Enable double buffering for smoother rendering
 			;
@@ -84,26 +84,15 @@ namespace app
 			WindowGraphicFlags,            // Window and OpenGL flags
 			PFD_TYPE_RGBA,                 // Pixel format is RGBA
 			32,                            // Color depth (32 bits per pixel)
-			0,
-			0,
-			0,
-			0, // Color bits ignored
-			0, // No alpha buffer
-			0, // Shift bit ignored
-			0,
-			0,
-			0,
-			0, // Accumulation buffer ignored
-			0, // Accumulation bits ignored
-			0,
-			0,
-			0,
-			0,              // Depth and stencil buffers ignored
-			PFD_MAIN_PLANE, // Main layer
-			0,              // Reserved
-			0,
-			0,
-			0 // Layer masks ignored
+			0, 0, 0, 0,					   // Color bits ignored
+			0,							   // No alpha buffer
+			0,							   // Shift bit ignored
+			0, 0, 0, 0,					   // Accumulation buffer ignored
+			0,							   // Accumulation bits ignored
+			0, 0, 0, 0,					   // Depth and stencil buffers ignored
+			PFD_MAIN_PLANE,				   // Main layer
+			0,							   // Reserved
+			0, 0, 0						   // Layer masks ignored
 		};
 
 		// Choose a pixel format that matches the specified configuration
@@ -173,7 +162,7 @@ namespace app
 		}
 		// Bind 2D texture with texture ID
 		glBindTexture(GL_TEXTURE_2D, // target texture, which is 2D in this case.
-					  textureID      // texture ID to bind to the target.
+			textureID      // texture ID to bind to the target.
 		);
 
 		// Set the texture magnification filter to GL_NEAREST
@@ -482,7 +471,7 @@ namespace app
 			for (int32_t nSpriteY = 0; nSpriteY < pSprite->Height(); nSpriteY++) {
 				const Pixel pixel = pSprite->GetPixel(nSpriteX, nSpriteY);
 				Draw(nOffsetX + nSpriteX * uScale, nOffsetY + nSpriteY * uScale, pixel,
-					 uScale);
+					uScale);
 			}
 		}
 	}
