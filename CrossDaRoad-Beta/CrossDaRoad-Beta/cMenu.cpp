@@ -24,7 +24,7 @@ cMenu::cMenu()
 /// @param app Pointer to application
 cMenu::cMenu(cApp* app)
 {
-	SetTarget(app);
+	SetupTarget(app);
 	InitMenu();
 }
 
@@ -42,7 +42,7 @@ cMenu::~cMenu()
 /// @brief Set pointer to application 
 /// @param app Pointer to application
 /// @return True if pointer is not null, false otherwise
-bool cMenu::SetTarget(cApp* app)
+bool cMenu::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
 		return false;

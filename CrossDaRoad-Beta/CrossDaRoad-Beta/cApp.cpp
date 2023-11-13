@@ -256,7 +256,7 @@ bool cApp::OnGameRender()
 // @brief Set frame delay, load all sprites, open menu
 bool cApp::OnCreateEvent()
 {
-	Menu.SetTarget(this);
+	Menu.SetupTarget(this);
 	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
 	cAssetManager::GetInstance().LoadAllSprites();
 	Menu.OpenMenu();

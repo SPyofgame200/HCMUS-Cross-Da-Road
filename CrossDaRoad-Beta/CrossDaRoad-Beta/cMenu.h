@@ -65,7 +65,7 @@ public: // Constructor & Destructor
 	~cMenu();
 
 public: // Initialization & Clean-up
-	bool SetTarget(cApp* app);
+	bool SetupTarget(cApp* app);
 	bool InitMenu();
 	bool ResetMenu();
 	bool ExitMenu();

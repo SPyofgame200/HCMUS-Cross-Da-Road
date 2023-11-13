@@ -39,7 +39,7 @@ namespace app
 	bool Window::Create(GameEngine* sge)
 	{
 		// Setup Window Target for Event Handling
-		if (!SetTarget(sge)) {
+		if (!SetupTarget(sge)) {
 			std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
 			std::cerr << "Failed to setup a window target" << std::endl;
 			return false;
@@ -158,7 +158,7 @@ namespace app
 		return true;
 	}
 
-	bool Window::SetTarget(GameEngine* sge)
+	bool Window::SetupTarget(GameEngine* sge)
 	{
 		if (sge == nullptr) {
 			return false;
@@ -255,6 +255,12 @@ namespace app
 			sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
 			sge->OnFixedUpdateEvent(engine::CREATE_WINDOW_EVENT);
 			return 0;
+		}
+
+		if (!sge) {
+			std::cerr << "Window::WindowEvent():";
+			std::cerr << "something went wrong, *sge is unexpected a nullptr after the WM_CREATE event" << std::endl;
+			return -1;
 		}
 
 		// Handle Window Event

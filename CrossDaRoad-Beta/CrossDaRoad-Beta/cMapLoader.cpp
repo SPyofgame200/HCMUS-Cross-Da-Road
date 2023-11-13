@@ -244,23 +244,11 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 		return false;
 	}
 
-	try {
-		const float fVelocity = std::stof(sLine.substr(spacePos + 1));
-		const std::string sLane = sLine.substr(0, spacePos);
-		const cMapLane lane(fVelocity, sLane, nLaneID);
-		vecLanes.push_back(lane);
-		return true;
-	}
-	catch (const std::invalid_argument& e) {
-		std::cout << "Error: Invalid velocity value in line: " << sLine
-			<< std::endl;
-		return false;
-	}
-	catch (const std::out_of_range& e) {
-		std::cout << "Error: Velocity value is out of range in line: " << sLine
-			<< std::endl;
-		return false;
-	}
+	const float fVelocity = std::stof(sLine.substr(spacePos + 1));
+	const std::string sLane = sLine.substr(0, spacePos);
+	const cMapLane lane(fVelocity, sLane, nLaneID);
+	vecLanes.push_back(lane);
+	return true;
 }
 /// @brief Load map sprite from file
 ///	@param sLine 

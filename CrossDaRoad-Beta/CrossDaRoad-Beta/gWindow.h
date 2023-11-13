@@ -35,7 +35,7 @@ namespace app
 		static bool HandleMessage();
 
 	private: /// Internalities
-		bool SetTarget(GameEngine* sge);
+		bool SetupTarget(GameEngine* sge);
 		static bool RegisterWindowClass();
 		bool CreateMainWindow();
 

@@ -8,7 +8,7 @@ cMapDrawer::cMapDrawer()
 
 cMapDrawer::cMapDrawer(cApp* app)
 {
-	SetTarget(app);
+	SetupTarget(app);
 }
 
 cMapDrawer::~cMapDrawer()
@@ -17,7 +17,7 @@ cMapDrawer::~cMapDrawer()
 	std::cerr << "cMapDrawer::~cMapDrawer(): Successfully destructed" << std::endl;
 }
 
-bool cMapDrawer::SetTarget(cApp* app)
+bool cMapDrawer::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
 		return false;

@@ -18,7 +18,7 @@ public:
 	~cMapDrawer();
 
 public: 
-	bool SetTarget(cApp* app);
+	bool SetupTarget(cApp* app);
 	int GetStartPos(const cMapLane& lane) const;
 	int GetCellOffset(const cMapLane& lane) const;
 	bool DrawLane(const cMapLane& lane);
