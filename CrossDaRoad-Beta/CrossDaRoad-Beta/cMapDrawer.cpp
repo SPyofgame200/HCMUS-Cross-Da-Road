@@ -28,16 +28,13 @@ bool cMapDrawer::SetTarget(cApp* app)
 
 int cMapDrawer::GetStartPos(const cMapLane& lane) const
 {
-	int nStartPos = static_cast<int>(app->fTimeSinceStart * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	if (nStartPos < 0) nStartPos %= app_const::MAP_WIDTH_LIMIT;
-	if (nStartPos < 0) nStartPos += app_const::MAP_WIDTH_LIMIT;
-	return nStartPos;
+	return lane.GetStartPos(app->fTimeSinceStart);
 }
 
 
 int cMapDrawer::GetCellOffset(const cMapLane& lane) const
 {
-	float fCellOffset = static_cast<float>(app->nCellSize) * app->fTimeSinceStart * lane.GetVelocity();
+	float fCellOffset = static_cast<float>(app->nCellSize) * lane.GetLaneOffset(app->fTimeSinceStart);
 	int nCellOffset = static_cast<int>(fCellOffset);
 	nCellOffset %= app->nCellSize;
 	return nCellOffset;

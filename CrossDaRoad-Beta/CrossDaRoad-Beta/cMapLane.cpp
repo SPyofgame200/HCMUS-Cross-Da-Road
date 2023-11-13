@@ -47,19 +47,40 @@ size_t cMapLane::GetLaneSize() const
 	return sLane.size();
 }
 
-#include <iostream>
+float cMapLane::GetLaneOffset(float fCurrentTime) const
+{
+	return fCurrentTime * fVelocity;
+}
+
+int cMapLane::GetStartPos(float fCurrentTime) const
+{
+	int nStartPos = static_cast<int>(GetLaneOffset(fCurrentTime));
+	return FixValue(nStartPos, GetLaneSize());
+}
+
 char cMapLane::GetLaneGraphic(int nPos, bool bWrapAroundPosition) const
 {
 	if (bWrapAroundPosition) {
-		if (abs(nPos) >= GetLaneSize()) {
-			nPos %= GetLaneSize(); /// (-size, +size)
-		}
-		if (nPos < 0) {
-			nPos += static_cast<int>(GetLaneSize()); /// [0, +size)
-		}
+		FixValue(nPos, GetLaneSize());
 	}
 	char cGraphic = sLane[nPos];
 	return cGraphic;
+}
+
+int cMapLane::FixValue(int& nValue, const size_t nLimit) const
+{
+	return FixValue(nValue, static_cast<int>(nLimit));
+}
+
+int cMapLane::FixValue(int& nValue, const int nLimit) const
+{
+	if (abs(nValue) >= nLimit) {
+		nValue %= nLimit;
+	}
+	if (nValue < 0) {
+		nValue += nLimit;
+	}
+	return nValue;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

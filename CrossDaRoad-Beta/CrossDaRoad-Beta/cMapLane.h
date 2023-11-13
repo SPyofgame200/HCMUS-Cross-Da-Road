@@ -21,7 +21,13 @@ public: // Getters
 	std::string GetLane() const;
 	int GetLaneID() const;
 	size_t GetLaneSize() const;
+	float GetLaneOffset(float fCurrentTime) const;
+	int GetStartPos(float fCurrentTime) const;
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
+
+private: // Utilities
+	int FixValue(int &nValue, const size_t nLimit) const;
+	int FixValue(int &nValue, const int nLimit) const;
 
 public:	// Setters
 	void SetVelocity(float velocity);
