@@ -295,9 +295,9 @@ cPlayer::Animation cPlayer::GetAnimation() const
 	return eAnimation;
 }
 
-float cPlayer::GetFrameTick(const frame_t frame) const
+float cPlayer::GetFrameTick(const frame_t frame, const float fTickRate) const
 {
-	return (24.0f / frame) / (app->GetFrameDelay() / 100.0f);
+	return (24.0f / frame) / (app->GetFrameDelay() * fTickRate);
 }
 
 int cPlayer::GetFrameID(const frame_t frame) const

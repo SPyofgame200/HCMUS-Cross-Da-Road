@@ -91,11 +91,8 @@ bool cApp::GameReset()
 MapObject cApp::GetHitBox(float x, float y) const
 {
 	const cMapLane lane = MapLoader.GetLaneRound(y);
-	int nStartPos = static_cast<int>(x + fTimeSinceLastDrawn * lane.GetVelocity()) % app_const::MAP_WIDTH_LIMIT;
-	if (nStartPos < 0) {
-		nStartPos = app_const::MAP_WIDTH_LIMIT - (abs(nStartPos) % app_const::MAP_WIDTH_LIMIT);
-	}
-	const char graphic = lane.GetLane()[(nStartPos) % app_const::MAP_WIDTH_LIMIT];
+	int nStartPos = lane.GetStartPos(fTimeSinceStart);
+	const char graphic = lane.GetLaneGraphic(nStartPos + static_cast<int>(x));
 	return MapLoader.GetSpriteData(graphic);
 }
 /// @brief 
@@ -238,7 +235,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 /// @return 
 bool cApp::OnPlayerDeath()
 {
-	std::cerr << GetPlayerDeathMessage() << std::endl;
+	std::cout << GetPlayerDeathMessage() << std::endl;
 	bDeath = true;
 	Player.OnRenderPlayerDeath();
 	Player.Reset();
