@@ -9,22 +9,22 @@ pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0
 ,,jlk,,,,,jlk,,,,,ii,,,,,jlk,,,jlk,,,,ii,,,,jllk,,,,ii,,,,,,ii,, -2.0 
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
-$ a sprite=alligator background=soil
+$ a sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ s sprite=alligator background=soil
+$ s sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ d sprite=alligator background=soil
+$ d sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ z sprite=alligator_1 background=soil
+$ z sprite=crocodile_right background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ x sprite=alligator_1 background=soil
+$ x sprite=crocodile_right background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ c sprite=alligator_1 background=soil
+$ c sprite=crocodile_right background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
 $ j sprite=wood1
