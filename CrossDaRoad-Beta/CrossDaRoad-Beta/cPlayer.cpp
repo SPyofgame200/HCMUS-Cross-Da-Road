@@ -53,13 +53,7 @@ void cPlayer::ResetAnimation()
 	frame4.Reset();
 	frame6.Reset();
 	frame8.Reset();
-
-	frame6_id_animation = 0;
-	frame6_id_animation_safe = 6;
-	/// todo: id_safe for background detection is high (6)
-	///           but for deadly objects is smaller for friendly jump
-	frame6_val_animation_cur = 0;
-	frame6_val_animation_last = 0;
+	frame6_id_animation_safe = 5;
 }
 /// @brief Reset player position
 void cPlayer::ResetPosition()
@@ -133,12 +127,12 @@ bool cPlayer::IsPlayerIdling() const
 
 bool cPlayer::IsPlayerLanding() const
 {
-	return frame6_id_animation > frame6.GetLimit();
+	return frame6.IsStopAnimation();
 }
 
 bool cPlayer::IsPlayerCollisionSafe() const
 {
-	return frame6_id_animation <= frame6_id_animation_safe;
+	return frame6.GetAnimationID() <= frame6_id_animation_safe;
 }
 /// @brief Check if player is out of bounds of map border
 bool cPlayer::IsPlayerOutOfBounds() const
@@ -576,8 +570,7 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 	if (GetAnimation() == IDLE) {
 		return false;
 	}
-	if (frame6_val_animation_cur < frame6.GetTickID()) {
-		frame6_val_animation_cur = frame6.GetTickID();
+	if (frame6.NextAnimation()) {
 		if (GetDirection() == LEFT) {
 			if (!PlayerMoveLeft(1.0f / frame6.GetLimit(), true)) {
 				return false;
@@ -626,8 +619,7 @@ bool cPlayer::OnRenderPlayerIdle()
 
 bool cPlayer::OnRenderPlayerJumpStart()
 {
-	frame6_val_animation_last = frame6.GetTickID();
-	frame6_id_animation = (frame6.GetTickID() - frame6_val_animation_last + 1);
+	frame6.StartAnimation();
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	OnRenderPlayer();
 	return true;
@@ -635,7 +627,6 @@ bool cPlayer::OnRenderPlayerJumpStart()
 
 bool cPlayer::OnRenderPlayerJumpContinue()
 {
-	frame6_id_animation = (frame6.GetTickID() - frame6_val_animation_last + 1);
 	OnRenderPlayer();
 	return true;
 }
@@ -648,12 +639,13 @@ bool cPlayer::OnRenderPlayerJumpStop() const
 
 bool cPlayer::OnRenderPlayer() const
 {
-	const bool isValidID = frame6.IsValidID(frame6_id_animation);
+	const int nID = frame6.GetAnimationID();
+	const bool isValidID = frame6.IsValidID(nID);
 	const bool isLeft = (IsLeftDirection());
 	const bool isJump = (IsPlayerJumping()) && (isValidID);
 	const std::string froggy_state = std::string(isJump ? "_jump" : "");
 	const std::string froggy_direction = std::string(isLeft ? "_left" : "");
-	const std::string froggy_id = (isJump ? std::to_string(frame6_id_animation) : "");
+	const std::string froggy_id = (isJump ? std::to_string(nID) : "");
 	const std::string froggy_name = "froggy" + froggy_state + froggy_direction + froggy_id;
 	const auto froggy = cAssetManager::GetInstance().GetSprite(froggy_name);
 	if (froggy == nullptr) {
@@ -743,13 +735,6 @@ bool cPlayer::OnUpdateFrame(float fTickTime)
 	frame4.UpdateFrame(fTickTime, app->GetFrameDelay());
 	frame6.UpdateFrame(fTickTime, app->GetFrameDelay());
 	frame8.UpdateFrame(fTickTime, app->GetFrameDelay());
-	return true;
-}
-
-bool cPlayer::AddExtraFrame(int nExtra)
-{
-	frame6_val_animation_last += nExtra;
-	frame6_val_animation_cur += nExtra;
 	return true;
 }
 

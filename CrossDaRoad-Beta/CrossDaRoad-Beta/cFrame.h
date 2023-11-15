@@ -1,6 +1,7 @@
 #ifndef C_FRAME_H
 #define C_FRAME_H
 
+#include "uAppUtils.h"
 #include <iostream>
 
 template<const size_t FRAME_LIMIT, const int ID_BASE = 1>
@@ -9,10 +10,14 @@ class cFrame
 public:
     float fVal;
     float fStart;
+    int nAnimationFrame;
 
 public: /// Constructors & Destructor
     cFrame(float val = 0)
-        : fVal(val) {}
+        : fVal(val), fStart(0), nAnimationFrame(0)
+    {
+        // ...
+    }
 
     ~cFrame()
     {
@@ -34,10 +39,20 @@ public: /// Checkers & Validators
         return (GetMinID() <= nID) && (nID <= GetMaxID());
     }
 
-public: /// Getters
+public: /// Properties Getters
+    int GetID(int nTickID) const
+    {
+        return nTickID % FRAME_LIMIT + ID_BASE;
+    }
+
+    int GetID(float fTickID) const
+    {
+        return GetID(static_cast<int>(std::floor(fTickID)));
+    }
+
     int GetID() const
     {
-        return GetTickID() % FRAME_LIMIT + ID_BASE;
+        return GetID(GetTickID());
     }
 
     int GetTickID() const
@@ -60,15 +75,16 @@ public: /// Getters
         return static_cast<int>(FRAME_LIMIT);
     }
 
-    float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f) const
-    {
-        return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
-    }
-
-public: /// Setters
+public: /// Properties Setters
     void SetVal(float val)
     {
         fVal = val;
+    }
+
+private: /// Utilities
+    float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f) const
+    {
+        return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
     }
 
 public: /// Updaters
@@ -80,16 +96,34 @@ public: /// Updaters
     }
 
 public: /// Animations
+    int GetAnimationID() const
+    {
+        return GetID(fVal - fStart);
+    }
+    bool IsStopAnimation() const
+    {
+        return nAnimationFrame >= GetMaxID();
+    }
     bool StartAnimation()
     {
+        fStart = fVal;
+        nAnimationFrame = ID_BASE - 1;
         return true;
     }
-    bool NextAnimation()
+    bool NextAnimation(bool bUpdate = true)
     {
+        int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
+        if (nAnimationFrame >= nCurrentFrame) {
+            return false;
+        }
+        if (bUpdate) {
+            nAnimationFrame = nCurrentFrame;
+        }
         return true;
     }
     bool StopAnimation()
     {
+        nAnimationFrame = GetMaxID();
         return true;
     }
 };

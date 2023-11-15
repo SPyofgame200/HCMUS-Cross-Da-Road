@@ -48,10 +48,7 @@ private:
 	frame6_t frame6;
 	frame8_t frame8;
 
-	frame_t frame6_id_animation;
 	frame_t frame6_id_animation_safe;
-	frame_t frame6_val_animation_cur;
-	frame_t frame6_val_animation_last;
 
 private:
 	Direction eDirection;
@@ -159,7 +156,6 @@ public: // Player Renderer
 public: // Logic-Render Control
 	bool OnPlayerMove();
 	bool OnUpdateFrame(float fTickTime);
-	bool AddExtraFrame(int nExtra = 1);
 };
 
 #endif // C_PLAYER_H
