@@ -1,23 +1,23 @@
-#include "cMapDrawer.h"
+#include "hMapDrawer.h"
 #include "cApp.h"
 
-cMapDrawer::cMapDrawer()
+hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
 }
 
-cMapDrawer::cMapDrawer(cApp* app)
+hMapDrawer::hMapDrawer(cApp* app)
 {
 	SetupTarget(app);
 }
 
-cMapDrawer::~cMapDrawer()
+hMapDrawer::~hMapDrawer()
 {
 	app = nullptr;
-	std::cerr << "cMapDrawer::~cMapDrawer(): Successfully destructed" << std::endl;
+	std::cerr << "hMapDrawer::~hMapDrawer(): Successfully destructed" << std::endl;
 }
 
-bool cMapDrawer::SetupTarget(cApp* app)
+bool hMapDrawer::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
 		return false;
@@ -26,18 +26,18 @@ bool cMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
-int cMapDrawer::GetStartPos(const cMapLane& lane) const
+int hMapDrawer::GetStartPos(const cMapLane& lane) const
 {
 	return lane.GetStartPos(app->fTimeSinceStart);
 }
 
 
-int cMapDrawer::GetCellOffset(const cMapLane& lane) const
+int hMapDrawer::GetCellOffset(const cMapLane& lane) const
 {
 	return lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 }
 
-bool cMapDrawer::DrawLane(const cMapLane& lane)
+bool hMapDrawer::DrawLane(const cMapLane& lane)
 {
 	int nRow = lane.GetLaneID();
 	int nStartPos = GetStartPos(lane);
@@ -67,7 +67,7 @@ bool cMapDrawer::DrawLane(const cMapLane& lane)
 	return true;
 }
 
-bool cMapDrawer::DrawAllLanes()
+bool hMapDrawer::DrawAllLanes()
 {
 	int nRow = 0;
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
@@ -78,7 +78,7 @@ bool cMapDrawer::DrawAllLanes()
 	return true;
 }
 
-bool cMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
+bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
@@ -107,7 +107,7 @@ bool cMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
 	return true;
 }
 
-bool cMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol)
+bool hMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;

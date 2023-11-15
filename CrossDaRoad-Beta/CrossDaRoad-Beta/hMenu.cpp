@@ -1,9 +1,9 @@
-#include "cMenu.h"
+#include "hMenu.h"
 
 #include "cApp.h"
 
 /**
- * @file cMenu.cpp
+ * @file hMenu.cpp
  *
  * @brief Contains menu class implementation
  *
@@ -15,24 +15,24 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-cMenu::cMenu()
+hMenu::hMenu()
 {
 	InitMenu();
 }
 
 /// @brief  Parameterized constructor with pointer to application
 /// @param app Pointer to application
-cMenu::cMenu(cApp* app)
+hMenu::hMenu(cApp* app)
 {
 	SetupTarget(app);
 	InitMenu();
 }
 
 /// @brief Destructor
-cMenu::~cMenu()
+hMenu::~hMenu()
 {
 	ExitMenu();
-	std::cerr << "cMenu::~cMenu(): Successfully destructed" << std::endl;
+	std::cerr << "hMenu::~hMenu(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ cMenu::~cMenu()
 /// @brief Set pointer to application 
 /// @param app Pointer to application
 /// @return True if pointer is not null, false otherwise
-bool cMenu::SetupTarget(cApp* app)
+bool hMenu::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
 		return false;
@@ -53,7 +53,7 @@ bool cMenu::SetupTarget(cApp* app)
 
 /// @brief Initialize properties of option for menu management
 /// @return Always return true by default
-bool cMenu::InitMenu()
+bool hMenu::InitMenu()
 {
 	using namespace app_const;
 	eMenuOption = AppOption::APP_MENU;
@@ -67,7 +67,7 @@ bool cMenu::InitMenu()
 
 /// @brief Reset option when exit to default
 /// @return Always return true by default
-bool cMenu::ResetMenu()
+bool hMenu::ResetMenu()
 {
 	nAppOptionValue = app_const::INIT_MENU_OPTION;
 	nPauseOptionValue = app_const::INIT_PAUSE_OPTION;
@@ -79,7 +79,7 @@ bool cMenu::ResetMenu()
 
 /// @brief Free memory of option when exit
 /// @return Always return true by default
-bool cMenu::ExitMenu()
+bool hMenu::ExitMenu()
 {
 	sAppOptionLabels.clear();
 	//sPauseOptionLabels.clear();
@@ -92,7 +92,7 @@ bool cMenu::ExitMenu()
 
 /// @brief Open menu on screen
 /// @return Always return true by default
-bool cMenu::OpenMenu()
+bool hMenu::OpenMenu()
 {
 	ResetMenu();
 	RenderAppMenu();
@@ -103,7 +103,7 @@ bool cMenu::OpenMenu()
 /// @brief Load option and draw it on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::LoadAppOption()
+bool hMenu::LoadAppOption()
 {
 	CloseMenu();
 
@@ -127,7 +127,7 @@ bool cMenu::LoadAppOption()
 			eMenuOption = AppOption::APP_EXIT;
 			break;
 		default:
-			std::cerr << "cMenu::LoadAppOption(): ";
+			std::cerr << "hMenu::LoadAppOption(): ";
 			std::cerr << "Unknown option = " << nOption << ", expected [0.." << nAppOptionLimit - 1 << "]" << std::endl;
 			return false;
 	}
@@ -137,7 +137,7 @@ bool cMenu::LoadAppOption()
 
 /// @brief Load pause game option and draw it on screen
 /// @return True if option is valid, false otherwise
-bool cMenu::LoadPauseOption()
+bool hMenu::LoadPauseOption()
 {
 	switch (const int nOption = FixOption(nPauseOptionValue, nPauseOptionLimit)) {
 		case RESUMING:
@@ -151,7 +151,7 @@ bool cMenu::LoadPauseOption()
 			OpenMenu();
 			break;
 		default:
-			std::cerr << "cMenu::LoadPauseOption(): ";
+			std::cerr << "hMenu::LoadPauseOption(): ";
 			std::cerr << "Unknown option = " << nOption << ", expected [0.." << nPauseOptionLimit - 1 << "]" << std::endl;
 			return false;
 	}
@@ -161,7 +161,7 @@ bool cMenu::LoadPauseOption()
 /// @brief Close menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::CloseMenu() const
+bool hMenu::CloseMenu() const
 {
 	app->Clear(app::BLACK);
 	return true;
@@ -173,7 +173,7 @@ bool cMenu::CloseMenu() const
 
 /// @brief Check if current option is menu or not
 /// @return True if current option is menu, false otherwise
-bool cMenu::IsOnMenu() const
+bool hMenu::IsOnMenu() const
 {
 	return eMenuOption == AppOption::APP_MENU;
 }
@@ -186,7 +186,7 @@ bool cMenu::IsOnMenu() const
 /// @param value Value to be fixed
 /// @param limit Maximum value of option
 /// @return Fixed value
-int cMenu::FixOption(int& value, int limit)
+int hMenu::FixOption(int& value, int limit)
 {
 	value %= limit; /// (-limit, +limit)
 	if (value < 0) {
@@ -202,7 +202,7 @@ int cMenu::FixOption(int& value, int limit)
 /// @brief Update menu on screen when user press key
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::UpdateAppMenu()
+bool hMenu::UpdateAppMenu()
 {
 	if (app->IsKeyReleased(app::Key::UP)) {
 		FixOption(--nAppOptionValue, nAppOptionLimit);
@@ -219,7 +219,7 @@ bool cMenu::UpdateAppMenu()
 /// @brief Display settings on screen (sound on/off)
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::RenderSetting() const
+bool hMenu::RenderSetting() const
 {
 	app->Clear(app::BLACK);
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
@@ -234,7 +234,7 @@ bool cMenu::RenderSetting() const
 
 /// @brief Check if music is playing or not, then turn on/off music (until now)
 /// @return Always return true by default
-bool cMenu::UpdateSetting()
+bool hMenu::UpdateSetting()
 {
 	if (app->IsKeyReleased(app::Key::ENTER)) {
 		if (bMusicPlaying) {
@@ -255,7 +255,7 @@ bool cMenu::UpdateSetting()
 
 /// @brief Display about us on screen
 /// @return Always return true by default
-bool cMenu::UpdateAboutUs()
+bool hMenu::UpdateAboutUs()
 {
 	if (app->IsKeyReleased(app::Key::ESCAPE)) {
 		OpenMenu();
@@ -266,7 +266,7 @@ bool cMenu::UpdateAboutUs()
 
 /// @brief Update exit window when user press key 
 /// @return False if user want to exit, true otherwise
-bool cMenu::UpdateAppExit()
+bool hMenu::UpdateAppExit()
 {
 	if (app->IsKeyReleased(app::Key::RIGHT)) {
 		bWantToExit = false;
@@ -295,7 +295,7 @@ bool cMenu::UpdateAppExit()
 
 /// @brief Update menu screen
 /// @return Always return true by default
-bool cMenu::UpdatePausing()
+bool hMenu::UpdatePausing()
 {
 	if (app->IsKeyReleased(app::Key::UP)) {
 		FixOption(--nPauseOptionValue, nPauseOptionLimit);
@@ -312,7 +312,7 @@ bool cMenu::UpdatePausing()
 /// @brief Update all app screen (menu, pause, about us, exit)
 /// @param fElapsedTime Time elapsed since last frame
 /// @return True if update successfully, false otherwise
-bool cMenu::Update(const float fElapsedTime)
+bool hMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
@@ -328,7 +328,7 @@ bool cMenu::Update(const float fElapsedTime)
 		case AppOption::APP_MENU:
 			return UpdateAppMenu();
 		default:
-			std::cerr << "cMenu::Update(fElapsedTime=" << fElapsedTime << "):";
+			std::cerr << "hMenu::Update(fElapsedTime=" << fElapsedTime << "):";
 			std::cerr << "Menu went wrong" << std::endl;
 			return false;
 	}
@@ -341,7 +341,7 @@ bool cMenu::Update(const float fElapsedTime)
 /// @brief Display menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool cMenu::RenderAppMenu()
+bool hMenu::RenderAppMenu()
 {
 	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
 
@@ -361,7 +361,7 @@ bool cMenu::RenderAppMenu()
 
 /// @brief Render about us on screen
 /// @return Always return true by default
-bool cMenu::RenderAboutUs() const
+bool hMenu::RenderAboutUs() const
 {
 	app->Clear(app::BLACK);
 	const std::string about_us_dynamic = "about_us_page" + app->Player.ShowFrameID(4);
@@ -372,7 +372,7 @@ bool cMenu::RenderAboutUs() const
 
 /// @brief Render exit window on screen
 /// @return Always return true by default
-bool cMenu::RenderAppExit() const
+bool hMenu::RenderAppExit() const
 {
 	app->Clear(app::BLACK);
 	if (bWantToExit) {
@@ -386,7 +386,7 @@ bool cMenu::RenderAppExit() const
 
 /// @brief Pause game and display pause window on screen
 /// @return Always return true by default
-bool cMenu::RenderPausing() const
+bool hMenu::RenderPausing() const
 {
 	/// Overlay
 	app->SetPixelMode(app::Pixel::ALPHA);
@@ -405,7 +405,7 @@ bool cMenu::RenderPausing() const
 
 /// @brief Render all app screen (menu, pause, about us, exit)
 /// @return True if render successfully, false otherwise
-bool cMenu::Render()
+bool hMenu::Render()
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
@@ -421,7 +421,7 @@ bool cMenu::Render()
 		case AppOption::APP_MENU:
 			return RenderAppMenu();
 		default:
-			std::cerr << "cMenu::Render(*app):";
+			std::cerr << "hMenu::Render(*app):";
 			std::cerr << "Menu went wrong" << std::endl;
 			return false;
 	}

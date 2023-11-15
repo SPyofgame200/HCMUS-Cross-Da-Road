@@ -1,11 +1,11 @@
-#include "cPlayer.h"
+#include "hPlayer.h"
 #include "cZone.h"
 #include "cApp.h"
 #include "uAppUtils.h"
 #include "uAppConst.h"
 
 /**
- * @file cPlayer.cpp
+ * @file hPlayer.cpp
  *
  * @brief Contains player class implementation
  *
@@ -17,24 +17,24 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-cPlayer::cPlayer()
+hPlayer::hPlayer()
 {
 	Reset();
 }
 
 /// @brief Constructor with app pointer
-cPlayer::cPlayer(cApp* app)
+hPlayer::hPlayer(cApp* app)
 {
 	SetupTarget(app);
 	Reset();
 }
 
 /// @brief Destructor
-cPlayer::~cPlayer()
+hPlayer::~hPlayer()
 {
 	// No, we are not deleting anything, cApp* app is controlled by cApp
 	app = nullptr;
-	std::cerr << "cPlayer::~cPlayer(): Successfully destructed" << std::endl;
+	std::cerr << "hPlayer::~hPlayer(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,13 +42,13 @@ cPlayer::~cPlayer()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Reset player direction
-void cPlayer::ResetDirection()
+void hPlayer::ResetDirection()
 {
 	eDirection = RIGHT;
 	eAnimation = IDLE;
 }
 /// @brief Reset player animation
-void cPlayer::ResetAnimation()
+void hPlayer::ResetAnimation()
 {
 	frame4.Reset();
 	frame6.Reset();
@@ -56,7 +56,7 @@ void cPlayer::ResetAnimation()
 	frame6_id_animation_safe = 5;
 }
 /// @brief Reset player position
-void cPlayer::ResetPosition()
+void hPlayer::ResetPosition()
 {
 	fFrogAnimPosX = app_const::FROG_X_RESET;
 	fFrogAnimPosY = app_const::FROG_Y_RESET;
@@ -64,13 +64,13 @@ void cPlayer::ResetPosition()
 	fFrogLogicPosY = app_const::FROG_Y_RESET;
 }
 /// @brief Reset player velocity
-void cPlayer::ResetVelocity()
+void hPlayer::ResetVelocity()
 {
 	fFrogVelocityX = app_const::FROG_X_VELOCITY;
 	fFrogVelocityY = app_const::FROG_Y_VELOCITY;
 }
 /// @brief Reset player properties
-void cPlayer::Reset()
+void hPlayer::Reset()
 {
 	ResetDirection();
 	ResetAnimation();
@@ -79,7 +79,7 @@ void cPlayer::Reset()
 }
 /// @brief Setup app pointer
 /// @param app Pointer to app
-void cPlayer::SetupTarget(cApp* app)
+void hPlayer::SetupTarget(cApp* app)
 {
 	this->app = app;
 }
@@ -91,51 +91,51 @@ void cPlayer::SetupTarget(cApp* app)
 /// @brief Check if player is facing exact direction
 /// @param eCompare Direction to compare
 /// @return True if player is facing exact direction, false otherwise
-bool cPlayer::IsExactDirection(Direction eCompare) const
+bool hPlayer::IsExactDirection(Direction eCompare) const
 {
 	return eDirection == eCompare;
 }
 
-bool cPlayer::IsExactAnimation(Animation eCompare) const
+bool hPlayer::IsExactAnimation(Animation eCompare) const
 {
 	return eAnimation == eCompare;
 }
 
-bool cPlayer::IsLeftDirection() const
+bool hPlayer::IsLeftDirection() const
 {
 	return (eDirection == LEFT)
 		|| (eDirection == LEFT_UP)
 		|| (eDirection == LEFT_DOWN);
 }
 
-bool cPlayer::IsRightDirection() const
+bool hPlayer::IsRightDirection() const
 {
 	return (eDirection == RIGHT)
 		|| (eDirection == RIGHT_UP)
 		|| (eDirection == RIGHT_DOWN);
 }
 
-bool cPlayer::IsPlayerJumping() const
+bool hPlayer::IsPlayerJumping() const
 {
 	return (GetAnimation() == JUMP);
 }
 
-bool cPlayer::IsPlayerIdling() const
+bool hPlayer::IsPlayerIdling() const
 {
 	return (GetAnimation() == IDLE);
 }
 
-bool cPlayer::IsPlayerLanding() const
+bool hPlayer::IsPlayerLanding() const
 {
 	return frame6.IsStopAnimation();
 }
 
-bool cPlayer::IsPlayerCollisionSafe() const
+bool hPlayer::IsPlayerCollisionSafe() const
 {
 	return frame6.GetAnimationID() <= frame6_id_animation_safe;
 }
 /// @brief Check if player is out of bounds of map border
-bool cPlayer::IsPlayerOutOfBounds() const
+bool hPlayer::IsPlayerOutOfBounds() const
 {
 	if (fFrogLogicPosX < app_const::LEFT_BORDER) {
 		return true;
@@ -157,7 +157,7 @@ bool cPlayer::IsPlayerOutOfBounds() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Check if player is hit by danger zone at top left corner
-bool cPlayer::IsHitTopLeft() const
+bool hPlayer::IsHitTopLeft() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
 	const float fPosY = GetPlayerLogicPositionY();
@@ -165,7 +165,7 @@ bool cPlayer::IsHitTopLeft() const
 	return isHitTopLeft;
 }
 /// @brief Check if player is hit by danger zone at top right corner
-bool cPlayer::IsHitTopRight() const
+bool hPlayer::IsHitTopRight() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
 	const float fPosY = GetPlayerLogicPositionY();
@@ -173,7 +173,7 @@ bool cPlayer::IsHitTopRight() const
 	return isHitTopRight;
 }
 /// @brief Check if player is hit by danger zone at bottom left corner
-bool cPlayer::IsHitBottomLeft() const
+bool hPlayer::IsHitBottomLeft() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
 	const float fPosY = GetPlayerLogicPositionY();
@@ -181,7 +181,7 @@ bool cPlayer::IsHitBottomLeft() const
 	return isHitBottomLeft;
 }
 /// @brief Check if player is hit by danger zone at bottom right corner
-bool cPlayer::IsHitBottomRight() const
+bool hPlayer::IsHitBottomRight() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
 	const float fPosY = GetPlayerLogicPositionY();
@@ -189,7 +189,7 @@ bool cPlayer::IsHitBottomRight() const
 	return isHitBottomRight;
 }
 /// @brief Check if player is hit by danger zone
-bool cPlayer::IsHit() const
+bool hPlayer::IsHit() const
 {
 	return IsHitTopLeft()
 		|| IsHitTopRight()
@@ -197,7 +197,7 @@ bool cPlayer::IsHit() const
 		|| IsHitBottomRight();
 }
 /// @brief Check if player is blocked by block zone at top left corner
-bool cPlayer::IsBlockedTopLeft() const
+bool hPlayer::IsBlockedTopLeft() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -205,7 +205,7 @@ bool cPlayer::IsBlockedTopLeft() const
 	return isBlockedTopLeft;
 }
 /// @brief Check if player is blocked by block zone at top right corner
-bool cPlayer::IsBlockedTopRight() const
+bool hPlayer::IsBlockedTopRight() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -213,7 +213,7 @@ bool cPlayer::IsBlockedTopRight() const
 	return isBlockedTopRight;
 }
 /// @brief Check if player is blocked by block zone at bottom left corner
-bool cPlayer::IsBlockedBottomLeft() const
+bool hPlayer::IsBlockedBottomLeft() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -221,7 +221,7 @@ bool cPlayer::IsBlockedBottomLeft() const
 	return isBlockedBottomLeft;
 }
 /// @brief Check if player is blocked by block zone at bottom right corner
-bool cPlayer::IsBlockedBottomRight() const
+bool hPlayer::IsBlockedBottomRight() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -229,7 +229,7 @@ bool cPlayer::IsBlockedBottomRight() const
 	return isBlockedBottomRight;
 }
 /// @brief Check if player is blocked by block zone
-bool cPlayer::IsBlocked() const
+bool hPlayer::IsBlocked() const
 {
 	return IsBlockedTopLeft()
 		|| IsBlockedTopRight()
@@ -237,7 +237,7 @@ bool cPlayer::IsBlocked() const
 		|| IsBlockedBottomRight();
 }
 /// @brief Check if player is win (go to next level)
-bool cPlayer::IsPlayerWin() const
+bool hPlayer::IsPlayerWin() const
 {
 	if (app->IsMoveUp() && !CanMoveUp()) {
 		return true;
@@ -251,22 +251,22 @@ bool cPlayer::IsPlayerWin() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Check if player can move left
-bool cPlayer::CanMoveLeft() const
+bool hPlayer::CanMoveLeft() const
 {
 	return fFrogAnimPosX > app_const::LEFT_BORDER;
 }
 /// @brief Check if player can move right
-bool cPlayer::CanMoveRight() const
+bool hPlayer::CanMoveRight() const
 {
 	return fFrogAnimPosX < app_const::RIGHT_BORDER;
 }
 /// @brief Check if player can move up
-bool cPlayer::CanMoveUp() const
+bool hPlayer::CanMoveUp() const
 {
 	return fFrogAnimPosY > app_const::TOP_BORDER;
 }
 /// @brief Check if player can move down
-bool cPlayer::CanMoveDown() const
+bool hPlayer::CanMoveDown() const
 {
 	return fFrogAnimPosY < app_const::BOTTOM_BORDER;
 }
@@ -275,17 +275,17 @@ bool cPlayer::CanMoveDown() const
 ///////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-cPlayer::Direction cPlayer::GetDirection() const
+hPlayer::Direction hPlayer::GetDirection() const
 {
 	return eDirection;
 }
 
-cPlayer::Animation cPlayer::GetAnimation() const
+hPlayer::Animation hPlayer::GetAnimation() const
 {
 	return eAnimation;
 }
 
-int cPlayer::GetFrameID(const frame_t frame) const
+int hPlayer::GetFrameID(const frame_t frame) const
 {
 	if (frame == frame4.GetLimit()) {
 		return frame4.GetID();
@@ -299,37 +299,37 @@ int cPlayer::GetFrameID(const frame_t frame) const
 	return 0;
 }
 
-std::string cPlayer::ShowFrameID(const frame_t frame) const
+std::string hPlayer::ShowFrameID(const frame_t frame) const
 {
 	return std::to_string(GetFrameID(frame));
 }
 
-float cPlayer::GetPlayerAnimationPositionX() const
+float hPlayer::GetPlayerAnimationPositionX() const
 {
 	return fFrogAnimPosX;
 }
 
-float cPlayer::GetPlayerAnimationPositionY() const
+float hPlayer::GetPlayerAnimationPositionY() const
 {
 	return fFrogAnimPosY;
 }
 
-float cPlayer::GetPlayerLogicPositionX() const
+float hPlayer::GetPlayerLogicPositionX() const
 {
 	return fFrogLogicPosX;
 }
 
-float cPlayer::GetPlayerLogicPositionY() const
+float hPlayer::GetPlayerLogicPositionY() const
 {
 	return fFrogLogicPosY;
 }
 
-float cPlayer::GetPlayerVelocityX() const
+float hPlayer::GetPlayerVelocityX() const
 {
 	return fFrogVelocityX;
 }
 
-float cPlayer::GetPlayerVelocityY() const
+float hPlayer::GetPlayerVelocityY() const
 {
 	return fFrogVelocityY;
 }
@@ -339,64 +339,64 @@ float cPlayer::GetPlayerVelocityY() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// Make the float [fValue] to only care about first [nDigits] digits after decimal points, others remain closest to ,...00000
-float cPlayer::FixFloat(float fValue, int nDigits)
+float hPlayer::FixFloat(float fValue, int nDigits)
 {
 	return ldexpf(roundf(ldexpf(fValue, nDigits)), -nDigits);
 }
 
-void cPlayer::SetDirection(Direction eNewDirection)
+void hPlayer::SetDirection(Direction eNewDirection)
 {
 	eDirection = eNewDirection;
 }
 
-void cPlayer::SetAnimation(Animation eNewAnimation)
+void hPlayer::SetAnimation(Animation eNewAnimation)
 {
 	eAnimation = eNewAnimation;
 }
 
-void cPlayer::SetPlayerVelocityX(float fVelocityX)
+void hPlayer::SetPlayerVelocityX(float fVelocityX)
 {
 	fFrogVelocityX = FixFloat(fVelocityX);
 }
 
-void cPlayer::SetPlayerVelocityY(float fVelocityY)
+void hPlayer::SetPlayerVelocityY(float fVelocityY)
 {
 	fFrogVelocityY = FixFloat(fVelocityY);
 }
 
-void cPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
+void hPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
 {
 	SetPlayerVelocityX(fVelocityX);
 	SetPlayerVelocityY(fVelocityY);
 }
 
-void cPlayer::SetPlayerAnimationPositionX(float fPositionX)
+void hPlayer::SetPlayerAnimationPositionX(float fPositionX)
 {
 	fFrogAnimPosX = FixFloat(fPositionX);
 }
 
-void cPlayer::SetPlayerAnimationPositionY(float fPositionY)
+void hPlayer::SetPlayerAnimationPositionY(float fPositionY)
 {
 	fFrogAnimPosY = FixFloat(fPositionY);
 }
 
-void cPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
+void hPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
 {
 	SetPlayerAnimationPositionX(fPositionX);
 	SetPlayerAnimationPositionY(fPositionY);
 }
 
-void cPlayer::SetPlayerLogicPositionX(float fPositionX)
+void hPlayer::SetPlayerLogicPositionX(float fPositionX)
 {
 	fFrogLogicPosX = FixFloat(fPositionX);
 }
 
-void cPlayer::SetPlayerLogicPositionY(float fPositionY)
+void hPlayer::SetPlayerLogicPositionY(float fPositionY)
 {
 	fFrogLogicPosY = FixFloat(fPositionY);
 }
 
-void cPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
+void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 {
 	SetPlayerLogicPositionX(fPositionX);
 	SetPlayerLogicPositionY(fPositionY);
@@ -406,7 +406,7 @@ void cPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 ////////////////////////////////////////// MOVEMENTS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool cPlayer::PlayerMoveX(float fFactorX, int nStep)
+bool hPlayer::PlayerMoveX(float fFactorX, int nStep)
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -421,7 +421,7 @@ bool cPlayer::PlayerMoveX(float fFactorX, int nStep)
 	return true;
 }
 
-bool cPlayer::PlayerMoveY(float fFactorY, int nStep)
+bool hPlayer::PlayerMoveY(float fFactorY, int nStep)
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
@@ -435,13 +435,13 @@ bool cPlayer::PlayerMoveY(float fFactorY, int nStep)
 	}
 	return true;
 }
-bool cPlayer::PlayerMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
+bool hPlayer::PlayerMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
 {
 	return PlayerMoveX(fFactorX * fFactorScale, nStep)
 		&& PlayerMoveY(fFactorY * fFactorScale, nStep);
 }
 /// @brief Check if Player successfully moved left (by key released)
-bool cPlayer::PlayerMoveLeft(float factor, bool forced)
+bool hPlayer::PlayerMoveLeft(float factor, bool forced)
 {
 	if ((forced || app->IsMoveLeft()) && CanMoveLeft()) {
 		PlayerMove(-1, 0, factor);
@@ -449,7 +449,7 @@ bool cPlayer::PlayerMoveLeft(float factor, bool forced)
 	return true;
 }
 /// @brief Check if Player successfully moved right (by key released)
-bool cPlayer::PlayerMoveRight(float factor, bool forced)
+bool hPlayer::PlayerMoveRight(float factor, bool forced)
 {
 	if ((forced || app->IsMoveRight()) && CanMoveRight()) {
 		PlayerMove(+1, 0, factor);
@@ -457,7 +457,7 @@ bool cPlayer::PlayerMoveRight(float factor, bool forced)
 	return true;
 }
 /// @brief Check if Player successfully moved up (by key released)
-bool cPlayer::PlayerMoveUp(float factor, bool forced)
+bool hPlayer::PlayerMoveUp(float factor, bool forced)
 {
 	if ((forced || app->IsMoveUp()) && CanMoveUp()) {
 		PlayerMove(0, -1, factor);
@@ -465,7 +465,7 @@ bool cPlayer::PlayerMoveUp(float factor, bool forced)
 	return true;
 }
 //// @brief Check if Player successfully moved down (by key released)
-bool cPlayer::PlayerMoveDown(float factor, bool forced)
+bool hPlayer::PlayerMoveDown(float factor, bool forced)
 {
 	if ((forced || app->IsMoveDown()) && CanMoveDown()) {
 		PlayerMove(0, +1, factor);
@@ -473,7 +473,7 @@ bool cPlayer::PlayerMoveDown(float factor, bool forced)
 	return true;
 }
 /// @brief Check if Player successfully moved (by key released)
-bool cPlayer::PlayerMoveTryAll(float factor, bool forced)
+bool hPlayer::PlayerMoveTryAll(float factor, bool forced)
 {
 	bool ok = true;
 	ok &= PlayerMoveLeft(factor, forced);
@@ -482,7 +482,7 @@ bool cPlayer::PlayerMoveTryAll(float factor, bool forced)
 	ok &= PlayerMoveDown(factor, forced);
 	return ok;
 }
-bool cPlayer::PlayerPlatformDetector(int nStep, float fFactor)
+bool hPlayer::PlayerPlatformDetector(int nStep, float fFactor)
 {
 	if (app->IsMoveRight() && app->IsKilled()) {
 		for (int step = 1; step <= nStep; ++step) {
@@ -514,7 +514,7 @@ bool cPlayer::PlayerPlatformDetector(int nStep, float fFactor)
 	}
 	return true;
 }
-bool cPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
+bool hPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
 {
 	const float fRealPosX = GetPlayerLogicPositionX();
 	const float fRealPosY = GetPlayerLogicPositionY();
@@ -531,7 +531,7 @@ bool cPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
 	}
 	return true;
 }
-bool cPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
+bool hPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
 {
 	const float fRealPosX = GetPlayerLogicPositionX();
 	const float fRealPosY = GetPlayerLogicPositionY();
@@ -548,7 +548,7 @@ bool cPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
 	}
 	return true;
 }
-bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
+bool hPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
 {
 	return PlayerPlatformMoveX(fFactorX * fFactorScale) && PlayerPlatformMoveY(fFactorY * fFactorScale);
 }
@@ -557,7 +557,7 @@ bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 ///////////////////////////////////////// LOGIC UPDATES ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool cPlayer::OnFixPlayerPosition()
+bool hPlayer::OnFixPlayerPosition()
 {
 	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
 	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
@@ -565,19 +565,19 @@ bool cPlayer::OnFixPlayerPosition()
 	return true;
 }
 
-bool cPlayer::OnUpdatePlayerIdle()
+bool hPlayer::OnUpdatePlayerIdle()
 {
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	return true;
 }
 
-bool cPlayer::OnUpdatePlayerJumpStart()
+bool hPlayer::OnUpdatePlayerJumpStart()
 {
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	return frame6.StartAnimation();
 }
 
-bool cPlayer::OnUpdatePlayerJumpContinue()
+bool hPlayer::OnUpdatePlayerJumpContinue()
 {
 	if (GetAnimation() == IDLE) {
 		return false;
@@ -607,7 +607,7 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 	return true;
 }
 
-bool cPlayer::OnUpdatePlayerJumpStop()
+bool hPlayer::OnUpdatePlayerJumpStop()
 {
 	OnFixPlayerPosition();
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
@@ -622,31 +622,31 @@ bool cPlayer::OnUpdatePlayerJumpStop()
 ///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool cPlayer::OnRenderPlayerIdle()
+bool hPlayer::OnRenderPlayerIdle()
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool cPlayer::OnRenderPlayerJumpStart()
+bool hPlayer::OnRenderPlayerJumpStart()
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool cPlayer::OnRenderPlayerJumpContinue()
+bool hPlayer::OnRenderPlayerJumpContinue()
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool cPlayer::OnRenderPlayerJumpStop() const
+bool hPlayer::OnRenderPlayerJumpStop() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool cPlayer::OnRenderPlayer() const
+bool hPlayer::OnRenderPlayer() const
 {
 	const int nID = frame6.GetAnimationID();
 	const bool isValidID = frame6.IsValidID(nID);
@@ -670,7 +670,7 @@ bool cPlayer::OnRenderPlayer() const
 	return true;
 }
 
-bool cPlayer::OnRenderPlayerDeath()
+bool hPlayer::OnRenderPlayerDeath()
 {
 	for (int id = 1; id <= 6; ++id) {
 		const std::string froggy_name = "froggy_death" + std::to_string(id);;
@@ -699,7 +699,7 @@ bool cPlayer::OnRenderPlayerDeath()
 ///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool cPlayer::OnPlayerMove()
+bool hPlayer::OnPlayerMove()
 {
 	if (IsPlayerIdling()) {
 		if (app->IsMoveLeft()) {
@@ -740,7 +740,7 @@ bool cPlayer::OnPlayerMove()
 	return true;
 }
 
-bool cPlayer::OnUpdateFrame(float fTickTime)
+bool hPlayer::OnUpdateFrame(float fTickTime)
 {
 	frame4.UpdateFrame(fTickTime, app->GetFrameDelay());
 	frame6.UpdateFrame(fTickTime, app->GetFrameDelay());

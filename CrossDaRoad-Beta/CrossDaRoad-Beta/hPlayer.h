@@ -8,13 +8,13 @@ class cApp;
 class cZone;
 
 /**
- * @file cPlayer.h
+ * @file hPlayer.h
  *
  * @brief Contains player class
  *
  * This file contains player class for player management, movement, and rendering.
 **/
-class cPlayer
+class hPlayer
 {
 public:
 	enum Direction
@@ -58,9 +58,9 @@ private:
 	cApp* app;
 
 public: // Constructors & Destructor
-	cPlayer();
-	cPlayer(cApp* app);
-	~cPlayer();
+	hPlayer();
+	hPlayer(cApp* app);
+	~hPlayer();
 
 public: // Reseters
 	void ResetDirection();

@@ -1,5 +1,5 @@
-#ifndef C_MAP_DRAWER_H
-#define C_MAP_DRAWER_H
+#ifndef H_MAP_DRAWER_H
+#define H_MAP_DRAWER_H
 
 #include "cMapLane.h"
 #include "cMapObject.h"
@@ -7,15 +7,15 @@
 // Forward declaration
 class cApp;
 
-class cMapDrawer
+class hMapDrawer
 {
 private:
 	cApp* app;
 
 public:
-	cMapDrawer();
-	cMapDrawer(cApp* app);
-	~cMapDrawer();
+	hMapDrawer();
+	hMapDrawer(cApp* app);
+	~hMapDrawer();
 
 public: 
 	bool SetupTarget(cApp* app);
@@ -29,4 +29,4 @@ public: // Drawers
 	bool DrawAllLanes();
 };
 
-#endif // C_MAP_DRAWER_H
+#endif // H_MAP_DRAWER_H

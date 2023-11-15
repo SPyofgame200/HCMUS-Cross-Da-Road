@@ -14,8 +14,8 @@
 /// @brief Default constructor init menu and game
 cApp::cApp()
 {
-	Player = cPlayer(this);
-	MapDrawer = cMapDrawer(this);
+	Player = hPlayer(this);
+	MapDrawer = hMapDrawer(this);
 	Menu.InitMenu();
 	GameInit();
 }
