@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cAssetManager.cpp" />
+    <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="cMapDrawer.cpp" />
     <ClCompile Include="cMapEditor.cpp" />
     <ClCompile Include="cMapLane.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cAssetManager.h" />
+    <ClInclude Include="cFrame.h" />
     <ClInclude Include="cMapDrawer.h" />
     <ClInclude Include="cMapEditor.h" />
     <ClInclude Include="cMapLane.h" />
