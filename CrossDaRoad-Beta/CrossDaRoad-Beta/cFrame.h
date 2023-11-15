@@ -22,15 +22,28 @@ public: /// Constructors & Destructor
         nVal = 0;
     }
 
-public:
-    int GetID()
+public: /// Initialization & Clean-up
+    bool Reset()
+    {
+        nID = 0;
+        nVal = 0;
+        return true;
+    }
+
+public: /// Getters
+    int GetID() const
     {
         return nID;
     }
 
-    int GetVal()
+    int GetVal() const
     {
         return nVal;
+    }
+
+    int GetLimit() const
+    {
+        return static_cast<int>(FRAME_LIMIT);
     }
 
 public: /// Setters

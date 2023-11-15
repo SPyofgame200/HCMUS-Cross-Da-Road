@@ -50,13 +50,9 @@ void cPlayer::ResetDirection()
 /// @brief Reset player animation
 void cPlayer::ResetAnimation()
 {
-	frame4_id = 0;
-	frame4_id_limit = 4;
-	frame4_val = 0;
-
-	frame6_id = 0;
-	frame6_id_limit = 6;
-	frame6_val = 0;
+	frame4.Reset();
+	frame6.Reset();
+	frame8.Reset();
 
 	frame6_id_animation = 0;
 	frame6_id_animation_safe = 6;
@@ -137,7 +133,7 @@ bool cPlayer::IsPlayerIdling() const
 
 bool cPlayer::IsPlayerLanding() const
 {
-	return frame6_id_animation > frame6_id_limit;
+	return frame6_id_animation > frame6.GetLimit();
 }
 
 bool cPlayer::IsPlayerCollisionSafe() const
@@ -302,14 +298,14 @@ float cPlayer::GetFrameTick(const frame_t frame, const float fTickRate) const
 
 int cPlayer::GetFrameID(const frame_t frame) const
 {
-	if (frame == frame4_id_limit) {
-		return frame4_id;
+	if (frame == frame4.GetLimit()) {
+		return frame4.GetID();
 	}
-	else if (frame == frame6_id_limit) {
-		return frame6_id;
+	else if (frame == frame6.GetLimit()) {
+		return frame6.GetID();
 	}
-	else if (frame == frame8_id_limit) {
-		return frame8_id;
+	else if (frame == frame8.GetLimit()) {
+		return frame8.GetID();
 	}
 	return 0;
 }
@@ -585,25 +581,25 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 	if (GetAnimation() == IDLE) {
 		return false;
 	}
-	if (frame6_val_animation_cur < frame6_val) {
-		frame6_val_animation_cur = frame6_val;
+	if (frame6_val_animation_cur < frame6.GetVal()) {
+		frame6_val_animation_cur = frame6.GetVal();
 		if (GetDirection() == LEFT) {
-			if (!PlayerMoveLeft(1.0f / frame6_id_limit, true)) {
+			if (!PlayerMoveLeft(1.0f / frame6.GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == RIGHT) {
-			if (!PlayerMoveRight(1.0f / frame6_id_limit, true)) {
+			if (!PlayerMoveRight(1.0f / frame6.GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!PlayerMoveUp(1.0f / frame6_id_limit, true)) {
+			if (!PlayerMoveUp(1.0f / frame6.GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!PlayerMoveDown(1.0f / frame6_id_limit, true)) {
+			if (!PlayerMoveDown(1.0f / frame6.GetLimit(), true)) {
 				return false;
 			}
 		}
@@ -635,8 +631,8 @@ bool cPlayer::OnRenderPlayerIdle()
 
 bool cPlayer::OnRenderPlayerJumpStart()
 {
-	frame6_val_animation_last = frame6_val;
-	frame6_id_animation = (frame6_val - frame6_val_animation_last + 1);
+	frame6_val_animation_last = frame6.GetVal();
+	frame6_id_animation = (frame6.GetVal() - frame6_val_animation_last + 1);
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	OnRenderPlayer();
 	return true;
@@ -644,7 +640,7 @@ bool cPlayer::OnRenderPlayerJumpStart()
 
 bool cPlayer::OnRenderPlayerJumpContinue()
 {
-	frame6_id_animation = (frame6_val - frame6_val_animation_last + 1);
+	frame6_id_animation = (frame6.GetVal() - frame6_val_animation_last + 1);
 	OnRenderPlayer();
 	return true;
 }
@@ -657,7 +653,7 @@ bool cPlayer::OnRenderPlayerJumpStop() const
 
 bool cPlayer::OnRenderPlayer() const
 {
-	const bool isValidID = (1 <= frame6_id_animation && frame6_id_animation <= frame6_id_limit);
+	const bool isValidID = (1 <= frame6_id_animation && frame6_id_animation <= frame6.GetLimit());
 	const bool isLeft = (IsLeftDirection());
 	const bool isJump = (IsPlayerJumping()) && (isValidID);
 	const std::string froggy_state = std::string(isJump ? "_jump" : "");
@@ -749,12 +745,12 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame4_id_limit)));
-	frame6_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame6_id_limit)));
-	frame8_val = static_cast<int>(std::floor(fTickTime / GetFrameTick(frame8_id_limit)));
-	frame4_id = frame4_val % frame4_id_limit + 1;
-	frame6_id = frame6_val % frame6_id_limit + 1;
-	frame8_id = frame8_val % frame8_id_limit + 1;
+	frame4.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame4.GetLimit()))) );
+	frame6.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame6.GetLimit()))) );
+	frame8.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame8.GetLimit()))) );
+	frame4.SetID( frame4.GetVal() % frame4.GetLimit() + 1);
+	frame6.SetID( frame6.GetVal() % frame6.GetLimit() + 1 );
+	frame8.SetID( frame8.GetVal() % frame8.GetLimit() + 1 );
 	return true;
 }
 

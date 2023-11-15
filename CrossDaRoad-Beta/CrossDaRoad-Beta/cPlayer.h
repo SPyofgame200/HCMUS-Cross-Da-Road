@@ -2,6 +2,7 @@
 #define C_PLAYER_H
 
 #include <string>
+#include "cFrame.h"
 #include "uAppConst.h"
 class cApp;
 class cZone;
@@ -43,18 +44,10 @@ private:
 	float fFrogLogicPosY;
 
 private:
-	frame_t frame4_id;
-	frame_t frame4_id_limit;
-	frame_t frame4_val;
+	frame4_t frame4;
+	frame6_t frame6;
+	frame8_t frame8;
 
-	frame_t frame6_id;
-	frame_t frame6_id_limit;
-	frame_t frame6_val;
-
-	frame_t frame8_id;
-	frame_t frame8_id_limit;
-	frame_t frame8_val;
-	
 	frame_t frame6_id_animation;
 	frame_t frame6_id_animation_safe;
 	frame_t frame6_val_animation_cur;
