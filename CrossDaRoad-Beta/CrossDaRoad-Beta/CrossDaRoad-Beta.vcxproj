@@ -191,6 +191,14 @@
     <Text Include="data\maps\map4.txt" />
     <Text Include="data\maps\mapNames.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\commentStandard.md" />
+    <None Include="docs\codingStandard.md" />
+    <None Include="docs\projectStandard.md" />
+    <None Include="docs\mapStandard.md" />
+    <None Include="docs\README.md" />
+    <None Include="docs\todo.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
