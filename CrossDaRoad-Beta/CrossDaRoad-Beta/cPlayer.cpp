@@ -740,14 +740,9 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4.SetVal( static_cast<int>(std::floor(fTickTime / frame4.GetFrameTick(app->GetFrameDelay()))) );
-	frame4.SetID( frame4.GetVal() % frame4.GetLimit() + 1 );
-	
-	frame6.SetVal(static_cast<int>(std::floor(fTickTime / frame6.GetFrameTick(app->GetFrameDelay()))) );
-	frame6.SetID( frame6.GetVal() % frame6.GetLimit() + 1 );
-	
-	frame8.SetVal( static_cast<int>(std::floor(fTickTime / frame8.GetFrameTick(app->GetFrameDelay()))) );
-	frame8.SetID( frame8.GetVal() % frame8.GetLimit() + 1 );
+	frame4.Update(fTickTime, app->GetFrameDelay());
+	frame6.Update(fTickTime, app->GetFrameDelay());
+	frame8.Update(fTickTime, app->GetFrameDelay());
 	return true;
 }
 

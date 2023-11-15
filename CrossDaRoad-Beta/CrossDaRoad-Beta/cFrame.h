@@ -61,6 +61,15 @@ public: /// Setters
     {
         nVal = val;
     }
+
+public: /// Updaters
+    bool Update(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
+    {
+        float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
+        nVal = static_cast<int>(std::floor(fTickTime / fFrameTick));
+        nID = nVal % FRAME_LIMIT + 1;
+        return true;
+    }
 };
 
 using frame4_t = cFrame<4>;
