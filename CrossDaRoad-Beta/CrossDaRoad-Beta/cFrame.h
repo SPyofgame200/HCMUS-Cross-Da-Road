@@ -8,6 +8,7 @@ class cFrame
 {
 public:
     float fVal;
+    float fStart;
 
 public: /// Constructors & Destructor
     cFrame(float val = 0)
@@ -71,10 +72,24 @@ public: /// Setters
     }
 
 public: /// Updaters
-    bool Update(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
+    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
     {
         float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
         SetVal(fTickTime / fFrameTick);
+        return true;
+    }
+
+public: /// Animations
+    bool StartAnimation()
+    {
+        return true;
+    }
+    bool NextAnimation()
+    {
+        return true;
+    }
+    bool StopAnimation()
+    {
         return true;
     }
 };

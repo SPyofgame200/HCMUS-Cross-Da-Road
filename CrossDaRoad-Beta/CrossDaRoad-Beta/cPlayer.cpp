@@ -648,7 +648,7 @@ bool cPlayer::OnRenderPlayerJumpStop() const
 
 bool cPlayer::OnRenderPlayer() const
 {
-	const bool isValidID = (1 <= frame6_id_animation && frame6_id_animation <= frame6.GetLimit());
+	const bool isValidID = frame6.IsValidID(frame6_id_animation);
 	const bool isLeft = (IsLeftDirection());
 	const bool isJump = (IsPlayerJumping()) && (isValidID);
 	const std::string froggy_state = std::string(isJump ? "_jump" : "");
@@ -740,9 +740,9 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4.Update(fTickTime, app->GetFrameDelay());
-	frame6.Update(fTickTime, app->GetFrameDelay());
-	frame8.Update(fTickTime, app->GetFrameDelay());
+	frame4.UpdateFrame(fTickTime, app->GetFrameDelay());
+	frame6.UpdateFrame(fTickTime, app->GetFrameDelay());
+	frame8.UpdateFrame(fTickTime, app->GetFrameDelay());
 	return true;
 }
 
