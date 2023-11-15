@@ -557,12 +557,24 @@ bool cPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 ///////////////////////////////////////// LOGIC UPDATES ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool cPlayer::OnUpdatePlayerLane()
+bool cPlayer::OnFixPlayerPosition()
 {
 	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
 	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
 	SetPlayerAnimationPosition(fFixedX, fFixedY);
 	return true;
+}
+
+bool cPlayer::OnUpdatePlayerIdle()
+{
+	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
+	return true;
+}
+
+bool cPlayer::OnUpdatePlayerJumpStart()
+{
+	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
+	return frame6.StartAnimation();
 }
 
 bool cPlayer::OnUpdatePlayerJumpContinue()
@@ -597,7 +609,7 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 
 bool cPlayer::OnUpdatePlayerJumpStop()
 {
-	OnUpdatePlayerLane();
+	OnFixPlayerPosition();
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	if (GetAnimation() == JUMP) {
 		SetAnimation(IDLE);
@@ -612,15 +624,12 @@ bool cPlayer::OnUpdatePlayerJumpStop()
 
 bool cPlayer::OnRenderPlayerIdle()
 {
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	OnRenderPlayer();
 	return true;
 }
 
 bool cPlayer::OnRenderPlayerJumpStart()
 {
-	frame6.StartAnimation();
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	OnRenderPlayer();
 	return true;
 }
@@ -711,6 +720,7 @@ bool cPlayer::OnPlayerMove()
 		}
 
 		if (IsPlayerJumping()) {
+			OnUpdatePlayerJumpStart();
 			OnRenderPlayerJumpStart();
 		}
 		else {

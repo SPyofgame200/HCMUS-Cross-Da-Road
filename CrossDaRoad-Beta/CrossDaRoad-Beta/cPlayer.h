@@ -140,8 +140,12 @@ public: // Movements
 	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
 	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 
+public: /// Validators & Fixers
+	bool OnFixPlayerPosition();
+
 public: // Logic Updater
-	bool OnUpdatePlayerLane();
+	bool OnUpdatePlayerIdle();
+	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue();
 	bool OnUpdatePlayerJumpStop();
 
