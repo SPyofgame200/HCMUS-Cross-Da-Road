@@ -3,42 +3,55 @@
 
 #include <iostream>
 
-template<const size_t FRAME_LIMIT>
+template<const size_t FRAME_LIMIT, const int ID_BASE = 1>
 class cFrame
 {
 public:
-    int nID;
-    int nVal;
+    float fVal;
 
 public: /// Constructors & Destructor
-    cFrame(int id = 0, int val = 0)
-        : nID(id), nVal(val) {}
+    cFrame(float val = 0)
+        : fVal(val) {}
 
     ~cFrame()
     {
         std::cerr << "cFrame<size=" << FRAME_LIMIT << "> got destructed: ";
-        std::cerr << "properties{ nID=" << nID << ",nVal=" << nVal << " }" << std::endl;
-        nID = 0;
-        nVal = 0;
+        std::cerr << "properties{ fVal=" << fVal << " }" << std::endl;
+        fVal = 0;
     }
 
 public: /// Initialization & Clean-up
     bool Reset()
     {
-        nID = 0;
-        nVal = 0;
+        fVal = 0;
         return true;
+    }
+
+public: /// Checkers & Validators
+    bool IsValidID(int nID) const
+    {
+        return (GetMinID() <= nID) && (nID <= GetMaxID());
     }
 
 public: /// Getters
     int GetID() const
     {
-        return nID;
+        return GetTickID() % FRAME_LIMIT + ID_BASE;
     }
 
-    int GetVal() const
+    int GetTickID() const
     {
-        return nVal;
+        return static_cast<int>(fVal);
+    }
+
+    int GetMinID() const
+    {
+        return ID_BASE;
+    }
+
+    int GetMaxID() const
+    {
+        return ID_BASE + FRAME_LIMIT - 1;
     }
 
     int GetLimit() const
@@ -52,22 +65,16 @@ public: /// Getters
     }
 
 public: /// Setters
-    void SetID(int id)
+    void SetVal(float val)
     {
-        nID = id;
-    }
-
-    void SetVal(int val)
-    {
-        nVal = val;
+        fVal = val;
     }
 
 public: /// Updaters
     bool Update(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
     {
         float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
-        nVal = static_cast<int>(std::floor(fTickTime / fFrameTick));
-        nID = nVal % FRAME_LIMIT + 1;
+        SetVal(fTickTime / fFrameTick);
         return true;
     }
 };

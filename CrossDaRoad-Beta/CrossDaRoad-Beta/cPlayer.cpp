@@ -576,8 +576,8 @@ bool cPlayer::OnUpdatePlayerJumpContinue()
 	if (GetAnimation() == IDLE) {
 		return false;
 	}
-	if (frame6_val_animation_cur < frame6.GetVal()) {
-		frame6_val_animation_cur = frame6.GetVal();
+	if (frame6_val_animation_cur < frame6.GetTickID()) {
+		frame6_val_animation_cur = frame6.GetTickID();
 		if (GetDirection() == LEFT) {
 			if (!PlayerMoveLeft(1.0f / frame6.GetLimit(), true)) {
 				return false;
@@ -626,8 +626,8 @@ bool cPlayer::OnRenderPlayerIdle()
 
 bool cPlayer::OnRenderPlayerJumpStart()
 {
-	frame6_val_animation_last = frame6.GetVal();
-	frame6_id_animation = (frame6.GetVal() - frame6_val_animation_last + 1);
+	frame6_val_animation_last = frame6.GetTickID();
+	frame6_id_animation = (frame6.GetTickID() - frame6_val_animation_last + 1);
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	OnRenderPlayer();
 	return true;
@@ -635,7 +635,7 @@ bool cPlayer::OnRenderPlayerJumpStart()
 
 bool cPlayer::OnRenderPlayerJumpContinue()
 {
-	frame6_id_animation = (frame6.GetVal() - frame6_val_animation_last + 1);
+	frame6_id_animation = (frame6.GetTickID() - frame6_val_animation_last + 1);
 	OnRenderPlayer();
 	return true;
 }
