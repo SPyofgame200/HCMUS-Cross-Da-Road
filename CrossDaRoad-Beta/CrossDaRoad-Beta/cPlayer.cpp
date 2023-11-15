@@ -291,11 +291,6 @@ cPlayer::Animation cPlayer::GetAnimation() const
 	return eAnimation;
 }
 
-float cPlayer::GetFrameTick(const frame_t frame, const float fTickRate) const
-{
-	return (24.0f / frame) / (app->GetFrameDelay() * fTickRate);
-}
-
 int cPlayer::GetFrameID(const frame_t frame) const
 {
 	if (frame == frame4.GetLimit()) {
@@ -745,11 +740,13 @@ bool cPlayer::OnPlayerMove()
 
 bool cPlayer::OnUpdateFrame(float fTickTime)
 {
-	frame4.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame4.GetLimit()))) );
-	frame6.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame6.GetLimit()))) );
-	frame8.SetVal( static_cast<int>(std::floor(fTickTime / GetFrameTick(frame8.GetLimit()))) );
-	frame4.SetID( frame4.GetVal() % frame4.GetLimit() + 1);
+	frame4.SetVal( static_cast<int>(std::floor(fTickTime / frame4.GetFrameTick(app->GetFrameDelay()))) );
+	frame4.SetID( frame4.GetVal() % frame4.GetLimit() + 1 );
+	
+	frame6.SetVal(static_cast<int>(std::floor(fTickTime / frame6.GetFrameTick(app->GetFrameDelay()))) );
 	frame6.SetID( frame6.GetVal() % frame6.GetLimit() + 1 );
+	
+	frame8.SetVal( static_cast<int>(std::floor(fTickTime / frame8.GetFrameTick(app->GetFrameDelay()))) );
 	frame8.SetID( frame8.GetVal() % frame8.GetLimit() + 1 );
 	return true;
 }

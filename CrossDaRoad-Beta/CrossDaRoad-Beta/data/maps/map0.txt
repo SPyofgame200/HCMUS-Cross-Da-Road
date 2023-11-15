@@ -1,7 +1,7 @@
 wwwhhwwwhhwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 
-..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
 .....t........................t.............................t... -25.0 
-....asd.......asd....asd..........asd........asd.......asd......  3.0 
+.....t........................t.............................t... -25.0 
+..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
 ..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
 pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0 
 ,,,jllk,,jllllk,,,,,,,jllk,,,,,ii,,,jlllk,,,,jllllk,,,,jlllk,,,, -8.0 

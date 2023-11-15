@@ -46,6 +46,11 @@ public: /// Getters
         return static_cast<int>(FRAME_LIMIT);
     }
 
+    float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f) const
+    {
+        return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
+    }
+
 public: /// Setters
     void SetID(int id)
     {

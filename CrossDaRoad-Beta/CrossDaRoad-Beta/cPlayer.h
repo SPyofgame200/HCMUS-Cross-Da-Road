@@ -106,7 +106,6 @@ public: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
-	float GetFrameTick(frame_t frame, const float fTickRate = 0.01) const;
 	int GetFrameID(frame_t frame) const;
 	std::string ShowFrameID(frame_t frame) const;
 	float GetPlayerAnimationPositionX() const;
