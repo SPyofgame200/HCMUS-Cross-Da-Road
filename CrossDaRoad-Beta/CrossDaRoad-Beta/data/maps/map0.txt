@@ -1,6 +1,6 @@
 wwwhhwwwhhwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 
 .....t........................t.............................t... -25.0 
-.....t........................t.............................t... -25.0 
+.....asd..........asd.......asd........asd................asd...  6.0 
 ..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
 ..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
 pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0 
@@ -11,13 +11,13 @@ pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 #
 $ a sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=0
+: spriteX=0 spriteY=0 id=6
 $ s sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
-: spriteX=1 spriteY=0
+: spriteX=1 spriteY=0 id=6
 $ d sprite=crocodile background=soil
 : block=false danger=true platformspeed=0.0
-: spriteX=2 spriteY=0
+: spriteX=2 spriteY=0 id=6
 $ z sprite=crocodile_right background=soil
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0

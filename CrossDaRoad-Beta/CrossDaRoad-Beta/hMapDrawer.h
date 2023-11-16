@@ -12,21 +12,25 @@ class hMapDrawer
 private:
 	cApp* app;
 
-public:
+public: // Constructors & Destructor
 	hMapDrawer();
 	hMapDrawer(cApp* app);
 	~hMapDrawer();
 
-public: 
+public: // Setters
 	bool SetupTarget(cApp* app);
+
+public: // Getters
 	int GetStartPos(const cMapLane& lane) const;
 	int GetCellOffset(const cMapLane& lane) const;
-	bool DrawLane(const cMapLane& lane);
-	bool DrawObject(char graphic, int nCellOffset, int nRow, int nCol);
-	bool DrawBackground(char graphic, int nCellOffset, int nRow, int nCol);
+
+private: // Drawer helpers
+	bool DrawLane(const cMapLane& lane) const;
+	bool DrawObject(char graphic, int nCellOffset, int nRow, int nCol) const;
+	bool DrawBackground(char graphic, int nCellOffset, int nRow, int nCol) const;
 
 public: // Drawers
-	bool DrawAllLanes();
+	bool DrawAllLanes() const;
 };
 
 #endif // H_MAP_DRAWER_H

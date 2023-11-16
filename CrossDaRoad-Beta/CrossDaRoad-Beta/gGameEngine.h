@@ -79,9 +79,11 @@ namespace app
 		Pixel::Mode GetPixelMode() const;
 		void SetPixelMode(Pixel::Mode m);
 		void SetBlendFactor(float fBlend);
+		bool SetDefaultTargetSize(int32_t width, int32_t height);
 		bool Draw(int32_t x, int32_t y, Pixel current_pixel = app::WHITE, uint32_t uScale = 1);
 		void DrawSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, uint32_t uScale = 1);
 		void DrawPartialSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, int32_t nOriginX, int32_t nOriginY, int32_t nWidth, int32_t nHeight, uint32_t uScale = 1);
+		void DrawPartialSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, int32_t nOriginX, int32_t nOriginY);
 		void Clear(Pixel p = app::BLACK) const;
 
 	public: // Engine Customization

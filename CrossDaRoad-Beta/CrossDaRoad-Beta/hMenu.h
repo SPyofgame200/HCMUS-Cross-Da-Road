@@ -72,6 +72,9 @@ public: // Initialization & Clean-up
 
 public: // Managements
 	bool OpenMenu();
+
+private: // Management helpers
+
 	bool LoadAppOption();
 	bool LoadPauseOption();
 	bool CloseMenu() const;
@@ -82,19 +85,23 @@ public: // Checkers
 public: // Validators
 	static int FixOption(int& value, int limit);
 
-public: // Updaters
+private: // Updater helpers
 	bool UpdateAppMenu();
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
+
+public: // Updaters
 	bool UpdatePausing();
 	bool Update(float fElapsedTime);
 
-public: // Renderers
+private: // Renderer helpers
 	bool RenderAppMenu();
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
+
+public: // Renderers
 	bool RenderPausing() const;
 	bool Render();
 };

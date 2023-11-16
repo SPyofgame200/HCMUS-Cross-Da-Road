@@ -40,7 +40,7 @@ namespace app
 		Sprite(int32_t w, int32_t h);
 		~Sprite();
 
-	public: // Loaders & Savers
+	private: // Loaders & Savers
 		engine::Code ReadData(std::istream& is);
 		engine::Code LoadFromFile(const std::string& s_image_file, app::ResourcePack* pack = nullptr);
 		static engine::Code GetSpriteStream(std::istream& stream, const std::string& sImageFile, app::ResourcePack* pack);

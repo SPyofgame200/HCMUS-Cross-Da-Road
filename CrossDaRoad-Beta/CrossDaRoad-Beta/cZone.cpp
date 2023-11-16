@@ -163,7 +163,7 @@ bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
 /// @param graphic graphic to fill
 /// @param danger_pattern danger pattern to check if graphic is danger or not
 /// @return number of danger pixels filled
-int cZone::FillDanger(const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY, const char& graphic, const char* danger_pattern) const
+int cZone::FillDanger(const char& graphic, const char* danger_pattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
 {
 
 	int counter = 0;
@@ -182,7 +182,7 @@ int cZone::FillDanger(const int nTopLeftX, const int nTopLeftY, const int nBotto
 /// @param graphic graphic to fill
 /// @param danger_pattern danger pattern to check if graphic is danger or not
 /// @return number of safe pixels filled
-int cZone::FillSafe(const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY, const char& graphic, const char* danger_pattern) const
+int cZone::FillSafe(const char& graphic, const char* danger_pattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -200,7 +200,7 @@ int cZone::FillSafe(const int nTopLeftX, const int nTopLeftY, const int nBottomR
 /// @param graphic graphic to fill
 /// @param block_pattern block pattern to check if graphic is block or not
 /// @return number of block pixels filled
-int cZone::FillBlocked(const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY, const char& graphic, const char* block_pattern) const
+int cZone::FillBlocked(const char& graphic, const char* block_pattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -218,7 +218,7 @@ int cZone::FillBlocked(const int nTopLeftX, const int nTopLeftY, const int nBott
 /// @param graphic graphic to fill
 /// @param block_pattern block pattern to check if graphic is block or not
 /// @return number of unblock pixels filled
-int cZone::FillUnblocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* block_pattern) const
+int cZone::FillUnblocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {

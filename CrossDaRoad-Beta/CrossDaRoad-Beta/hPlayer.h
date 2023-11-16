@@ -62,15 +62,17 @@ public: // Constructors & Destructor
 	hPlayer(cApp* app);
 	~hPlayer();
 
-public: // Reseters
+private: // Reseter helpers
 	void ResetDirection();
 	void ResetAnimation();
 	void ResetPosition();
 	void ResetVelocity();
-	void Reset();
 	void SetupTarget(cApp* app);
 
-public: // Checkers
+public: // Reseters
+	void Reset();
+
+private: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
 	bool IsLeftDirection() const;
@@ -78,23 +80,28 @@ public: // Checkers
 	bool IsPlayerJumping() const;
 	bool IsPlayerIdling() const;
 	bool IsPlayerLanding() const;
+
+public: // Checkers
 	bool IsPlayerCollisionSafe() const;
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
 
-public: // Collision Detection
+private: // Collision Detection helpers
 	bool IsHitTopLeft() const;
 	bool IsHitTopRight() const;
 	bool IsHitBottomLeft() const;
 	bool IsHitBottomRight() const;
-	bool IsHit() const;
+
 	bool IsBlockedTopLeft() const;
 	bool IsBlockedTopRight() const;
 	bool IsBlockedBottomLeft() const;
 	bool IsBlockedBottomRight() const;
+
+public: // Collision Detection
+	bool IsHit() const;
 	bool IsBlocked() const;
 
-public: // Validators
+private: // Validators
 	bool CanMoveLeft() const;
 	bool CanMoveRight() const;
 	bool CanMoveUp() const;
@@ -135,25 +142,29 @@ public: // Movements
 	bool PlayerMoveUp(float factor = 1, bool forced = false);
 	bool PlayerMoveDown(float factor = 1, bool forced = false);
 	bool PlayerMoveTryAll(float factor = 1, bool forced = false);
-	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
 	bool PlayerPlatformMoveX(float fFactorX, int nStep = 16);
 	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
+
+public: // Movements
+	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
 	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 
-public: /// Validators & Fixers
+private: // Validators & Fixers
 	bool OnFixPlayerPosition();
 
-public: // Logic Updater
+private: // Logic Updater
 	bool OnUpdatePlayerIdle();
 	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue();
 	bool OnUpdatePlayerJumpStop();
 
-public: // Player Renderer
-	bool OnRenderPlayerIdle();
-	bool OnRenderPlayerJumpStart();
-	bool OnRenderPlayerJumpContinue();
+private: // Player Renderer 
+	bool OnRenderPlayerIdle() const;
+	bool OnRenderPlayerJumpStart() const;
+	bool OnRenderPlayerJumpContinue() const;
 	bool OnRenderPlayerJumpStop() const;
+
+public: // Player Renderers
 	bool OnRenderPlayer() const;
 	bool OnRenderPlayerDeath();
 

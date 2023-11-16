@@ -43,11 +43,13 @@ public: // Constructor & Destruct functions
 	void Init();
 	void Destruct();
 
-public: // Game Update
+private: // Game Update
 	void MapClear();
+	void UpdatePattern();
+
+public: // Game update
 	void NextLevel();
 	void PrevLevel();
-	void UpdatePattern();
 
 public: // Getters
 	int GetMapLevel() const;
@@ -73,14 +75,16 @@ public: // Setters
 	bool SetSpriteData(const MapObject& data);
 	bool SetMapLevel(int MapLevel);
 
-public: // Loaders
+private: // Loaders
 	bool LoadMapLane(const std::string& sLine, int nLineID = 0, bool bDebug = false);
 	bool LoadMapSprite(const std::string& sLine, bool bDebug = false);
 	bool LoadMapName(const std::string& sFileName);
 	bool LoadMapLevel(const int& nMapLevel);
+
+public: // Loaders
 	bool LoadMapLevel();
 
-public: // Utilities
+private: // Utilities
 	static float ExtractTime(const std::string& timeStr);
 };
 

@@ -634,19 +634,19 @@ bool hPlayer::OnUpdatePlayerJumpStop()
 ///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool hPlayer::OnRenderPlayerIdle()
+bool hPlayer::OnRenderPlayerIdle() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool hPlayer::OnRenderPlayerJumpStart()
+bool hPlayer::OnRenderPlayerJumpStart() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool hPlayer::OnRenderPlayerJumpContinue()
+bool hPlayer::OnRenderPlayerJumpContinue() const
 {
 	OnRenderPlayer();
 	return true;

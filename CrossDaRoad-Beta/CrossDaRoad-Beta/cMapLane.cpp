@@ -60,7 +60,7 @@ int cMapLane::GetStartPos(float fCurrentTime) const
 
 int cMapLane::GetCellOffset(int nCellSize, float fCurrentTime) const
 {
-	float fCellOffset = nCellSize * GetLaneOffset(fCurrentTime);
+	const float fCellOffset = nCellSize * GetLaneOffset(fCurrentTime);
 	return static_cast<int>(fCellOffset) % nCellSize;
 }
 
@@ -69,16 +69,16 @@ char cMapLane::GetLaneGraphic(int nPos, bool bWrapAroundPosition) const
 	if (bWrapAroundPosition) {
 		FixValue(nPos, GetLaneSize());
 	}
-	char cGraphic = sLane[nPos];
+	const char cGraphic = sLane[nPos];
 	return cGraphic;
 }
 
-int cMapLane::FixValue(int& nValue, const size_t nLimit) const
+int cMapLane::FixValue(int& nValue, const size_t nLimit)
 {
 	return FixValue(nValue, static_cast<int>(nLimit));
 }
 
-int cMapLane::FixValue(int& nValue, const int nLimit) const
+int cMapLane::FixValue(int& nValue, const int nLimit)
 {
 	if (abs(nValue) >= nLimit) {
 		nValue %= nLimit;

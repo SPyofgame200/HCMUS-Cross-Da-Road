@@ -23,11 +23,12 @@ public: // Constructors & Destructor
 	cZone(int nWidth, int nHeight);
 	~cZone();
 
-public: // Constructor functions
+private: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock);
+public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
-public: // Checkers
+private: // Checkers
 	static bool IsDanger(const char& graphic, const char* danger_pattern);
 	static bool IsSafe(const char& graphic, const char* danger_pattern);
 	static bool IsBlocked(const char& graphic, const char* block_pattern);
@@ -39,10 +40,10 @@ public: // Setters
 	bool SetBlock(int nPosX, int nPosY, bool bValue) const;
 
 public: // Fillers
-	int FillDanger(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillSafe(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillBlocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillUnblocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
+	int FillDanger(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillSafe(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillBlocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillUnblocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
 
 public: // Danger Zone Checkers
 	bool IsDangerPixel(float x, float y) const;
