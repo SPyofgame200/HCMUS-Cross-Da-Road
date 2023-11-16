@@ -412,7 +412,13 @@ void FrameState::WaitMicroseconds(const int32_t& nWait, const float& fPassedTime
 	return WaitMicroseconds(nWait - static_cast<int32_t>(fPassedTime));
 }
 
+//====================================================================================
+//========================= KEYBOARD STATE ============================================
+//====================================================================================
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR //////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
 KeyboardState::KeyboardState()
@@ -426,6 +432,10 @@ KeyboardState::~KeyboardState()
 	mapKeys.clear();
 	std::cerr << "app::KeyboardState::~KeyboardState(): Successfully destructed" << std::endl;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter to reset the keyboard state object
 void KeyboardState::ResetKeyboard()
@@ -444,34 +454,6 @@ void KeyboardState::SetFocus(const bool bValue)
 	bHasInputFocus = bValue;
 }
 
-/// @brief Check if the keyboard state object has input focus
-/// @return true if the keyboard state object has input focus, false otherwise
-bool KeyboardState::IsFocused() const
-{
-	return bHasInputFocus;
-}
-
-/// @brief Update the keyboard state object
-void KeyboardState::UpdateKeyboard()
-{
-	for (int key = 0; key < KEYBOARD_SIZE; key++) {
-		// Reset key press and release flags
-		pKeysState[key].bPressed = false;
-		pKeysState[key].bReleased = false;
-		if (bKeysCache[key] != bKeys[key]) {
-			if (bKeysCache[key]) { // Key is newly pressed
-				pKeysState[key].bPressed = !pKeysState[key].bHolding;
-				pKeysState[key].bHolding = true;
-			}
-			else { // Key is newly released
-				pKeysState[key].bReleased = true;
-				pKeysState[key].bHolding = false;
-			}
-		}
-		bKeys[key] = bKeysCache[key];
-	}
-}
-
 /// @brief Setter to disable a key of the keyboard state object
 /// @param key The key to disable
 /// @return Always return true by default
@@ -488,6 +470,11 @@ bool KeyboardState::EnableKey(const app::Key& key)
 	pKeysState[key].bDisabled = false;
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Getter for the key state of the keyboard state object
 /// @param key The key to get the state
 /// @return State of the key (Button)
@@ -512,6 +499,17 @@ Button KeyboardState::GetKey(const app::Key& key) const
 ButtonState KeyboardState::GetKeyState(const app::Key& key) const
 {
 	return pKeysState[key];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// CHECKERS ///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Check if the keyboard state object has input focus
+/// @return true if the keyboard state object has input focus, false otherwise
+bool KeyboardState::IsFocused() const
+{
+	return bHasInputFocus;
 }
 
 /// @brief Check if the key is idling
@@ -549,4 +547,33 @@ bool KeyboardState::IsKeyReleased(const app::Key& key, bool bIgnoreDisability) c
 {
 	return (GetKey(key) == RELEASED) || (bIgnoreDisability && GetKey(key) == DISABLED_RELEASED);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// UPDATE /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Update the keyboard state object
+void KeyboardState::UpdateKeyboard()
+{
+	for (int key = 0; key < KEYBOARD_SIZE; key++) {
+		// Reset key press and release flags
+		pKeysState[key].bPressed = false;
+		pKeysState[key].bReleased = false;
+		if (bKeysCache[key] != bKeys[key]) {
+			if (bKeysCache[key]) { // Key is newly pressed
+				pKeysState[key].bPressed = !pKeysState[key].bHolding;
+				pKeysState[key].bHolding = true;
+			}
+			else { // Key is newly released
+				pKeysState[key].bReleased = true;
+				pKeysState[key].bHolding = false;
+			}
+		}
+		bKeys[key] = bKeysCache[key];
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// END OF FILE ////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
