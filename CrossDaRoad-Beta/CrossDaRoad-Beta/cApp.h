@@ -29,9 +29,10 @@ class cApp : public app::GameEngine
 	friend class hMapDrawer;
 
 private: // Interactive Properties (control the map)
-	hMenu Menu; 
+	hMenu Menu;
 	hPlayer Player;
-
+	int nameBoxOption = 0;
+	std::string playerName;
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
@@ -71,7 +72,7 @@ protected: // Collision Detection
 	bool IsPlatformRight() const;
 	bool IsPlatformCenter() const;
 	bool IsOnPlatform() const;
-	
+
 protected: /// Game Updates
 	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
@@ -80,8 +81,13 @@ protected: /// Game Updates
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;
 	bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime) override;
+
 	bool OnGameSave() const;
 	bool OnGameLoad();
+	bool OnCreateNewName();
+	bool DrawNameBox();
+	bool UpdateDrawNameBox();
+	bool OnDisplaySaveBox();
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
 	bool OnForcePauseEvent() override;
@@ -95,6 +101,7 @@ private: // Game Rendering
 	bool DrawAllLanes();
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
+
 };
 
 #endif // C_APP_H

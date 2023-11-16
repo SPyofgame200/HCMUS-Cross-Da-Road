@@ -89,6 +89,14 @@ bool cAssetManager::ReportLoadingResult(bool bSuccess, const std::string& sSprit
 ////////////////////////// GAME LOADERS //////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+bool cAssetManager::LoadNameBoxSprites()
+{
+    bool bSuccsess = true;
+    bSuccsess &= LoadSprite("createNameBox", "new_game_menu");
+    bSuccsess &= LoadSprite("start_chosen", "new_game_menu_chosen");
+    return ReportLoadingResult(bSuccsess, "create name box");
+}
+
 /// @brief Load all menu sprites
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadMenuSprites()
@@ -327,6 +335,7 @@ bool cAssetManager::LoadAllSprites()
     SetFileExtension("png");
 
     bool bSuccess = true;
+    bSuccess &= LoadNameBoxSprites();
     bSuccess &= LoadMenuSprites();
     bSuccess &= LoadSettingSprites();
     bSuccess &= LoadAboutUsSprites();

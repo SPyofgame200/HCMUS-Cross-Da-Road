@@ -316,7 +316,14 @@ bool hMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->OnGameUpdate(fElapsedTime);
+		{
+			bool result = app->UpdateDrawNameBox();
+			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER))
+			{
+				eMenuOption = CONTINUE;
+			}
+			return result;
+		}
 		case AppOption::CONTINUE:
 			return app->OnGameUpdate(fElapsedTime);
 		case AppOption::SETTINGS:
@@ -409,7 +416,7 @@ bool hMenu::Render()
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->OnGameRender();
+			return app->DrawNameBox();
 		case AppOption::CONTINUE:
 			return app->OnGameRender();
 		case AppOption::SETTINGS:

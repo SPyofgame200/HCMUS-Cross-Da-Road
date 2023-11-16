@@ -286,6 +286,50 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 {
 	return true;
 }
+bool cApp::OnCreateNewName()
+{
+	
+	return true;
+}
+bool cApp::OnDisplaySaveBox()
+{
+
+	return false;
+}
+
+bool cApp::UpdateDrawNameBox()
+{
+	if (IsKeyReleased(app::Key::DOWN))
+	{	
+		nameBoxOption++;
+	}
+	if (IsKeyReleased(app::Key::UP))
+	{
+		nameBoxOption--;
+	}
+	
+	return true;
+}
+
+bool cApp::DrawNameBox()
+{
+	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
+	const app::Sprite* NameBoxChosen = cAssetManager::GetInstance().GetSprite("start_chosen");
+
+	Clear(app::BLACK);
+	if (nameBoxOption % 2 == 0)
+		DrawSprite(0, 0, NameBox);
+	else
+		DrawSprite(0, 0, NameBoxChosen);
+	if (IsKeyHolding(app::Key::K))
+	{
+		SetPixelMode(app::Pixel::MASK);
+		DrawBigText("SPyofgame", 27, 27);
+		SetPixelMode(app::Pixel::NORMAL);
+	}
+	return true;
+}
+
 /// @brief Rendering menu and game (if game is running)
 bool cApp::OnRenderEvent()
 {
@@ -480,6 +524,8 @@ bool cApp::DrawStatusBar()
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// END OF FILE ///////////////////////////////////////////////

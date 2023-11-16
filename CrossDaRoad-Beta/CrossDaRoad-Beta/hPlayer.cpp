@@ -334,10 +334,12 @@ float hPlayer::GetPlayerVelocityY() const
 	return fFrogVelocityY;
 }
 
-std::string cPlayer::GetPlayerName() const
-{	
+std::string hPlayer::GetPlayerName() const
+{
 	return Name;
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// SETTERS ///////////////////////////////////////////////////////////////
@@ -407,7 +409,7 @@ void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 	SetPlayerLogicPositionY(fPositionY);
 }
 
-void cPlayer::SetPlayerName(std::string Name)
+void hPlayer::SetPlayerName(std::string Name)
 {
 	this->Name = Name;
 }

@@ -41,6 +41,7 @@ public: // Setters
 	void SetFileExtension(const std::string& sExtension);
 
 public: // Game Loaders
+	bool LoadNameBoxSprites();
 	bool LoadMenuSprites();
 	bool LoadSettingSprites();
 	bool LoadAboutUsSprites();
