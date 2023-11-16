@@ -41,21 +41,28 @@ namespace app
 		Texture();
 		Texture(HWND windowHandler);
 		~Texture();
-		bool InitDevice();
 		bool CreateDeviceContext(HWND windowHandler);
 		bool ExitDevice() const;
 
-	public: // Setup enviroment
+	private: // Constructors & Destructors helpers
+		bool InitDevice();
+		
+
+	private: // Setup enviroment helpers
 		bool SetupFormatter() const;
 		bool SetupRendering(ViewportState viewport);
 		static bool SetupTexturing();
 		bool SetupEnvironment(int width, int height) const;
+
+	public: // Setup enviroment
 		bool CreateTexture2D(int width, int height, ViewportState viewport);
 
-	public: // Updater
+	private: // Updater helpers
 		static void SetViewport(ViewportState viewport);
 		static void UpdateTexture(int width, int height, const Pixel* data);
 		static void DrawTextureOnScreen();
+
+	public: // Updater
 		bool RenderTexture(int width, int height, ViewportState viewport) const;
 
 	public: // Drawing Getters
