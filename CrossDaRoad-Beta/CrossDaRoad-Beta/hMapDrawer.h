@@ -3,6 +3,7 @@
 
 #include "cMapLane.h"
 #include "cMapObject.h"
+#include "cMapObject.h"
 
 // Forward declaration
 class cApp;
@@ -20,20 +21,16 @@ public: // Constructors & Destructor
 public: // Setters
 	bool SetupTarget(cApp* app);
 
-public: // Getters
-	int GetStartPos(const cMapLane& lane) const;
-	int GetCellOffset(const cMapLane& lane) const;
-
 private: // Drawer helpers
-	bool DrawLane(const cMapLane& lane) const;
-	bool DrawObject(char graphic, int nCellOffset, int nRow, int nCol) const;
-	bool DrawBackground(char graphic, int nCellOffset, int nRow, int nCol) const;
+	bool DrawLane(const cMapLane& Lane) const;
+	bool DrawObject(const GraphicCell& Cell) const;
+	bool DrawBackground(const GraphicCell& Cell) const;
 
 public: // Drawers
 	bool DrawAllLanes() const;
 
 public: // Generators
-	bool SuccessSummon(const MapObject& sprite, int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
+	bool SuccessSummon(char graphic, int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
 };
 
 #endif // H_MAP_DRAWER_H
