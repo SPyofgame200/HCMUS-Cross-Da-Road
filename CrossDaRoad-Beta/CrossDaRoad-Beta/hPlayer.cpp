@@ -1,9 +1,3 @@
-#include "hPlayer.h"
-#include "cZone.h"
-#include "cApp.h"
-#include "uAppUtils.h"
-#include "uAppConst.h"
-
 /**
  * @file hPlayer.cpp
  *
@@ -11,6 +5,12 @@
  *
  * This file implements player class for player management, movement, and rendering.
 **/
+
+#include "hPlayer.h"
+#include "cZone.h"
+#include "cApp.h"
+#include "uAppUtils.h"
+#include "uAppConst.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////////////////
