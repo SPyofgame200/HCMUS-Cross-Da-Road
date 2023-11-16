@@ -21,6 +21,8 @@ cZone::cZone()
 	nZoneHeight = 0;
 	bDangers = nullptr;
 	bBlocks = nullptr;
+	nCellWidth = 0;
+	nCellHeight = 0;
 }
 /// @brief Parameterized constructor
 /// @param nWidth width of the zone
@@ -151,6 +153,18 @@ bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
 	return true;
 }
 
+bool cZone::SetCellSize(int nWidth, int nHeight)
+{
+	if (nWidth <= 0 || nHeight <= 0) {
+		nCellWidth = 0;
+		nCellHeight = 0;
+		return false;
+	}
+	nCellWidth = nWidth;
+	nCellHeight = nHeight;
+	return true;
+}
+
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////// FILLERS /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -227,6 +241,26 @@ int cZone::FillUnblocked(const char& graphic, const char* block_pattern, int nTo
 		}
 	}
 	return counter;
+}
+
+int cZone::FillDanger(const char& graphic, const char* danger_pattern, const int nTopLeftX, const int nTopLeftY) const
+{
+	return FillDanger(graphic, danger_pattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+}
+
+int cZone::FillSafe(const char& graphic, const char* danger_pattern, const int nTopLeftX, const int nTopLeftY) const
+{
+	return FillSafe(graphic, danger_pattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+}
+
+int cZone::FillBlocked(const char& graphic, const char* block_pattern, const int nTopLeftX, const int nTopLeftY) const
+{
+	return FillBlocked(graphic, block_pattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+}
+
+int cZone::FillUnblocked(const char& graphic, const char* block_pattern, const int nTopLeftX, const int nTopLeftY) const
+{
+	return FillUnblocked(graphic, block_pattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -13,10 +13,12 @@
 class cZone
 {
 private:
-	int nZoneHeight; ///< height of the zone
 	int nZoneWidth;  ///< width of the zone
+	int nZoneHeight; ///< height of the zone
 	bool* bDangers;  ///< array of danger pixels
 	bool* bBlocks;   ///< array of block pixels
+	int nCellWidth;
+	int nCellHeight;
 
 public: // Constructors & Destructor
 	cZone();
@@ -38,12 +40,17 @@ private: // Checkers
 public: // Setters 
 	bool SetDanger(int nPosX, int nPosY, bool bValue) const;
 	bool SetBlock(int nPosX, int nPosY, bool bValue) const;
+	bool SetCellSize(int nWidth, int nHeight);
 
 public: // Fillers
 	int FillDanger(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
 	int FillSafe(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
 	int FillBlocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
 	int FillUnblocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillDanger(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY) const;
+	int FillSafe(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY) const;
+	int FillBlocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY) const;
+	int FillUnblocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY) const;
 
 public: // Danger Zone Checkers
 	bool IsDangerPixel(float x, float y) const;

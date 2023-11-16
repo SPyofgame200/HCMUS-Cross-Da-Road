@@ -58,10 +58,8 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = nCol * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
-		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
-		const int nBottomRightY = (nRow + 1) * app->nCellSize;
-		app->Zone.FillDanger(graphic, app->MapLoader.GetDangerPattern().c_str(), nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY);
-		app->Zone.FillBlocked(graphic, app->MapLoader.GetBlockPattern().c_str(), nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY);
+		app->Zone.FillDanger(graphic, app->MapLoader.GetDangerPattern().c_str(), nTopLeftX, nTopLeftY);
+		app->Zone.FillBlocked(graphic, app->MapLoader.GetBlockPattern().c_str(), nTopLeftX, nTopLeftY);
 	}
 
 	return true;
