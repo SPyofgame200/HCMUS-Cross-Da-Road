@@ -8,22 +8,30 @@
 #include "cApp.h"
 #include <vector>
 
+
+/// @brief Default constructor
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
 }
 
+/// @brief Parameterized constructor
+/// @param app Pointer to the application
 hMapDrawer::hMapDrawer(cApp* app)
 {
 	SetupTarget(app);
 }
 
+/// @brief Destructor
 hMapDrawer::~hMapDrawer()
 {
 	app = nullptr;
 	//std::cerr << "hMapDrawer::~hMapDrawer(): Successfully destructed" << std::endl;
 }
 
+/// @brief Sets the target application
+/// @param app Pointer to the application
+/// @return True if successful, false otherwise
 bool hMapDrawer::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
@@ -33,6 +41,9 @@ bool hMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
+/// @brief Draw lane on screen
+/// @param lane Lane to be drawn
+/// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& lane) const
 {
 	const int nRow = lane.GetLaneID();
@@ -69,6 +80,8 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 	return true;
 }
 
+/// @brief Draw all lanes on screen
+/// @return Always true by default
 bool hMapDrawer::DrawAllLanes() const
 {
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
@@ -78,7 +91,9 @@ bool hMapDrawer::DrawAllLanes() const
 
 	return true;
 }
-
+/// @brief Draw object on screen
+/// @param Cell Cell to be drawn
+/// @return Always true by default
 bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
@@ -99,6 +114,9 @@ bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 	return true;
 }
 
+/// @brief Draw background on screen
+/// @param Cell Graphic cell to be drawn
+/// @return Always true by default
 bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
@@ -124,6 +142,11 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 std::default_random_engine generator(std::random_device{}());
 std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 std::map<int, float> mapLastSummon;
+
+/// @brief Summon object on screen randomly
+/// @param graphic Character representing the object
+/// @param nID ID of the object
+/// @return True if successful, false otherwise
 bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 {
 	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
