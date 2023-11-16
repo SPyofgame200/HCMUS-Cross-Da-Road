@@ -1,3 +1,8 @@
+/**
+ * @file hMapDrawer.h
+ * @brief Contains map drawer class for drawing map on screen
+**/
+
 #ifndef H_MAP_DRAWER_H
 #define H_MAP_DRAWER_H
 
