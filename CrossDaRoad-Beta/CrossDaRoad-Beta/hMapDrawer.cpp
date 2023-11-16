@@ -37,11 +37,11 @@ int hMapDrawer::GetCellOffset(const cMapLane& lane) const
 	return lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 }
 
-bool hMapDrawer::DrawLane(const cMapLane& lane)
+bool hMapDrawer::DrawLane(const cMapLane& lane) const
 {
-	int nRow = lane.GetLaneID();
-	int nStartPos = GetStartPos(lane);
-	int nCellOffset = GetCellOffset(lane);
+	const int nRow = lane.GetLaneID();
+	const int nStartPos = GetStartPos(lane);
+	const int nCellOffset = GetCellOffset(lane);
 	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
@@ -67,7 +67,7 @@ bool hMapDrawer::DrawLane(const cMapLane& lane)
 	return true;
 }
 
-bool hMapDrawer::DrawAllLanes()
+bool hMapDrawer::DrawAllLanes() const
 {
 	int nRow = 0;
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
@@ -78,9 +78,9 @@ bool hMapDrawer::DrawAllLanes()
 	return true;
 }
 
-bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
+bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol) const
 {
-	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
+	const MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
@@ -105,9 +105,9 @@ bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
 	return true;
 }
 
-bool hMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol)
+bool hMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol) const
 {
-	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
+	const MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;

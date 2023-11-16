@@ -92,7 +92,7 @@ bool cApp::GameReset()
 MapObject cApp::GetHitBox(float x, float y) const
 {
 	const cMapLane lane = MapLoader.GetLaneRound(y);
-	int nStartPos = lane.GetStartPos(fTimeSinceStart);
+	const int nStartPos = lane.GetStartPos(fTimeSinceStart);
 	const char graphic = lane.GetLaneGraphic(nStartPos + static_cast<int>(x));
 	return MapLoader.GetSpriteData(graphic);
 }
