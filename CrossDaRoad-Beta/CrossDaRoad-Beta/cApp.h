@@ -94,7 +94,7 @@ protected: // File Management
 	static std::string GetFilePartLocation(bool isSave);
 
 private: // Game Rendering
-	bool DrawAllLanes();
+	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
 };
