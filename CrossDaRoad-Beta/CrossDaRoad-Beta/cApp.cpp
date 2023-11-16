@@ -7,6 +7,8 @@
 #include <sstream>
 #include <thread>
 
+constexpr float fConst = 2.0f;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,8 +117,8 @@ bool cApp::IsKilled(bool bDebug) const
 		return false;
 	}
 
-	const MapObject dataLeft = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const MapObject dataRight = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject dataLeft = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
+	const MapObject dataRight = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	if (bDebug) {
 		std::cerr << "Left touching[" << dataLeft.encode << "]: ";
 		std::cerr << "sprite \"" << dataLeft.sSpriteName << "\" ";
@@ -147,8 +149,9 @@ std::string cApp::GetPlayerDeathMessage() const
 {
 	float fPosX = Player.GetPlayerLogicPositionX();
 	float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
-	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	constexpr  float fConst = 2.0;
+	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	const std::string sLeft = leftData.sSpriteName;
 	const std::string sRight = rightData.sSpriteName;
 
@@ -170,7 +173,7 @@ bool cApp::IsPlatformLeft() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject leftData = GetHitBox(fPosX - nCellSize / 2.0f, fPosY);
+	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
 }
 /// @brief 
@@ -179,7 +182,7 @@ bool cApp::IsPlatformRight() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject rightData = GetHitBox(fPosX + nCellSize / 2.0f, fPosY);
+	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief 
@@ -520,8 +523,10 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 {
 	int i = 0;
 	for (const auto c : sText) {
-		const int nDrawX = ((c - 32) % 16) * app_const::FONT_WIDTH;  // 16: number of characters in a nRow
-		const int nDrawY = ((c - 32) / 16) * app_const::FONT_HEIGHT; // 32: ASCII code of the first character in the font
+		constexpr int nFirstASCII = 32;
+		constexpr int nCharsInRow = 16;
+		const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
+		const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
 		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
 		i++;
 	}
@@ -532,9 +537,18 @@ bool cApp::DrawStatusBar()
 {
 	const std::string score_board_dynamic = "score_bar" + Player.ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
-	DrawPartialSprite(272, 0, object, 0, 0, 80, 160);
+	constexpr int32_t nOffSetX_sb = 272;
+	constexpr int32_t nOffSetY_sb = 0;
+	constexpr int32_t nOriginX_sb = 0;
+	constexpr int32_t nOriginY_sb = 0;
+	constexpr int32_t nWidth_sb = 80;
+	constexpr int32_t nHeight_sb = 160;
+
+	constexpr int32_t nPosX_level = 321;
+	constexpr int32_t nPosY_level = 90;
+	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
-	DrawBigText(MapLoader.ShowMapLevel(), 321, 80);
+	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
