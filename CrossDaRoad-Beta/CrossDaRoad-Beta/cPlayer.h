@@ -66,7 +66,7 @@ private:
 
 private:
 	cApp* app;
-
+	std::string Name;
 public: // Constructors & Destructor
 	cPlayer();
 	cPlayer(cApp* app);
@@ -122,7 +122,7 @@ public: // Getters
 	float GetPlayerLogicPositionY() const;
 	float GetPlayerVelocityX()const;
 	float GetPlayerVelocityY()const;
-
+	std::string GetPlayerName() const;
 public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
@@ -136,7 +136,7 @@ public: // Setters
 	void SetPlayerLogicPositionX(float fPositionX);
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
-
+	void SetPlayerName(std::string Name);
 public: // Movements
 	bool PlayerMoveX(float fFactorX, int nStep = 16);
 	bool PlayerMoveY(float fFactorX, int nStep = 16);

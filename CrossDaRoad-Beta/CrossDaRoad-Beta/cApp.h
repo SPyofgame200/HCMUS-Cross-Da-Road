@@ -89,9 +89,7 @@ protected: /// Game Updates
 	bool OnForceDestroyEvent() override;
 
 protected: // File Management
-	static std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false);
-	static std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "");
-	static std::string GetFilePartLocation(bool isSave);
+	static std::string GetFilePathLocation(bool isSaven, std::string fileName);
 
 private: // Game Rendering
 	bool DrawAllLanes();

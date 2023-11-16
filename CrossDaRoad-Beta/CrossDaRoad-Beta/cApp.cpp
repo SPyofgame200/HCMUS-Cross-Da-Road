@@ -300,8 +300,9 @@ bool cApp::OnRenderEvent()
 /// @brief 
 /// @return 
 bool cApp::OnGameSave() const
-{
-	const std::string sSaveFilePath = GetFilePartLocation(true);
+{	
+	std::string FileName = Player.GetPlayerName();
+	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);
 		if (fout.is_open()) {
@@ -329,7 +330,7 @@ bool cApp::OnGameSave() const
 /// @return 
 bool cApp::OnGameLoad()
 {
-	const std::string sLoadFilePath = GetFilePartLocation(false);
+	const std::string sLoadFilePath = GetFilePathLocation(false,"");
 
 	if (!sLoadFilePath.empty()) {
 		std::ifstream fin(sLoadFilePath);
@@ -408,101 +409,43 @@ bool cApp::OnForceDestroyEvent()
 /////////////////////////////////// FILE MANAGEMENT ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-std::string cApp ::SelectFilePath(const char* filter, const char* initialDir, bool saveDialog)
-{
-	char previousDir[MAX_PATH];
-
-	if (GetCurrentDirectoryA(MAX_PATH, previousDir) == 0) {
-		std::cerr << "Error getting the current directory." << std::endl;
-		return "";
-	}
-
-	OPENFILENAMEA ofn = {};
-	char filePath[MAX_PATH] = "";
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = nullptr;
-	ofn.lpstrFile = filePath;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrFilter = filter;
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = nullptr;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = initialDir; // Set the initial directory
-
-	if (saveDialog) {
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-		if (!GetSaveFileNameA(&ofn)) {
-			std::cerr << "User canceled the operation." << std::endl;
-			return "";
-		}
-	}
-	else {
-		ofn.Flags = OFN_FILEMUSTEXIST;
-		if (!GetOpenFileNameA(&ofn)) {
-			std::cerr << "User canceled the operation." << std::endl;
-			return "";
-		}
-	}
-
-	// Restore the previous working directory
-	if (!SetCurrentDirectoryA(previousDir)) {
-		std::cerr << "Error restoring the previous working directory." << std::endl;
-	}
-
-	const std::string sFilePath = (filePath);
-	return sFilePath;
-}
-
-/// @brief 
-/// @param initialDir 
-/// @param sDefaultFilePath 
-/// @return 
-std::string cApp::SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath)
-{
-	const char* cTextFilePatterns = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-	const std::string& sFilePath = SelectFilePath(cTextFilePatterns, initialDir);
-	if (sFilePath.empty()) { // The user didnt select any file
-		return sDefaultFilePath;
-	}
-	else { // File Path is selected
-		return sFilePath;
-	}
-}
 /// @brief 
 /// @param isSave 
 /// @return 
-std::string cApp::GetFilePartLocation(bool isSave)
-{
-	OPENFILENAME ofn;
-	wchar_t szFileNameW[MAX_PATH] = L"";
-	char szFileName[MAX_PATH] = "";
+	std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
+	{
+		OPENFILENAME ofn;
+		wchar_t szFileNameW[MAX_PATH] = L"";
+		char szFileName[MAX_PATH] = "";
 
-	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+		ZeroMemory(&ofn, sizeof(OPENFILENAME));
 
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-	ofn.lpstrFile = szFileNameW;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrDefExt = L"txt";
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = nullptr;
+		ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+		ofn.lpstrFile = szFileNameW;
+		ofn.nMaxFile = MAX_PATH;
+		ofn.lpstrInitialDir = L"./data/save";
+		ofn.lpstrDefExt = L"txt";
 
-	size_t count;
-	wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+	
+		size_t count;
 
-	if (isSave) {
-		ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-		GetSaveFileName(&ofn);
-		std::cout << "Selected File: " << szFileName << std::endl;
-		return szFileName;
+		if (isSave) {
+			ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+			GetSaveFileName(&ofn);
+			wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+			std::cout << "Selected File: " << szFileName << std::endl;
+			return szFileName;
+		}
+		else {
+			ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+			GetOpenFileName(&ofn);
+			wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+			std::cout << "Selected File: " << szFileName << std::endl;
+			return szFileName;
+		}
 	}
-	else {
-		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-		GetOpenFileName(&ofn);
-		std::cout << "Selected File: " << szFileName << std::endl;
-		return szFileName;
-	}
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// GAME RENDERING ////////////////////////////////////////////
