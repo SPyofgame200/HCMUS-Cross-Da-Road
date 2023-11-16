@@ -150,9 +150,9 @@ public: // Logic Updater
 	bool OnUpdatePlayerJumpStop();
 
 public: // Player Renderer
-	bool OnRenderPlayerIdle();
-	bool OnRenderPlayerJumpStart();
-	bool OnRenderPlayerJumpContinue();
+	bool OnRenderPlayerIdle() const;
+	bool OnRenderPlayerJumpStart() const;
+	bool OnRenderPlayerJumpContinue() const;
 	bool OnRenderPlayerJumpStop() const;
 	bool OnRenderPlayer() const;
 	bool OnRenderPlayerDeath();

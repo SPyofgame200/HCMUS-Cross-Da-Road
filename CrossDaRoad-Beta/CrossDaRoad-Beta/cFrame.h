@@ -34,18 +34,18 @@ public: /// Initialization & Clean-up
     }
 
 public: /// Checkers & Validators
-    bool IsValidID(int nID) const
+    static bool IsValidID(int nID)
     {
         return (GetMinID() <= nID) && (nID <= GetMaxID());
     }
 
 public: /// Properties Getters
-    int GetID(int nTickID) const
+    static int GetID(int nTickID)
     {
         return nTickID % FRAME_LIMIT + ID_BASE;
     }
 
-    int GetID(float fTickID) const
+    static int GetID(float fTickID)
     {
         return GetID(static_cast<int>(std::floor(fTickID)));
     }
@@ -60,17 +60,17 @@ public: /// Properties Getters
         return static_cast<int>(fVal);
     }
 
-    int GetMinID() const
+    static int GetMinID()
     {
         return ID_BASE;
     }
 
-    int GetMaxID() const
+    static int GetMaxID()
     {
         return ID_BASE + FRAME_LIMIT - 1;
     }
 
-    int GetLimit() const
+    static int GetLimit()
     {
         return static_cast<int>(FRAME_LIMIT);
     }
@@ -82,7 +82,7 @@ public: /// Properties Setters
     }
 
 private: /// Utilities
-    float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f) const
+    static float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f)
     {
         return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
     }
@@ -90,7 +90,7 @@ private: /// Utilities
 public: /// Updaters
     bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
     {
-        float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
+	    const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
         SetVal(fTickTime / fFrameTick);
         return true;
     }
@@ -112,7 +112,7 @@ public: /// Animations
     }
     bool NextAnimation(bool bUpdate = true)
     {
-        int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
+	    const int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
         if (nAnimationFrame >= nCurrentFrame) {
             return false;
         }
