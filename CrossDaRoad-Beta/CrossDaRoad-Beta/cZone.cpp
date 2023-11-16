@@ -141,7 +141,7 @@ bool cZone::IsInside(const int x, const int y) const
 /// @param nPosY y coordinate
 /// @param bValue value to set (true: danger, false: safe)
 /// @return true if successfully set danger pixel (if (nPosX, nPosY) is inside), false otherwise
-bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue) const
+bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue)
 {
 	if (!IsInside(nPosX, nPosY)) {
 		return false;
@@ -154,7 +154,7 @@ bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue) const
 /// @param nPosY y coordinate
 /// @param bValue value to set (true: block, false: unblock)
 /// @return true if successfully set block pixel (if (nPosX, nPosY) is inside), false otherwise
-bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
+bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue)
 {
 	if (!IsInside(nPosX, nPosY)) {
 		return false;
@@ -202,7 +202,7 @@ bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
 /// @param graphic graphic to fill
 /// @param sDangerPattern danger pattern to check if graphic is danger or not
 /// @return number of danger pixels filled
-int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 
 	int counter = 0;
@@ -221,7 +221,7 @@ int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int
 /// @param graphic graphic to fill
 /// @param sDangerPattern danger pattern to check if graphic is danger or not
 /// @return number of safe pixels filled
-int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -239,7 +239,7 @@ int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int n
 /// @param graphic graphic to fill
 /// @param sBlockPattern block pattern to check if graphic is block or not
 /// @return number of block pixels filled
-int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -257,7 +257,7 @@ int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int
 /// @param graphic graphic to fill
 /// @param sBlockPattern block pattern to check if graphic is block or not
 /// @return number of unblock pixels filled
-int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const
+int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -268,22 +268,22 @@ int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTo
 	return counter;
 }
 
-int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
-int cZone::FillSafe(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+int cZone::FillSafe(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillSafe(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
-int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillBlocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
-int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillUnblocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
