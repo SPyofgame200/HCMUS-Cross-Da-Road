@@ -80,6 +80,7 @@ bool cApp::GameReset()
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
+	Zone.SetPattern(MapLoader.GetDangerPattern().c_str(), MapLoader.GetBlockPattern().c_str());
 	return true;
 }
 

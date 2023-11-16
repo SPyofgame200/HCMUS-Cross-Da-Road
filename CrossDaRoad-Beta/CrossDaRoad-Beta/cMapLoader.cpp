@@ -154,12 +154,12 @@ MapObject cMapLoader::GetSpriteData(char graphic) const
 	}
 }
 /// @brief Getter for danger pattern
-std::string cMapLoader::GetDangerPattern()
+std::string cMapLoader::GetDangerPattern() const
 {
 	return dangerPattern;
 }
 /// @brief Getter for block pattern
-std::string cMapLoader::GetBlockPattern()
+std::string cMapLoader::GetBlockPattern() const
 {
 	return blockPattern;
 }

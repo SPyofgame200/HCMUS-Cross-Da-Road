@@ -55,8 +55,8 @@ public: // Getters
 	int GetMapLevel() const;
 	int GetMapCount() const;
 	MapObject GetSpriteData(char graphic) const;
-	std::string GetDangerPattern();
-	std::string GetBlockPattern();
+	std::string GetDangerPattern() const;
+	std::string GetBlockPattern() const;
 	std::string GetMapName(int nLevel) const;
 	std::string GetMapName() const;
 	std::string GetMapDescription(int nLevel) const;

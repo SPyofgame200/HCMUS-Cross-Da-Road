@@ -180,12 +180,12 @@ bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
 	if (sDefaultDangerPattern) {
 		delete[] sDefaultDangerPattern;
 	}
-	if (sDefaultBlockPattern) {
-		delete[] sDefaultBlockPattern;
-	}
 	sDefaultDangerPattern = new char[strlen(sDangerPattern) + 1];
 	strcpy_s(sDefaultDangerPattern, strlen(sDangerPattern) + 1, sDangerPattern);
 
+	if (sDefaultBlockPattern) {
+		delete[] sDefaultBlockPattern;
+	}
 	sDefaultBlockPattern = new char[strlen(sBlockPattern) + 1];
 	strcpy_s(sDefaultBlockPattern, strlen(sBlockPattern) + 1, sBlockPattern);
 	return true;

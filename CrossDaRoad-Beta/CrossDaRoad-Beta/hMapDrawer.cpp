@@ -48,7 +48,6 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 		DrawBackground(graphic, nCellOffset, nRow, nCol);
 	}
 
-	app->Zone.SetPattern(app->MapLoader.GetDangerPattern().c_str(), app->MapLoader.GetBlockPattern().c_str());
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		DrawObject(graphic, nCellOffset, nRow, nCol);
@@ -59,7 +58,6 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 
 bool hMapDrawer::DrawAllLanes() const
 {
-	int nRow = 0;
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
 	for (const cMapLane& lane : vecLanes) {
 		DrawLane(lane);
