@@ -1,11 +1,3 @@
-#ifndef C_MENU_H
-#define C_MENU_H
-
-#include "uSound.h"
-#include "uAppConst.h"
-#include "cAssetManager.h"
-#include <vector>
-
 /**
  * @file hMenu.h
  *
@@ -14,8 +6,18 @@
  * This file contains menu class for menu window management.
 **/
 
+#ifndef C_MENU_H
+#define C_MENU_H
+
+#include "uSound.h"
+#include "uAppConst.h"
+#include "cAssetManager.h"
+#include <vector>
+
+
+
 // Forward declaration
-class cApp; 
+class cApp;
 
 /// @brief Class for menu window management
 class hMenu
@@ -74,7 +76,6 @@ public: // Managements
 	bool OpenMenu();
 
 private: // Management helpers
-
 	bool LoadAppOption();
 	bool LoadPauseOption();
 	bool CloseMenu() const;
