@@ -41,7 +41,6 @@ bool cApp::GameInit()
 {
 	using namespace app_const;
 	fTimeSinceStart = 0;
-	fTimeSinceLastDrawn = 0;
 	sAppName = APP_NAME;
 	nLaneWidth = LANE_WIDTH;
 	nCellSize = CELL_SIZE;

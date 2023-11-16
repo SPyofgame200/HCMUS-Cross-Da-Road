@@ -42,7 +42,6 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 	const int nRow = lane.GetLaneID();
 	const int nStartPos = GetStartPos(lane);
 	const int nCellOffset = GetCellOffset(lane);
-	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
 
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
@@ -86,7 +85,7 @@ bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol) c
 		app->SetPixelMode(app::Pixel::NORMAL);
 	}
 
-	if (SuccessSummon(sprite, nCol, nRow, app->fTimeSinceLastDrawn, app->GetAppFPS(), !app->IsEnginePause())) {
+	if (SuccessSummon(sprite, nCol, nRow, app->fTimeSinceStart, app->GetAppFPS(), !app->IsEnginePause())) {
 		const MapObject summon = app->MapLoader.GetSpriteData(sprite.summon);
 		const std::string sSummonName = summon.sSpriteName + app->Player.ShowFrameID(summon.nID);
 		const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);

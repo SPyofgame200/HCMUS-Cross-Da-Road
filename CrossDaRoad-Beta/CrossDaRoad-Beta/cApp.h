@@ -45,7 +45,6 @@ private: // Customizable Properties (applied to all maps)
 
 private: // Event timers
 	float fTimeSinceStart;
-	float fTimeSinceLastDrawn;
 
 private: // Special variables
 	std::atomic<bool> bDeath;
