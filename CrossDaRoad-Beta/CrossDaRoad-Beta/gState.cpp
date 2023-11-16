@@ -269,7 +269,9 @@ bool ViewportState::UpdateByScreen(const ScreenState& screen)
 	return true;
 }
 
-
+//=============================================================================================
+//========================= FRAME STATE =======================================================
+//=============================================================================================
 
 /// @brief Parameterized constructor
 /// @param fTimer Timer in
@@ -280,11 +282,9 @@ FrameState::FrameState(const float fTimer, const float fRewind, const int nFrame
 	CreateTimer(fTimer, fRewind, nFrame, nFPS);
 }
 
-/// @brief Getter for the frame delay.
-FrameDelay FrameState::GetDelay() const
-{
-	return eFrameDelay;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter for the frame delay.
 /// @param eDelay The frame delay to set.
@@ -315,6 +315,51 @@ void FrameState::ResetTimer()
 	frameTimer = std::chrono::system_clock::now();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Getter for the frame delay.
+FrameDelay FrameState::GetDelay() const
+{
+	return eFrameDelay;
+}
+/// @brief Getter for the frame timer.
+int FrameState::GetFPS() const
+{
+	return nCurrentFPS;
+}
+/// @brief Getter for FPS as a string.
+std::string FrameState::ShowFPS() const
+{
+	return "[FPS: " + std::to_string(GetFPS()) + "]";
+}
+/// @brief Getter for tick time 
+float FrameState::GetTickTime() const
+{
+	const clock_t currentTimer = std::chrono::system_clock::now();
+	const float fTickTime = std::chrono::duration<float>(currentTimer - clockTimer).count() - fRewindTime;
+	return fTickTime;
+}
+/// @brief Getter for elapsed time
+/// @param bUpdate If true, update the frame state
+/// @return The elapsed time
+float FrameState::GetElapsedTime(const bool bUpdate)
+{
+	const clock_t currentTimer = std::chrono::system_clock::now();
+	const float fElapsedTime = std::chrono::duration<float>(currentTimer - frameTimer).count() - fRewindTemp;
+	if (bUpdate) {
+		frameTimer = currentTimer;
+		FrameUpdate(fElapsedTime);
+		fRewindTemp = 0;
+	}
+	return fElapsedTime;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// UPDATE & WAIT METHODS //////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Update the frame 
 /// @param fElapsedTime elapsed time 
 /// @return true if the frame is updated, false otherwise.
@@ -332,17 +377,9 @@ bool FrameState::FrameUpdate(const float fElapsedTime)
 	}
 	return false;
 }
-
-/// @brief Getter for the frame timer.
-int FrameState::GetFPS() const
-{
-	return nCurrentFPS;
-}
-/// @brief Getter for FPS as a string.
-std::string FrameState::ShowFPS() const
-{
-	return "[FPS: " + std::to_string(GetFPS()) + "]";
-}
+/// @brief Rewind the frame timer
+/// @param fRewind The time to rewind
+/// @return True if the frame timer is rewinded, false otherwise
 bool FrameState::Rewind(float fRewind)
 {
 	fRewindTemp += fRewind;
@@ -374,30 +411,9 @@ void FrameState::WaitMicroseconds(const int32_t& nWait, const float& fPassedTime
 	}
 	return WaitMicroseconds(nWait - static_cast<int32_t>(fPassedTime));
 }
-/// @brief Getter for tick time 
-float FrameState::GetTickTime() const
-{
-	const clock_t currentTimer = std::chrono::system_clock::now();
-	const float fTickTime = std::chrono::duration<float>(currentTimer - clockTimer).count() - fRewindTime;
-	return fTickTime;
-}
 
-/// @brief Getter for elapsed time
-/// @param bUpdate If true, update the frame state
-/// @return The elapsed time
-float FrameState::GetElapsedTime(const bool bUpdate)
-{
-	const clock_t currentTimer = std::chrono::system_clock::now();
-	const float fElapsedTime = std::chrono::duration<float>(currentTimer - frameTimer).count() - fRewindTemp;
-	if (bUpdate) {
-		frameTimer = currentTimer;
-		FrameUpdate(fElapsedTime);
-		fRewindTemp = 0;
-	}
-	return fElapsedTime;
-}
 
-//====================================================================================
+
 /// @brief Default constructor
 KeyboardState::KeyboardState()
 {
