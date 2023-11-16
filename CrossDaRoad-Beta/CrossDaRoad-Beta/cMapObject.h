@@ -30,16 +30,4 @@ struct MapObject
 	void debug(char end = '\n') const;  ///< Debug
 };
 
-struct GraphicCell
-{
-	char graphic;
-	int nCellOffset;
-	int nRow;
-	int nCol;
-
-	GraphicCell();
-	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol);
-	~GraphicCell();
-};
-
 #endif // C_MAP_OBJECT_H

@@ -85,27 +85,3 @@ void MapObject::debug(char end) const
 	}
 	std::cerr << "}" << end;
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////// GRAPHIC CELLS //////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-GraphicCell::GraphicCell()
-{
-	graphic = 0;
-	nCellOffset = 0;
-	nRow = 0;
-	nCol = 0;
-}
-
-GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
-{
-	this->graphic = graphic;
-	this->nCellOffset = nCellOffset;
-	this->nRow = nRow;
-	this->nCol = nCol;
-}
-
-GraphicCell::~GraphicCell()
-{
-}
