@@ -1,6 +1,3 @@
-#include "gTexture.h"
-#include <iostream>
-
 /**
  * @file gTexture.cpp
  *
@@ -8,6 +5,11 @@
  *
  * This file implement texture class for texture management (rendering, etc.).
  **/
+
+#include "gTexture.h"
+#include <iostream>
+
+
 namespace app
 {
 	///////////////////////////////////////////////////////////////////////////////////////
