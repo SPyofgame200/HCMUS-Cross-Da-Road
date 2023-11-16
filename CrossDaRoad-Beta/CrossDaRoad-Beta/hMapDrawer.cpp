@@ -8,13 +8,11 @@
 #include "cApp.h"
 #include <vector>
 
-<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// CONSTRUCTORS & DESTRUCTOR /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-=======
 GraphicCell::GraphicCell()
 {
 	graphic = 0;
@@ -33,10 +31,8 @@ GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, floa
 }
 
 GraphicCell::~GraphicCell()
-{
-}
+{}
 
->>>>>>> cc44fa090eb9ae18f6b33ba8413d354ea8fcfc72
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
@@ -72,7 +68,6 @@ bool hMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
-<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,11 +75,9 @@ bool hMapDrawer::SetupTarget(cApp* app)
 /// @brief Draw lane on screen
 /// @param lane Lane to be drawn
 /// @return True if successful, false otherwise
-bool hMapDrawer::DrawLane(const cMapLane& lane) const
-=======
+bool hMapDrawer::DrawLane(const cMapLane& lane) const {}
 
 std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
->>>>>>> cc44fa090eb9ae18f6b33ba8413d354ea8fcfc72
 {
 	const int nRow = Lane.GetLaneID();
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
