@@ -329,8 +329,7 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 					currentSprite.nID = std::stoi(value);
 				}
 				else if (attribute == "summon") {
-					char target = value[0];
-					currentSprite.summon = &mapSprites[target];
+					currentSprite.summon = value[0];
 				}
 				else if (attribute == "duration") {
 					currentSprite.fDuration = ExtractTime(value);

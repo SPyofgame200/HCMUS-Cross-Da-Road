@@ -19,7 +19,7 @@ struct MapObject
 	int32_t nBackgroundPosY;    ///< Y initial position for drawing background
 	int32_t nID;                ///< The ID of the sprite, for player customization
 
-	MapObject* summon;			///< The chance of summoning another sprite with encoded = summon
+	char summon;			    ///< The chance of summoning another sprite with encoded = summon
 	float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
 	float fCooldown;            ///< The cooldown durations for the two consecutive summoning
 	float fChance;              ///< The probability of summoning in each second
@@ -28,7 +28,6 @@ struct MapObject
 	MapObject();						///< Constructor
 	~MapObject();					 	///< Destructor
 	void debug(char end = '\n') const;  ///< Debug
-	bool SuccessSummon(int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
 };
 
 #endif // C_MAP_OBJECT_H

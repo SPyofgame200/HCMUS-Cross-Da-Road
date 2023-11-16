@@ -31,6 +31,9 @@ private: // Drawer helpers
 
 public: // Drawers
 	bool DrawAllLanes() const;
+
+public: // Generators
+	bool SuccessSummon(const MapObject& sprite, int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
 };
 
 #endif // H_MAP_DRAWER_H
