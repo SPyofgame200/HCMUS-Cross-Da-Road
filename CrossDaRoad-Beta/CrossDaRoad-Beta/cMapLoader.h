@@ -1,3 +1,10 @@
+/**
+ * @file cMapLoader.h
+ *
+ * @brief Contains MapLoader class prototype for map loading and manipulation
+ *
+**/
+
 #ifndef C_MAP_LOADER_H
 #define C_MAP_LOADER_H
 
@@ -13,14 +20,8 @@
 #include <cmath>
 #include <map>
 
-/**
- * @file cMapLoader.h
- *
- * @brief Contains map MapObject struct, cMapLane class, and cMapLoader class
- *
- * This file contains cMapLane class, and cMapLoader class for map loading and manipulation in game.
-**/
 
+/// @brief Class for map loader and manipulation in game
 class cMapLoader
 {
 private:
