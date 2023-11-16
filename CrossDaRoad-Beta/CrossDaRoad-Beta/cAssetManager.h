@@ -1,16 +1,16 @@
-#ifndef C_ASSET_MANAGER_H
-#define C_ASSET_MANAGER_H
-
-#include "uAppConst.h"
-#include <map>
-#include "gSprite.h"
-
 /**
  * @file cAssetManager.h
  * @brief Contains asset manager class
  *
  * This file contains asset manager class that manages assets (sprites, sounds, etc.).
 **/
+
+#ifndef C_ASSET_MANAGER_H
+#define C_ASSET_MANAGER_H
+
+#include "uAppConst.h"
+#include <map>
+#include "gSprite.h"
 
 /// @brief Singleton class for asset management
 class cAssetManager
