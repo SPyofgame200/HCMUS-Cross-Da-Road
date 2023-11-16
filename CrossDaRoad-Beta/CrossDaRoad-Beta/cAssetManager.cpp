@@ -1,3 +1,12 @@
+/**
+ * @file cAssetManager.cpp
+ * @brief Contains asset manager class implementation
+ *
+ * This file contains asset manager class implementation that manages assets (sprites, sounds, etc.).
+ *
+**/
+
+
 #include "cAssetManager.h"
 
 //////////////////////////////////////////////////////////////////////////
