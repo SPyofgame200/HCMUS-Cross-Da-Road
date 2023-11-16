@@ -1,6 +1,3 @@
-#ifndef C_ZONE_H
-#define C_ZONE_H
-
 /**
  * @file cZone.h
  *
@@ -8,6 +5,10 @@
  *
  * This file contains zone class for zone management, collision detection, and rendering.
 **/
+
+#ifndef C_ZONE_H
+#define C_ZONE_H
+
 
 /// @brief Class for zone object in game (for collision detection)
 class cZone
