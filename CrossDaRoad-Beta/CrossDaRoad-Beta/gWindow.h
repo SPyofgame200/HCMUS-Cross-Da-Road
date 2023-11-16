@@ -31,7 +31,7 @@ namespace app
 		bool SetIcon(const std::string& sFilePath) const;
 		bool SetFavicon(const std::string& sFilePath) const;
 
-	public: /// Window Event
+	public: // Window Event
 		static bool HandleMessage();
 
 	private: /// Internalities
