@@ -1,3 +1,10 @@
+/**
+ * @file cMapLane.h
+ * @brief Contains map lane class prototype
+ *
+ *
+**/
+
 #ifndef C_MAP_LANE_H
 #define C_MAP_LANE_H
 
@@ -6,7 +13,7 @@
 /// @brief Class for lane object in game
 class cMapLane
 {
-private:
+private: // Properties
 	float fVelocity;   ///< velocity of the lane (> 0, moving right; < 0, moving left)
 	std::string sLane; ///< character representation of the lane
 	int nID;
@@ -27,8 +34,8 @@ public: // Getters
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
 
 private: // Utilities
-	static int FixValue(int &nValue, const size_t nLimit);
-	static int FixValue(int &nValue, const int nLimit);
+	static int FixValue(int& nValue, const size_t nLimit);
+	static int FixValue(int& nValue, const int nLimit);
 
 public:	// Setters
 	void SetVelocity(float velocity);
