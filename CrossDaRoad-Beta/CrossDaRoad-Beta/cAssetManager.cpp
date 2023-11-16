@@ -279,9 +279,10 @@ bool cAssetManager::LoadMapOceanSprites()
 {
     bool bSuccess = true;
     bSuccess &= LoadSprite("sand", "sand");
-    bSuccess &= LoadSprite("coconut", "coconut");
+    bSuccess &= LoadSprite("coconut_tree", "coconut_tree");
     bSuccess &= LoadSprite("ocean", "ocean");
     bSuccess &= LoadAnimation("crab", "crab", 4);
+    bSuccess &= LoadAnimation("coconut", "coconut", 8);
 
     return ReportLoadingResult(bSuccess, "Ocean map");
 }
