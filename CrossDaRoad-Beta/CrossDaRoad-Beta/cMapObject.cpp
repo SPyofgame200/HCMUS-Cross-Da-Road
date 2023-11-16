@@ -1,3 +1,8 @@
+/**
+ * @file cMapObject.cpp
+ * @brief Contains implementation of MapObject and GraphicCell structs
+**/
+
 #include "cMapObject.h"
 #include <iostream>
 #include <chrono>
@@ -107,5 +112,4 @@ GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 }
 
 GraphicCell::~GraphicCell()
-{
-}
+{}
