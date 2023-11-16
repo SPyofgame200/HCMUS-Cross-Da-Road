@@ -9,9 +9,23 @@
 #include "cMapLane.h"
 #include "cMapObject.h"
 #include "cMapObject.h"
+#include <vector>
 
 // Forward declaration
 class cApp;
+
+struct GraphicCell
+{
+	char graphic;
+	int nCellOffset;
+	int nRow;
+	int nCol;
+	float fLastDrawn;
+
+	GraphicCell();
+	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn = 0);
+	~GraphicCell();
+};
 
 class hMapDrawer
 {
@@ -25,6 +39,10 @@ public: // Constructors & Destructor
 
 public: // Setters
 	bool SetupTarget(cApp* app);
+
+private: /// Internality
+	std::vector<GraphicCell> GetLaneBackgrounds(const cMapLane& Lane) const;
+	std::vector<GraphicCell> GetLaneObjects(const cMapLane& Lane) const;
 
 private: // Drawer helpers
 	bool DrawLane(const cMapLane& Lane) const;

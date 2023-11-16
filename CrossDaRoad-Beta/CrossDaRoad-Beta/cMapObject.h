@@ -38,18 +38,4 @@ struct MapObject
 	void debug(char end = '\n') const;  ///< Debug
 };
 
-/// @brief Struct for graphical cell (for map editor) 
-struct GraphicCell
-{
-	char graphic; ///< Graphic character
-	int nCellOffset; ///< Offset of the cell
-	int nRow; ///< Row of the cell
-	int nCol; ///< Column of the cell
-
-	// Constructor & Destructor
-	GraphicCell();
-	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol);
-	~GraphicCell();
-};
-
 #endif // C_MAP_OBJECT_H

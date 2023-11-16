@@ -90,26 +90,3 @@ void MapObject::debug(char end) const
 	}
 	std::cerr << "}" << end;
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////// GRAPHIC CELLS //////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Default constructor
-GraphicCell::GraphicCell()
-{
-	graphic = 0;
-	nCellOffset = 0;
-	nRow = 0;
-	nCol = 0;
-}
-/// @brief Parameterized constructor
-GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
-{
-	this->graphic = graphic;
-	this->nCellOffset = nCellOffset;
-	this->nRow = nRow;
-	this->nCol = nCol;
-}
-/// @brief Destructor
-GraphicCell::~GraphicCell() = default;

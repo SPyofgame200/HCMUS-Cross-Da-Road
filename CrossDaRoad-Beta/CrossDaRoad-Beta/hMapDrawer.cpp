@@ -8,11 +8,35 @@
 #include "cApp.h"
 #include <vector>
 
+<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// CONSTRUCTORS & DESTRUCTOR /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
+=======
+GraphicCell::GraphicCell()
+{
+	graphic = 0;
+	nCellOffset = 0;
+	nRow = 0;
+	nCol = 0;
+}
+
+GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
+{
+	this->graphic = graphic;
+	this->nCellOffset = nCellOffset;
+	this->nRow = nRow;
+	this->nCol = nCol;
+	this->fLastDrawn = fLastDrawn;
+}
+
+GraphicCell::~GraphicCell()
+{
+}
+
+>>>>>>> cc44fa090eb9ae18f6b33ba8413d354ea8fcfc72
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
@@ -48,6 +72,7 @@ bool hMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
+<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,38 +81,61 @@ bool hMapDrawer::SetupTarget(cApp* app)
 /// @param lane Lane to be drawn
 /// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& lane) const
+=======
+
+std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
+>>>>>>> cc44fa090eb9ae18f6b33ba8413d354ea8fcfc72
 {
-	const int nRow = lane.GetLaneID();
-	const int nStartPos = lane.GetStartPos(app->fTimeSinceStart);
-	const int nCellOffset = lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
+	const int nRow = Lane.GetLaneID();
+	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
+	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 
 	std::vector<GraphicCell> Backgrounds;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
+		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Backgrounds.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
 	}
 
+	return Backgrounds;
+}
+
+std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
+{
+	const int nRow = Lane.GetLaneID();
+	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
+	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
+
 	std::vector<GraphicCell> Objects;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
+		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
 	}
 
 	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
-		const int nID = static_cast<int>(nRow * 1e4 + id);
+		const int nID = static_cast<int>(Cell.nRow * 1e6 + Cell.nCol * 1e3 + nStartPos);
 		if (SuccessSummon(Cell.graphic, nID)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, Cell.nCol));
 		}
 	}
 
+	return Objects;
+}
+
+bool hMapDrawer::DrawLane(const cMapLane& Lane) const
+{
+	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
+	std::vector<GraphicCell> Objects = GetLaneObjects(Lane);
+
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
 	}
+
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawObject(ObjectCell);
 	}
+
 	return true;
 }
 
@@ -178,20 +226,15 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 	if (mapLastSummon.count(nID) == false) {
 		std::uniform_real_distribution<float> initialDistribution(0, sprite.fDuration);
 		mapLastSummon[nID] = initialDistribution(generator);
-		//std::cerr << "map[" << nID << "] = " << sprite.fDuration + sprite.fCooldown << std::endl;
 	}
 	float& fLastSummon = mapLastSummon[nID];
 	const float fDeltaTime = fCurrentTime - fLastSummon;
 
-	//std::cerr << nCol << " " << nRow << " id=" << id << ": ";
-	//std::cerr << "delta=" << fDeltaTime << " current=" << fCurrentTime << " " << "last=" << fLastSummon << " -> ";
 	if (fDeltaTime >= 0) {
 		if (fDeltaTime <= sprite.fDuration) {
-			//std::cerr << "Continue" << std::endl;
 			return true;
 		}
 		else if (fDeltaTime < sprite.fDuration + sprite.fCooldown) {
-			//std::cerr << "Stoped" << std::endl;
 			return false;
 		}
 	}
@@ -204,10 +247,8 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 	const float fGenerated = distribution(generator);
 	if (fGenerated < fProbability) {
 		fLastSummon = fCurrentTime;
-		//std::cerr << "Recreated" << std::endl;
 		return true;
 	}
-	//std::cerr << "Failed" << std::endl;
 	return false; // Summon is not successful
 }
 
