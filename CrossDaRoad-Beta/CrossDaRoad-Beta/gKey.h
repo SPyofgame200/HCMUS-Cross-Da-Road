@@ -1,7 +1,3 @@
-#ifndef G_KEY_H
-#define G_KEY_H
-
-#include <map>
 
 /**
  * @file gKey.h
@@ -10,6 +6,12 @@
  *
  * This file contains key enumeration for keyboard input (prototype) and key map for mapping key to its code
 **/
+
+#ifndef G_KEY_H
+#define G_KEY_H
+
+#include <map>
+
 
 namespace app
 {
