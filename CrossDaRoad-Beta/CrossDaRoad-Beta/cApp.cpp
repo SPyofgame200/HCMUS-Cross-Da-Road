@@ -418,7 +418,7 @@ bool cApp::OnPauseEvent()
 		Menu.ResetMenu();
 		ResumeEngine();
 	}
-	else if (!Menu.IsOnMenu() && IsKeyReleased(app::Key::ESCAPE)) {
+	else if (Menu.IsOnGame() && IsKeyReleased(app::Key::ESCAPE)) {
 		PauseEngine();
 	}
 	if (IsEnginePause()) { // continue the pause event
@@ -432,7 +432,7 @@ bool cApp::OnPauseEvent()
 /// @brief Event that called when application is force paused
 bool cApp::OnForcePauseEvent()
 {
-	if (Menu.IsOnMenu()) {
+	if (!Menu.IsOnGame()) {
 		return false;
 	}
 	PauseEngine();

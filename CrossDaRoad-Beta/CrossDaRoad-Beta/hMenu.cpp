@@ -112,8 +112,8 @@ bool hMenu::LoadAppOption()
 			eMenuOption = AppOption::NEW_GAME;
 			app->GameReset();
 			break;
-		case CONTINUE:
-			eMenuOption = AppOption::CONTINUE;
+		case APP_GAME:
+			eMenuOption = AppOption::APP_GAME;
 			app->GameReset();
 			app->OnGameLoad();
 			break;
@@ -176,6 +176,11 @@ bool hMenu::CloseMenu() const
 bool hMenu::IsOnMenu() const
 {
 	return eMenuOption == AppOption::APP_MENU;
+}
+
+bool hMenu::IsOnGame() const
+{
+	return eMenuOption == AppOption::APP_GAME;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,11 +325,11 @@ bool hMenu::Update(const float fElapsedTime)
 			bool result = app->UpdateDrawNameBox();
 			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER))
 			{
-				eMenuOption = CONTINUE;
+				eMenuOption = APP_GAME;
 			}
 			return result;
 		}
-		case AppOption::CONTINUE:
+		case AppOption::APP_GAME:
 			return app->OnGameUpdate(fElapsedTime);
 		case AppOption::SETTINGS:
 			return UpdateSetting();
@@ -417,7 +422,7 @@ bool hMenu::Render()
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return app->DrawNameBox();
-		case AppOption::CONTINUE:
+		case AppOption::APP_GAME:
 			return app->OnGameRender();
 		case AppOption::SETTINGS:
 			return RenderSetting();

@@ -25,7 +25,7 @@ public:
 	enum AppOption
 	{
 		NEW_GAME = 0, ///< New game window
-		CONTINUE = 1, ///< Continue game window
+		APP_GAME = 1, ///< Continue game window
 		SETTINGS = 2, ///< Settings window
 		ABOUT_US = 3, ///< About us window
 		APP_EXIT = 4, ///< Exit application window
@@ -81,6 +81,7 @@ private: // Management helpers
 
 public: // Checkers
 	bool IsOnMenu() const;
+	bool IsOnGame() const;
 
 public: // Validators
 	static int FixOption(int& value, int limit);
