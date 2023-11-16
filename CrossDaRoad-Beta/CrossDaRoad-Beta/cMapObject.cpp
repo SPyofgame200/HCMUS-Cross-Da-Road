@@ -33,7 +33,7 @@ MapObject::MapObject()
 	fChance = 0;
 }
 
-/// @brief Destructor (clears the strings)
+/// @brief Destructor
 MapObject::~MapObject()
 {
 	sSpriteName.clear();
@@ -95,6 +95,7 @@ void MapObject::debug(char end) const
 //////////////////////////////////////////// GRAPHIC CELLS //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Default constructor
 GraphicCell::GraphicCell()
 {
 	graphic = 0;
@@ -102,7 +103,7 @@ GraphicCell::GraphicCell()
 	nRow = 0;
 	nCol = 0;
 }
-
+/// @brief Parameterized constructor
 GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	this->graphic = graphic;
@@ -110,6 +111,5 @@ GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 	this->nRow = nRow;
 	this->nCol = nCol;
 }
-
-GraphicCell::~GraphicCell()
-{}
+/// @brief Destructor
+GraphicCell::~GraphicCell() = default;
