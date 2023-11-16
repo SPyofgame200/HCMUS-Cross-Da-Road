@@ -15,7 +15,7 @@
 /// @brief Singleton class for asset management
 class cAssetManager
 {
-private:
+private: // Properties
 	std::map<std::string, app::Sprite*> mapSprites; ///< map of sprites that converts string to sprite
 	std::string sDirectoryPath;
 	std::string sFileExtension;
@@ -65,6 +65,7 @@ private: // Map Loaders
 private: // Loaders
 	bool LoadSprite(const std::string& sName, const std::string& sFileName);
 	bool LoadAnimation(const std::string& sName, const std::string& sFileName, int nMaxFrame);
+
 public: // Loaders
 	bool LoadAllSprites();
 };
