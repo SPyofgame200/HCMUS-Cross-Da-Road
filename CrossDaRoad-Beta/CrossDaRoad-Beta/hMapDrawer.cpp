@@ -60,8 +60,8 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 		const int nTopLeftY = nRow * app->nCellSize;
 		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
 		const int nBottomRightY = (nRow + 1) * app->nCellSize;
-		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetDangerPattern().c_str());
-		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetBlockPattern().c_str());
+		app->Zone.FillDanger(graphic, app->MapLoader.GetDangerPattern().c_str(), nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY);
+		app->Zone.FillBlocked(graphic, app->MapLoader.GetBlockPattern().c_str(), nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY);
 	}
 
 	return true;

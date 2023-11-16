@@ -40,10 +40,10 @@ public: // Setters
 	bool SetBlock(int nPosX, int nPosY, bool bValue) const;
 
 public: // Fillers
-	int FillDanger(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillSafe(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillBlocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillUnblocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
+	int FillDanger(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillSafe(const char& graphic, const char* danger_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillBlocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
+	int FillUnblocked(const char& graphic, const char* block_pattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const;
 
 public: // Danger Zone Checkers
 	bool IsDangerPixel(float x, float y) const;
