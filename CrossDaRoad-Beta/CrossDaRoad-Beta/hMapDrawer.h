@@ -30,7 +30,7 @@ public: // Drawers
 	bool DrawAllLanes() const;
 
 public: // Generators
-	bool SuccessSummon(char graphic, int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const;
+	bool SuccessSummon(char graphic, int nID) const;
 };
 
 #endif // H_MAP_DRAWER_H

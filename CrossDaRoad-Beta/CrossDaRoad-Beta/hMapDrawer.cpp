@@ -43,10 +43,15 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
+	}
 
-		if (SuccessSummon(graphic, nCol, nRow, app->fTimeSinceStart, app->GetAppFPS(), !app->IsEnginePause())) {
-			const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
-			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, nCol));
+	for (int id = 0; id < Objects.size(); ++id)
+	{
+		const GraphicCell& Cell = Objects[id];
+		const int nID = static_cast<int>(nRow * 1e4 + id);
+		if (SuccessSummon(Cell.graphic, nID)) {
+			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
+			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, Cell.nCol));
 		}
 	}
 
@@ -74,8 +79,6 @@ bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
 	const int32_t nPosY = Cell.nRow * app->nCellSize;
-	app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
-	app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
 	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
 	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
@@ -84,6 +87,9 @@ bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
 		app->SetPixelMode(app::Pixel::MASK);
 		app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
+
+		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
+		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }
@@ -101,6 +107,9 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 		app->SetPixelMode(app::Pixel::NORMAL);
 		app->DrawPartialSprite(nPosX + Cell.nCellOffset, nPosY, background, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
+
+		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
+		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }
@@ -110,20 +119,21 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 std::default_random_engine generator(std::random_device{}());
 std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 std::map<int, float> mapLastSummon;
-bool hMapDrawer::SuccessSummon(char graphic, int nCol, int nRow, float fCurrentTime, int fps, bool bCreateAllow) const
+bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 {
 	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
 	if (sprite.summon == 0 || sprite.fChance <= 0) {
 		return false; // Summon is not enabled or chance is zero or negative
 	}
 
-	const int id = static_cast<int>(nCol * 1e4 + nRow);
-	if (mapLastSummon.count(id) == false) {
+	float fCurrentTime = app->fTimeSinceStart;
+	int fps = app->GetAppFPS();
+	if (mapLastSummon.count(nID) == false) {
 		std::uniform_real_distribution<float> initialDistribution(0, sprite.fDuration);
-		mapLastSummon[id] = initialDistribution(generator);
-		//std::cerr << "map[" << id << "] = " << sprite.fDuration + sprite.fCooldown << std::endl;
+		mapLastSummon[nID] = initialDistribution(generator);
+		//std::cerr << "map[" << nID << "] = " << sprite.fDuration + sprite.fCooldown << std::endl;
 	}
-	float& fLastSummon = mapLastSummon[id];
+	float& fLastSummon = mapLastSummon[nID];
 	const float fDeltaTime = fCurrentTime - fLastSummon;
 
 	//std::cerr << nCol << " " << nRow << " id=" << id << ": ";
@@ -139,7 +149,7 @@ bool hMapDrawer::SuccessSummon(char graphic, int nCol, int nRow, float fCurrentT
 		}
 	}
 
-	if (!bCreateAllow) {
+	if (app->IsEnginePause()) {
 		return false;
 	}
 
