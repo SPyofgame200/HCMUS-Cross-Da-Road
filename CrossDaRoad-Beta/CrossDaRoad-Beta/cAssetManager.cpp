@@ -98,6 +98,8 @@ bool cAssetManager::ReportLoadingResult(bool bSuccess, const std::string& sSprit
 ////////////////////////// GAME LOADERS //////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+/// @brief Load all name box sprites
+/// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadNameBoxSprites()
 {
     bool bSuccsess = true;
