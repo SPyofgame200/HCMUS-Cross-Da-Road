@@ -1,3 +1,10 @@
+/**
+ * @file cApp.cpp
+ * @brief Contains application class implementations
+ *
+ * This file implements application class for application management (init, exit, update, render).
+**/
+
 #include "cApp.h"
 #include "uSound.h"
 #include "uStringUtils.h"
@@ -293,7 +300,7 @@ bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 }
 bool cApp::OnCreateNewName()
 {
-	
+
 	return true;
 }
 bool cApp::OnDisplaySaveBox()
@@ -304,15 +311,13 @@ bool cApp::OnDisplaySaveBox()
 
 bool cApp::UpdateDrawNameBox()
 {
-	if (IsKeyReleased(app::Key::DOWN))
-	{	
+	if (IsKeyReleased(app::Key::DOWN)) {
 		nameBoxOption++;
 	}
-	if (IsKeyReleased(app::Key::UP))
-	{
+	if (IsKeyReleased(app::Key::UP)) {
 		nameBoxOption--;
 	}
-	
+
 	return true;
 }
 
@@ -326,8 +331,7 @@ bool cApp::DrawNameBox()
 		DrawSprite(0, 0, NameBox);
 	else
 		DrawSprite(0, 0, NameBoxChosen);
-	if (IsKeyHolding(app::Key::K))
-	{
+	if (IsKeyHolding(app::Key::K)) {
 		SetPixelMode(app::Pixel::MASK);
 		DrawBigText("SPyofgame", 27, 27);
 		SetPixelMode(app::Pixel::NORMAL);
@@ -346,7 +350,7 @@ bool cApp::OnRenderEvent()
 /// @brief 
 /// @return 
 bool cApp::OnGameSave() const
-{	
+{
 	std::string FileName = Player.GetPlayerName();
 	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
@@ -376,7 +380,7 @@ bool cApp::OnGameSave() const
 /// @return 
 bool cApp::OnGameLoad()
 {
-	const std::string sLoadFilePath = GetFilePathLocation(false,"");
+	const std::string sLoadFilePath = GetFilePathLocation(false, "");
 
 	if (!sLoadFilePath.empty()) {
 		std::ifstream fin(sLoadFilePath);
@@ -458,40 +462,40 @@ bool cApp::OnForceDestroyEvent()
 /// @brief 
 /// @param isSave 
 /// @return 
-	std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
-	{
-		OPENFILENAME ofn;
-		wchar_t szFileNameW[MAX_PATH] = L"";
-		char szFileName[MAX_PATH] = "";
+std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
+{
+	OPENFILENAME ofn;
+	wchar_t szFileNameW[MAX_PATH] = L"";
+	char szFileName[MAX_PATH] = "";
 
-		ZeroMemory(&ofn, sizeof(OPENFILENAME));
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
 
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = nullptr;
-		ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-		ofn.lpstrFile = szFileNameW;
-		ofn.nMaxFile = MAX_PATH;
-		ofn.lpstrInitialDir = L"./data/save";
-		ofn.lpstrDefExt = L"txt";
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFileNameW;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrInitialDir = L"./data/save";
+	ofn.lpstrDefExt = L"txt";
 
-	
-		size_t count;
 
-		if (isSave) {
-			ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-			GetSaveFileName(&ofn);
-			wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
-			std::cout << "Selected File: " << szFileName << std::endl;
-			return szFileName;
-		}
-		else {
-			ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-			GetOpenFileName(&ofn);
-			wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
-			std::cout << "Selected File: " << szFileName << std::endl;
-			return szFileName;
-		}
+	size_t count;
+
+	if (isSave) {
+		ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+		GetSaveFileName(&ofn);
+		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+		std::cout << "Selected File: " << szFileName << std::endl;
+		return szFileName;
 	}
+	else {
+		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+		GetOpenFileName(&ofn);
+		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+		std::cout << "Selected File: " << szFileName << std::endl;
+		return szFileName;
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// GAME RENDERING ////////////////////////////////////////////

@@ -457,14 +457,13 @@ namespace app
 		return true;
 	}
 
-	bool GameEngine::UpdateWindowTitleSuffix(
-		const std::string& sTitleSuffix) const
+	bool GameEngine::UpdateWindowTitleSuffix(const std::string& sTitleSuffix)
 	{
 		const std::string sTitle = sAppName + sTitleSuffix;
 		return window.SetTitle(sTitle);
 	}
 
-	bool GameEngine::CreateWindowIcon() const
+	bool GameEngine::CreateWindowIcon()
 	{
 		return window.SetIcon(engine::ICON_FILE_PATH)
 			&& window.SetFavicon(engine::FAVICON_FILE_PATH);

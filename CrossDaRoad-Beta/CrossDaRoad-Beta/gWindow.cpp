@@ -85,13 +85,13 @@ namespace app
 	/////////////////////////////////////////////// SETTERS ///////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	bool Window::SetTitle(const std::string& sTitle) const
+	bool Window::SetTitle(const std::string& sTitle) 
 	{
 		SetWindowText(windowHandler, to_text(sTitle));
 		return true;
 	}
 
-	bool Window::SetIcon(const std::string& sFilePath) const
+	bool Window::SetIcon(const std::string& sFilePath) 
 	{
 		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
@@ -114,7 +114,7 @@ namespace app
 		return true;
 	}
 
-	bool Window::SetFavicon(const std::string& sFilePath) const
+	bool Window::SetFavicon(const std::string& sFilePath) 
 	{
 		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)

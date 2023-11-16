@@ -1,3 +1,8 @@
+/**
+ * @file cMapObject.cpp
+ * @brief Contains implementation of MapObject and GraphicCell structs
+**/
+
 #include "cMapObject.h"
 #include <iostream>
 #include <chrono>
@@ -28,7 +33,7 @@ MapObject::MapObject()
 	fChance = 0;
 }
 
-/// @brief Destructor (clears the strings)
+/// @brief Destructor
 MapObject::~MapObject()
 {
 	sSpriteName.clear();

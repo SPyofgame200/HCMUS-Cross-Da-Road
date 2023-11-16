@@ -1,3 +1,10 @@
+/**
+ * @file cApp.h
+ * @brief Contains application class
+ *
+ * This file contains application class for application management (init, exit, update, render).
+**/
+
 #ifndef C_APP_H
 #define C_APP_H
 

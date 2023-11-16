@@ -1,3 +1,12 @@
+/**
+ * @file cAssetManager.cpp
+ * @brief Contains asset manager class implementation
+ *
+ * This file contains asset manager class implementation that manages assets (sprites, sounds, etc.).
+ *
+**/
+
+
 #include "cAssetManager.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +98,8 @@ bool cAssetManager::ReportLoadingResult(bool bSuccess, const std::string& sSprit
 ////////////////////////// GAME LOADERS //////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+/// @brief Load all name box sprites
+/// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadNameBoxSprites()
 {
     bool bSuccsess = true;

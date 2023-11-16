@@ -1,7 +1,3 @@
-#include "cZone.h"
-#include <cstring>
-#include <iostream>
-
 /**
  * @file cZone.cpp
  *
@@ -9,6 +5,10 @@
  *
  * This file implements zone class for zone management.
 **/
+
+#include "cZone.h"
+#include <cstring>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////// CONSTRUCTORS AND DESTRUCTOR /////////////////
@@ -141,7 +141,7 @@ bool cZone::IsInside(const int x, const int y) const
 /// @param nPosY y coordinate
 /// @param bValue value to set (true: danger, false: safe)
 /// @return true if successfully set danger pixel (if (nPosX, nPosY) is inside), false otherwise
-bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue) const
+bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue)
 {
 	if (!IsInside(nPosX, nPosY)) {
 		return false;
@@ -154,7 +154,7 @@ bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue) const
 /// @param nPosY y coordinate
 /// @param bValue value to set (true: block, false: unblock)
 /// @return true if successfully set block pixel (if (nPosX, nPosY) is inside), false otherwise
-bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
+bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue)
 {
 	if (!IsInside(nPosX, nPosY)) {
 		return false;
@@ -162,7 +162,10 @@ bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
 	bBlocks[nPosY * nZoneWidth + nPosX] = bValue;
 	return true;
 }
-
+/// @brief Set cell size of the zone
+/// @param nWidth Width of the cell
+/// @param nHeight Height of the cell
+/// @return True if successfully set cell size, false otherwise
 bool cZone::SetCellSize(int nWidth, int nHeight)
 {
 	if (nWidth <= 0 || nHeight <= 0) {
@@ -174,7 +177,10 @@ bool cZone::SetCellSize(int nWidth, int nHeight)
 	nCellHeight = nHeight;
 	return true;
 }
-
+/// @brief Set danger and block pattern of the zone
+/// @param sDangerPattern Character array of danger pattern
+/// @param sBlockPattern Character array of block pattern
+/// @return True if successfully set danger and block pattern, false otherwise
 bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
 {
 	if (sDefaultDangerPattern) {
@@ -202,7 +208,7 @@ bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
 /// @param graphic graphic to fill
 /// @param sDangerPattern danger pattern to check if graphic is danger or not
 /// @return number of danger pixels filled
-int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 
 	int counter = 0;
@@ -221,7 +227,7 @@ int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int
 /// @param graphic graphic to fill
 /// @param sDangerPattern danger pattern to check if graphic is danger or not
 /// @return number of safe pixels filled
-int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -239,7 +245,7 @@ int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int n
 /// @param graphic graphic to fill
 /// @param sBlockPattern block pattern to check if graphic is block or not
 /// @return number of block pixels filled
-int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY) const
+int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -257,7 +263,7 @@ int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int
 /// @param graphic graphic to fill
 /// @param sBlockPattern block pattern to check if graphic is block or not
 /// @return number of unblock pixels filled
-int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY) const
+int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -268,22 +274,39 @@ int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTo
 	return counter;
 }
 
-int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+/// @brief Fill danger pixels with graphic in the zone
+/// @param graphic Graphic character to fill
+/// @param nTopLeftX x coordinate of top left corner
+/// @param nTopLeftY y coordinate of top left corner
+/// @return Number of danger pixels filled
+int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
-
-int cZone::FillSafe(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+/// @brief Fill safe pixels with graphic in the zone
+/// @param graphic Graphic character to fill
+/// @param nTopLeftX x coordinate of top left corner
+/// @param nTopLeftY y coordinate of top left corner
+/// @return Number of safe pixels filled
+int cZone::FillSafe(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillSafe(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
-
-int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+/// @brief Fill block pixels with graphic in the zone
+/// @param graphic Graphic character to fill
+/// @param nTopLeftX x coordinate of top left corner
+/// @param nTopLeftY y coordinate of top left corner
+/// @return Number of block pixels filled
+int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillBlocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
-
-int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTopLeftY) const
+/// @brief Fill unblock pixels with graphic in the zone
+/// @param graphic Graphic character to fill
+/// @param nTopLeftX x coordinate of top left corner
+/// @param nTopLeftY y coordinate of top left corner
+/// @return Number of unblock pixels filled
+int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
 	return FillUnblocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
@@ -404,3 +427,7 @@ bool cZone::IsBlockedBottomRight(const float x, const float y, const int size) c
 	const bool isBlockBottomRight = IsBlockedPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
 	return isBlockBottomRight;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
