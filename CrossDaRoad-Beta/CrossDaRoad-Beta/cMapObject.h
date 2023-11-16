@@ -1,9 +1,17 @@
+/**
+ * @file cMapObject.h
+ * @brief Contains MapObject struct for sprite data and GraphicCell struct for graphical cell
+ *
+ * This file contains prototype of MapObject struct and GraphicCell struct
+ */
+
+
 #ifndef C_MAP_OBJECT_H
 #define C_MAP_OBJECT_H
 
 #include <string>
 
-/// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
+ /// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
 struct MapObject
 {
 	char encode;                ///< Sprite encode chacters for map editor
@@ -30,13 +38,15 @@ struct MapObject
 	void debug(char end = '\n') const;  ///< Debug
 };
 
+/// @brief Struct for graphical cell (for map editor) 
 struct GraphicCell
 {
-	char graphic;
-	int nCellOffset;
-	int nRow;
-	int nCol;
+	char graphic; ///< Graphic character
+	int nCellOffset; ///< Offset of the cell
+	int nRow; ///< Row of the cell
+	int nCol; ///< Column of the cell
 
+	// Constructor & Destructor
 	GraphicCell();
 	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol);
 	~GraphicCell();
