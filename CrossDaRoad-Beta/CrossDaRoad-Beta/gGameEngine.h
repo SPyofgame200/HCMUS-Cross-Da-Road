@@ -106,8 +106,8 @@ namespace app
 
 		bool OnFixedUpdateEvent(const engine::Tick& eTickMessage);
 		bool UpdateKeyboardInput();
-		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix) const;
-		bool CreateWindowIcon() const;
+		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix);
+		bool CreateWindowIcon();
 		bool CreateViewport();
 		bool InitEngineThread();
 		bool ExitEngineThread() const;
