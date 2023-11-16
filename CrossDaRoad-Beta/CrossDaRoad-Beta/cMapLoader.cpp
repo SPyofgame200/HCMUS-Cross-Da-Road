@@ -1,6 +1,3 @@
-#include "cMapLoader.h"
-#include <iostream>
-
 /**
  * @file cMapLoader.cpp
  *
@@ -8,6 +5,9 @@
  *
  * This file implements cMapLoader class for map loading and manipulation in game.
 **/
+
+#include "cMapLoader.h"
+#include <iostream>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////
@@ -251,8 +251,8 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 	return true;
 }
 /// @brief Load map sprite from file
-///	@param sLine 
-/// @param bDebug
+///	@param sLine Line of the map sprite
+/// @param bDebug Whether to print debug message or not
 ///	@return true if map sprite was loaded successfully, false otherwise
 bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 {
@@ -445,9 +445,9 @@ bool cMapLoader::LoadMapLevel()
 	return LoadMapLevel(GetMapLevel());
 }
 
-/// @brief 
-/// @param timeStr 
-/// @return 
+/// @brief Extract time from string
+/// @param timeStr Time string
+/// @return Time in float format
 float cMapLoader::ExtractTime(const std::string& timeStr)
 {
 	if (timeStr.empty()) {
