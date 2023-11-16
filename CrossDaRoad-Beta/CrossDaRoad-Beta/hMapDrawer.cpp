@@ -1,3 +1,9 @@
+/**
+ * @file hMapDrawer.cpp
+ * @brief Implements map drawer class for drawing map on screen
+ *
+**/
+
 #include "hMapDrawer.h"
 #include "cApp.h"
 #include <vector>
@@ -45,8 +51,7 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
 	}
 
-	for (int id = 0; id < Objects.size(); ++id)
-	{
+	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
 		const int nID = static_cast<int>(nRow * 1e4 + id);
 		if (SuccessSummon(Cell.graphic, nID)) {
@@ -74,7 +79,7 @@ bool hMapDrawer::DrawAllLanes() const
 	return true;
 }
 
-bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
+bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
