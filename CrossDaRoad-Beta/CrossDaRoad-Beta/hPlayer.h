@@ -2,18 +2,19 @@
 #define C_PLAYER_H
 
 #include <string>
+#include "cFrame.h"
 #include "uAppConst.h"
 class cApp;
 class cZone;
 
 /**
- * @file cPlayer.h
+ * @file hPlayer.h
  *
  * @brief Contains player class
  *
  * This file contains player class for player management, movement, and rendering.
 **/
-class cPlayer
+class hPlayer
 {
 public:
 	enum Direction
@@ -43,22 +44,11 @@ private:
 	float fFrogLogicPosY;
 
 private:
-	frame_t frame4_id;
-	frame_t frame4_id_limit;
-	frame_t frame4_val;
+	frame4_t frame4;
+	frame6_t frame6;
+	frame8_t frame8;
 
-	frame_t frame6_id;
-	frame_t frame6_id_limit;
-	frame_t frame6_val;
-
-	frame_t frame8_id;
-	frame_t frame8_id_limit;
-	frame_t frame8_val;
-	
-	frame_t frame6_id_animation;
 	frame_t frame6_id_animation_safe;
-	frame_t frame6_val_animation_cur;
-	frame_t frame6_val_animation_last;
 
 private:
 	Direction eDirection;
@@ -68,9 +58,9 @@ private:
 	cApp* app;
 	std::string Name;
 public: // Constructors & Destructor
-	cPlayer();
-	cPlayer(cApp* app);
-	~cPlayer();
+	hPlayer();
+	hPlayer(cApp* app);
+	~hPlayer();
 
 public: // Reseters
 	void ResetDirection();
@@ -113,7 +103,6 @@ public: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
-	float GetFrameTick(frame_t frame) const;
 	int GetFrameID(frame_t frame) const;
 	std::string ShowFrameID(frame_t frame) const;
 	float GetPlayerAnimationPositionX() const;
@@ -151,8 +140,12 @@ public: // Movements
 	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
 	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 
+public: /// Validators & Fixers
+	bool OnFixPlayerPosition();
+
 public: // Logic Updater
-	bool OnUpdatePlayerLane();
+	bool OnUpdatePlayerIdle();
+	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue();
 	bool OnUpdatePlayerJumpStop();
 
@@ -167,7 +160,6 @@ public: // Player Renderer
 public: // Logic-Render Control
 	bool OnPlayerMove();
 	bool OnUpdateFrame(float fTickTime);
-	bool AddExtraFrame(int nExtra = 1);
 };
 
 #endif // C_PLAYER_H

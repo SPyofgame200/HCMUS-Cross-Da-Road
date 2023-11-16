@@ -6,16 +6,16 @@
 // Utilities
 #include "uAppConst.h"
 // Objects & Hitboxes
-#include "cPlayer.h"
+#include "hPlayer.h"
 #include "cMapObject.h"
 #include "cZone.h"
 // Assets
 #include "cAssetManager.h"
 // Maps
 #include "cMapLoader.h"
-#include "cMapDrawer.h"
+#include "hMapDrawer.h"
 // HUD
-#include "cMenu.h"
+#include "hMenu.h"
 // Standard
 #include <map>
 #include <string>
@@ -24,18 +24,18 @@
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
 class cApp : public app::GameEngine
 {
-	friend class cMenu;
-	friend class cPlayer;
-	friend class cMapDrawer;
+	friend class hMenu;
+	friend class hPlayer;
+	friend class hMapDrawer;
 
 private: // Interactive Properties (control the map)
-	cMenu Menu; 
-	cPlayer Player;
+	hMenu Menu; 
+	hPlayer Player;
 
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
-	cMapDrawer MapDrawer;
+	hMapDrawer MapDrawer;
 
 private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;

@@ -232,8 +232,6 @@ bool cAssetManager::LoadMapHalloweenSprites()
 bool cAssetManager::LoadMapRiverSideSprites()
 {
     bool bSuccess = true;
-    bSuccess &= LoadSprite("alligator", "alligator");
-    bSuccess &= LoadSprite("alligator_1", "alligator_1");
     bSuccess &= LoadSprite("kiwi", "kiwi_bird");
     bSuccess &= LoadSprite("wood1", "wood1");
     bSuccess &= LoadSprite("wood2", "wood2");
@@ -243,6 +241,8 @@ bool cAssetManager::LoadMapRiverSideSprites()
     bSuccess &= LoadSprite("water", "water");
     bSuccess &= LoadSprite("tree", "tree");
     bSuccess &= LoadSprite("grass", "grass");
+    bSuccess &= LoadAnimation("crocodile", "crocodile", 6);
+    bSuccess &= LoadAnimation("crocodile_right", "crocodile_right", 6);
 
     return ReportLoadingResult(bSuccess, "River Side map");
 }

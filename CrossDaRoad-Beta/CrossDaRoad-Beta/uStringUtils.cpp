@@ -11,6 +11,8 @@
 
 namespace strutil
 {
+	const char* sSpacePattern = " ";
+
 	/// @brief Trim from start of string (left)
 	/// @param raw The string to be trimmed
 	/// @param pattern The pattern to be trimmed

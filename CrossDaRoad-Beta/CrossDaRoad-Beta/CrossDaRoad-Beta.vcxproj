@@ -104,7 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +120,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,13 +133,14 @@
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cAssetManager.cpp" />
-    <ClCompile Include="cMapDrawer.cpp" />
-    <ClCompile Include="cMapEditor.cpp" />
+    <ClCompile Include="cFrame.cpp" />
+    <ClCompile Include="hMapDrawer.cpp" />
+    <ClCompile Include="hMapEditor.cpp" />
     <ClCompile Include="cMapLane.cpp" />
     <ClCompile Include="cMapLoader.cpp" />
     <ClCompile Include="cMapObject.cpp" />
-    <ClCompile Include="cMenu.cpp" />
-    <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="hMenu.cpp" />
+    <ClCompile Include="hPlayer.cpp" />
     <ClCompile Include="cZone.cpp" />
     <ClCompile Include="gGameEngine.cpp" />
     <ClCompile Include="gKey.cpp" />
@@ -149,19 +152,21 @@
     <ClCompile Include="gUtils.cpp" />
     <ClCompile Include="gWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="uAppUtils.cpp" />
     <ClCompile Include="uSound.cpp" />
     <ClCompile Include="uStringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cAssetManager.h" />
-    <ClInclude Include="cMapDrawer.h" />
-    <ClInclude Include="cMapEditor.h" />
+    <ClInclude Include="cFrame.h" />
+    <ClInclude Include="hMapDrawer.h" />
+    <ClInclude Include="hMapEditor.h" />
     <ClInclude Include="cMapLane.h" />
     <ClInclude Include="cMapLoader.h" />
     <ClInclude Include="cMapObject.h" />
-    <ClInclude Include="cMenu.h" />
-    <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="hMenu.h" />
+    <ClInclude Include="hPlayer.h" />
     <ClInclude Include="cZone.h" />
     <ClInclude Include="gConst.h" />
     <ClInclude Include="gGameEngine.h" />
@@ -174,8 +179,25 @@
     <ClInclude Include="gUtils.h" />
     <ClInclude Include="gWindow.h" />
     <ClInclude Include="uAppConst.h" />
+    <ClInclude Include="uAppUtils.h" />
     <ClInclude Include="uSound.h" />
     <ClInclude Include="uStringUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\maps\map0.txt" />
+    <Text Include="data\maps\map1.txt" />
+    <Text Include="data\maps\map2.txt" />
+    <Text Include="data\maps\map3.txt" />
+    <Text Include="data\maps\map4.txt" />
+    <Text Include="data\maps\mapNames.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\functionStandard.md" />
+    <None Include="docs\codingStandard.md" />
+    <None Include="docs\projectStandard.md" />
+    <None Include="docs\mapStandard.md" />
+    <None Include="docs\README.md" />
+    <None Include="docs\todo.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,7 @@
   - [Project Structure](#project-structure)
   - [src Structure](#src-structure)
     - [Object Class Files (`cFileName.cpp`)](#object-class-files-cfilenamecpp)
+    - [Handler Class Files (`hFileName.cpp`)](#handler-class-files-gfilenamecpp)
     - [Core Game Class Files (`gFileName.cpp`)](#core-game-class-files-gfilenamecpp)
     - [Utilities Function Files (`uFileName.cpp`)](#utilities-function-files-ufilenamecpp)
     - [Header Files](#header-files)
@@ -29,6 +30,11 @@
 ### Object Class Files (`cFileName.cpp`)
 
 - These files should contain object classes.
+- Avoid using the global namespace in these files unless it's for debugging purposes.
+
+### Handler Class Files (`hFileName.cpp`)
+
+- These files should contain handler classes for object classes, do not use them as objects.
 - Avoid using the global namespace in these files unless it's for debugging purposes.
 
 ### Core Game Class Files (`gFileName.cpp`)

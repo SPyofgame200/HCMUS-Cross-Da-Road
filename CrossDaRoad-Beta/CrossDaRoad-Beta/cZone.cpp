@@ -165,6 +165,7 @@ bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue) const
 /// @return number of danger pixels filled
 int cZone::FillDanger(const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY, const char& graphic, const char* danger_pattern) const
 {
+
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
 		for (int y = nTopLeftY; y < nBottomRightY; y++) {

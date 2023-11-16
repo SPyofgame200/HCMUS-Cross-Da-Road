@@ -1,6 +1,5 @@
 #include "cMapLoader.h"
 #include <iostream>
-#include <filesystem>
 
 /**
  * @file cMapLoader.cpp
@@ -79,8 +78,8 @@ void cMapLoader::UpdatePattern()
 {
 	dangerPattern.clear();
 	blockPattern.clear();
-	for (auto [fst, snd] : mapSprites) {
-		auto sprite = snd;
+	for (const auto& pair : mapSprites) {
+		const auto& sprite = pair.second;
 		if (sprite.isBlocked) {
 			blockPattern += sprite.encode;
 		}
@@ -236,32 +235,20 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @param sLine Line of the map lane 
 /// @param bDebug Whether to print debug message or not
 /// @return True if map lane was loaded successfully, false otherwise
-bool cMapLoader::LoadMapLane(const std::string& sLine, bool bDebug)
+bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 {
-	std::cout << sLine << std::endl;
+	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
 	const size_t spacePos = sLine.find(' ');
 	if (spacePos == std::string::npos) {
 		std::cout << "Error: Space not found in line: " << sLine << std::endl;
 		return false;
 	}
 
-	try {
-		const float velocity = std::stof(sLine.substr(spacePos + 1));
-		const std::string laneString = sLine.substr(0, spacePos);
-		const cMapLane lane(velocity, laneString);
-		vecLanes.push_back(lane);
-		return true;
-	}
-	catch ([[maybe_unused]] const std::invalid_argument& e) {
-		std::cout << "Error: Invalid velocity value in line: " << sLine
-			<< std::endl;
-		return false;
-	}
-	catch ([[maybe_unused]] const std::out_of_range& e) {
-		std::cout << "Error: Velocity value is out of range in line: " << sLine
-			<< std::endl;
-		return false;
-	}
+	const float fVelocity = std::stof(sLine.substr(spacePos + 1));
+	const std::string sLane = sLine.substr(0, spacePos);
+	const cMapLane lane(fVelocity, sLane, nLaneID);
+	vecLanes.push_back(lane);
+	return true;
 }
 /// @brief Load map sprite from file
 ///	@param sLine 
@@ -420,13 +407,13 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	if (!ifs.is_open()) {
 		std::cout << "Failed to open file: " << sFileName << std::endl;
 		std::cerr << "Error state: " << ifs.rdstate() << std::endl;
-		std::cout << "Current Working Directory: " << std::filesystem::current_path() << std::endl;
 		const std::string& sFileName = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
 		std::cout << "File Path: " << sFileName << std::endl;
 		return false;
 	}
 
-	bool isLoadingSprite = false;
+	int nLaneID = 0;
+	bool bLoadingSprite = false;
 	for (std::string sLine; std::getline(ifs, sLine);) {
 		strutil::deduplicate(sLine, " ");
 		strutil::trim(sLine);
@@ -434,18 +421,18 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 			break;
 
 		if (sLine.front() == '#') {
-			if (isLoadingSprite) {
+			if (bLoadingSprite) {
 				break;
 			}
-			isLoadingSprite = true;
+			bLoadingSprite = true;
 			continue;
 		}
 
-		if (isLoadingSprite) {
+		if (bLoadingSprite) {
 			LoadMapSprite(sLine);
 		}
 		else {
-			LoadMapLane(sLine);
+			LoadMapLane(sLine, nLaneID++);
 		}
 	}
 	UpdatePattern();

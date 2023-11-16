@@ -179,6 +179,9 @@ namespace app
 		UNUSED
 	};
 
+	template <typename key_t, typename data_t>
+	void MergeMapKey(std::map<key_t, data_t>& dest, const std::map<key_t, data_t>& source);
+
 	std::map<uint16_t, uint8_t> CreateMapKeyAlphabet();
 	std::map<uint16_t, uint8_t> CreateMapKeyNumeric();
 	std::map<uint16_t, uint8_t> CreateMapKeyFunction();

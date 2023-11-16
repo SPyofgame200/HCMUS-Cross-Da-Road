@@ -7,7 +7,7 @@
 #include <vector>
 
 /**
- * @file cMenu.h
+ * @file hMenu.h
  *
  * @brief Contains menu class
  *
@@ -18,7 +18,7 @@
 class cApp; 
 
 /// @brief Class for menu window management
-class cMenu
+class hMenu
 {
 public:
 	/// @brief  Enumeration for menu options 
@@ -60,12 +60,12 @@ private: /// Pause HUD
 	int nPauseOptionLimit; ///< Maximum number of options
 
 public: // Constructor & Destructor
-	cMenu();
-	cMenu(cApp* app);
-	~cMenu();
+	hMenu();
+	hMenu(cApp* app);
+	~hMenu();
 
 public: // Initialization & Clean-up
-	bool SetTarget(cApp* app);
+	bool SetupTarget(cApp* app);
 	bool InitMenu();
 	bool ResetMenu();
 	bool ExitMenu();
