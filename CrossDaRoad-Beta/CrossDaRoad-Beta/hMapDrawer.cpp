@@ -72,10 +72,7 @@ bool hMapDrawer::SetupTarget(cApp* app)
 ///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Draw lane on screen
-/// @param lane Lane to be drawn
-/// @return True if successful, false otherwise
-bool hMapDrawer::DrawLane(const cMapLane& lane) const {}
+
 
 std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
 {
@@ -115,7 +112,9 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 
 	return Objects;
 }
-
+/// @brief Draw lane on screen
+/// @param lane Lane to be drawn
+/// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 {
 	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
