@@ -34,6 +34,8 @@ namespace app
 		Sprite* pDrawTarget;        ///< Draw target for drawing on screen (window) using OpenGL functions
 		Pixel::Mode nPixelMode;     ///< Pixel mode for drawing on screen (window) using OpenGL functions
 		float fBlendFactor;         ///< Blend factor for drawing on screen (window) using OpenGL functions
+		int nDefaultWidth;
+		int nDefaultHeight;
 
 	public: // Constructors & Destructors
 		Texture();
@@ -70,11 +72,13 @@ namespace app
 		void SetPixelMode(Pixel::Mode m);
 		void SetBlendFactor(float fBlend);
 		bool SetDefaultDrawTarget(int32_t width, int32_t height);
+		bool SetDefaultTargetSize(int32_t width, int32_t height);
 
 	public: // Drawing functions
 		bool Draw(int32_t x, int32_t y, Pixel current_pixel = app::WHITE, uint32_t uScale = 1);
 		void DrawSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, uint32_t uScale = 1);
 		void DrawPartialSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, int32_t nOriginX, int32_t nOriginY, int32_t nWidth, int32_t nHeight, uint32_t uScale = 1);
+		void DrawPartialSprite(int32_t nOffsetX, int32_t nOffsetY, const Sprite* pSprite, int32_t nOriginX, int32_t nOriginY);
 		void Clear(Pixel pixel = app::BLACK) const;
 	};
 }

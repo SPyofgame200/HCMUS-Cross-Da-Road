@@ -14,6 +14,7 @@
 /// @brief Default constructor init menu and game
 cApp::cApp()
 {
+	SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
 	Player = hPlayer(this);
 	MapDrawer = hMapDrawer(this);
 	Menu.InitMenu();

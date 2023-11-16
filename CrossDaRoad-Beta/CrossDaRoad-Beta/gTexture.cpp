@@ -40,6 +40,9 @@ namespace app
 		pDrawTarget = nullptr;
 		nPixelMode = Pixel::NORMAL;
 		fBlendFactor = 1.0f;
+		nDefaultWidth = 0;
+		nDefaultHeight = 0;
+
 		glDeviceContext = nullptr;
 		glRenderContext = nullptr;
 		glBuffer = 0;
@@ -396,6 +399,18 @@ namespace app
 		return true;
 	}
 
+	bool Texture::SetDefaultTargetSize(const int32_t width, const int32_t height)
+	{
+		if (width <= 0 || height <= 0) {
+			nDefaultWidth = 0;
+			nDefaultHeight = 0;
+			return false;
+		}
+		nDefaultWidth = width;
+		nDefaultHeight = height;
+		return true;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////// DRAWING FUNCTIONS ////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -498,6 +513,10 @@ namespace app
 				Draw(nPosX, nPosY, pixel, uScale);
 			}
 		}
+	}
+	void Texture::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY)
+	{
+		return DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nDefaultWidth, nDefaultHeight);
 	}
 	/// @brief Clear the draw target with the specified color.
 	/// @param pixel Pixel color to clear

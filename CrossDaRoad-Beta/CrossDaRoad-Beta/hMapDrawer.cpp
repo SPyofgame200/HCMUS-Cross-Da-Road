@@ -83,15 +83,13 @@ bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
-	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
-	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
 	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
 	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
 	if (sName.size()) {
 		const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::MASK);
-		app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY, nWidth, nHeight);
+		app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
 	}
 
@@ -100,7 +98,7 @@ bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol)
 		if (sSummonName.size()) {
 			const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
 			app->SetPixelMode(app::Pixel::MASK);
-			app->DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY, nWidth, nHeight);
+			app->DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY);
 			app->SetPixelMode(app::Pixel::NORMAL);
 		}
 	}
@@ -112,15 +110,13 @@ bool hMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCo
 	MapObject sprite = app->MapLoader.GetSpriteData(graphic);
 	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
 	const int32_t nPosY = nRow * app->nCellSize;
-	constexpr int32_t nWidth = app_const::SPRITE_WIDTH;
-	constexpr int32_t nHeight = app_const::SPRITE_HEIGHT;
 	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 	const std::string sName = sprite.sBackgroundName;
 	if (sName.size()) {
 		const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::NORMAL);
-		app->DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY, nWidth, nHeight);
+		app->DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
 	}
 	return true;

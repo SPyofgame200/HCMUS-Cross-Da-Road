@@ -323,6 +323,10 @@ namespace app
 	{
 		return texture.SetBlendFactor(fBlend);
 	}
+	bool GameEngine::SetDefaultTargetSize(int32_t width, int32_t height)
+	{
+		return texture.SetDefaultTargetSize(width, height);
+	}
 
 	/// @brief Draw a pixel at the specified coordinates with the given color.
 	/// @brief  - Solid color without transparency: <app::Pixel::NORMAL>
@@ -361,11 +365,21 @@ namespace app
 	/// @param nHeight The height of the source area.
 	/// @param uScale The scaling factor to apply when drawing the sprite.
 	void GameEngine::DrawPartialSprite(
-		const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite,
-		const int32_t nOriginX, const int32_t nOriginY, const int32_t nWidth,
-		const int32_t nHeight, const uint32_t uScale)
-	{
+		const int32_t nOffsetX, const int32_t nOffsetY,
+		const Sprite* pSprite,
+		const int32_t nOriginX, const int32_t nOriginY,
+		const int32_t nWidth, const int32_t nHeight,
+		const uint32_t uScale
+	) {
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nWidth, nHeight, uScale);
+	}
+
+	void GameEngine::DrawPartialSprite(
+		const int32_t nOffsetX, const int32_t nOffsetY,
+		const Sprite* pSprite,
+		const int32_t nOriginX, const int32_t nOriginY
+	) {
+		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY);
 	}
 
 	/// @brief Clear the drawing target with the specified pixel color.
