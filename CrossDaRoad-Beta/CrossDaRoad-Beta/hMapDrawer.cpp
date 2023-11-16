@@ -54,12 +54,13 @@ bool hMapDrawer::DrawLane(const cMapLane& lane) const
 		DrawObject(graphic, nCellOffset, nRow, nCol);
 	}
 
+	app->Zone.SetPattern(app->MapLoader.GetDangerPattern().c_str(), app->MapLoader.GetBlockPattern().c_str());
 	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
 		const int nTopLeftX = nCol * app->nCellSize - nCellOffset;
 		const int nTopLeftY = nRow * app->nCellSize;
-		app->Zone.FillDanger(graphic, app->MapLoader.GetDangerPattern().c_str(), nTopLeftX, nTopLeftY);
-		app->Zone.FillBlocked(graphic, app->MapLoader.GetBlockPattern().c_str(), nTopLeftX, nTopLeftY);
+		app->Zone.FillDanger(graphic, nTopLeftX, nTopLeftY);
+		app->Zone.FillBlocked(graphic, nTopLeftX, nTopLeftY);
 	}
 
 	return true;
