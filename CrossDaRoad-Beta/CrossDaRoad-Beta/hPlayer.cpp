@@ -646,6 +646,8 @@ bool hPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorSc
 ///////////////////////////////////////// LOGIC UPDATES ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Fix player position
+/// @return True if player position is fixed, false otherwise
 bool hPlayer::OnFixPlayerPosition()
 {
 	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
@@ -654,18 +656,23 @@ bool hPlayer::OnFixPlayerPosition()
 	return true;
 }
 
+/// @brief Update animation when player idling
+/// @return Always true by default
 bool hPlayer::OnUpdatePlayerIdle()
 {
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	return true;
 }
 
+/// @brief Update animation when player start jumping
+/// @return True if player animation is updated, false otherwise
 bool hPlayer::OnUpdatePlayerJumpStart()
 {
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
 	return frame6.StartAnimation();
 }
-
+/// @brief Update animation when player continue jumping
+/// @return True if player animation is updated, false otherwise
 bool hPlayer::OnUpdatePlayerJumpContinue()
 {
 	if (GetAnimation() == IDLE) {
@@ -696,6 +703,8 @@ bool hPlayer::OnUpdatePlayerJumpContinue()
 	return true;
 }
 
+/// @brief Update animation when player stop jumping
+/// @return True if player animation is updated, false otherwise
 bool hPlayer::OnUpdatePlayerJumpStop()
 {
 	OnFixPlayerPosition();
@@ -735,6 +744,8 @@ bool hPlayer::OnRenderPlayerJumpStop() const
 	return true;
 }
 
+/// @brief Render player animation to screen
+/// @return Always true by default
 bool hPlayer::OnRenderPlayer() const
 {
 	const int nID = frame6.GetAnimationID();
@@ -759,6 +770,8 @@ bool hPlayer::OnRenderPlayer() const
 	return true;
 }
 
+/// @brief Render player death animation to screen
+/// @return Always true by default
 bool hPlayer::OnRenderPlayerDeath()
 {
 	for (int id = 1; id <= 6; ++id) {
@@ -788,6 +801,8 @@ bool hPlayer::OnRenderPlayerDeath()
 ///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Update player animation and render to screen
+/// @return Always true by default
 bool hPlayer::OnPlayerMove()
 {
 	if (IsPlayerIdling()) {
@@ -829,6 +844,9 @@ bool hPlayer::OnPlayerMove()
 	return true;
 }
 
+/// @brief Update player animation frame 
+/// @param fTickTime Time elapsed since last frame
+/// @return Always true by default
 bool hPlayer::OnUpdateFrame(float fTickTime)
 {
 	frame4.UpdateFrame(fTickTime, app->GetFrameDelay());
