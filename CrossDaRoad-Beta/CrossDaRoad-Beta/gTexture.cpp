@@ -400,7 +400,10 @@ namespace app
 		pDefaultDrawTarget = new Sprite(width, height);
 		return true;
 	}
-
+	/// @brief Set the default target size.
+	/// @param width Width of the target.
+	/// @param height Height of the target.
+	/// @return True if the target size was set successfully, false otherwise.
 	bool Texture::SetDefaultTargetSize(const int32_t width, const int32_t height)
 	{
 		if (width <= 0 || height <= 0) {
