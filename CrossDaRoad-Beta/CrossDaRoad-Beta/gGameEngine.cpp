@@ -412,36 +412,45 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Customization
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// ENGINE CUSTOMIZATION ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
+	/// @brief Get the current frame delay.
+	/// @return The current frame delay.
 	FrameDelay GameEngine::GetFrameDelay() const
 	{
 		return frame.GetDelay();
 	}
 
+	/// @brief Get the current application FPS.
+	/// @return The current application FPS.
 	int GameEngine::GetAppFPS() const
 	{
 		return frame.GetFPS();
 	}
 
+	/// @brief Set the frame delay.
+	/// @param eFrameDelay Frame delay to set.
+	/// @return Always returns true by default.
 	bool GameEngine::SetFrameDelay(FrameDelay eFrameDelay)
 	{
 		return frame.SetDelay(eFrameDelay);
 	}
+	/// @brief Check if the engine is pausing
+	/// @return True if the engine is pausing, false otherwise.
 	bool GameEngine::IsEnginePause() const
 	{
 		return bEnginePausing;
 	}
-
+	/// @brief Resume the engine
 	void GameEngine::ResumeEngine()
 	{
 		bEnginePausing = false;
 	}
-
+	/// @brief Pause the engine
 	void GameEngine::PauseEngine()
 	{
 		bEnginePausing = true;
