@@ -96,45 +96,56 @@ bool hPlayer::IsExactDirection(Direction eCompare) const
 	return eDirection == eCompare;
 }
 
+/// @brief Check if player is doing exact animation
+/// @param eCompare Animation to compare
+/// @return True if player is doing exact animation, false otherwise
 bool hPlayer::IsExactAnimation(Animation eCompare) const
 {
 	return eAnimation == eCompare;
 }
 
+/// @brief Check if player is facing left direction
+/// @return True if player is facing left direction, false otherwise
 bool hPlayer::IsLeftDirection() const
 {
 	return (eDirection == LEFT)
 		|| (eDirection == LEFT_UP)
 		|| (eDirection == LEFT_DOWN);
 }
-
+/// @brief Check if player is facing right direction
+/// @return True if player is facing right direction, false otherwise
 bool hPlayer::IsRightDirection() const
 {
 	return (eDirection == RIGHT)
 		|| (eDirection == RIGHT_UP)
 		|| (eDirection == RIGHT_DOWN);
 }
-
+/// @brief Check if player is jumping
+/// @return True if player is jumping, false otherwise
 bool hPlayer::IsPlayerJumping() const
 {
 	return (GetAnimation() == JUMP);
 }
-
+/// @brief Check if player is idling
+/// @return True if player is idling, false otherwise
 bool hPlayer::IsPlayerIdling() const
 {
 	return (GetAnimation() == IDLE);
 }
-
+/// @brief Check if player is landing
+/// @return True if player is landing, false otherwise
 bool hPlayer::IsPlayerLanding() const
 {
 	return frame6.IsStopAnimation();
 }
-
+/// @brief Check if player is safe when having collision
+/// @return True if player is safe, false otherwise
 bool hPlayer::IsPlayerCollisionSafe() const
 {
 	return frame6.GetAnimationID() <= frame6_id_animation_safe;
 }
 /// @brief Check if player is out of bounds of map border
+/// @return True if player is out of bounds, false otherwise
 bool hPlayer::IsPlayerOutOfBounds() const
 {
 	if (fFrogLogicPosX < app_const::LEFT_BORDER) {
@@ -157,6 +168,7 @@ bool hPlayer::IsPlayerOutOfBounds() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Check if player is hit by danger zone at top left corner
+/// @return True if player is hit by danger zone at top left corner, false otherwise
 bool hPlayer::IsHitTopLeft() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
@@ -165,6 +177,7 @@ bool hPlayer::IsHitTopLeft() const
 	return isHitTopLeft;
 }
 /// @brief Check if player is hit by danger zone at top right corner
+/// @return True if player is hit by danger zone at top right corner, false otherwise
 bool hPlayer::IsHitTopRight() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
@@ -173,6 +186,7 @@ bool hPlayer::IsHitTopRight() const
 	return isHitTopRight;
 }
 /// @brief Check if player is hit by danger zone at bottom left corner
+/// @return True if player is hit by danger zone at bottom left corner, false otherwise
 bool hPlayer::IsHitBottomLeft() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
@@ -181,6 +195,7 @@ bool hPlayer::IsHitBottomLeft() const
 	return isHitBottomLeft;
 }
 /// @brief Check if player is hit by danger zone at bottom right corner
+/// @return True if player is hit by danger zone at bottom right corner, false otherwise
 bool hPlayer::IsHitBottomRight() const
 {
 	const float fPosX = GetPlayerLogicPositionX();
@@ -189,6 +204,7 @@ bool hPlayer::IsHitBottomRight() const
 	return isHitBottomRight;
 }
 /// @brief Check if player is hit by danger zone
+/// @return True if player is hit by danger zone, false otherwise
 bool hPlayer::IsHit() const
 {
 	return IsHitTopLeft()
@@ -197,6 +213,7 @@ bool hPlayer::IsHit() const
 		|| IsHitBottomRight();
 }
 /// @brief Check if player is blocked by block zone at top left corner
+/// @return True if player is blocked by block zone at top left corner, false otherwise
 bool hPlayer::IsBlockedTopLeft() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -205,6 +222,7 @@ bool hPlayer::IsBlockedTopLeft() const
 	return isBlockedTopLeft;
 }
 /// @brief Check if player is blocked by block zone at top right corner
+/// @return True if player is blocked by block zone at top right corner, false otherwise
 bool hPlayer::IsBlockedTopRight() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -213,6 +231,7 @@ bool hPlayer::IsBlockedTopRight() const
 	return isBlockedTopRight;
 }
 /// @brief Check if player is blocked by block zone at bottom left corner
+/// @return True if player is blocked by block zone at bottom left corner, false otherwise
 bool hPlayer::IsBlockedBottomLeft() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -221,6 +240,7 @@ bool hPlayer::IsBlockedBottomLeft() const
 	return isBlockedBottomLeft;
 }
 /// @brief Check if player is blocked by block zone at bottom right corner
+/// @return True if player is blocked by block zone at bottom right corner, false otherwise
 bool hPlayer::IsBlockedBottomRight() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -229,6 +249,7 @@ bool hPlayer::IsBlockedBottomRight() const
 	return isBlockedBottomRight;
 }
 /// @brief Check if player is blocked by block zone
+/// @return True if player is blocked by block zone, false otherwise
 bool hPlayer::IsBlocked() const
 {
 	return IsBlockedTopLeft()
@@ -237,6 +258,7 @@ bool hPlayer::IsBlocked() const
 		|| IsBlockedBottomRight();
 }
 /// @brief Check if player is win (go to next level)
+/// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
 	if (app->IsMoveUp() && !CanMoveUp()) {
@@ -251,21 +273,25 @@ bool hPlayer::IsPlayerWin() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Check if player can move left
+/// @return True if player can move left, false otherwise
 bool hPlayer::CanMoveLeft() const
 {
 	return fFrogAnimPosX > app_const::LEFT_BORDER;
 }
 /// @brief Check if player can move right
+/// @return True if player can move right, false otherwise
 bool hPlayer::CanMoveRight() const
 {
 	return fFrogAnimPosX < app_const::RIGHT_BORDER;
 }
 /// @brief Check if player can move up
+/// @return True if player can move up, false otherwise
 bool hPlayer::CanMoveUp() const
 {
 	return fFrogAnimPosY > app_const::TOP_BORDER;
 }
 /// @brief Check if player can move down
+/// @return True if player can move down, false otherwise
 bool hPlayer::CanMoveDown() const
 {
 	return fFrogAnimPosY < app_const::BOTTOM_BORDER;
@@ -275,16 +301,17 @@ bool hPlayer::CanMoveDown() const
 ///////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Getter for current direction of player
 hPlayer::Direction hPlayer::GetDirection() const
 {
 	return eDirection;
 }
-
+/// @brief Getter for current animation of player
 hPlayer::Animation hPlayer::GetAnimation() const
 {
 	return eAnimation;
 }
-
+/// @brief Getter for current frame id of player
 int hPlayer::GetFrameID(const frame_t frame) const
 {
 	if (frame == frame4.GetLimit()) {
@@ -299,6 +326,9 @@ int hPlayer::GetFrameID(const frame_t frame) const
 	return 0;
 }
 
+/// @brief Get string of current frame id of player
+/// @param frame Frame to get id
+/// @return String of current frame id of player
 std::string hPlayer::ShowFrameID(const frame_t frame) const
 {
 	return std::to_string(GetFrameID(frame));
