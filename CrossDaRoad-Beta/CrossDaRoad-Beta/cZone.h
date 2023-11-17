@@ -1,6 +1,3 @@
-#ifndef C_ZONE_H
-#define C_ZONE_H
-
 /**
  * @file cZone.h
  *
@@ -9,14 +6,22 @@
  * This file contains zone class for zone management, collision detection, and rendering.
 **/
 
+#ifndef C_ZONE_H
+#define C_ZONE_H
+
+
 /// @brief Class for zone object in game (for collision detection)
 class cZone
 {
 private:
-	int nZoneHeight; ///< height of the zone
 	int nZoneWidth;  ///< width of the zone
+	int nZoneHeight; ///< height of the zone
 	bool* bDangers;  ///< array of danger pixels
 	bool* bBlocks;   ///< array of block pixels
+	int nCellWidth;
+	int nCellHeight;
+	char* sDefaultDangerPattern;
+	char* sDefaultBlockPattern;
 
 public: // Constructors & Destructor
 	cZone();
@@ -29,21 +34,27 @@ public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
 private: // Checkers
-	static bool IsDanger(const char& graphic, const char* danger_pattern);
-	static bool IsSafe(const char& graphic, const char* danger_pattern);
-	static bool IsBlocked(const char& graphic, const char* block_pattern);
-	static bool IsUnblocked(const char& graphic, const char* block_pattern);
+	static bool IsDanger(const char& graphic, const char* sDangerPattern);
+	static bool IsSafe(const char& graphic, const char* sDangerPattern);
+	static bool IsBlocked(const char& graphic, const char* sBlockPattern);
+	static bool IsUnblocked(const char& graphic, const char* sBlockPattern);
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
-	bool SetDanger(int nPosX, int nPosY, bool bValue) const;
-	bool SetBlock(int nPosX, int nPosY, bool bValue) const;
+	bool SetDanger(int nPosX, int nPosY, bool bValue);
+	bool SetBlock(int nPosX, int nPosY, bool bValue);
+	bool SetCellSize(int nWidth, int nHeight);
+	bool SetPattern(const char* sDangerPattern, const char* sBlockPattern);
 
 public: // Fillers
-	int FillDanger(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillSafe(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillBlocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
-	int FillUnblocked(int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY, const char& graphic, const char* danger_pattern) const;
+	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillSafe(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillDanger(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int FillSafe(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int FillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int FillUnblocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 
 public: // Danger Zone Checkers
 	bool IsDangerPixel(float x, float y) const;

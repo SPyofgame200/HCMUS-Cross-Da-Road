@@ -1,3 +1,10 @@
+/**
+ * @file cMapLoader.h
+ *
+ * @brief Contains MapLoader class prototype for map loading and manipulation
+ *
+**/
+
 #ifndef C_MAP_LOADER_H
 #define C_MAP_LOADER_H
 
@@ -13,14 +20,8 @@
 #include <cmath>
 #include <map>
 
-/**
- * @file cMapLoader.h
- *
- * @brief Contains map MapObject struct, cMapLane class, and cMapLoader class
- *
- * This file contains cMapLane class, and cMapLoader class for map loading and manipulation in game.
-**/
 
+/// @brief Class for map loader and manipulation in game
 class cMapLoader
 {
 private:
@@ -55,8 +56,8 @@ public: // Getters
 	int GetMapLevel() const;
 	int GetMapCount() const;
 	MapObject GetSpriteData(char graphic) const;
-	std::string GetDangerPattern();
-	std::string GetBlockPattern();
+	std::string GetDangerPattern() const;
+	std::string GetBlockPattern() const;
 	std::string GetMapName(int nLevel) const;
 	std::string GetMapName() const;
 	std::string GetMapDescription(int nLevel) const;

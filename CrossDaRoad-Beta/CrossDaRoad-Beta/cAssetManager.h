@@ -1,10 +1,3 @@
-#ifndef C_ASSET_MANAGER_H
-#define C_ASSET_MANAGER_H
-
-#include "uAppConst.h"
-#include <map>
-#include "gSprite.h"
-
 /**
  * @file cAssetManager.h
  * @brief Contains asset manager class
@@ -12,10 +5,17 @@
  * This file contains asset manager class that manages assets (sprites, sounds, etc.).
 **/
 
+#ifndef C_ASSET_MANAGER_H
+#define C_ASSET_MANAGER_H
+
+#include "uAppConst.h"
+#include <map>
+#include "gSprite.h"
+
 /// @brief Singleton class for asset management
 class cAssetManager
 {
-private:
+private: // Properties
 	std::map<std::string, app::Sprite*> mapSprites; ///< map of sprites that converts string to sprite
 	std::string sDirectoryPath;
 	std::string sFileExtension;
@@ -40,7 +40,8 @@ public: // Setters
 	void SetDirectoryPath(const std::string& sPath);
 	void SetFileExtension(const std::string& sExtension);
 
-private: // Game Loaders
+public: // Game Loaders
+	bool LoadNameBoxSprites();
 	bool LoadMenuSprites();
 	bool LoadSettingSprites();
 	bool LoadAboutUsSprites();
@@ -64,6 +65,7 @@ private: // Map Loaders
 private: // Loaders
 	bool LoadSprite(const std::string& sName, const std::string& sFileName);
 	bool LoadAnimation(const std::string& sName, const std::string& sFileName, int nMaxFrame);
+
 public: // Loaders
 	bool LoadAllSprites();
 };

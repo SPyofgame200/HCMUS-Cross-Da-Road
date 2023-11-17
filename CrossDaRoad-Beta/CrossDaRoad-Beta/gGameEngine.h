@@ -36,14 +36,12 @@ namespace app
 		GameEngine();
 
 	public: // Construction functions
-		engine::Code Construct(uint32_t screen_w, uint32_t screen_h, uint32_t pixel_w,
-			uint32_t pixel_h, bool full_screen = false);
+		engine::Code Construct(uint32_t screen_w, uint32_t screen_h, uint32_t pixel_w, uint32_t pixel_h, bool full_screen = false);
 		engine::Code Start();
 
 	public: // Override Interfaces
 		virtual bool OnCreateEvent();
-		virtual bool OnFixedUpdateEvent(float fTickTime,
-			const engine::Tick& eTickMessage);
+		virtual bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage);
 		virtual bool OnUpdateEvent(float fElapsedTime);
 		virtual bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime);
 		virtual bool OnRenderEvent();
@@ -106,16 +104,15 @@ namespace app
 
 		bool OnFixedUpdateEvent(const engine::Tick& eTickMessage);
 		bool UpdateKeyboardInput();
-		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix) const;
-		bool CreateWindowIcon() const;
+		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix);
+		bool CreateWindowIcon();
 		bool CreateViewport();
 		bool InitEngineThread();
 		bool ExitEngineThread() const;
 		bool UpdateEngineEvent();
 		bool HandleEngineThread();
 		bool StartEngineThread();
-		// If anything sets this flag to false the engine "should" shut down
-		// gracefully
+		// If anything sets this flag to false the engine "should" shut down gracefully
 		std::atomic<bool> bEngineRunning;
 		std::atomic<bool> bEnginePausing;
 	};

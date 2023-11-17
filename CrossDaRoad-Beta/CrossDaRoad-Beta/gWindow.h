@@ -1,3 +1,9 @@
+/**
+ * @file gWindow.h
+ * @brief Contains window class for creating and managing windows using Win32 API
+ *
+**/
+
 #ifndef G_WINDOW_H
 #define G_WINDOW_H
 
@@ -8,6 +14,7 @@
 namespace app
 {
 	class GameEngine;
+	/// @brief Class for creating and managing windows using Win32 API
 	class Window
 	{
 	private: /// Properties
@@ -27,11 +34,11 @@ namespace app
 		HWND GetWindowHandler() const;
 
 	public: // Setters
-		bool SetTitle(const std::string& sTitle) const;
-		bool SetIcon(const std::string& sFilePath) const;
-		bool SetFavicon(const std::string& sFilePath) const;
+		bool SetTitle(const std::string& sTitle);
+		bool SetIcon(const std::string& sFilePath);
+		bool SetFavicon(const std::string& sFilePath);
 
-	public: /// Window Event
+	public: // Window Event
 		static bool HandleMessage();
 
 	private: /// Internalities

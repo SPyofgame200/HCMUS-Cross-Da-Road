@@ -1,11 +1,3 @@
-#ifndef C_MENU_H
-#define C_MENU_H
-
-#include "uSound.h"
-#include "uAppConst.h"
-#include "cAssetManager.h"
-#include <vector>
-
 /**
  * @file hMenu.h
  *
@@ -14,8 +6,16 @@
  * This file contains menu class for menu window management.
 **/
 
+#ifndef C_MENU_H
+#define C_MENU_H
+
+#include "uSound.h"
+#include "uAppConst.h"
+#include "cAssetManager.h"
+#include <vector>
+
 // Forward declaration
-class cApp; 
+class cApp;
 
 /// @brief Class for menu window management
 class hMenu
@@ -25,7 +25,7 @@ public:
 	enum AppOption
 	{
 		NEW_GAME = 0, ///< New game window
-		CONTINUE = 1, ///< Continue game window
+		APP_GAME = 1, ///< Continue game window
 		SETTINGS = 2, ///< Settings window
 		ABOUT_US = 3, ///< About us window
 		APP_EXIT = 4, ///< Exit application window
@@ -72,29 +72,36 @@ public: // Initialization & Clean-up
 
 public: // Managements
 	bool OpenMenu();
+
+private: // Management helpers
 	bool LoadAppOption();
 	bool LoadPauseOption();
 	bool CloseMenu() const;
 
 public: // Checkers
 	bool IsOnMenu() const;
+	bool IsOnGame() const;
 
 public: // Validators
 	static int FixOption(int& value, int limit);
 
-public: // Updaters
+private: // Updater helpers
 	bool UpdateAppMenu();
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
+
+public: // Updaters
 	bool UpdatePausing();
 	bool Update(float fElapsedTime);
 
-public: // Renderers
+private: // Renderer helpers
 	bool RenderAppMenu();
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
+
+public: // Renderers
 	bool RenderPausing() const;
 	bool Render();
 };

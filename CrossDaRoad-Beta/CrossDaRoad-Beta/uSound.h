@@ -1,8 +1,3 @@
-#ifndef U_SOUND_H
-#define U_SOUND_H
-
-#include <string>
-
 /**
  * @file uSound.h
  *
@@ -11,10 +6,14 @@
  * This file contains sound function prototypes.
  **/
 
+#ifndef U_SOUND_H
+#define U_SOUND_H
+
+#include <string>
 
  /// @brief Namespace for sound functions and constants
 namespace app_sound
-{	
+{
 	const std::string ALIAS = "SOUND"; ///< Alias for sound thread
 
 	bool StopMusic(const std::string& alias);

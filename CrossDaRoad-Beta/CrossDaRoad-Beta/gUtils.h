@@ -1,10 +1,3 @@
-#ifndef G_UTILS_H
-#define G_UTILS_H
-
-#include <Windows.h>
-#include <string>
-#include <memory>
-
 /**
  * @file gUtils.h
  *
@@ -12,6 +5,15 @@
  *
  * This file contains utility function prototypes for string conversion between different types.
 **/
+
+#ifndef G_UTILS_H
+#define G_UTILS_H
+
+#include <Windows.h>
+#include <string>
+#include <memory>
+
+
 
 namespace app
 {

@@ -1,6 +1,3 @@
-#ifndef U_APP_CONST_H
-#define U_APP_CONST_H
-
 /**
  * @file uAppConst.h
  *
@@ -9,18 +6,17 @@
  * This file contains application constants. It is used to store constants that are used in multiple files.
  **/
 
+#ifndef U_APP_CONST_H
+#define U_APP_CONST_H
+
  /// @brief Namespace for application constants
 namespace app_const
 {
 	constexpr int INIT_MENU_OPTION = 0; ///< Initial app option (new_game)
-	constexpr const char* APP_OPTIONS[] = {
-		"new_game", "continue", "setting", "about_us", "exit"
-	};
+	constexpr const char* APP_OPTIONS[] = { "new_game", "continue", "setting", "about_us", "exit" }; ///< App options (new_game, continue, setting, about_us, exit)
 
 	constexpr int INIT_PAUSE_OPTION = 0; ///< Initial pause option (resume)
-	constexpr const char* PAUSE_OPTIONS[] = {
-		"resume", "save", "exit"
-	};
+	constexpr const char* PAUSE_OPTIONS[] = { "resume", "save", "exit" }; ///< Pause options (resume, save, exit)
 
 	constexpr const char* APP_NAME = "Cross Da Road";          ///< Application name (Cross Da Road)
 	constexpr const char* GAME_NAME = "Playing Cross Da Road"; ///< Game name (Playing Cross Da Road)

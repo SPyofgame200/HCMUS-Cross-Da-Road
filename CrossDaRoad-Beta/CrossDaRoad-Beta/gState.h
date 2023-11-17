@@ -1,3 +1,13 @@
+/**
+ * @file gState.h
+ *
+ * @brief Contains button enumeration, state of button, screen, viewport, frame, keyboard, and mouse
+ *
+ * This file contains button enumeration for button input (prototype) and button state for storing button state,
+ * screen state for storing screen state, viewport state for storing viewport state, frame state for storing frame state,
+ * keyboard state for storing keyboard state, and mouse state for storing mouse state.
+**/
+
 #ifndef G_STATE_H
 #define G_STATE_H
 
@@ -11,15 +21,7 @@
 #define BUTTON_STATE
 #ifdef BUTTON_STATE
 
-/**
- * @file gState.h
- *
- * @brief Contains button enumeration, state of button, screen, viewport, frame, keyboard, and mouse
- *
- * This file contains button enumeration for button input (prototype) and button state for storing button state,
- * screen state for storing screen state, viewport state for storing viewport state, frame state for storing frame state,
- * keyboard state for storing keyboard state, and mouse state for storing mouse state.
-**/
+
 enum Button
 {
 	IDLING,				///< The button is waiting for the next action

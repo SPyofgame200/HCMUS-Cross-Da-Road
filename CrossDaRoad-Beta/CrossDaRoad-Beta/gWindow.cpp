@@ -1,3 +1,8 @@
+/**
+ * @file gWindow.cpp
+ * @brief Implements window class for creating and managing windows using Win32 API
+**/
+
 #include "gUtils.h"
 #include "gWindow.h"
 #include "gGameEngine.h"
@@ -7,24 +12,27 @@ namespace app
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////// PROPERTIES ///////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	GameEngine* Window::sge = nullptr;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/// @brief Default constructor
 	Window::Window()
 	{
 		windowHandler = nullptr;
 		this->sge = nullptr;
 	}
 
+	/// @brief Parameterized constructor with a pointer to the game engine
+	/// @param sge Pointer to the game engine
 	Window::Window(GameEngine* sge)
 	{
 		Create(sge);
 	}
-
+	/// @brief Destructor
 	Window::~Window()
 	{
 		Destroy();
@@ -34,8 +42,10 @@ namespace app
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////// CONSTRUCTOR & DESTRUCTOR FUNCIONS ////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// Main function for creating the window
+
+	/// @brief Create the window
+	/// @param sge Pointer to the game engine
+	/// @return True if the window was created successfully, false otherwise
 	bool Window::Create(GameEngine* sge)
 	{
 		// Setup Window Target for Event Handling
@@ -66,6 +76,8 @@ namespace app
 		return true;
 	}
 
+	/// @brief Destroy the window
+	/// @return Always true by default
 	bool Window::Destroy() const
 	{
 		PostMessage(windowHandler, WM_DESTROY, 0, 0);
@@ -76,6 +88,7 @@ namespace app
 	/////////////////////////////////////////////// GETTERS ///////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/// @brief Getters for the window handler
 	HWND Window::GetWindowHandler() const
 	{
 		return windowHandler;
@@ -85,13 +98,19 @@ namespace app
 	/////////////////////////////////////////////// SETTERS ///////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	bool Window::SetTitle(const std::string& sTitle) const
+	/// @brief Setter for the window title
+	/// @param sTitle String to be set as the window title
+	/// @return Always true by default
+	bool Window::SetTitle(const std::string& sTitle)
 	{
 		SetWindowText(windowHandler, to_text(sTitle));
 		return true;
 	}
 
-	bool Window::SetIcon(const std::string& sFilePath) const
+	/// @brief Setter for the window icon
+	/// @param sFilePath Icon file path
+	/// @return True if the icon was set successfully, false otherwise
+	bool Window::SetIcon(const std::string& sFilePath)
 	{
 		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
@@ -114,7 +133,10 @@ namespace app
 		return true;
 	}
 
-	bool Window::SetFavicon(const std::string& sFilePath) const
+	/// @brief Setter for the window favicon
+	/// @param sFilePath Favivon file path
+	/// @return True if the favicon was set successfully, false otherwise
+	bool Window::SetFavicon(const std::string& sFilePath)
 	{
 		const HANDLE hLoader = LoadImage(
 			nullptr,                            // Module handle (nullptr for current process)
@@ -158,6 +180,9 @@ namespace app
 		return true;
 	}
 
+	/// @brief Initialize the window target
+	/// @param sge Pointer to the game engine
+	/// @return True if the window target was initialized successfully, false otherwise
 	bool Window::SetupTarget(GameEngine* sge)
 	{
 		if (sge == nullptr) {
@@ -167,7 +192,8 @@ namespace app
 		return true;
 	}
 
-	// Function to register the window class
+	/// @brief Register the window class
+	/// @return Always true by default
 	bool Window::RegisterWindowClass()
 	{
 		WNDCLASS windowClass = {};
@@ -205,7 +231,8 @@ namespace app
 		return true;
 	}
 
-	// Function to create the window
+	/// @brief Create the main window
+	/// @return Always true by default
 	bool Window::CreateMainWindow()
 	{
 		constexpr DWORD extendedStyle = 0
@@ -248,6 +275,12 @@ namespace app
 	///////////////////////////////////////// STATIC INTERNALITIES ////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/// @brief Window event handler
+	/// @param windowHandler Window handler
+	/// @param uMsg Message identifier
+	/// @param wParam Parameter for message
+	/// @param lParam Pointer to additional message information
+	/// @return  0 if the message was handled, -1 otherwise
 	LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
 	{
 		if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
@@ -269,14 +302,18 @@ namespace app
 		sge->OnFixedUpdateEvent(engine::POST_WINDOW_UPDATE_EVENT);
 
 		// Calling handling function on default
-		if (bNoEvent) { 
+		if (bNoEvent) {
 			sge->OnFixedUpdateEvent(engine::NO_WINDOW_UPDATE_EVENT);
 			return DefWindowProc(windowHandler, uMsg, wParam, lParam);
 		}
 		return 0;
 	}
 
-
+	/// @brief Handle window event
+	/// @param uMsg Integer message identifier
+	/// @param wParam Parameter for message
+	/// @param lParam Pointer to additional message information
+	/// @return  True if the message was handled, false otherwise
 	bool Window::HandleWindowEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (uMsg) {
@@ -306,6 +343,9 @@ namespace app
 		return false;
 	}
 
+	/// @brief Handle window lifecycle event
+	/// @param uMsg Message identifier
+	/// @return True if the message was handled, false otherwise
 	bool Window::HandleWindowLifecycleEvent(UINT uMsg)
 	{
 		switch (uMsg) {
@@ -321,6 +361,10 @@ namespace app
 		return false;
 	}
 
+	/// @brief Handle window keyboard event
+	/// @param uMsg Message identifier
+	/// @param wParam Pointer to additional message information
+	/// @return True if the message was handled, false otherwise
 	bool Window::HandleWindowKeyboardEvent(UINT uMsg, WPARAM wParam)
 	{
 		switch (uMsg) {
@@ -340,6 +384,10 @@ namespace app
 		return false;
 	}
 
+	/// @brief Window resize event handler
+	/// @param wParam Pointer to additional message information
+	/// @param lParam 
+	/// @return Always true by default
 	bool Window::HandleWindowResizeEvent(WPARAM wParam, LPARAM lParam)
 	{
 		const int width = LOWORD(lParam);
@@ -361,6 +409,11 @@ namespace app
 		return true;
 	}
 
+	/// @brief Window mouse event handler
+	/// @param uMsg Message identifier
+	/// @param wParam Pointer to additional message information
+	/// @param lParam 
+	/// @return Always true by default
 	bool Window::HandleWindowMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		std::cerr << "Window::HandleWindowMouseEvent(): ";
@@ -368,3 +421,7 @@ namespace app
 		return true;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// END OF FILE /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////

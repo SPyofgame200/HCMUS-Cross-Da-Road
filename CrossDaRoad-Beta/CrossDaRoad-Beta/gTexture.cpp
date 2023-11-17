@@ -1,6 +1,3 @@
-#include "gTexture.h"
-#include <iostream>
-
 /**
  * @file gTexture.cpp
  *
@@ -8,6 +5,11 @@
  *
  * This file implement texture class for texture management (rendering, etc.).
  **/
+
+#include "gTexture.h"
+#include <iostream>
+
+
 namespace app
 {
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -398,7 +400,10 @@ namespace app
 		pDefaultDrawTarget = new Sprite(width, height);
 		return true;
 	}
-
+	/// @brief Set the default target size.
+	/// @param width Width of the target.
+	/// @param height Height of the target.
+	/// @return True if the target size was set successfully, false otherwise.
 	bool Texture::SetDefaultTargetSize(const int32_t width, const int32_t height)
 	{
 		if (width <= 0 || height <= 0) {
@@ -490,8 +495,7 @@ namespace app
 			}
 		}
 	}
-	/// @brief Draw a scaled portion of a sprite at the specified coordinates with
-	/// scaling.
+	/// @brief Draw a scaled portion of a sprite at the specified coordinates with scaling.
 	/// @param nOffsetX The X-coordinate for drawing.
 	/// @param nOffsetY The Y-coordinate for drawing.
 	/// @param pSprite The sprite to draw.
@@ -514,6 +518,12 @@ namespace app
 			}
 		}
 	}
+	/// @brief Draw partial sprite with default scaling factor, width and height.
+	/// @param nOffsetX The X-coordinate for drawing.
+	/// @param nOffsetY The Y-coordinate for drawing.
+	/// @param pSprite The sprite to draw.
+	/// @param nOriginX The X-coordinate of the source area (top-left corner).
+	/// @param nOriginY The Y-coordinate of the source area (top-left corner).
 	void Texture::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY)
 	{
 		return DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nDefaultWidth, nDefaultHeight);
@@ -529,5 +539,5 @@ namespace app
 } // namespace app
 
 ///////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// END OF FILE ///////////////////////////////////
+////////////////////////////////////// END OF FILE ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////

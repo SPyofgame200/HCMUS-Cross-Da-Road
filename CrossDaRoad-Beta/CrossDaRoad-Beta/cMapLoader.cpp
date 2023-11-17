@@ -1,6 +1,3 @@
-#include "cMapLoader.h"
-#include <iostream>
-
 /**
  * @file cMapLoader.cpp
  *
@@ -8,6 +5,9 @@
  *
  * This file implements cMapLoader class for map loading and manipulation in game.
 **/
+
+#include "cMapLoader.h"
+#include <iostream>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////
@@ -154,12 +154,12 @@ MapObject cMapLoader::GetSpriteData(char graphic) const
 	}
 }
 /// @brief Getter for danger pattern
-std::string cMapLoader::GetDangerPattern()
+std::string cMapLoader::GetDangerPattern() const
 {
 	return dangerPattern;
 }
 /// @brief Getter for block pattern
-std::string cMapLoader::GetBlockPattern()
+std::string cMapLoader::GetBlockPattern() const
 {
 	return blockPattern;
 }
@@ -251,8 +251,8 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 	return true;
 }
 /// @brief Load map sprite from file
-///	@param sLine 
-/// @param bDebug
+///	@param sLine Line of the map sprite
+/// @param bDebug Whether to print debug message or not
 ///	@return true if map sprite was loaded successfully, false otherwise
 bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 {
@@ -329,8 +329,7 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 					currentSprite.nID = std::stoi(value);
 				}
 				else if (attribute == "summon") {
-					char target = value[0];
-					currentSprite.summon = &mapSprites[target];
+					currentSprite.summon = value[0];
 				}
 				else if (attribute == "duration") {
 					currentSprite.fDuration = ExtractTime(value);
@@ -446,9 +445,9 @@ bool cMapLoader::LoadMapLevel()
 	return LoadMapLevel(GetMapLevel());
 }
 
-/// @brief 
-/// @param timeStr 
-/// @return 
+/// @brief Extract time from string
+/// @param timeStr Time string
+/// @return Time in float format
 float cMapLoader::ExtractTime(const std::string& timeStr)
 {
 	if (timeStr.empty()) {
@@ -503,6 +502,7 @@ float cMapLoader::ExtractTime(const std::string& timeStr)
 		return 0.0;
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// END OF FILE /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////

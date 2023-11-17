@@ -1,10 +1,3 @@
-#ifndef G_SPRITE_H
-#define G_SPRITE_H
-
-#include <string>
-#include "gResourcePack.h"
-#include "gConst.h"
-
 /**
  * @file gSprite.h
  *
@@ -12,6 +5,13 @@
  *
  * This file contains sprite class for storing and manipulating sprites.
 **/
+
+#ifndef G_SPRITE_H
+#define G_SPRITE_H
+
+#include <string>
+#include "gResourcePack.h"
+#include "gConst.h"
 
 namespace app
 {
@@ -49,7 +49,7 @@ namespace app
 
 	public: // Setters
 		void SetSampleMode(app::Sprite::Mode mode = app::Sprite::Mode::NORMAL);
-		bool SetPixel(int32_t x, int32_t y, Pixel p) const;
+		bool SetPixel(int32_t x, int32_t y, Pixel p);
 
 	public: // Getters
 		bool Inside(int32_t x, int32_t y) const;

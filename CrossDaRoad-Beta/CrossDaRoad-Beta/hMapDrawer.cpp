@@ -1,22 +1,66 @@
+/**
+ * @file hMapDrawer.cpp
+ * @brief Implements map drawer class for drawing map on screen
+ *
+**/
+
 #include "hMapDrawer.h"
 #include "cApp.h"
+#include <vector>
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// CONSTRUCTORS & DESTRUCTOR /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Default constructor
+GraphicCell::GraphicCell()
+{
+	graphic = 0;
+	nCellOffset = 0;
+	nRow = 0;
+	nCol = 0;
+}
+
+/// @brief Parameterized constructor
+GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
+GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
+{
+	this->graphic = graphic;
+	this->nCellOffset = nCellOffset;
+	this->nRow = nRow;
+	this->nCol = nCol;
+}
+
+/// @brief Destructor
+GraphicCell::~GraphicCell() = default;
+
+/// @brief Default constructor
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
 }
 
+/// @brief Parameterized constructor
+/// @param app Pointer to the application
 hMapDrawer::hMapDrawer(cApp* app)
 {
 	SetupTarget(app);
 }
 
+/// @brief Destructor
 hMapDrawer::~hMapDrawer()
 {
 	app = nullptr;
-	std::cerr << "hMapDrawer::~hMapDrawer(): Successfully destructed" << std::endl;
+	//std::cerr << "hMapDrawer::~hMapDrawer(): Successfully destructed" << std::endl;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Sets the target application
+/// @param app Pointer to the application
+/// @return True if successful, false otherwise
 bool hMapDrawer::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
@@ -26,50 +70,75 @@ bool hMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
-int hMapDrawer::GetStartPos(const cMapLane& lane) const
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Get lane backgrounds on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane backgrounds
+std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
 {
-	return lane.GetStartPos(app->fTimeSinceStart);
-}
+	const int nRow = Lane.GetLaneID();
+	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
+	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 
-
-int hMapDrawer::GetCellOffset(const cMapLane& lane) const
-{
-	return lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
-}
-
-bool hMapDrawer::DrawLane(const cMapLane& lane) const
-{
-	const int nRow = lane.GetLaneID();
-	const int nStartPos = GetStartPos(lane);
-	const int nCellOffset = GetCellOffset(lane);
-	app->fTimeSinceLastDrawn = app->fTimeSinceStart;
-
+	std::vector<GraphicCell> Backgrounds;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawBackground(graphic, nCellOffset, nRow, nCol);
+		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
+		Backgrounds.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
 	}
 
+	return Backgrounds;
+}
+
+/// @brief Get lane objects on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane objects
+std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
+{
+	const int nRow = Lane.GetLaneID();
+	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
+	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
+
+	std::vector<GraphicCell> Objects;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
-		DrawObject(graphic, nCellOffset, nRow, nCol);
+		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
+		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
+	}	
+
+	for (int id = 0; id < Objects.size(); ++id) {
+		const GraphicCell& Cell = Objects[id];
+		if (SuccessSummon(Cell.graphic, id)) {
+			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
+			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, Cell.nCol));
+		}
 	}
 
-	for (int nCol = 0; nCol < app->nLaneWidth; nCol++) {
-		const char graphic = lane.GetLaneGraphic(nStartPos + nCol);
-		const int nTopLeftX = nCol * app->nCellSize - nCellOffset;
-		const int nTopLeftY = nRow * app->nCellSize;
-		const int nBottomRightX = (nCol + 1) * app->nCellSize - nCellOffset;
-		const int nBottomRightY = (nRow + 1) * app->nCellSize;
-		app->Zone.FillDanger(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetDangerPattern().c_str());
-		app->Zone.FillBlocked(nTopLeftX, nTopLeftY, nBottomRightX, nBottomRightY, graphic, app->MapLoader.GetBlockPattern().c_str());
+	return Objects;
+}
+/// @brief Draw lane on screen
+/// @param lane Lane to be drawn
+/// @return True if successful, false otherwise
+bool hMapDrawer::DrawLane(const cMapLane& Lane) const
+{
+	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
+	for (const GraphicCell& BackgroundCell : Backgrounds) {
+		DrawBackground(BackgroundCell);
+	}
+
+	std::vector<GraphicCell> Objects = GetLaneObjects(Lane);
+	for (const GraphicCell& ObjectCell : Objects) {
+		DrawObject(ObjectCell);
 	}
 
 	return true;
 }
 
+/// @brief Draw all lanes on screen
+/// @return Always true by default
 bool hMapDrawer::DrawAllLanes() const
 {
-	int nRow = 0;
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
 	for (const cMapLane& lane : vecLanes) {
 		DrawLane(lane);
@@ -77,47 +146,108 @@ bool hMapDrawer::DrawAllLanes() const
 
 	return true;
 }
-
-bool hMapDrawer::DrawObject(char graphic, int nCellOffset, int nRow, int nCol) const
+/// @brief Draw object on screen
+/// @param Cell Cell to be drawn
+/// @return Always true by default
+bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 {
-	const MapObject sprite = app->MapLoader.GetSpriteData(graphic);
-	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
-	const int32_t nPosY = nRow * app->nCellSize;
+	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
+	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
+	const int32_t nPosY = Cell.nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
-	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
+	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->ShowFrameID(sprite.nID));
 	if (sName.size()) {
 		const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::MASK);
 		app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
-	}
 
-	if (sprite.SuccessSummon(nCol, nRow, app->fTimeSinceLastDrawn, app->GetAppFPS(), !app->IsEnginePause())) {
-		const std::string sSummonName = sprite.summon->sSpriteName + (sprite.summon->nID <= 0 ? "" : app->Player.ShowFrameID(sprite.summon->nID));
-		if (sSummonName.size()) {
-			const app::Sprite* summoned_object = cAssetManager::GetInstance().GetSprite(sSummonName);
-			app->SetPixelMode(app::Pixel::MASK);
-			app->DrawPartialSprite(nPosX, nPosY, summoned_object, nDrawX, nDrawY);
-			app->SetPixelMode(app::Pixel::NORMAL);
-		}
+		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
+		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }
 
-bool hMapDrawer::DrawBackground(char graphic, int nCellOffset, int nRow, int nCol) const
+/// @brief Draw background on screen
+/// @param Cell Graphic cell to be drawn
+/// @return Always true by default
+bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 {
-	const MapObject sprite = app->MapLoader.GetSpriteData(graphic);
-	const int32_t nPosX = nCol * app->nCellSize - nCellOffset;
-	const int32_t nPosY = nRow * app->nCellSize;
+	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
+	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
+	const int32_t nPosY = Cell.nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
 	const std::string sName = sprite.sBackgroundName;
 	if (sName.size()) {
 		const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::NORMAL);
-		app->DrawPartialSprite(nPosX + nCellOffset, nPosY, background, nDrawX, nDrawY);
+		app->DrawPartialSprite(nPosX + Cell.nCellOffset, nPosY, background, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
+
+		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
+		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }
+
+//=================================================================================================
+
+#include <random>
+#include <iomanip>
+std::default_random_engine generator(std::random_device{}());
+std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+std::map<int, float> mapLastSummon;
+
+//=================================================================================================
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GENERATORS //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Summon object on screen randomly
+/// @param graphic Character representing the object
+/// @param nID ID of the object
+/// @return True if successful, false otherwise
+bool hMapDrawer::SuccessSummon(char graphic, int nID) const
+{
+	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
+	if (sprite.summon == 0 || sprite.fChance <= 0) {
+		return false; // Summon is not enabled or chance is zero or negative
+	}
+
+	float fCurrentTime = app->fTimeSinceStart;
+	int fps = app->GetAppFPS();
+	if (mapLastSummon.count(nID) == false) {
+		std::uniform_real_distribution<float> initialDistribution(0, sprite.fDuration);
+		mapLastSummon[nID] = initialDistribution(generator);
+	}
+	float& fLastSummon = mapLastSummon[nID];
+	const float fDeltaTime = fCurrentTime - fLastSummon;
+
+	if (fDeltaTime >= 0) {
+		if (fDeltaTime <= sprite.fDuration) {
+			return true;
+		}
+		else if (fDeltaTime < sprite.fDuration + sprite.fCooldown) {
+			return false;
+		}
+	}
+
+	if (app->IsEnginePause()) {
+		return false;
+	}
+
+	const auto fProbability = static_cast<float>(sprite.fChance / 100.0 / (fps == 0 ? 1 : fps));
+	const float fGenerated = distribution(generator);
+	if (fGenerated < fProbability) {
+		fLastSummon = fCurrentTime;
+		return true;
+	}
+	return false; // Summon is not successful
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// END OF FILE /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////

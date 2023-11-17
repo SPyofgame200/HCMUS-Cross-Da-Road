@@ -1,3 +1,10 @@
+/**
+ * @file cApp.h
+ * @brief Contains application class
+ *
+ * This file contains application class for application management (init, exit, update, render).
+**/
+
 #ifndef C_APP_H
 #define C_APP_H
 
@@ -29,9 +36,10 @@ class cApp : public app::GameEngine
 	friend class hMapDrawer;
 
 private: // Interactive Properties (control the map)
-	hMenu Menu; 
+	hMenu Menu;
 	hPlayer Player;
-
+	int nameBoxOption = 0;
+	std::string playerName;
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
@@ -44,7 +52,11 @@ private: // Customizable Properties (applied to all maps)
 
 private: // Event timers
 	float fTimeSinceStart;
-	float fTimeSinceLastDrawn;
+
+private: // Animator
+	frame4_t frame4;
+	frame6_t frame6;
+	frame8_t frame8;
 
 private: // Special variables
 	std::atomic<bool> bDeath;
@@ -71,7 +83,7 @@ protected: // Collision Detection
 	bool IsPlatformRight() const;
 	bool IsPlatformCenter() const;
 	bool IsOnPlatform() const;
-	
+
 protected: /// Game Updates
 	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
@@ -80,8 +92,13 @@ protected: /// Game Updates
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;
 	bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime) override;
+
 	bool OnGameSave() const;
 	bool OnGameLoad();
+	bool OnCreateNewName();
+	bool DrawNameBox();
+	bool UpdateDrawNameBox();
+	bool OnDisplaySaveBox();
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
 	bool OnForcePauseEvent() override;
@@ -89,14 +106,16 @@ protected: /// Game Updates
 	bool OnForceDestroyEvent() override;
 
 protected: // File Management
-	static std::string SelectFilePath(const char* filter, const char* initialDir, bool saveDialog = false);
-	static std::string SelectTextFilePath(const char* initialDir, const std::string& sDefaultFilePath = "");
-	static std::string GetFilePartLocation(bool isSave);
+	static std::string GetFilePathLocation(bool isSaven, std::string fileName);
 
 private: // Game Rendering
-	bool DrawAllLanes();
+	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
+
+private: // Animator
+	int GetFrameID(int frame) const;
+	std::string ShowFrameID(int frame) const;
 };
 
 #endif // C_APP_H

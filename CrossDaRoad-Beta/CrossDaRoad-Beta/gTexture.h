@@ -1,3 +1,11 @@
+/**
+ * @file gTexture.h
+ *
+ * @brief Contains texture class
+ *
+ * This file contains texture class for drawing textures on screen using OpenGL.
+**/
+
 #ifndef G_TEXTURE_H
 #define G_TEXTURE_H
 
@@ -7,14 +15,6 @@
 #include "gPixel.h"
 #include "gState.h"
 #include "gSprite.h"
-
-/**
- * @file gTexture.h
- *
- * @brief Contains texture class
- *
- * This file contains texture class for drawing textures on screen using OpenGL.
- */
 
 namespace app
 {
@@ -34,28 +34,34 @@ namespace app
 		Sprite* pDrawTarget;        ///< Draw target for drawing on screen (window) using OpenGL functions
 		Pixel::Mode nPixelMode;     ///< Pixel mode for drawing on screen (window) using OpenGL functions
 		float fBlendFactor;         ///< Blend factor for drawing on screen (window) using OpenGL functions
-		int nDefaultWidth;
-		int nDefaultHeight;
+		int nDefaultWidth;			///< Default width of draw target
+		int nDefaultHeight;			///< Default height of draw target
 
 	public: // Constructors & Destructors
 		Texture();
 		Texture(HWND windowHandler);
 		~Texture();
-		bool InitDevice();
 		bool CreateDeviceContext(HWND windowHandler);
 		bool ExitDevice() const;
 
-	public: // Setup enviroment
+	private: // Constructors & Destructors helpers
+		bool InitDevice();
+
+	private: // Setup enviroment helpers
 		bool SetupFormatter() const;
 		bool SetupRendering(ViewportState viewport);
 		static bool SetupTexturing();
 		bool SetupEnvironment(int width, int height) const;
+
+	public: // Setup enviroment
 		bool CreateTexture2D(int width, int height, ViewportState viewport);
 
-	public: // Updater
+	private: // Updater helpers
 		static void SetViewport(ViewportState viewport);
 		static void UpdateTexture(int width, int height, const Pixel* data);
 		static void DrawTextureOnScreen();
+
+	public: // Updater
 		bool RenderTexture(int width, int height, ViewportState viewport) const;
 
 	public: // Drawing Getters

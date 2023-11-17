@@ -1,3 +1,11 @@
+/**
+ * @file hPlayer.h
+ *
+ * @brief Contains player class
+ *
+ * This file contains player class for player management, movement, and rendering.
+**/
+
 #ifndef C_PLAYER_H
 #define C_PLAYER_H
 
@@ -7,47 +15,39 @@
 class cApp;
 class cZone;
 
-/**
- * @file hPlayer.h
- *
- * @brief Contains player class
- *
- * This file contains player class for player management, movement, and rendering.
-**/
+/// @brief Class for player management, movement, and rendering
 class hPlayer
 {
 public:
+	/// @brief Direction enumeration for player movement
 	enum Direction
 	{
-		LEFT = 1,
-		RIGHT = 2,
-		LEFT_UP = 3,
-		RIGHT_UP = 4,
-		LEFT_DOWN = 5,
-		RIGHT_DOWN = 6,
-		FRONT_VIEW = 7, /// [unused], for front view
+		LEFT = 1,			///< Left direction for player movement
+		RIGHT = 2, 			///< Right direction for player movement
+		LEFT_UP = 3, 		///< Left-up direction for player movement
+		RIGHT_UP = 4, 		///< Right-up direction for player movement
+		LEFT_DOWN = 5, 		///< Left-down direction for player movement
+		RIGHT_DOWN = 6, 	///< Right-down direction for player movement
+		FRONT_VIEW = 7, 	///< [unused], for front view
 	};
+	/// @brief Animation enumeration for player animation
 	enum Animation
 	{
-		IDLE = 0,
-		JUMP = 1,
-		LAND = 2,
+		IDLE = 0,			///< Idle animation for player
+		JUMP = 1,			///< Jump animation for player
+		LAND = 2,			///< Land animation for player
 	};
 	typedef int frame_t; // for later use
 
 private:
-	float fFrogVelocityX;
-	float fFrogVelocityY;
-	float fFrogAnimPosX;
-	float fFrogAnimPosY;
-	float fFrogLogicPosX;
-	float fFrogLogicPosY;
+	float fFrogVelocityX;   ///< Velocity of player in X-axis
+	float fFrogVelocityY;  	///< Velocity of player in Y-axis
+	float fFrogAnimPosX;	///< Animation position of player in X-axis
+	float fFrogAnimPosY;	///< Animation position of player in Y-axis
+	float fFrogLogicPosX;	///< Logic position of player in X-axis
+	float fFrogLogicPosY;	///< Logic position of player in Y-axis
 
 private:
-	frame4_t frame4;
-	frame6_t frame6;
-	frame8_t frame8;
-
 	frame_t frame6_id_animation_safe;
 
 private:
@@ -56,21 +56,23 @@ private:
 
 private:
 	cApp* app;
-
+	std::string Name;
 public: // Constructors & Destructor
 	hPlayer();
 	hPlayer(cApp* app);
 	~hPlayer();
 
-public: // Reseters
+private: // Reseter helpers
 	void ResetDirection();
 	void ResetAnimation();
 	void ResetPosition();
 	void ResetVelocity();
-	void Reset();
 	void SetupTarget(cApp* app);
 
-public: // Checkers
+public: // Reseters
+	void Reset();
+
+private: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
 	bool IsLeftDirection() const;
@@ -78,23 +80,28 @@ public: // Checkers
 	bool IsPlayerJumping() const;
 	bool IsPlayerIdling() const;
 	bool IsPlayerLanding() const;
+
+public: // Checkers
 	bool IsPlayerCollisionSafe() const;
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
 
-public: // Collision Detection
+private: // Collision Detection helpers
 	bool IsHitTopLeft() const;
 	bool IsHitTopRight() const;
 	bool IsHitBottomLeft() const;
 	bool IsHitBottomRight() const;
-	bool IsHit() const;
+
 	bool IsBlockedTopLeft() const;
 	bool IsBlockedTopRight() const;
 	bool IsBlockedBottomLeft() const;
 	bool IsBlockedBottomRight() const;
+
+public: // Collision Detection
+	bool IsHit() const;
 	bool IsBlocked() const;
 
-public: // Validators
+private: // Validators
 	bool CanMoveLeft() const;
 	bool CanMoveRight() const;
 	bool CanMoveUp() const;
@@ -103,14 +110,13 @@ public: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
-	int GetFrameID(frame_t frame) const;
-	std::string ShowFrameID(frame_t frame) const;
 	float GetPlayerAnimationPositionX() const;
 	float GetPlayerAnimationPositionY() const;
 	float GetPlayerLogicPositionX() const;
 	float GetPlayerLogicPositionY() const;
 	float GetPlayerVelocityX()const;
 	float GetPlayerVelocityY()const;
+	std::string GetPlayerName() const;
 
 public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
@@ -125,6 +131,7 @@ public: // Setters
 	void SetPlayerLogicPositionX(float fPositionX);
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
+	void SetPlayerName(std::string Name);
 
 public: // Movements
 	bool PlayerMoveX(float fFactorX, int nStep = 16);
@@ -135,25 +142,29 @@ public: // Movements
 	bool PlayerMoveUp(float factor = 1, bool forced = false);
 	bool PlayerMoveDown(float factor = 1, bool forced = false);
 	bool PlayerMoveTryAll(float factor = 1, bool forced = false);
-	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
 	bool PlayerPlatformMoveX(float fFactorX, int nStep = 16);
 	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
+
+public: // Movements
+	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
 	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 
-public: /// Validators & Fixers
+private: // Validators & Fixers
 	bool OnFixPlayerPosition();
 
-public: // Logic Updater
+private: // Logic Updater
 	bool OnUpdatePlayerIdle();
 	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue();
 	bool OnUpdatePlayerJumpStop();
 
-public: // Player Renderer
+private: // Player Renderer 
 	bool OnRenderPlayerIdle() const;
 	bool OnRenderPlayerJumpStart() const;
 	bool OnRenderPlayerJumpContinue() const;
 	bool OnRenderPlayerJumpStop() const;
+
+public: // Player Renderers
 	bool OnRenderPlayer() const;
 	bool OnRenderPlayerDeath();
 

@@ -1,7 +1,3 @@
-#include "hMenu.h"
-
-#include "cApp.h"
-
 /**
  * @file hMenu.cpp
  *
@@ -9,6 +5,9 @@
  *
  * This file implements menu class for menu window management.
 **/
+
+#include "hMenu.h"
+#include "cApp.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////
@@ -112,8 +111,8 @@ bool hMenu::LoadAppOption()
 			eMenuOption = AppOption::NEW_GAME;
 			app->GameReset();
 			break;
-		case CONTINUE:
-			eMenuOption = AppOption::CONTINUE;
+		case APP_GAME:
+			eMenuOption = AppOption::APP_GAME;
 			app->GameReset();
 			app->OnGameLoad();
 			break;
@@ -176,6 +175,13 @@ bool hMenu::CloseMenu() const
 bool hMenu::IsOnMenu() const
 {
 	return eMenuOption == AppOption::APP_MENU;
+}
+
+/// @brief Check if current option is game or not
+/// @return True if current option is game, false otherwise
+bool hMenu::IsOnGame() const
+{
+	return eMenuOption == AppOption::APP_GAME;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,8 +322,15 @@ bool hMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->OnGameUpdate(fElapsedTime);
-		case AppOption::CONTINUE:
+		{
+			bool result = app->UpdateDrawNameBox();
+			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER))
+			{
+				eMenuOption = APP_GAME;
+			}
+			return result;
+		}
+		case AppOption::APP_GAME:
 			return app->OnGameUpdate(fElapsedTime);
 		case AppOption::SETTINGS:
 			return UpdateSetting();
@@ -364,7 +377,7 @@ bool hMenu::RenderAppMenu()
 bool hMenu::RenderAboutUs() const
 {
 	app->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + app->Player.ShowFrameID(4);
+	const std::string about_us_dynamic = "about_us_page" + app->ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
 	app->DrawSprite(0, 0, object);
 	return true;
@@ -409,8 +422,8 @@ bool hMenu::Render()
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->OnGameRender();
-		case AppOption::CONTINUE:
+			return app->DrawNameBox();
+		case AppOption::APP_GAME:
 			return app->OnGameRender();
 		case AppOption::SETTINGS:
 			return RenderSetting();
