@@ -23,11 +23,12 @@ public: // Constructors & Destructor
 	cZone(int nWidth, int nHeight);
 	~cZone();
 
-public: // Constructor functions
+private: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock);
+public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
-public: // Checkers
+private: // Checkers
 	static bool IsDanger(const char& graphic, const char* danger_pattern);
 	static bool IsSafe(const char& graphic, const char* danger_pattern);
 	static bool IsBlocked(const char& graphic, const char* block_pattern);

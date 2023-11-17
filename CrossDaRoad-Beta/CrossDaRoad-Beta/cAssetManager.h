@@ -20,7 +20,7 @@ private:
 	std::string sDirectoryPath;
 	std::string sFileExtension;
 
-public: // Constructor & Destructor
+private: // Constructor & Destructor
 	cAssetManager();
 	~cAssetManager();
 
@@ -40,7 +40,7 @@ public: // Setters
 	void SetDirectoryPath(const std::string& sPath);
 	void SetFileExtension(const std::string& sExtension);
 
-public: // Game Loaders
+private: // Game Loaders
 	bool LoadMenuSprites();
 	bool LoadSettingSprites();
 	bool LoadAboutUsSprites();
@@ -49,21 +49,22 @@ public: // Game Loaders
 	bool LoadFontSprites();
 	bool LoadScoreBarSprites();
 
-public: // Player Loaders
+private: // Player Loaders
 	bool LoadPlayerIdleSprites();
 	bool LoadPlayerJumpSprites();
 	bool LoadPlayerDeathSprites();
 
-public: // Map Loaders
+private: // Map Loaders
 	bool LoadMapHalloweenSprites();
 	bool LoadMapRiverSideSprites();
 	bool LoadMapIceAgeSprites();
 	bool LoadMapVolcanoSprites();
 	bool LoadMapOceanSprites();
 
-public: // Loaders
+private: // Loaders
 	bool LoadSprite(const std::string& sName, const std::string& sFileName);
 	bool LoadAnimation(const std::string& sName, const std::string& sFileName, int nMaxFrame);
+public: // Loaders
 	bool LoadAllSprites();
 };
 

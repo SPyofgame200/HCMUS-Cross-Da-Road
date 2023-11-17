@@ -14,6 +14,7 @@
 /// @brief Default constructor init menu and game
 cApp::cApp()
 {
+	SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
 	Player = hPlayer(this);
 	MapDrawer = hMapDrawer(this);
 	Menu.InitMenu();
@@ -91,7 +92,7 @@ bool cApp::GameReset()
 MapObject cApp::GetHitBox(float x, float y) const
 {
 	const cMapLane lane = MapLoader.GetLaneRound(y);
-	int nStartPos = lane.GetStartPos(fTimeSinceStart);
+	const int nStartPos = lane.GetStartPos(fTimeSinceStart);
 	const char graphic = lane.GetLaneGraphic(nStartPos + static_cast<int>(x));
 	return MapLoader.GetSpriteData(graphic);
 }
