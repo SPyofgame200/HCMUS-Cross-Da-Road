@@ -14,19 +14,22 @@
 // Forward declaration
 class cApp;
 
+/// @brief Structure for graphic cell 
 struct GraphicCell
 {
-	char graphic;
-	int nCellOffset;
-	int nRow;
-	int nCol;
-	float fLastDrawn;
+	char graphic; 			///< Character representing the graphic
+	int nCellOffset; 		///< Offset of the cell
+	int nRow; 				///< Row of the cell
+	int nCol; 				///< Column of the cell
+	float fLastDrawn; 		///< Last drawn time of the cell
 
+	// Constructors & Destructor
 	GraphicCell();
 	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn = 0);
 	~GraphicCell();
 };
 
+/// @brief Class for drawing map on screen
 class hMapDrawer
 {
 private:
