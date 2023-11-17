@@ -9,10 +9,10 @@
 #include "gConst.h"
 #include <iostream>
 
-/**
- * @namespace app
- * @brief Size-related getters
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// PROPERTY GETTERS ///////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Retrieves the screen width.
@@ -58,13 +58,13 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Constructor and Resource Collectors
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////// CONSTRUCTORS & DESTRUCTORS ////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
-	/// @brief Constructor for the GameEngine class.
+	/// @brief Default constructor.
 	GameEngine::GameEngine()
 	{
 		sAppName = engine::ENGINE_NAME;
@@ -121,10 +121,10 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Thread Events
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// OVERRIDE INTERFACES ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Called once on application startup, use it to load your resources.
@@ -136,8 +136,7 @@ namespace app
 		return false;
 	}
 
-	/// @brief Real time fixed updates, called bewteen frames and between window
-	/// messages
+	/// @brief Real time fixed updates, called bewteen frames and between window messages
 	/// @param fTickTime The current time since the engine creation.
 	/// @param eTickMessage The message being broadcast indicating changes
 	/// @return Always returns false by default.
@@ -158,10 +157,8 @@ namespace app
 		return false;
 	}
 
-	/// @brief Called after all other updates, allowing for additional processing
-	/// and bug fixing.
-	/// @param fElapsedTime The same elapsed time since the last frame called in
-	/// OnUpdateEvent()
+	/// @brief Called after all other updates, allowing for additional processing and bug fixing.
+	/// @param fElapsedTime The same elapsed time since the last frame called
 	/// @param fLateElapsedTime The current elapsed time since the last frame.
 	/// @return Always returns true by default.
 	bool GameEngine::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
@@ -220,10 +217,10 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Hardware interactions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// HARDWARE INTERFACES ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Check if the application has input focus.
@@ -232,12 +229,16 @@ namespace app
 	{
 		return keyboard.IsFocused();
 	}
-
+	/// @brief Disable a keyboard key.
+	/// @param k Key to disable.
+	/// @return Always returns true by default.
 	bool GameEngine::DisableKey(const Key k)
 	{
 		return keyboard.DisableKey(k);
 	}
-
+	/// @brief Enable a keyboard key.
+	/// @param k Key to enable.
+	/// @return Always returns true by default.
 	bool GameEngine::EnableKey(const Key k)
 	{
 		return keyboard.EnableKey(k);
@@ -249,58 +250,78 @@ namespace app
 	{
 		return keyboard.GetKey(k);
 	}
-
+	/// @brief Check if a key is idling.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability.
+	/// @return True if the key is idling, false otherwise.
 	bool GameEngine::IsKeyIdling(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyIdling(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is pressed.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability. 
+	/// @return True if the key is pressed, false otherwise.
 	bool GameEngine::IsKeyPressed(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyPressed(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is holding.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability.
+	/// @return True if the key is holding, false otherwise.
 	bool GameEngine::IsKeyHolding(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyHolding(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is released.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability. 
+	/// @return True if the key is released, false otherwise.
 	bool GameEngine::IsKeyReleased(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyReleased(key, bIgnoreDisability);
 	}
-
 	/// @brief Check if player is moving left (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving left, false otherwise.
 	bool GameEngine::IsMoveLeft(const Button& eButton) const
 	{
 		return (GetKey(app::Key::A) == eButton) || (GetKey(app::Key::LEFT) == eButton);
 	}
 	/// @brief Check if player is moving right (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving right, false otherwise.
 	bool GameEngine::IsMoveRight(const Button& eButton) const
 	{
 		return (GetKey(app::Key::D) == eButton) || (GetKey(app::Key::RIGHT) == eButton);
 	}
 	/// @brief Check if player is moving up (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving up, false otherwise.
 	bool GameEngine::IsMoveUp(const Button& eButton) const
 	{
 		return (GetKey(app::Key::W) == eButton) || (GetKey(app::Key::UP) == eButton);
 	}
 	/// @brief Check if player is moving down (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving down, false otherwise.
 	bool GameEngine::IsMoveDown(const Button& eButton) const
 	{
 		return (GetKey(app::Key::S) == eButton) || (GetKey(app::Key::DOWN) == eButton);
 	}
 	/// @brief Check if player is moving (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving, false otherwise.
 	bool GameEngine::IsMove(const Button& eButton) const
 	{
 		return IsMoveLeft(eButton) || IsMoveRight(eButton) || IsMoveUp(eButton) || IsMoveDown(eButton);
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Drawer functions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// DRAW ROUTINES /////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace app
 {
 	/// @brief Set the pixel drawing mode.
@@ -323,6 +344,10 @@ namespace app
 	{
 		return texture.SetBlendFactor(fBlend);
 	}
+	/// @brief Set the default target size of the pixel drawing.
+	/// @param width The width of the target.
+	/// @param height The height of the target.
+	/// @return True if the target size was set successfully, false otherwise.
 	bool GameEngine::SetDefaultTargetSize(int32_t width, int32_t height)
 	{
 		return texture.SetDefaultTargetSize(width, height);
@@ -354,8 +379,7 @@ namespace app
 		return texture.DrawSprite(nOffsetX, nOffsetY, pSprite, uScale);
 	}
 
-	/// @brief Draw a scaled portion of a sprite at the specified coordinates with
-	/// scaling.
+	/// @brief Draw a scaled portion of a sprite at the specified coordinates with scaling.
 	/// @param nOffsetX The X-coordinate for drawing.
 	/// @param nOffsetY The Y-coordinate for drawing.
 	/// @param pSprite The sprite to draw.
@@ -364,21 +388,19 @@ namespace app
 	/// @param nWidth The width of the source area.
 	/// @param nHeight The height of the source area.
 	/// @param uScale The scaling factor to apply when drawing the sprite.
-	void GameEngine::DrawPartialSprite(
-		const int32_t nOffsetX, const int32_t nOffsetY,
-		const Sprite* pSprite,
-		const int32_t nOriginX, const int32_t nOriginY,
-		const int32_t nWidth, const int32_t nHeight,
-		const uint32_t uScale
-	) {
+	void GameEngine::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY, const int32_t nWidth, const int32_t nHeight, const uint32_t uScale)
+	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nWidth, nHeight, uScale);
 	}
 
-	void GameEngine::DrawPartialSprite(
-		const int32_t nOffsetX, const int32_t nOffsetY,
-		const Sprite* pSprite,
-		const int32_t nOriginX, const int32_t nOriginY
-	) {
+	/// @brief Draw partial sprite with default scaling factor, width and height.
+	/// @param nOffsetX The X-coordinate for drawing.
+	/// @param nOffsetY The Y-coordinate for drawing.
+	/// @param pSprite The sprite to draw.
+	/// @param nOriginX The X-coordinate of the source area (top-left corner).
+	/// @param nOriginY The Y-coordinate of the source area (top-left corner).
+	void GameEngine::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY)
+	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY);
 	}
 
@@ -390,46 +412,55 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Customization
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// ENGINE CUSTOMIZATION ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
+	/// @brief Get the current frame delay.
+	/// @return The current frame delay.
 	FrameDelay GameEngine::GetFrameDelay() const
 	{
 		return frame.GetDelay();
 	}
 
+	/// @brief Get the current application FPS.
+	/// @return The current application FPS.
 	int GameEngine::GetAppFPS() const
 	{
 		return frame.GetFPS();
 	}
 
+	/// @brief Set the frame delay.
+	/// @param eFrameDelay Frame delay to set.
+	/// @return Always returns true by default.
 	bool GameEngine::SetFrameDelay(FrameDelay eFrameDelay)
 	{
 		return frame.SetDelay(eFrameDelay);
 	}
+	/// @brief Check if the engine is pausing
+	/// @return True if the engine is pausing, false otherwise.
 	bool GameEngine::IsEnginePause() const
 	{
 		return bEnginePausing;
 	}
-
+	/// @brief Resume the engine
 	void GameEngine::ResumeEngine()
 	{
 		bEnginePausing = false;
 	}
-	
+	/// @brief Pause the engine
 	void GameEngine::PauseEngine()
 	{
 		bEnginePausing = true;
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Internalities and Private Functions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// ENGINE INTERNALITIES ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Broadcast Tick messages with additional informations
@@ -457,18 +488,23 @@ namespace app
 		return true;
 	}
 
+	/// @brief Updates the window title suffix.
+	/// @param sTitleSuffix The suffix to append to the window title.
+	/// @return Always returns true by default.
 	bool GameEngine::UpdateWindowTitleSuffix(const std::string& sTitleSuffix)
 	{
 		const std::string sTitle = sAppName + sTitleSuffix;
 		return window.SetTitle(sTitle);
 	}
-
+	/// @brief Creates the window icon.
+	/// @return True if the window icon was created successfully, false otherwise.
 	bool GameEngine::CreateWindowIcon()
 	{
-		return window.SetIcon(engine::ICON_FILE_PATH)
-			&& window.SetFavicon(engine::FAVICON_FILE_PATH);
+		return window.SetIcon(engine::ICON_FILE_PATH) && window.SetFavicon(engine::FAVICON_FILE_PATH);
 	}
 
+	/// @brief Creates the viewport.
+	/// @return Always returns true by default.
 	bool GameEngine::CreateViewport()
 	{
 		screen.SetupWindowSize();
@@ -564,8 +600,7 @@ namespace app
 		return true;
 	}
 
-	/// @brief Handles the engine thread, including initialization, event loop, and
-	/// exit.
+	/// @brief Handles the engine thread, including initialization, event loop, and exit.
 	/// @return True if the thread execution was successful.
 	bool GameEngine::HandleEngineThread()
 	{
@@ -587,3 +622,7 @@ namespace app
 } // namespace app
 
 #endif // G_GAME_ENGINE_CPP
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

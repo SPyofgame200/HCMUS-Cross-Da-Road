@@ -1,3 +1,11 @@
+/**
+ * @file uSound.cpp
+ *
+ * @brief Contains sound functions
+ *
+ * This file implements sound functions.
+**/
+
 #include "uSound.h"
 
 #pragma comment(lib, "winmm.lib")
@@ -5,14 +13,7 @@
 #include <iostream>
 #include <thread>
 
-/**
- * @file uSound.cpp
- *
- * @brief Contains sound functions
- *
- * This file implements sound functions.
- **/
-
+/// @brief Namespace for application sound
 namespace app_sound
 {
 	/// @brief Stops the music with the given alias name
@@ -131,3 +132,7 @@ namespace app_sound
 		}
 	}
 } // namespace app_sound
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

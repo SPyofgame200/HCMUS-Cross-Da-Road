@@ -1,6 +1,3 @@
-#ifndef G_CONST_H
-#define G_CONST_H
-
 /**
  * @file gConst.h
  *
@@ -8,6 +5,9 @@
  *
  * This file contains game engine constants for error handling, event handling, and other purposes.
 **/
+
+#ifndef G_CONST_H
+#define G_CONST_H
 
 /// @brief Namespace for game engine constants
 namespace engine

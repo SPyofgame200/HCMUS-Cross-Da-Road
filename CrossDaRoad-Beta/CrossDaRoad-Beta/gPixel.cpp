@@ -1,6 +1,3 @@
-#include "gPixel.h"
-#include <cstdint>
-
 /**
  * @file gPixel.h
  *
@@ -9,11 +6,16 @@
  * This file contains pixel struct for pixel object in game (for graphics) and its implementation.
 **/
 
+#include "gPixel.h"
+#include <cstdint>
+
+
+
 namespace app
 {
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR ///////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/// @brief Default constructor 
 	Pixel::Pixel()
@@ -64,6 +66,10 @@ namespace app
 		return { newR, newG, newB, newA };
 	}
 
+	/// @brief Friend operator for outputting pixel to stream
+	/// @param os The output stream
+	/// @param pixel Pixel to output
+	/// @return Output stream of pixel
 	std::ostream& operator<<(std::ostream& os, const Pixel& pixel)
 	{
 		os << std::dec << "Pixel(r=" << static_cast<uint32_t>(pixel.r) << ", g=" << static_cast<uint32_t>(pixel.g) << ", b=" << static_cast<uint32_t>(pixel.b) << ", a=" << static_cast<uint32_t>(pixel.a) << ")";

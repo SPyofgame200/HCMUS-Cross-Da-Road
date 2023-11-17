@@ -1,7 +1,3 @@
-#include "gKey.h"
-#include <Windows.h>
-#include <map>
-
 /**
  * @file gKey.cpp
  *
@@ -10,10 +6,15 @@
  * This file implements key enumeration for keyboard input and key map for mapping key to its code
 **/
 
+#include "gKey.h"
+#include <Windows.h>
+#include <map>
+
 namespace app
 {
 	template <typename key_t, typename data_t>
-	void MergeMapKey(std::map<key_t, data_t>& dest, const std::map<key_t, data_t>& source) {
+	void MergeMapKey(std::map<key_t, data_t>& dest, const std::map<key_t, data_t>& source)
+	{
 		dest.insert(source.begin(), source.end());
 	}
 
@@ -446,3 +447,7 @@ namespace app
 		return GetKeyCategory(key) == category;
 	}
 } // namespace app
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

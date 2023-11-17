@@ -1,3 +1,11 @@
+/**
+ * @file gTexture.h
+ *
+ * @brief Contains texture class
+ *
+ * This file contains texture class for drawing textures on screen using OpenGL.
+**/
+
 #ifndef G_TEXTURE_H
 #define G_TEXTURE_H
 
@@ -7,14 +15,6 @@
 #include "gPixel.h"
 #include "gState.h"
 #include "gSprite.h"
-
-/**
- * @file gTexture.h
- *
- * @brief Contains texture class
- *
- * This file contains texture class for drawing textures on screen using OpenGL.
- */
 
 namespace app
 {
@@ -34,8 +34,8 @@ namespace app
 		Sprite* pDrawTarget;        ///< Draw target for drawing on screen (window) using OpenGL functions
 		Pixel::Mode nPixelMode;     ///< Pixel mode for drawing on screen (window) using OpenGL functions
 		float fBlendFactor;         ///< Blend factor for drawing on screen (window) using OpenGL functions
-		int nDefaultWidth;
-		int nDefaultHeight;
+		int nDefaultWidth;			///< Default width of draw target
+		int nDefaultHeight;			///< Default height of draw target
 
 	public: // Constructors & Destructors
 		Texture();
@@ -46,7 +46,6 @@ namespace app
 
 	private: // Constructors & Destructors helpers
 		bool InitDevice();
-		
 
 	private: // Setup enviroment helpers
 		bool SetupFormatter() const;

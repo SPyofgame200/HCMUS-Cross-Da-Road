@@ -1,3 +1,11 @@
+/**
+ * @file gResourcePack.h
+ *
+ * @brief Contains resource pack class
+ *
+ * This file contains resource pack class for resource pack management (pack/unpack).
+**/
+
 #ifndef G_RESOURCE_PACK_H
 #define G_RESOURCE_PACK_H
 
@@ -6,14 +14,6 @@
 #include <map>
 #include "gPixel.h"
 #include "gConst.h"
-
-/**
- * @file gResourcePack.h
- *
- * @brief Contains resource pack class
- *
- * This file contains resource pack class for resource pack management (pack/unpack).
-**/
 
 namespace app
 {

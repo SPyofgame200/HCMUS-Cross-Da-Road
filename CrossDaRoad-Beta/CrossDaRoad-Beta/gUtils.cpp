@@ -1,3 +1,11 @@
+/**
+ * @file gUtils.cpp
+ *
+ * @brief Contains utility functions for string conversion
+ *
+ * This file implements utility functions for string conversion between different types.
+**/
+
 #include "gUtils.h"
 #include <Windows.h>
 #include <iostream>
@@ -5,17 +13,9 @@
 #include <string>
 
 /**
- * @file gUtils.cpp
- *
- * @brief Contains utility functions for string conversion
- *
- * This file implements utility functions for string conversion between different types.
- */
-
- /**
-  * @namespace app
-  * @brief Utility functions
-  **/
+ * @namespace app
+ * @brief Utility functions
+ **/
 namespace app
 {
 	/// @brief Converts a string to a wide string (UTF-8 to wide string)
@@ -119,3 +119,7 @@ namespace app
 		return (UTEXT = to_string(input)).c_str();
 	}
 } // namespace app
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

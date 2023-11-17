@@ -1,7 +1,3 @@
-#include "hMenu.h"
-
-#include "cApp.h"
-
 /**
  * @file hMenu.cpp
  *
@@ -9,6 +5,9 @@
  *
  * This file implements menu class for menu window management.
 **/
+
+#include "hMenu.h"
+#include "cApp.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////
@@ -178,6 +177,8 @@ bool hMenu::IsOnMenu() const
 	return eMenuOption == AppOption::APP_MENU;
 }
 
+/// @brief Check if current option is game or not
+/// @return True if current option is game, false otherwise
 bool hMenu::IsOnGame() const
 {
 	return eMenuOption == AppOption::APP_GAME;

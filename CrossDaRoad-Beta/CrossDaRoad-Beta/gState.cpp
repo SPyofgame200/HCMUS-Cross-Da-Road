@@ -1,5 +1,3 @@
-#include "gState.h"
-
 /**
  * @file gState.cpp
  *
@@ -7,6 +5,15 @@
  *
  * This file implements button enumeration, state of button, screen, viewport, frame, keyboard, and mouse for game state management.
 **/
+#include "gState.h"
+
+//===========================================================================================
+//========================= SCREEN STATE ====================================================
+//===========================================================================================
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter for the screen width.
 /// @param nWidth width of the screen
@@ -77,9 +84,10 @@ void ScreenState::SetWindowSize(int32_t nWidth, int32_t nHeight)
 	SetWindowHeight(nHeight);
 }
 
-//=======================================================================
-//============================[ GETTERS ]================================
-//=======================================================================
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Getter for the screen width.
 uint32_t ScreenState::GetScreenWidth() const
 {
@@ -141,7 +149,13 @@ void ScreenState::SetupWindowSize()
 	nWindowHeight = static_cast<int32_t>(nScreenHeight * nPixelHeight);
 }
 
-//===========================================================================================
+//=============================================================================================
+//========================= VIEWPORT STATE ====================================================
+//=============================================================================================
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter for the viewport width.
 /// @param width width of the viewport
@@ -188,6 +202,10 @@ void ViewportState::SetPosition(const int32_t x, const int32_t y)
 	SetY(y);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Getter for the viewport width.
 int32_t ViewportState::GetWidth() const
 {
@@ -211,8 +229,6 @@ int32_t ViewportState::GetY() const
 {
 	return nPosY;
 }
-
-//====================================================================================
 
 /// @brief Update the viewport state by the screen state data.
 /// @param screen The screen state data.
@@ -253,7 +269,9 @@ bool ViewportState::UpdateByScreen(const ScreenState& screen)
 	return true;
 }
 
-//==============================
+//=============================================================================================
+//========================= FRAME STATE =======================================================
+//=============================================================================================
 
 /// @brief Parameterized constructor
 /// @param fTimer Timer in
@@ -264,11 +282,9 @@ FrameState::FrameState(const float fTimer, const float fRewind, const int nFrame
 	CreateTimer(fTimer, fRewind, nFrame, nFPS);
 }
 
-/// @brief Getter for the frame delay.
-FrameDelay FrameState::GetDelay() const
-{
-	return eFrameDelay;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter for the frame delay.
 /// @param eDelay The frame delay to set.
@@ -299,6 +315,51 @@ void FrameState::ResetTimer()
 	frameTimer = std::chrono::system_clock::now();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Getter for the frame delay.
+FrameDelay FrameState::GetDelay() const
+{
+	return eFrameDelay;
+}
+/// @brief Getter for the frame timer.
+int FrameState::GetFPS() const
+{
+	return nCurrentFPS;
+}
+/// @brief Getter for FPS as a string.
+std::string FrameState::ShowFPS() const
+{
+	return "[FPS: " + std::to_string(GetFPS()) + "]";
+}
+/// @brief Getter for tick time 
+float FrameState::GetTickTime() const
+{
+	const clock_t currentTimer = std::chrono::system_clock::now();
+	const float fTickTime = std::chrono::duration<float>(currentTimer - clockTimer).count() - fRewindTime;
+	return fTickTime;
+}
+/// @brief Getter for elapsed time
+/// @param bUpdate If true, update the frame state
+/// @return The elapsed time
+float FrameState::GetElapsedTime(const bool bUpdate)
+{
+	const clock_t currentTimer = std::chrono::system_clock::now();
+	const float fElapsedTime = std::chrono::duration<float>(currentTimer - frameTimer).count() - fRewindTemp;
+	if (bUpdate) {
+		frameTimer = currentTimer;
+		FrameUpdate(fElapsedTime);
+		fRewindTemp = 0;
+	}
+	return fElapsedTime;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// UPDATE & WAIT METHODS //////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Update the frame 
 /// @param fElapsedTime elapsed time 
 /// @return true if the frame is updated, false otherwise.
@@ -316,17 +377,9 @@ bool FrameState::FrameUpdate(const float fElapsedTime)
 	}
 	return false;
 }
-
-/// @brief Getter for the frame timer.
-int FrameState::GetFPS() const
-{
-	return nCurrentFPS;
-}
-/// @brief Getter for FPS as a string.
-std::string FrameState::ShowFPS() const
-{
-	return "[FPS: " + std::to_string(GetFPS()) + "]";
-}
+/// @brief Rewind the frame timer
+/// @param fRewind The time to rewind
+/// @return True if the frame timer is rewinded, false otherwise
 bool FrameState::Rewind(float fRewind)
 {
 	fRewindTemp += fRewind;
@@ -358,30 +411,15 @@ void FrameState::WaitMicroseconds(const int32_t& nWait, const float& fPassedTime
 	}
 	return WaitMicroseconds(nWait - static_cast<int32_t>(fPassedTime));
 }
-/// @brief Getter for tick time 
-float FrameState::GetTickTime() const
-{
-	const clock_t currentTimer = std::chrono::system_clock::now();
-	const float fTickTime = std::chrono::duration<float>(currentTimer - clockTimer).count() - fRewindTime;
-	return fTickTime;
-}
-
-/// @brief Getter for elapsed time
-/// @param bUpdate If true, update the frame state
-/// @return The elapsed time
-float FrameState::GetElapsedTime(const bool bUpdate)
-{
-	const clock_t currentTimer = std::chrono::system_clock::now();
-	const float fElapsedTime = std::chrono::duration<float>(currentTimer - frameTimer).count() - fRewindTemp;
-	if (bUpdate) {
-		frameTimer = currentTimer;
-		FrameUpdate(fElapsedTime);
-		fRewindTemp = 0;
-	}
-	return fElapsedTime;
-}
 
 //====================================================================================
+//========================= KEYBOARD STATE ============================================
+//====================================================================================
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// CONSTRUCTORS & DESTRUCTOR //////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Default constructor
 KeyboardState::KeyboardState()
 {
@@ -394,6 +432,10 @@ KeyboardState::~KeyboardState()
 	mapKeys.clear();
 	std::cerr << "app::KeyboardState::~KeyboardState(): Successfully destructed" << std::endl;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Setter to reset the keyboard state object
 void KeyboardState::ResetKeyboard()
@@ -412,34 +454,6 @@ void KeyboardState::SetFocus(const bool bValue)
 	bHasInputFocus = bValue;
 }
 
-/// @brief Check if the keyboard state object has input focus
-/// @return true if the keyboard state object has input focus, false otherwise
-bool KeyboardState::IsFocused() const
-{
-	return bHasInputFocus;
-}
-
-/// @brief Update the keyboard state object
-void KeyboardState::UpdateKeyboard()
-{
-	for (int key = 0; key < KEYBOARD_SIZE; key++) {
-		// Reset key press and release flags
-		pKeysState[key].bPressed = false;
-		pKeysState[key].bReleased = false;
-		if (bKeysCache[key] != bKeys[key]) {
-			if (bKeysCache[key]) { // Key is newly pressed
-				pKeysState[key].bPressed = !pKeysState[key].bHolding;
-				pKeysState[key].bHolding = true;
-			}
-			else { // Key is newly released
-				pKeysState[key].bReleased = true;
-				pKeysState[key].bHolding = false;
-			}
-		}
-		bKeys[key] = bKeysCache[key];
-	}
-}
-
 /// @brief Setter to disable a key of the keyboard state object
 /// @param key The key to disable
 /// @return Always return true by default
@@ -456,6 +470,11 @@ bool KeyboardState::EnableKey(const app::Key& key)
 	pKeysState[key].bDisabled = false;
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GETTERS ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /// @brief Getter for the key state of the keyboard state object
 /// @param key The key to get the state
 /// @return State of the key (Button)
@@ -480,6 +499,17 @@ Button KeyboardState::GetKey(const app::Key& key) const
 ButtonState KeyboardState::GetKeyState(const app::Key& key) const
 {
 	return pKeysState[key];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// CHECKERS ///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Check if the keyboard state object has input focus
+/// @return true if the keyboard state object has input focus, false otherwise
+bool KeyboardState::IsFocused() const
+{
+	return bHasInputFocus;
 }
 
 /// @brief Check if the key is idling
@@ -517,4 +547,33 @@ bool KeyboardState::IsKeyReleased(const app::Key& key, bool bIgnoreDisability) c
 {
 	return (GetKey(key) == RELEASED) || (bIgnoreDisability && GetKey(key) == DISABLED_RELEASED);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// UPDATE /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Update the keyboard state object
+void KeyboardState::UpdateKeyboard()
+{
+	for (int key = 0; key < KEYBOARD_SIZE; key++) {
+		// Reset key press and release flags
+		pKeysState[key].bPressed = false;
+		pKeysState[key].bReleased = false;
+		if (bKeysCache[key] != bKeys[key]) {
+			if (bKeysCache[key]) { // Key is newly pressed
+				pKeysState[key].bPressed = !pKeysState[key].bHolding;
+				pKeysState[key].bHolding = true;
+			}
+			else { // Key is newly released
+				pKeysState[key].bReleased = true;
+				pKeysState[key].bHolding = false;
+			}
+		}
+		bKeys[key] = bKeysCache[key];
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// END OF FILE ////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 

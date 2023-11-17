@@ -43,7 +43,7 @@ cApp::~cApp()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Initialize game, load map
-/// @return true if success, false otherwise
+/// @return True if success, false otherwise
 bool cApp::GameInit()
 {
 	using namespace app_const;
@@ -55,21 +55,23 @@ bool cApp::GameInit()
 	MapLoader.Init();
 	return true;
 }
-
 /// @brief Exit game, clear data
+/// @return Always returns true by default
 bool cApp::GameExit()
 {
 	MapLoader.Destruct();
 	return true;
 }
 /// @brief Go to next map level
+/// @return Always returns true by default
 bool cApp::GameNext()
 {
 	MapLoader.NextLevel();
 	GameReset();
 	return true;
 }
-//// @brief Go to previous map level
+/// @brief Go to previous map level
+/// @return Always returns true by default
 bool cApp::GamePrev()
 {
 	MapLoader.PrevLevel();
@@ -77,6 +79,7 @@ bool cApp::GamePrev()
 	return true;
 }
 /// @brief Reset game, clear data, load map, reset Player position, danger area, score
+/// @return Always returns true by default
 bool cApp::GameReset()
 {
 	fTimeSinceStart = 0.0f;
@@ -98,7 +101,7 @@ bool cApp::GameReset()
 ///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief 
+/// @brief Get hitbox of Player at (x, y) position
 ///	@param x - X position of Player
 ///	@param y - Y position of Player
 ///	@return MapObject of hitbox of Player
@@ -109,16 +112,17 @@ MapObject cApp::GetHitBox(float x, float y) const
 	const char graphic = lane.GetLaneGraphic(nStartPos + static_cast<int>(x));
 	return MapLoader.GetSpriteData(graphic);
 }
-/// @brief 
+/// @brief Get hitbox of Player at current position
+///	@return MapObject of hitbox of Player
 MapObject cApp::GetHitBox() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	return GetHitBox(fPosX, fPosY);
 }
-/// @brief 
-/// @param bDebug 
-/// @return 
+/// @brief Check if Player is killed by any object
+/// @param bDebug Whether to print debug information or not
+/// @return True if Player is killed, false otherwise
 bool cApp::IsKilled(bool bDebug) const
 {
 	const float fPosY = Player.GetPlayerLogicPositionY();
@@ -147,15 +151,14 @@ bool cApp::IsKilled(bool bDebug) const
 		std::cerr << std::endl;
 	}
 
-
 	if (Player.IsPlayerCollisionSafe()) {
 		return false;
 	}
 
 	return true;
 }
-/// @brief 
-/// @return 
+/// @brief Get death message of Player
+/// @return String of death message
 std::string cApp::GetPlayerDeathMessage() const
 {
 	float fPosX = Player.GetPlayerLogicPositionX();
@@ -178,8 +181,8 @@ std::string cApp::GetPlayerDeathMessage() const
 		}
 	}
 }
-/// @brief 
-/// @return 
+/// @brief Check if Player is on platform at left
+/// @return True if Player is on platform at left, false otherwise
 bool cApp::IsPlatformLeft() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
@@ -187,8 +190,8 @@ bool cApp::IsPlatformLeft() const
 	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
 }
-/// @brief 
-/// @return 
+/// @brief Check if Player is on platform at right
+/// @return True if Player is on platform at right, false otherwise
 bool cApp::IsPlatformRight() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
@@ -196,8 +199,8 @@ bool cApp::IsPlatformRight() const
 	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
-/// @brief 
-/// @return 
+/// @brief Check if Player is on platform at center
+/// @return True if Player is on platform at center, false otherwise
 bool cApp::IsPlatformCenter() const
 {
 	const float fPosX = Player.GetPlayerLogicPositionX();
@@ -205,17 +208,17 @@ bool cApp::IsPlatformCenter() const
 	const MapObject rightData = GetHitBox(fPosX, fPosY);
 	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
-/// @brief 
-/// @return 
+/// @brief Check if Player is on platform
+/// @return True if Player is on platform, false otherwise
 bool cApp::IsOnPlatform() const
 {
 	return IsPlatformLeft()
 		|| IsPlatformRight()
 		|| IsPlatformCenter();
 }
-/// @brief 
-/// @param fElapsedTime 
-/// @return 
+/// @brief Get platform velocity
+/// @param fElapsedTime Time elapsed since last update
+/// @return Velocity of platform
 float cApp::GetPlatformVelocity(const float fElapsedTime) const
 {
 	const float fPosY = Player.GetPlayerLogicPositionY();
@@ -228,9 +231,9 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 ////////////////////////////////////// GAME UPDATES //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief 
-/// @param fElapsedTime 
-/// @return 
+/// @brief Update all game objects
+/// @param fElapsedTime Time elapsed since last update
+/// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
@@ -246,8 +249,8 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 	}
 	return true;
 }
-/// @brief 
-/// @return 
+/// @brief Update Player when Player is killed
+/// @return Always returns true by default
 bool cApp::OnPlayerDeath()
 {
 	std::cout << GetPlayerDeathMessage() << std::endl;
@@ -258,6 +261,7 @@ bool cApp::OnPlayerDeath()
 	return true;
 }
 /// @brief Draw all lanes, render Player, draw status bar
+/// @return Always returns true by default
 bool cApp::OnGameRender()
 {
 	DrawAllLanes();
@@ -265,7 +269,8 @@ bool cApp::OnGameRender()
 	DrawStatusBar();
 	return true;
 }
-// @brief Set frame delay, load all sprites, open menu
+/// @brief Set frame delay, load all sprites, open menu
+/// @return Always returns true by default
 bool cApp::OnCreateEvent()
 {
 	Menu.SetupTarget(this);
@@ -286,7 +291,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 	return true;
 }
 /// @brief Update event that called when application is updated
-///	@parma fElapsedTime - Time elapsed since last update
+///	@param fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
 	if (!Menu.Update(fElapsedTime)) {
@@ -294,24 +299,30 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 	}
 	return true;
 }
-/// @brief
-///	@param fElapsedTime
-///	@param fLateElapsedTime
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime Time elapsed since last update
+///	@param fLateElapsedTime Time elapsed since last late update
+/// @return Always returns true by default
 bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 {
 	return true;
 }
+/// @brief 
+/// @return 
 bool cApp::OnCreateNewName()
 {
 
 	return true;
 }
+/// @brief 
+/// @return 
 bool cApp::OnDisplaySaveBox()
 {
 
 	return false;
 }
-
+/// @brief 
+/// @return 
 bool cApp::UpdateDrawNameBox()
 {
 	if (IsKeyReleased(app::Key::DOWN)) {
@@ -323,7 +334,8 @@ bool cApp::UpdateDrawNameBox()
 
 	return true;
 }
-
+/// @brief 
+/// @return 
 bool cApp::DrawNameBox()
 {
 	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
@@ -341,8 +353,8 @@ bool cApp::DrawNameBox()
 	}
 	return true;
 }
-
-/// @brief Rendering menu and game (if game is running)
+/// @brief Check if game is rendering or not
+/// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
 {
 	if (!Menu.Render()) {
@@ -350,8 +362,8 @@ bool cApp::OnRenderEvent()
 	}
 	return true;
 }
-/// @brief 
-/// @return 
+/// @brief Save current game state to file
+/// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
 	std::string FileName = Player.GetPlayerName();
@@ -379,8 +391,8 @@ bool cApp::OnGameSave() const
 		return false;
 	}
 }
-/// @brief 
-/// @return 
+/// @brief Load game state from file
+/// @return True if game is loaded successfully, false otherwise
 bool cApp::OnGameLoad()
 {
 	const std::string sLoadFilePath = GetFilePathLocation(false, "");
@@ -437,6 +449,7 @@ bool cApp::OnPauseEvent()
 	return true; // succesfully handle the pause event
 }
 /// @brief Event that called when application is force paused
+/// @return True if pause event was handled successfully, false otherwise
 bool cApp::OnForcePauseEvent()
 {
 	if (!Menu.IsOnGame()) {
@@ -446,12 +459,14 @@ bool cApp::OnForcePauseEvent()
 	return true;
 }
 /// @brief Event that called when application is destroyed normally
+/// @return Always returns true by default
 bool cApp::OnDestroyEvent()
 {
 	GameExit();
 	return true;
 }
 /// @brief Event that called when application is destroyed forcefully
+/// @return Always returns true by default
 bool cApp::OnForceDestroyEvent()
 {
 	GameExit();
@@ -462,9 +477,9 @@ bool cApp::OnForceDestroyEvent()
 /////////////////////////////////// FILE MANAGEMENT ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief 
-/// @param isSave 
-/// @return 
+/// @brief Get file path location from user 
+/// @param isSave True if user want to save file, false otherwise
+/// @return File path location
 std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
 {
 	OPENFILENAME ofn;
@@ -501,9 +516,11 @@ std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// GAME RENDERING ////////////////////////////////////////////
+////////////////////////////////////// GAME RENDERING /////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Draw all lanes on screen
+/// @return Always returns true by default
 bool cApp::DrawAllLanes() const
 {
 	return MapDrawer.DrawAllLanes();
@@ -527,7 +544,9 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 	}
 	return true;
 }
+
 /// @brief Draw the status bar beside the game map
+/// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
 	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4);
@@ -568,5 +587,5 @@ std::string cApp::ShowFrameID(const int frame) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// END OF FILE ///////////////////////////////////////////////
+////////////////////////////////////// END OF FILE ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////

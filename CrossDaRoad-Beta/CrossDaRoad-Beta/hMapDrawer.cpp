@@ -1,7 +1,18 @@
+/**
+ * @file hMapDrawer.cpp
+ * @brief Implements map drawer class for drawing map on screen
+ *
+**/
+
 #include "hMapDrawer.h"
 #include "cApp.h"
 #include <vector>
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// CONSTRUCTORS & DESTRUCTOR /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Default constructor
 GraphicCell::GraphicCell()
 {
 	graphic = 0;
@@ -10,6 +21,8 @@ GraphicCell::GraphicCell()
 	nCol = 0;
 }
 
+/// @brief Parameterized constructor
+GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
 GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	this->graphic = graphic;
@@ -18,26 +31,36 @@ GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 	this->nCol = nCol;
 }
 
-GraphicCell::~GraphicCell()
-{
-}
+/// @brief Destructor
+GraphicCell::~GraphicCell() = default;
 
+/// @brief Default constructor
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
 }
 
+/// @brief Parameterized constructor
+/// @param app Pointer to the application
 hMapDrawer::hMapDrawer(cApp* app)
 {
 	SetupTarget(app);
 }
 
+/// @brief Destructor
 hMapDrawer::~hMapDrawer()
 {
 	app = nullptr;
 	//std::cerr << "hMapDrawer::~hMapDrawer(): Successfully destructed" << std::endl;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// SETTERS /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Sets the target application
+/// @param app Pointer to the application
+/// @return True if successful, false otherwise
 bool hMapDrawer::SetupTarget(cApp* app)
 {
 	if (app == nullptr) {
@@ -47,7 +70,13 @@ bool hMapDrawer::SetupTarget(cApp* app)
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Get lane backgrounds on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane backgrounds
 std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
@@ -63,6 +92,9 @@ std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) co
 	return Backgrounds;
 }
 
+/// @brief Get lane objects on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane objects
 std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
@@ -75,8 +107,7 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
 	}	
 
-	for (int id = 0; id < Objects.size(); ++id)
-	{
+	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
 		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
@@ -86,7 +117,9 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 
 	return Objects;
 }
-
+/// @brief Draw lane on screen
+/// @param lane Lane to be drawn
+/// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 {
 	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
@@ -102,6 +135,8 @@ bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 	return true;
 }
 
+/// @brief Draw all lanes on screen
+/// @return Always true by default
 bool hMapDrawer::DrawAllLanes() const
 {
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
@@ -111,8 +146,10 @@ bool hMapDrawer::DrawAllLanes() const
 
 	return true;
 }
-
-bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
+/// @brief Draw object on screen
+/// @param Cell Cell to be drawn
+/// @return Always true by default
+bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
@@ -132,6 +169,9 @@ bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
 	return true;
 }
 
+/// @brief Draw background on screen
+/// @param Cell Graphic cell to be drawn
+/// @return Always true by default
 bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
@@ -152,11 +192,24 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 	return true;
 }
 
+//=================================================================================================
+
 #include <random>
 #include <iomanip>
 std::default_random_engine generator(std::random_device{}());
 std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 std::map<int, float> mapLastSummon;
+
+//=================================================================================================
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// GENERATORS //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Summon object on screen randomly
+/// @param graphic Character representing the object
+/// @param nID ID of the object
+/// @return True if successful, false otherwise
 bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 {
 	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
@@ -194,3 +247,7 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 	}
 	return false; // Summon is not successful
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// END OF FILE /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
