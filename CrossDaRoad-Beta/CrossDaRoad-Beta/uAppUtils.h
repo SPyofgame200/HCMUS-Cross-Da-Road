@@ -1,3 +1,9 @@
+/**
+ * @file uAppUtils.h
+ * @brief Contains application utilities
+ *
+**/
+
 #ifndef U_APP_UTILS_H
 #define U_APP_UTILS_H
 
