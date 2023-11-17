@@ -1,3 +1,10 @@
+/**
+ * @file cFrame.h
+ * @brief Contains frame class for frame management
+ *
+ * This file contains frame class prototype for frame management.
+ */
+
 #ifndef C_FRAME_H
 #define C_FRAME_H
 
@@ -90,7 +97,7 @@ private: /// Utilities
 public: /// Updaters
     bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
     {
-	    const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
+        const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
         SetVal(fTickTime / fFrameTick);
         return true;
     }
@@ -112,7 +119,7 @@ public: /// Animations
     }
     bool NextAnimation(bool bUpdate = true)
     {
-	    const int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
+        const int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
         if (nAnimationFrame >= nCurrentFrame) {
             return false;
         }
