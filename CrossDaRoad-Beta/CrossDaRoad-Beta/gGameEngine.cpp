@@ -370,7 +370,8 @@ namespace app
 		const int32_t nOriginX, const int32_t nOriginY,
 		const int32_t nWidth, const int32_t nHeight,
 		const uint32_t uScale
-	) {
+	)
+	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nWidth, nHeight, uScale);
 	}
 
@@ -378,7 +379,8 @@ namespace app
 		const int32_t nOffsetX, const int32_t nOffsetY,
 		const Sprite* pSprite,
 		const int32_t nOriginX, const int32_t nOriginY
-	) {
+	)
+	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY);
 	}
 
@@ -419,7 +421,7 @@ namespace app
 	{
 		bEnginePausing = false;
 	}
-	
+
 	void GameEngine::PauseEngine()
 	{
 		bEnginePausing = true;
@@ -587,3 +589,7 @@ namespace app
 } // namespace app
 
 #endif // G_GAME_ENGINE_CPP
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
