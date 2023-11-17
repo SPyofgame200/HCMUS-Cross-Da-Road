@@ -319,10 +319,9 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Drawer functions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// DRAW ROUTINES /////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 namespace app
 {
 	/// @brief Set the pixel drawing mode.
@@ -345,6 +344,10 @@ namespace app
 	{
 		return texture.SetBlendFactor(fBlend);
 	}
+	/// @brief Set the default target size of the pixel drawing.
+	/// @param width The width of the target.
+	/// @param height The height of the target.
+	/// @return True if the target size was set successfully, false otherwise.
 	bool GameEngine::SetDefaultTargetSize(int32_t width, int32_t height)
 	{
 		return texture.SetDefaultTargetSize(width, height);
@@ -376,8 +379,7 @@ namespace app
 		return texture.DrawSprite(nOffsetX, nOffsetY, pSprite, uScale);
 	}
 
-	/// @brief Draw a scaled portion of a sprite at the specified coordinates with
-	/// scaling.
+	/// @brief Draw a scaled portion of a sprite at the specified coordinates with scaling.
 	/// @param nOffsetX The X-coordinate for drawing.
 	/// @param nOffsetY The Y-coordinate for drawing.
 	/// @param pSprite The sprite to draw.
@@ -386,22 +388,18 @@ namespace app
 	/// @param nWidth The width of the source area.
 	/// @param nHeight The height of the source area.
 	/// @param uScale The scaling factor to apply when drawing the sprite.
-	void GameEngine::DrawPartialSprite(
-		const int32_t nOffsetX, const int32_t nOffsetY,
-		const Sprite* pSprite,
-		const int32_t nOriginX, const int32_t nOriginY,
-		const int32_t nWidth, const int32_t nHeight,
-		const uint32_t uScale
-	)
+	void GameEngine::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY, const int32_t nWidth, const int32_t nHeight, const uint32_t uScale)
 	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nWidth, nHeight, uScale);
 	}
 
-	void GameEngine::DrawPartialSprite(
-		const int32_t nOffsetX, const int32_t nOffsetY,
-		const Sprite* pSprite,
-		const int32_t nOriginX, const int32_t nOriginY
-	)
+	/// @brief Draw partial sprite with default scaling factor, width and height.
+	/// @param nOffsetX The X-coordinate for drawing.
+	/// @param nOffsetY The Y-coordinate for drawing.
+	/// @param pSprite The sprite to draw.
+	/// @param nOriginX The X-coordinate of the source area (top-left corner).
+	/// @param nOriginY The Y-coordinate of the source area (top-left corner).
+	void GameEngine::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY)
 	{
 		return texture.DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY);
 	}
