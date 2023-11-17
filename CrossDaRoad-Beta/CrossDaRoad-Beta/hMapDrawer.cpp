@@ -21,6 +21,7 @@ GraphicCell::GraphicCell()
 	nCol = 0;
 }
 
+/// @brief Parameterized constructor
 GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
 {
 	this->graphic = graphic;
@@ -30,9 +31,10 @@ GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, floa
 	this->fLastDrawn = fLastDrawn;
 }
 
-GraphicCell::~GraphicCell()
-{}
+/// @brief Destructor
+GraphicCell::~GraphicCell() = default;
 
+/// @brief Default constructor
 hMapDrawer::hMapDrawer()
 {
 	app = nullptr;
@@ -72,8 +74,9 @@ bool hMapDrawer::SetupTarget(cApp* app)
 ///////////////////////////////////////// DRAWERS /////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+/// @brief Get lane backgrounds on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane backgrounds
 std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
@@ -89,6 +92,9 @@ std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) co
 	return Backgrounds;
 }
 
+/// @brief Get lane objects on screen
+/// @param Lane Lane to be drawn
+/// @return Vector of graphic cells representing the lane objects
 std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
