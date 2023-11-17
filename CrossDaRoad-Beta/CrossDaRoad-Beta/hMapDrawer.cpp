@@ -119,7 +119,7 @@ bool hMapDrawer::DrawObject(const GraphicCell &Cell) const
 	const int32_t nPosY = Cell.nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
-	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->Player.ShowFrameID(sprite.nID));
+	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->ShowFrameID(sprite.nID));
 	if (sName.size()) {
 		const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::MASK);

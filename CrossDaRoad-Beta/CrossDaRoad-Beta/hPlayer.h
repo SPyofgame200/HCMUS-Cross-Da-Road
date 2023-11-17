@@ -44,10 +44,6 @@ private:
 	float fFrogLogicPosY;
 
 private:
-	frame4_t frame4;
-	frame6_t frame6;
-	frame8_t frame8;
-
 	frame_t frame6_id_animation_safe;
 
 private:
@@ -110,8 +106,6 @@ private: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
-	int GetFrameID(frame_t frame) const;
-	std::string ShowFrameID(frame_t frame) const;
 	float GetPlayerAnimationPositionX() const;
 	float GetPlayerAnimationPositionY() const;
 	float GetPlayerLogicPositionX() const;

@@ -84,6 +84,9 @@ bool cApp::GameReset()
 	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
 	Zone.CreateZone(ScreenWidth(), ScreenHeight());
 	Player.Reset();
+	frame4.Reset();
+	frame6.Reset();
+	frame8.Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
@@ -527,7 +530,7 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 /// @brief Draw the status bar beside the game map
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + Player.ShowFrameID(4);
+	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;
@@ -545,7 +548,24 @@ bool cApp::DrawStatusBar()
 	return true;
 }
 
+int cApp::GetFrameID(const int frame) const
+{
+	if (frame == frame4.GetLimit()) {
+		return frame4.GetID();
+	}
+	else if (frame == frame6.GetLimit()) {
+		return frame6.GetID();
+	}
+	else if (frame == frame8.GetLimit()) {
+		return frame8.GetID();
+	}
+	return 0;
+}
 
+std::string cApp::ShowFrameID(const int frame) const
+{
+	return std::to_string(GetFrameID(frame));
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// END OF FILE ///////////////////////////////////////////////
