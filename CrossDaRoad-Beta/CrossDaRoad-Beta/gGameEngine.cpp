@@ -457,10 +457,10 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Internalities and Private Functions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// ENGINE INTERNALITIES ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Broadcast Tick messages with additional informations
@@ -488,18 +488,23 @@ namespace app
 		return true;
 	}
 
+	/// @brief Updates the window title suffix.
+	/// @param sTitleSuffix The suffix to append to the window title.
+	/// @return Always returns true by default.
 	bool GameEngine::UpdateWindowTitleSuffix(const std::string& sTitleSuffix)
 	{
 		const std::string sTitle = sAppName + sTitleSuffix;
 		return window.SetTitle(sTitle);
 	}
-
+	/// @brief Creates the window icon.
+	/// @return True if the window icon was created successfully, false otherwise.
 	bool GameEngine::CreateWindowIcon()
 	{
-		return window.SetIcon(engine::ICON_FILE_PATH)
-			&& window.SetFavicon(engine::FAVICON_FILE_PATH);
+		return window.SetIcon(engine::ICON_FILE_PATH) && window.SetFavicon(engine::FAVICON_FILE_PATH);
 	}
 
+	/// @brief Creates the viewport.
+	/// @return Always returns true by default.
 	bool GameEngine::CreateViewport()
 	{
 		screen.SetupWindowSize();
@@ -595,8 +600,7 @@ namespace app
 		return true;
 	}
 
-	/// @brief Handles the engine thread, including initialization, event loop, and
-	/// exit.
+	/// @brief Handles the engine thread, including initialization, event loop, and exit.
 	/// @return True if the thread execution was successful.
 	bool GameEngine::HandleEngineThread()
 	{
