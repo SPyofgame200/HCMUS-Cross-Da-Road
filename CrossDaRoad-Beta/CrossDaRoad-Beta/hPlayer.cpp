@@ -308,31 +308,8 @@ hPlayer::Animation hPlayer::GetAnimation() const
 {
 	return eAnimation;
 }
-/// @brief Getter for current frame id of player
-int hPlayer::GetFrameID(const frame_t frame) const
-{
-	if (frame == frame4.GetLimit()) {
-		return frame4.GetID();
-	}
-	else if (frame == frame6.GetLimit()) {
-		return frame6.GetID();
-	}
-	else if (frame == frame8.GetLimit()) {
-		return frame8.GetID();
-	}
-	return 0;
-}
-
-/// @brief Get string of current frame id of player
-/// @param frame Frame to get id
-/// @return String of current frame id of player
-std::string hPlayer::ShowFrameID(const frame_t frame) const
-{
-	return std::to_string(GetFrameID(frame));
-}
 
 /// @brief Getter for animation position of player in X-axis
-
 float hPlayer::GetPlayerAnimationPositionX() const
 {
 	return fFrogAnimPosX;

@@ -114,8 +114,8 @@ private: // Game Rendering
 	bool DrawStatusBar();
 
 private: // Animator
-	int GetFrameID(int frame) const;
-	std::string ShowFrameID(int frame) const;
+	int GetFrameID(int frame, float fCustomSpeed = 0) const;
+	std::string ShowFrameID(int frame, float fCustomSpeed = 0) const;
 };
 
 #endif // C_APP_H

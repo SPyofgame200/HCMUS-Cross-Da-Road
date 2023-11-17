@@ -567,7 +567,8 @@ bool cApp::DrawStatusBar()
 	return true;
 }
 
-int cApp::GetFrameID(const int frame) const
+/// @brief Getter for current frame id of player
+int cApp::GetFrameID(const int frame, float fCustomSpeed) const
 {
 	if (frame == frame4.GetLimit()) {
 		return frame4.GetID();
@@ -581,8 +582,14 @@ int cApp::GetFrameID(const int frame) const
 	return 0;
 }
 
-std::string cApp::ShowFrameID(const int frame) const
+/// @brief Get string of current frame id of player
+/// @param frame Frame to get id
+/// @return String of current frame id of player
+std::string cApp::ShowFrameID(const int frame, float fCustomSpeed) const
 {
+	if (fCustomSpeed == 0) {
+		return std::to_string(GetFrameID(frame));
+	}
 	return std::to_string(GetFrameID(frame));
 }
 

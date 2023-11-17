@@ -22,7 +22,6 @@ GraphicCell::GraphicCell()
 }
 
 /// @brief Parameterized constructor
-GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
 GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	this->graphic = graphic;
