@@ -15,10 +15,9 @@ struct GraphicCell
 	int nCellOffset;
 	int nRow;
 	int nCol;
-	float fLastDrawn;
 
 	GraphicCell();
-	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn = 0);
+	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol);
 	~GraphicCell();
 };
 

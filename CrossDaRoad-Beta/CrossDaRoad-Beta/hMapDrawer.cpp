@@ -10,13 +10,12 @@ GraphicCell::GraphicCell()
 	nCol = 0;
 }
 
-GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol, float fLastDrawn)
+GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
 {
 	this->graphic = graphic;
 	this->nCellOffset = nCellOffset;
 	this->nRow = nRow;
 	this->nCol = nCol;
-	this->fLastDrawn = fLastDrawn;
 }
 
 GraphicCell::~GraphicCell()
@@ -74,13 +73,12 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
-	}
+	}	
 
 	for (int id = 0; id < Objects.size(); ++id)
 	{
 		const GraphicCell& Cell = Objects[id];
-		const int nID = static_cast<int>(Cell.nRow * 1e6 + Cell.nCol * 1e3 + nStartPos);
-		if (SuccessSummon(Cell.graphic, nID)) {
+		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, Cell.nCol));
 		}
@@ -92,12 +90,11 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 {
 	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
-	std::vector<GraphicCell> Objects = GetLaneObjects(Lane);
-
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
 	}
 
+	std::vector<GraphicCell> Objects = GetLaneObjects(Lane);
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawObject(ObjectCell);
 	}
