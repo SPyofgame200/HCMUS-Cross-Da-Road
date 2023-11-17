@@ -2,7 +2,7 @@
  * @file gWindow.h
  * @brief Contains window class for creating and managing windows using Win32 API
  *
- */
+**/
 
 #ifndef G_WINDOW_H
 #define G_WINDOW_H
@@ -14,6 +14,7 @@
 namespace app
 {
 	class GameEngine;
+	/// @brief Class for creating and managing windows using Win32 API
 	class Window
 	{
 	private: /// Properties
