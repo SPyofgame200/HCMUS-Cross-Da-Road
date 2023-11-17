@@ -334,111 +334,126 @@ std::string hPlayer::ShowFrameID(const frame_t frame) const
 	return std::to_string(GetFrameID(frame));
 }
 
+/// @brief Getter for animation position of player in X-axis
 float hPlayer::GetPlayerAnimationPositionX() const
 {
 	return fFrogAnimPosX;
 }
-
+/// @brief Getter for animation position of player in Y-axis
 float hPlayer::GetPlayerAnimationPositionY() const
 {
 	return fFrogAnimPosY;
 }
-
+/// @brief Getter for logic position of player in X-axis
 float hPlayer::GetPlayerLogicPositionX() const
 {
 	return fFrogLogicPosX;
 }
-
+/// @brief Getter for logic position of player in Y-axis
 float hPlayer::GetPlayerLogicPositionY() const
 {
 	return fFrogLogicPosY;
 }
-
+/// @brief Getter for velocity of player in X-axis
 float hPlayer::GetPlayerVelocityX() const
 {
 	return fFrogVelocityX;
 }
-
+/// @brief Getter for velocity of player in Y-axis
 float hPlayer::GetPlayerVelocityY() const
 {
 	return fFrogVelocityY;
 }
-
+/// @brief Getter for player name
 std::string hPlayer::GetPlayerName() const
 {
 	return Name;
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// SETTERS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// Make the float [fValue] to only care about first [nDigits] digits after decimal points, others remain closest to ,...00000
+/// @brief Make the float [fValue] to only care about first [nDigits] digits after decimal points, others remain closest to ,...00000
 float hPlayer::FixFloat(float fValue, int nDigits)
 {
 	return ldexpf(roundf(ldexpf(fValue, nDigits)), -nDigits);
 }
 
+/// @brief Setter for current direction of player
+/// @param eNewDirection New direction of player
 void hPlayer::SetDirection(Direction eNewDirection)
 {
 	eDirection = eNewDirection;
 }
-
+/// @brief Setter for current animation of player
+/// @param eNewAnimation New animation of player
 void hPlayer::SetAnimation(Animation eNewAnimation)
 {
 	eAnimation = eNewAnimation;
 }
-
+/// @brief Setter for animation position of player in X-axis
+/// @param fVelocityX New animation position of player in X-axis
 void hPlayer::SetPlayerVelocityX(float fVelocityX)
 {
 	fFrogVelocityX = FixFloat(fVelocityX);
 }
-
+/// @brief Setter for animation position of player in Y-axis
+/// @param fVelocityY New animation position of player in Y-axis
 void hPlayer::SetPlayerVelocityY(float fVelocityY)
 {
 	fFrogVelocityY = FixFloat(fVelocityY);
 }
-
+/// @brief Setter for velocity of player 
+/// @param fVelocityX New velocity of player in X-axis
+/// @param fVelocityY New velocity of player in Y-axis
 void hPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
 {
 	SetPlayerVelocityX(fVelocityX);
 	SetPlayerVelocityY(fVelocityY);
 }
-
+/// @brief Setter for animation position of player in X-axis
+/// @param fPositionX New animation position of player in X-axis
 void hPlayer::SetPlayerAnimationPositionX(float fPositionX)
 {
 	fFrogAnimPosX = FixFloat(fPositionX);
 }
-
+/// @brief Setter for animation position of player in Y-axis
+/// @param fPositionY New animation position of player in Y-axis
 void hPlayer::SetPlayerAnimationPositionY(float fPositionY)
 {
 	fFrogAnimPosY = FixFloat(fPositionY);
 }
-
+/// @brief Setter for animation position of player
+/// @param fPositionX New animation position of player in X-axis
+/// @param fPositionY New animation position of player in Y-axis
 void hPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
 {
 	SetPlayerAnimationPositionX(fPositionX);
 	SetPlayerAnimationPositionY(fPositionY);
 }
-
+/// @brief Setter for logic position of player in X-axis
+/// @param fPositionX New logic position of player in X-axis
 void hPlayer::SetPlayerLogicPositionX(float fPositionX)
 {
 	fFrogLogicPosX = FixFloat(fPositionX);
 }
-
+/// @brief Setter for logic position of player in Y-axis
+/// @param fPositionY Logic position of player in Y-axis
 void hPlayer::SetPlayerLogicPositionY(float fPositionY)
 {
 	fFrogLogicPosY = FixFloat(fPositionY);
 }
-
+/// @brief Setter for logic position of player
+/// @param fPositionX Logic position of player in X-axis
+/// @param fPositionY Logic position of player in Y-axis
 void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 {
 	SetPlayerLogicPositionX(fPositionX);
 	SetPlayerLogicPositionY(fPositionY);
 }
-
+/// @brief Setter for player name
+/// @param Name Name of player
 void hPlayer::SetPlayerName(std::string Name)
 {
 	this->Name = Name;
