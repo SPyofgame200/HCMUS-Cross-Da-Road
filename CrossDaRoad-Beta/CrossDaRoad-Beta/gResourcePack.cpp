@@ -1,5 +1,3 @@
-#include "gResourcePack.h"
-
 /**
  * @file gResourcePack.cpp
  *
@@ -7,6 +5,8 @@
  *
  * This file implements resource pack class for resource pack management (pack/unpack).
 **/
+
+#include "gResourcePack.h"
 
 namespace app
 {
