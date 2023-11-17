@@ -495,8 +495,7 @@ namespace app
 			}
 		}
 	}
-	/// @brief Draw a scaled portion of a sprite at the specified coordinates with
-	/// scaling.
+	/// @brief Draw a scaled portion of a sprite at the specified coordinates with scaling.
 	/// @param nOffsetX The X-coordinate for drawing.
 	/// @param nOffsetY The Y-coordinate for drawing.
 	/// @param pSprite The sprite to draw.
@@ -519,6 +518,12 @@ namespace app
 			}
 		}
 	}
+	/// @brief Draw partial sprite with default scaling factor, width and height.
+	/// @param nOffsetX The X-coordinate for drawing.
+	/// @param nOffsetY The Y-coordinate for drawing.
+	/// @param pSprite The sprite to draw.
+	/// @param nOriginX The X-coordinate of the source area (top-left corner).
+	/// @param nOriginY The Y-coordinate of the source area (top-left corner).
 	void Texture::DrawPartialSprite(const int32_t nOffsetX, const int32_t nOffsetY, const Sprite* pSprite, const int32_t nOriginX, const int32_t nOriginY)
 	{
 		return DrawPartialSprite(nOffsetX, nOffsetY, pSprite, nOriginX, nOriginY, nDefaultWidth, nDefaultHeight);
