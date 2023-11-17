@@ -40,12 +40,12 @@ public:
 	typedef int frame_t; // for later use
 
 private:
-	float fFrogVelocityX;
-	float fFrogVelocityY;
-	float fFrogAnimPosX;
-	float fFrogAnimPosY;
-	float fFrogLogicPosX;
-	float fFrogLogicPosY;
+	float fFrogVelocityX;   ///< Velocity of player in X-axis
+	float fFrogVelocityY;  	///< Velocity of player in Y-axis
+	float fFrogAnimPosX;	///< Animation position of player in X-axis
+	float fFrogAnimPosY;	///< Animation position of player in Y-axis
+	float fFrogLogicPosX;	///< Logic position of player in X-axis
+	float fFrogLogicPosY;	///< Logic position of player in Y-axis
 
 private:
 	frame4_t frame4;
@@ -123,7 +123,7 @@ public: // Getters
 	float GetPlayerVelocityX()const;
 	float GetPlayerVelocityY()const;
 	std::string GetPlayerName() const;
-	
+
 public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
