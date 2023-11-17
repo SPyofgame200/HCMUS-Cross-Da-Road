@@ -10,7 +10,6 @@
 #define C_PLAYER_H
 
 #include <string>
-#include "cFrame.h"
 #include "uAppConst.h"
 class cApp;
 class cZone;

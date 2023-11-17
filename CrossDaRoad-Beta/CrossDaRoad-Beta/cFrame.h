@@ -28,8 +28,8 @@ public: /// Constructors & Destructor
 
     ~cFrame()
     {
-        std::cerr << "cFrame<size=" << FRAME_LIMIT << "> got destructed: ";
-        std::cerr << "properties{ fVal=" << fVal << " }" << std::endl;
+        //std::cerr << "cFrame<size=" << FRAME_LIMIT << "> got destructed: ";
+        //std::cerr << "properties{ fVal=" << fVal << " }" << std::endl;
         fVal = 0;
     }
 
