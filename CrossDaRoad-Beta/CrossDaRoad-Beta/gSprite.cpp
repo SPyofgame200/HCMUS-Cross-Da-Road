@@ -26,8 +26,6 @@
 #undef min
 #undef max
 
-
-
 namespace app
 {
 	/// @brief Static class for GDI+ initialization and conversion from GDI+ color to Pixel color
