@@ -1,4 +1,10 @@
-// uStringUtils.h
+/**
+ * @file uStringUtils.h
+ *
+ * @brief Contains string utilities
+ *
+ * This file contains string utility function prototypes and constants for string manipulation.
+**/
 
 #ifndef U_STRING_UTILS_H
 #define U_STRING_UTILS_H
@@ -9,15 +15,7 @@
 #include <string>
 #include <random>
 
-/**
- * @file uStringUtils.h
- *
- * @brief Contains string utilities
- *
- * This file contains string utility function prototypes and constants for string manipulation.
- **/
-
- /// @brief String utilities
+/// @brief String utilities
 namespace strutil
 {
 	extern const char* sSpacePattern; ///< Pattern for space characters
