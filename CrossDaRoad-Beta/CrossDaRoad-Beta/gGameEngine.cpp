@@ -9,10 +9,10 @@
 #include "gConst.h"
 #include <iostream>
 
-/**
- * @namespace app
- * @brief Size-related getters
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// PROPERTY GETTERS ///////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Retrieves the screen width.
@@ -58,13 +58,13 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Constructor and Resource Collectors
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////// CONSTRUCTORS & DESTRUCTORS ////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
-	/// @brief Constructor for the GameEngine class.
+	/// @brief Default constructor.
 	GameEngine::GameEngine()
 	{
 		sAppName = engine::ENGINE_NAME;
@@ -121,10 +121,10 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Engine Thread Events
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// OVERRIDE INTERFACES ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Called once on application startup, use it to load your resources.
@@ -136,8 +136,7 @@ namespace app
 		return false;
 	}
 
-	/// @brief Real time fixed updates, called bewteen frames and between window
-	/// messages
+	/// @brief Real time fixed updates, called bewteen frames and between window messages
 	/// @param fTickTime The current time since the engine creation.
 	/// @param eTickMessage The message being broadcast indicating changes
 	/// @return Always returns false by default.
@@ -158,10 +157,8 @@ namespace app
 		return false;
 	}
 
-	/// @brief Called after all other updates, allowing for additional processing
-	/// and bug fixing.
-	/// @param fElapsedTime The same elapsed time since the last frame called in
-	/// OnUpdateEvent()
+	/// @brief Called after all other updates, allowing for additional processing and bug fixing.
+	/// @param fElapsedTime The same elapsed time since the last frame called
 	/// @param fLateElapsedTime The current elapsed time since the last frame.
 	/// @return Always returns true by default.
 	bool GameEngine::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
@@ -220,10 +217,10 @@ namespace app
 	}
 } // namespace app
 
-/**
- * @namespace app
- * @brief Hardware interactions
- **/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// HARDWARE INTERFACES ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 namespace app
 {
 	/// @brief Check if the application has input focus.
@@ -232,12 +229,16 @@ namespace app
 	{
 		return keyboard.IsFocused();
 	}
-
+	/// @brief Disable a keyboard key.
+	/// @param k Key to disable.
+	/// @return Always returns true by default.
 	bool GameEngine::DisableKey(const Key k)
 	{
 		return keyboard.DisableKey(k);
 	}
-
+	/// @brief Enable a keyboard key.
+	/// @param k Key to enable.
+	/// @return Always returns true by default.
 	bool GameEngine::EnableKey(const Key k)
 	{
 		return keyboard.EnableKey(k);
