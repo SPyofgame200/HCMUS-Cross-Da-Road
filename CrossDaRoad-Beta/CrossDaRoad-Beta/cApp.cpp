@@ -55,7 +55,6 @@ bool cApp::GameInit()
 	MapLoader.Init();
 	return true;
 }
-
 /// @brief Exit game, clear data
 /// @return Always returns true by default
 bool cApp::GameExit()
@@ -229,9 +228,9 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 ////////////////////////////////////// GAME UPDATES //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief 
-/// @param fElapsedTime 
-/// @return 
+/// @brief Update all game objects
+/// @param fElapsedTime Time elapsed since last update
+/// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
@@ -247,8 +246,8 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 	}
 	return true;
 }
-/// @brief 
-/// @return 
+/// @brief Update Player when Player is killed
+/// @return Always returns true by default
 bool cApp::OnPlayerDeath()
 {
 	std::cout << GetPlayerDeathMessage() << std::endl;
@@ -259,6 +258,7 @@ bool cApp::OnPlayerDeath()
 	return true;
 }
 /// @brief Draw all lanes, render Player, draw status bar
+/// @return Always returns true by default
 bool cApp::OnGameRender()
 {
 	DrawAllLanes();
@@ -266,7 +266,8 @@ bool cApp::OnGameRender()
 	DrawStatusBar();
 	return true;
 }
-// @brief Set frame delay, load all sprites, open menu
+/// @brief Set frame delay, load all sprites, open menu
+/// @return Always returns true by default
 bool cApp::OnCreateEvent()
 {
 	Menu.SetupTarget(this);
@@ -287,7 +288,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 	return true;
 }
 /// @brief Update event that called when application is updated
-///	@parma fElapsedTime - Time elapsed since last update
+///	@param fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
 	if (!Menu.Update(fElapsedTime)) {
@@ -295,24 +296,30 @@ bool cApp::OnUpdateEvent(const float fElapsedTime)
 	}
 	return true;
 }
-/// @brief
-///	@param fElapsedTime
-///	@param fLateElapsedTime
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime Time elapsed since last update
+///	@param fLateElapsedTime Time elapsed since last late update
+/// @return Always returns true by default
 bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
 {
 	return true;
 }
+/// @brief 
+/// @return 
 bool cApp::OnCreateNewName()
 {
 
 	return true;
 }
+/// @brief 
+/// @return 
 bool cApp::OnDisplaySaveBox()
 {
 
 	return false;
 }
-
+/// @brief 
+/// @return 
 bool cApp::UpdateDrawNameBox()
 {
 	if (IsKeyReleased(app::Key::DOWN)) {
@@ -324,7 +331,8 @@ bool cApp::UpdateDrawNameBox()
 
 	return true;
 }
-
+/// @brief 
+/// @return 
 bool cApp::DrawNameBox()
 {
 	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
@@ -342,8 +350,8 @@ bool cApp::DrawNameBox()
 	}
 	return true;
 }
-
-/// @brief Rendering menu and game (if game is running)
+/// @brief Check if game is rendering or not
+/// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
 {
 	if (!Menu.Render()) {
@@ -351,8 +359,8 @@ bool cApp::OnRenderEvent()
 	}
 	return true;
 }
-/// @brief 
-/// @return 
+/// @brief Save current game state to file
+/// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
 	std::string FileName = Player.GetPlayerName();
@@ -380,8 +388,8 @@ bool cApp::OnGameSave() const
 		return false;
 	}
 }
-/// @brief 
-/// @return 
+/// @brief Load game state from file
+/// @return True if game is loaded successfully, false otherwise
 bool cApp::OnGameLoad()
 {
 	const std::string sLoadFilePath = GetFilePathLocation(false, "");
