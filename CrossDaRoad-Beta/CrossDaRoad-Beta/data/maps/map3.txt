@@ -1,4 +1,4 @@
-whwwhwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
+wwwwhwwwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
 ,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  3.0
 ppppppfppppppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
 ,,pppp,,,,,pppp,,,,,pp,,,,,pppp,,,ppppp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0
@@ -16,7 +16,7 @@ $ p sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
 : spriteX=0 spriteY=0
 $ w sprite=wall
-: block=false danger=false platformspeed=0.0
+: block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
 $ h sprite=soil
 : block=false danger=false platformspeed=0.0

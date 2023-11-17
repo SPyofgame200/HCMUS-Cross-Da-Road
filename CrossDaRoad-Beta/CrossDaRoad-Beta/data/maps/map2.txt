@@ -1,10 +1,10 @@
 mmhhmmhhmmhhmmhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm  0.0
 ,,jjj,,,,,jjj,,,,,jj,,,,,jjj,,,jjj,,,,jjj,,,,jjj,,,,jj,,,,,,jj,, -3.0
 ,,jjj,,,,,jjj,,,,,jj,,,,,jjj,,,jjj,,,,jj,,,,jjj,,,jjj,,,,,,jj,,, -2.5
-...qwer...........qwer..........qwer.......qwer.........qwer....  2.0
-...tyui...........tyui..........tyui.......tyui.........tyui....  2.0
-pppmpppppppppppppmmppppppppppppppppppppppppppppppppppppppppppppp  0.0
-pppppppppppmpppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
+......qwe.................qwe..................qwe..............  3.0
+......rty.................rty..................rty..............  3.0
+......uio.................uio..................uio..............  3.0
+pppppmpppppmppppmppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 .........f..........f.............f.............f...........f... -16.0
 ....f..........f...........f.........f...........f.......f...... -8.0
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
@@ -12,30 +12,33 @@ pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 $ f sprite=penguin background=ice
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ q sprite=mamut background=ice
+$ q sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ w sprite=mamut background=ice
+$ w sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ e sprite=mamut background=ice
+$ e sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ r sprite=mamut background=ice
-: block=false danger=true platformspeed=0.0
-: spriteX=3 spriteY=0
-$ t sprite=mamut background=ice
+$ r sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=1
-$ y sprite=mamut background=ice
+$ t sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=1
-$ u sprite=mamut background=ice
+$ y sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=1
-$ i sprite=mamut background=ice
+$ u sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
-: spriteX=3 spriteY=1
+: spriteX=0 spriteY=2
+$ i sprite=deer background=ice id=6
+: block=false danger=true platformspeed=0.0
+: spriteX=1 spriteY=2
+$ o sprite=deer background=ice id=6
+: block=false danger=true platformspeed=0.0
+: spriteX=2 spriteY=2
 $ m sprite=pinetree
 : block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
