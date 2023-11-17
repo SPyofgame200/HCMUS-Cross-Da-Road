@@ -275,6 +275,7 @@ bool cAssetManager::LoadMapIceAgeSprites()
     bSuccess &= LoadSprite("snowed_grass", "snowed_grass");
     bSuccess &= LoadSprite("ice", "ice");
     bSuccess &= LoadSprite("mamut", "mamut");
+    bSuccess &= LoadAnimation("deer", "deer", 6);
 
     return ReportLoadingResult(bSuccess, "Ice Age map");
 }
