@@ -463,6 +463,10 @@ void hPlayer::SetPlayerName(std::string Name)
 ////////////////////////////////////////// MOVEMENTS ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// @brief Move player in X-axis
+/// @param fFactorX Factor of movement in X-axis
+/// @param nStep Number of steps to move
+/// @return Always true by default
 bool hPlayer::PlayerMoveX(float fFactorX, int nStep)
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -477,7 +481,10 @@ bool hPlayer::PlayerMoveX(float fFactorX, int nStep)
 	}
 	return true;
 }
-
+/// @brief Move player in Y-axis
+/// @param fFactorY Factor of movement in Y-axis
+/// @param nStep Number of steps to move
+/// @return Always true by default
 bool hPlayer::PlayerMoveY(float fFactorY, int nStep)
 {
 	const float fPosX = GetPlayerAnimationPositionX();
@@ -492,6 +499,12 @@ bool hPlayer::PlayerMoveY(float fFactorY, int nStep)
 	}
 	return true;
 }
+/// @brief Move player in X-axis and Y-axis
+/// @param fFactorX Factor of movement in X-axis
+/// @param fFactorY Factor of movement in Y-axis
+/// @param fFactorScale Factor of movement scale
+/// @param nStep Number of steps to move
+/// @return True if player successfully moved, false otherwise
 bool hPlayer::PlayerMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
 {
 	return PlayerMoveX(fFactorX * fFactorScale, nStep)
@@ -539,6 +552,10 @@ bool hPlayer::PlayerMoveTryAll(float factor, bool forced)
 	ok &= PlayerMoveDown(factor, forced);
 	return ok;
 }
+/// @brief Detect if player is on platform
+/// @param nStep Number of steps to detect
+/// @param fFactor Factor of movement scale
+/// @return True if player is on platform, false otherwise
 bool hPlayer::PlayerPlatformDetector(int nStep, float fFactor)
 {
 	if (app->IsMoveRight() && app->IsKilled()) {
@@ -571,6 +588,11 @@ bool hPlayer::PlayerPlatformDetector(int nStep, float fFactor)
 	}
 	return true;
 }
+
+/// @brief Check if Player successfully moved on platform in X-axis
+/// @param fFactorX Factor of movement in X-axis
+/// @param nStep Number of steps to move
+/// @return Always true by default
 bool hPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
 {
 	const float fRealPosX = GetPlayerLogicPositionX();
@@ -588,6 +610,10 @@ bool hPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
 	}
 	return true;
 }
+/// @brief Check if Player successfully moved on platform in Y-axis
+/// @param fFactorY Factor of movement in Y-axis
+/// @param nStep Number of steps to move
+/// @return Always true by default
 bool hPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
 {
 	const float fRealPosX = GetPlayerLogicPositionX();
@@ -605,6 +631,12 @@ bool hPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
 	}
 	return true;
 }
+/// @brief Check if Player successfully moved on platform
+/// @param fFactorX Factor of movement in X-axis
+/// @param fFactorY Factor of movement in Y-axis
+/// @param fFactorScale Factor of movement scale
+/// @param nStep Number of steps to move
+/// @return Always true by default
 bool hPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
 {
 	return PlayerPlatformMoveX(fFactorX * fFactorScale) && PlayerPlatformMoveY(fFactorY * fFactorScale);
