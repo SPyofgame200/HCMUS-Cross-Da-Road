@@ -286,7 +286,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
 	if (!IsEnginePause() && !bDeath) {
 		fTimeSinceStart = fTickTime;
-		Player.OnUpdateFrame(fTickTime);
+		OnUpdateFrame(fTickTime);
 	}
 	return true;
 }
@@ -613,6 +613,17 @@ std::string cApp::ShowFrameID(const int frame) const
 std::string cApp::ShowFrameID(const int frame, float fTickRate) const
 {
 	return std::to_string(GetFrameID(frame, fTickRate));
+}
+
+/// @brief Update player animation frame 
+/// @param fTickTime Time elapsed since last frame
+/// @return Always true by default
+bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
+{
+	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
+	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
+	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

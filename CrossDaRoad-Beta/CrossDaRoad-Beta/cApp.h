@@ -118,6 +118,7 @@ private: // Animator
 	int GetFrameID(int frame, float fTickRate) const;
 	std::string ShowFrameID(int frame) const;
 	std::string ShowFrameID(int frame, float fTickRate) const;
+	bool OnUpdateFrame(float fTickTime, float fTickRate = 0.01f);
 };
 
 #endif // C_APP_H
