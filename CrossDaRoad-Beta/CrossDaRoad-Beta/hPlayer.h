@@ -1,3 +1,11 @@
+/**
+ * @file hPlayer.h
+ *
+ * @brief Contains player class
+ *
+ * This file contains player class for player management, movement, and rendering.
+**/
+
 #ifndef C_PLAYER_H
 #define C_PLAYER_H
 
@@ -7,31 +15,27 @@
 class cApp;
 class cZone;
 
-/**
- * @file hPlayer.h
- *
- * @brief Contains player class
- *
- * This file contains player class for player management, movement, and rendering.
-**/
+/// @brief Class for player management, movement, and rendering
 class hPlayer
 {
 public:
+	/// @brief Direction enumeration for player movement
 	enum Direction
 	{
-		LEFT = 1,
-		RIGHT = 2,
-		LEFT_UP = 3,
-		RIGHT_UP = 4,
-		LEFT_DOWN = 5,
-		RIGHT_DOWN = 6,
-		FRONT_VIEW = 7, /// [unused], for front view
+		LEFT = 1,			///< Left direction for player movement
+		RIGHT = 2, 			///< Right direction for player movement
+		LEFT_UP = 3, 		///< Left-up direction for player movement
+		RIGHT_UP = 4, 		///< Right-up direction for player movement
+		LEFT_DOWN = 5, 		///< Left-down direction for player movement
+		RIGHT_DOWN = 6, 	///< Right-down direction for player movement
+		FRONT_VIEW = 7, 	///< [unused], for front view
 	};
+	/// @brief Animation enumeration for player animation
 	enum Animation
 	{
-		IDLE = 0,
-		JUMP = 1,
-		LAND = 2,
+		IDLE = 0,			///< Idle animation for player
+		JUMP = 1,			///< Jump animation for player
+		LAND = 2,			///< Land animation for player
 	};
 	typedef int frame_t; // for later use
 
@@ -119,6 +123,7 @@ public: // Getters
 	float GetPlayerVelocityX()const;
 	float GetPlayerVelocityY()const;
 	std::string GetPlayerName() const;
+	
 public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
@@ -133,6 +138,7 @@ public: // Setters
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
 	void SetPlayerName(std::string Name);
+
 public: // Movements
 	bool PlayerMoveX(float fFactorX, int nStep = 16);
 	bool PlayerMoveY(float fFactorX, int nStep = 16);
