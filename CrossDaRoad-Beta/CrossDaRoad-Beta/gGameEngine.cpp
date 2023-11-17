@@ -250,48 +250,69 @@ namespace app
 	{
 		return keyboard.GetKey(k);
 	}
-
+	/// @brief Check if a key is idling.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability.
+	/// @return True if the key is idling, false otherwise.
 	bool GameEngine::IsKeyIdling(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyIdling(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is pressed.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability. 
+	/// @return True if the key is pressed, false otherwise.
 	bool GameEngine::IsKeyPressed(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyPressed(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is holding.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability.
+	/// @return True if the key is holding, false otherwise.
 	bool GameEngine::IsKeyHolding(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyHolding(key, bIgnoreDisability);
 	}
-
+	/// @brief Check if a key is released.
+	/// @param key Key to check.
+	/// @param bIgnoreDisability Ignore the key's disability. 
+	/// @return True if the key is released, false otherwise.
 	bool GameEngine::IsKeyReleased(const app::Key& key, bool bIgnoreDisability) const
 	{
 		return keyboard.IsKeyReleased(key, bIgnoreDisability);
 	}
-
 	/// @brief Check if player is moving left (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving left, false otherwise.
 	bool GameEngine::IsMoveLeft(const Button& eButton) const
 	{
 		return (GetKey(app::Key::A) == eButton) || (GetKey(app::Key::LEFT) == eButton);
 	}
 	/// @brief Check if player is moving right (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving right, false otherwise.
 	bool GameEngine::IsMoveRight(const Button& eButton) const
 	{
 		return (GetKey(app::Key::D) == eButton) || (GetKey(app::Key::RIGHT) == eButton);
 	}
 	/// @brief Check if player is moving up (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving up, false otherwise.
 	bool GameEngine::IsMoveUp(const Button& eButton) const
 	{
 		return (GetKey(app::Key::W) == eButton) || (GetKey(app::Key::UP) == eButton);
 	}
 	/// @brief Check if player is moving down (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving down, false otherwise.
 	bool GameEngine::IsMoveDown(const Button& eButton) const
 	{
 		return (GetKey(app::Key::S) == eButton) || (GetKey(app::Key::DOWN) == eButton);
 	}
 	/// @brief Check if player is moving (by key released)
+	/// @param eButton The button to check.
+	/// @return True if the player is moving, false otherwise.
 	bool GameEngine::IsMove(const Button& eButton) const
 	{
 		return IsMoveLeft(eButton) || IsMoveRight(eButton) || IsMoveUp(eButton) || IsMoveDown(eButton);
