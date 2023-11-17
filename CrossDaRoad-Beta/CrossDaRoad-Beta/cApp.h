@@ -12,16 +12,16 @@
 #include "gGameEngine.h"
 // Utilities
 #include "uAppConst.h"
-// Objects & Hitboxes
-#include "hPlayer.h"
+// Game Data
 #include "cMapObject.h"
 #include "cZone.h"
-// Assets
+// UI & HUD
 #include "cAssetManager.h"
-// Maps
 #include "cMapLoader.h"
 #include "hMapDrawer.h"
-// HUD
+#include "cFrame.h"
+// Event Handlers
+#include "hPlayer.h"
 #include "hMenu.h"
 // Standard
 #include <map>
@@ -114,8 +114,10 @@ private: // Game Rendering
 	bool DrawStatusBar();
 
 private: // Animator
-	int GetFrameID(int frame, float fCustomSpeed = 0) const;
-	std::string ShowFrameID(int frame, float fCustomSpeed = 0) const;
+	int GetFrameID(int frame) const;
+	int GetFrameID(int frame, float fTickRate) const;
+	std::string ShowFrameID(int frame) const;
+	std::string ShowFrameID(int frame, float fTickRate) const;
 };
 
 #endif // C_APP_H

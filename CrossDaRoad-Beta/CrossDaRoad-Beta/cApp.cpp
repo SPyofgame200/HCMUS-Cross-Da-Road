@@ -549,7 +549,7 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4);
+	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;
@@ -568,7 +568,7 @@ bool cApp::DrawStatusBar()
 }
 
 /// @brief Getter for current frame id of player
-int cApp::GetFrameID(const int frame, float fCustomSpeed) const
+int cApp::GetFrameID(const int frame) const
 {
 	if (frame == frame4.GetLimit()) {
 		return frame4.GetID();
@@ -582,15 +582,37 @@ int cApp::GetFrameID(const int frame, float fCustomSpeed) const
 	return 0;
 }
 
+int cApp::GetFrameID(const int frame, float fTickRate) const
+{
+	if (frame == frame4.GetLimit()) {
+		frame4_t current = frame4;
+		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
+		return current.GetID();
+	}
+	else if (frame == frame6.GetLimit()) {
+		frame6_t current = frame6;
+		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
+		return current.GetID();
+	}
+	else if (frame == frame8.GetLimit()) {
+		frame8_t current = frame8;
+		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
+		return current.GetID();
+	}
+	return 0;
+}
+
 /// @brief Get string of current frame id of player
 /// @param frame Frame to get id
 /// @return String of current frame id of player
-std::string cApp::ShowFrameID(const int frame, float fCustomSpeed) const
+std::string cApp::ShowFrameID(const int frame) const
 {
-	if (fCustomSpeed == 0) {
-		return std::to_string(GetFrameID(frame));
-	}
 	return std::to_string(GetFrameID(frame));
+}
+
+std::string cApp::ShowFrameID(const int frame, float fTickRate) const
+{
+	return std::to_string(GetFrameID(frame, fTickRate));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
