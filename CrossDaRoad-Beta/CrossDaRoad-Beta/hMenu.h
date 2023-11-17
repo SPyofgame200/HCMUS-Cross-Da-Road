@@ -14,8 +14,6 @@
 #include "cAssetManager.h"
 #include <vector>
 
-
-
 // Forward declaration
 class cApp;
 
