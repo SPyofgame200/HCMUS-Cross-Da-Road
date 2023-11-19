@@ -14,29 +14,29 @@
  /// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
 class MapObject
 {
-public: // Identity attributes
-	char encode;                ///< Sprite encode chacters for map editor
+private: // Identity attributes
+	char code;                ///< Sprite code chacters for map editor
 	std::string sCategory;      ///< Category, allow categorize configuration if needed
 
-public: // Flag attributes
+private: // Flag attributes
 	bool isBlocked;             ///< If the player shouldn't be able to move here
 	bool isDanger;              ///< If the player should be killed to move here
 
-public: // Sprite attributes
+private: // Sprite attributes
 	std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
 	int32_t nSpritePosX;        ///< X initial position for drawing sprite
 	int32_t nSpritePosY;        ///< Y initial position for drawing sprite
 	int32_t nID;                ///< The ID of the sprite, for player customization
 	
-public: // Background attributes
+private: // Background attributes
 	std::string sBackgroundName;///< Background name (*.png), for sprite's background
 	int32_t nBackgroundPosX;    ///< X initial position for drawing background
 	int32_t nBackgroundPosY;    ///< Y initial position for drawing background
 	
-public: // Lane attributes
+private: // Lane attributes
 	float fPlatform;            ///< Platform dragging speed if the player land on them
 
-public: // Summon attributes
+private: // Summon attributes
 	char summon;			    ///< The chance of summoning another sprite with encoded = summon
 	float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
 	float fCooldown;            ///< The cooldown durations for the two consecutive summoning
@@ -44,12 +44,32 @@ public: // Summon attributes
 
 public: // Constructors & Destructor
 	MapObject();						///< Constructor
-	MapObject(char encode);				///< Constructor
+	MapObject(char code);				///< Constructor
 	~MapObject();					 	///< Destructor
 
 public: // Initializer & Cleanup
 	bool Create();
 	bool Destroy();
+
+public: // Checkers
+	bool IsBlocked() const;
+	bool IsDanger() const;
+
+public: // Getters
+	char GetCode() const;
+	std::string GetCategory() const;
+	std::string GetSpriteName() const;
+	int32_t GetSpritePosX() const;
+	int32_t GetSpritePosY() const;
+	int32_t GetSpriteFrameCount() const;
+	std::string GetBackgroundName() const;
+	int32_t GetBackgroundPosX() const;
+	int32_t GetBackgroundPosY() const;
+	float GetPlatformDragSpeed() const;
+	char GetSummonTarget() const;
+	float GetSummonDuration() const;
+	float GetSummonCooldown() const;
+	float GetSummonProbability() const;
 
 public: // Output
 	std::string ShowIdentityData() const;  ///< ShowData

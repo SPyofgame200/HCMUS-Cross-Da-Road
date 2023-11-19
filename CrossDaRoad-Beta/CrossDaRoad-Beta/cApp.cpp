@@ -154,8 +154,8 @@ std::string cApp::GetPlayerDeathMessage() const
 	constexpr  float fConst = 2.0;
 	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	const std::string sLeft = leftData.sSpriteName;
-	const std::string sRight = rightData.sSpriteName;
+	const std::string sLeft = leftData.GetSpriteName();
+	const std::string sRight = rightData.GetSpriteName();
 
 	if (sLeft.empty() && sRight.empty()) {
 		return "Player has been force killed";
@@ -176,7 +176,7 @@ bool cApp::IsPlatformLeft() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
-	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
+	return !leftData.GetSpriteName().empty() && std::fabs(leftData.GetPlatformDragSpeed()) > 0;
 }
 /// @brief Check if Player is on platform at right
 /// @return True if Player is on platform at right, false otherwise
@@ -185,7 +185,7 @@ bool cApp::IsPlatformRight() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
+	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
 }
 /// @brief Check if Player is on platform at center
 /// @return True if Player is on platform at center, false otherwise
@@ -194,7 +194,7 @@ bool cApp::IsPlatformCenter() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject rightData = GetHitBox(fPosX, fPosY);
-	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
+	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
 }
 /// @brief Check if Player is on platform
 /// @return True if Player is on platform, false otherwise

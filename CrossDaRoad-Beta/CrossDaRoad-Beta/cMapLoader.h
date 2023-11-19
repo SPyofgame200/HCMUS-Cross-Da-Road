@@ -25,7 +25,7 @@
 class cMapLoader
 {
 private:
-	std::map<char, MapObject> mapSprites; ///< Map of sprite data (key: encode, value: MapObject)
+	std::map<char, MapObject> mapSprites; ///< Map of sprite data (key: code, value: MapObject)
 	std::vector<cMapLane> vecLanes; ///< Vector of lanes in map
 	std::vector<std::string> vecMapNames; ///< Vector of map names
 	std::vector<std::string> vecMapDescriptions; ///< Vector of map descriptions

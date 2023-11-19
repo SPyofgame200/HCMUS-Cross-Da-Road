@@ -23,7 +23,7 @@ MapObject::MapObject()
 MapObject::MapObject(char token)
 {
 	Create();
-	encode = token;
+	code = token;
 }
 
 /// @brief Destructor
@@ -35,7 +35,7 @@ MapObject::~MapObject()
 bool MapObject::Create()
 {
 	/// Identity
-	encode = 0;
+	code = 0;
 	sCategory = "";
 	/// Flag
 	isBlocked = false;
@@ -65,6 +65,78 @@ bool MapObject::Destroy()
 	sBackgroundName.clear();
 	sCategory.clear();
 	return true;
+}
+
+bool MapObject::IsBlocked() const
+{
+	return isBlocked;
+}
+
+bool MapObject::IsDanger() const
+{
+	return isDanger;
+}
+
+char MapObject::GetCode() const
+{
+	return code;
+}
+
+std::string MapObject::GetCategory() const
+{
+	return sCategory;
+}
+
+std::string MapObject::GetSpriteName() const
+{
+	return sSpriteName;
+}
+
+int32_t MapObject::GetSpritePosX() const
+{
+	return nSpritePosX;
+}
+
+int32_t MapObject::GetSpritePosY() const
+{
+	return nSpritePosY;
+}
+
+int32_t MapObject::GetSpriteFrameCount() const
+{
+	return nID;
+}
+
+std::string MapObject::GetBackgroundName() const {
+	return sBackgroundName;
+}
+
+int32_t MapObject::GetBackgroundPosX() const {
+	return nBackgroundPosX;
+}
+
+int32_t MapObject::GetBackgroundPosY() const {
+	return nBackgroundPosY;
+}
+
+float MapObject::GetPlatformDragSpeed() const {
+	return fPlatform;
+}
+
+char MapObject::GetSummonTarget() const {
+	return summon;
+}
+
+float MapObject::GetSummonDuration() const {
+	return fDuration;
+}
+
+float MapObject::GetSummonCooldown() const {
+	return fCooldown;
+}
+
+float MapObject::GetSummonProbability() const {
+	return fChance;
 }
 
 bool MapObject::ExtractToken(char &token, const std::string& sData)
@@ -211,7 +283,7 @@ bool ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const s
 bool MapObject::SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "token") {
-		return ExtractToken(encode, sValue);
+		return ExtractToken(code, sValue);
 	}
 	if (sAttribute == "category") {
 		return ExtractName(sCategory, sValue);
@@ -323,7 +395,7 @@ std::string MapObject::ShowIdentityData() const
 {
 	std::ostringstream oss;
 	oss << "Identity: [ ";
-	oss << "token=" << encode << ", ";
+	oss << "token=" << code << ", ";
 	oss << "category=\"" << sCategory << "\" ";
 	oss << "]";
 	return oss.str();
@@ -388,7 +460,7 @@ std::string MapObject::ShowSummonData() const
 std::string MapObject::ShowData() const
 {
 	std::ostringstream oss;
-	oss << "Sprite[" << encode << "]= {\n";
+	oss << "Sprite[" << code << "]= {\n";
 	oss << "      " << ShowIdentityData() << "\n";
 	oss << "          " << ShowFlagData() << "\n";
 	oss << "        " << ShowSpriteData() << "\n";

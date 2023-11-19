@@ -80,11 +80,11 @@ void cMapLoader::UpdatePattern()
 	blockPattern.clear();
 	for (const auto& pair : mapSprites) {
 		const auto& sprite = pair.second;
-		if (sprite.isBlocked) {
-			blockPattern += sprite.encode;
+		if (sprite.IsBlocked()) {
+			blockPattern += sprite.GetCode();
 		}
-		if (sprite.isDanger) {
-			dangerPattern += sprite.encode;
+		if (sprite.IsDanger()) {
+			dangerPattern += sprite.GetCode();
 		}
 		std::cout << sprite.ShowData() << std::endl;
 	}
@@ -213,8 +213,8 @@ std::string cMapLoader::ShowMapInfo() const
 /// @return True if sprite data was set successfully, false otherwise
 bool cMapLoader::SetSpriteData(const MapObject& data)
 {
-	const bool bOverwrite = mapSprites.count(data.encode);
-	mapSprites[data.encode] = data;
+	const bool bOverwrite = mapSprites.count(data.GetCode());
+	mapSprites[data.GetCode()] = data;
 	return bOverwrite;
 }
 
