@@ -92,6 +92,9 @@ void cMapLoader::UpdatePattern()
 		}
 		std::cout << sprite.ShowData() << std::endl;
 	}
+	std::cout << "Platform Pattern: \"" << platformPattern << "\"" << std::endl;
+	std::cout << "Danger Pattern: \"" << dangerPattern << "\"" << std::endl;
+	std::cout << "Block Pattern: \"" << blockPattern << "\"" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

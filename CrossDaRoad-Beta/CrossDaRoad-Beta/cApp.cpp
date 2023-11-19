@@ -93,10 +93,11 @@ bool cApp::GameReset()
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
-	const char* sPlatformPattern = MapLoader.GetPlatformPattern().c_str();
-	const char* sDangerPattern = MapLoader.GetDangerPattern().c_str();
-	const char* sBlockPattern = MapLoader.GetBlockPattern().c_str();
-	Zone.SetPattern(sPlatformPattern, sDangerPattern, sBlockPattern);
+	Zone.SetPattern(
+		MapLoader.GetPlatformPattern().c_str(), 
+		MapLoader.GetDangerPattern().c_str(),
+		MapLoader.GetBlockPattern().c_str()
+	);
 	return true;
 }
 
