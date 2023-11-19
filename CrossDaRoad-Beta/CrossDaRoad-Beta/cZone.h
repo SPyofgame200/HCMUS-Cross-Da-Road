@@ -41,15 +41,23 @@ public: /// Initializer & Cleanup
 	bool Destroy();
 
 private: // Constructor functions
-	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock);
+	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock, bool bPlatform);
 public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
 private: // Checkers
-	static bool IsDanger(const char& graphic, const char* sDangerPattern);
-	static bool IsSafe(const char& graphic, const char* sDangerPattern);
-	static bool IsBlocked(const char& graphic, const char* sBlockPattern);
-	static bool IsUnblocked(const char& graphic, const char* sBlockPattern);
+	bool IsPlatform(const char& graphic, const char* sPlatformPattern);
+	bool IsNonplatform(const char& graphic, const char* sPlatformPattern);
+	bool IsDanger(const char& graphic, const char* sDangerPattern);
+	bool IsSafe(const char& graphic, const char* sDangerPattern);
+	bool IsBlocked(const char& graphic, const char* sBlockPattern);
+	bool IsUnblocked(const char& graphic, const char* sBlockPattern);
+	bool IsPlatform(const char& graphic);
+	bool IsNonplatform(const char& graphic);
+	bool IsDanger(const char& graphic);
+	bool IsSafe(const char& graphic);
+	bool IsBlocked(const char& graphic);
+	bool IsUnblocked(const char& graphic);
 	bool IsInside(int x, int y) const;
 
 public: // Setters 

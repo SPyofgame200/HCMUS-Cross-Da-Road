@@ -93,32 +93,44 @@ bool cZone::Destroy()
 /// @param bDanger value to set danger pixels (true: danger, false: safe)
 /// @param bBlock value to set block pixels (true: block, false: unblock)
 /// @return true if successfully created zone, false otherwise
-bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, const bool bBlock)
+bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, const bool bBlock, const bool bPlatform)
 {
 	if (nWidth <= 0 || nHeight <= 0) {
-		std::cerr << "In cZone.cpp, calling bool cZone::CreateZone(int width = "
-			<< nWidth << ", int height = " << nHeight
-			<< ") is invalid, expected positive integer parameters";
+		std::cerr << "cZone::CreateZone(width = " << nWidth << ", height = " << nHeight << "): ";
+		std::cerr << "Invalid parameters, expected positive integer parameters";
 		return false;
 	}
 	nZoneWidth = nWidth;
 	nZoneHeight = nHeight;
-	bDangers = new bool[nZoneWidth * nZoneHeight];
-	bBlocks = new bool[nZoneWidth * nZoneHeight];
-	memset(bDangers, bDanger, nZoneWidth * nZoneHeight * sizeof(bool));
-	memset(bBlocks, bBlock, nZoneWidth * nZoneHeight * sizeof(bool));
+	const int nZoneSize = nZoneWidth * nZoneHeight;
+	bPlatforms = new bool[nZoneSize];
+	bDangers = new bool[nZoneSize];
+	bBlocks = new bool[nZoneSize];
+	memset(bPlatforms, bPlatform, nZoneSize * sizeof(bool));
+	memset(bDangers, bDanger, nZoneSize * sizeof(bool));
+	memset(bBlocks, bBlock, nZoneSize * sizeof(bool));
 	return true;
 }
 
 /// @brief Create zone with size nWidth x nHeight, set danger and block pixels to safe and unblock
 bool cZone::CreateZone(const int nWidth, const int nHeight)
 {
-	return CreateZone(nWidth, nHeight, false, false);
+	return CreateZone(nWidth, nHeight, false, false, false);
 }
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////// CHECKERS ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+bool cZone::IsPlatform(const char& graphic, const char* sPlatformPattern)
+{
+	return strchr(sPlatformPattern, graphic) != nullptr;
+}
+
+bool cZone::IsNonplatform(const char& graphic, const char* sPlatformPattern)
+{
+	return !IsPlatform(graphic, sPlatformPattern);
+}
 
 /// @brief Check if graphic is danger
 /// @param graphic graphic to check 
@@ -150,6 +162,36 @@ bool cZone::IsBlocked(const char& graphic, const char* sBlockPattern)
 bool cZone::IsUnblocked(const char& graphic, const char* sBlockPattern)
 {
 	return !IsBlocked(graphic, sBlockPattern);
+}
+
+bool cZone::IsPlatform(const char& graphic)
+{
+	return IsPlatform(graphic, sDefaultPlatformPattern);
+}
+
+bool cZone::IsNonplatform(const char& graphic)
+{
+	return IsNonplatform(graphic, sDefaultPlatformPattern);
+}
+
+bool cZone::IsDanger(const char& graphic)
+{
+	return IsDanger(graphic, sDefaultDangerPattern);
+}
+
+bool cZone::IsSafe(const char& graphic)
+{
+	return IsSafe(graphic, sDefaultDangerPattern);
+}
+
+bool cZone::IsBlocked(const char& graphic)
+{
+	return IsBlocked(graphic, sDefaultBlockPattern);
+}
+
+bool cZone::IsUnblocked(const char& graphic)
+{
+	return IsUnblocked(graphic, sDefaultBlockPattern);
 }
 /// @brief Check if (x, y) is inside the zone
 /// @param x x coordinate 
