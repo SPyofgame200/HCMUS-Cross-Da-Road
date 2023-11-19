@@ -262,6 +262,8 @@ bool cAssetManager::LoadMapRiverSideSprites()
     bSuccess &= LoadSprite("grass", "grass");
     bSuccess &= LoadAnimation("crocodile", "crocodile", 6);
     bSuccess &= LoadAnimation("crocodile_right", "crocodile_right", 6);
+    bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
+    bSuccess &= LoadAnimation("magma", "magma", 12);
 
     return ReportLoadingResult(bSuccess, "River Side map");
 }

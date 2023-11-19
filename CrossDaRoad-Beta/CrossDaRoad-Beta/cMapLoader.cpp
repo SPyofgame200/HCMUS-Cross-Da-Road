@@ -237,16 +237,30 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @return True if map lane was loaded successfully, false otherwise
 bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 {
-	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
-	const size_t spacePos = sLine.find(' ');
-	if (spacePos == std::string::npos) {
-		std::cout << "Error: Space not found in line: " << sLine << std::endl;
+	std::stringstream ss(sLine);
+	std::string sLane;
+	float fVelocity;
+
+	// Read lane, velocity, and background from the line
+	if (!(ss >> sLane >> fVelocity)) {
+		std::cerr << "cMapLoader::LoadMapLane(\"" << sLine << "\", id=" << nLaneID << "): ";
+		std::cerr << "Error: Failed to parse line, extracted content: ";
+		std::cerr << "sLane[" << sLane.size() << "], fVelocity=" << fVelocity << std::endl;
 		return false;
 	}
 
-	const float fVelocity = std::stof(sLine.substr(spacePos + 1));
-	const std::string sLane = sLine.substr(0, spacePos);
-	const cMapLane lane(fVelocity, sLane, nLaneID);
+	std::string sUnderlay;
+	ss >> sUnderlay;
+
+	std::cout << "Line #" << nLaneID << ": sLane[" << sLane.size() << "] = \"" << sLane << "\", speed=" << fVelocity;
+	if (sUnderlay.size()) {
+		std::cout << " underlay = \"" << sUnderlay << "\"";
+	}
+	else {
+		std::cout << " no-underlay";
+	}
+	std::cout << std::endl;
+	const cMapLane lane(fVelocity, sLane, nLaneID, sUnderlay);
 	vecLanes.push_back(lane);
 	return true;
 }

@@ -104,7 +104,7 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
-	}	
+	}
 
 	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
@@ -116,6 +116,22 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 
 	return Objects;
 }
+
+bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
+{
+	if (Lane.HasUnderlay()) {
+		const int32_t nPosX = 0;
+		const int32_t nPosY = Lane.GetLaneID() * app->nCellSize;
+		const std::string sUnderlay = Lane.GetUnderlay();
+		const app::Sprite* pUnderlay = cAssetManager::GetInstance().GetSprite(sUnderlay);
+		app->SetPixelMode(app::Pixel::MASK);
+		app->DrawSprite(nPosX, nPosY, pUnderlay);
+		app->SetPixelMode(app::Pixel::NORMAL);
+		return true;
+	}
+	return false;
+}
+
 /// @brief Draw lane on screen
 /// @param lane Lane to be drawn
 /// @return True if successful, false otherwise
@@ -140,11 +156,13 @@ bool hMapDrawer::DrawAllLanes() const
 {
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
 	for (const cMapLane& lane : vecLanes) {
+		DrawUnderlay(lane);
 		DrawLane(lane);
 	}
 
 	return true;
 }
+
 /// @brief Draw object on screen
 /// @param Cell Cell to be drawn
 /// @return Always true by default

@@ -14,11 +14,12 @@
 /// @brief Parameterized constructor
 /// @param velocity velocity of the lane
 /// @param lane character representation of the lane ()
-cMapLane::cMapLane(const float velocity, const std::string& lane, int ID)
+cMapLane::cMapLane(const float velocity, const std::string& lane, int ID, const std::string& background)
 {
 	fVelocity = velocity;
 	sLane = lane;
 	nID = ID;
+	sUnderlay = background;
 }
 
 /// @brief Copy constructor
@@ -28,11 +29,22 @@ cMapLane::cMapLane(const cMapLane& other)
 	fVelocity = other.fVelocity;
 	sLane = other.sLane;
 	nID = other.nID;
+	sUnderlay = other.sUnderlay;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool cMapLane::HasUnderlay() const
+{
+	return !sUnderlay.empty();
+}
+
+std::string cMapLane::GetUnderlay() const
+{
+	return sUnderlay;
+}
 
 /// @brief Getter for velocity of the lane
 float cMapLane::GetVelocity() const
