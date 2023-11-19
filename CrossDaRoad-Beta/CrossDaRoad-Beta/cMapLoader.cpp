@@ -235,7 +235,7 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @param sLine Line of the map lane 
 /// @param bDebug Whether to print debug message or not
 /// @return True if map lane was loaded successfully, false otherwise
-bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
+bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 {
 	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
 	const size_t spacePos = sLine.find(' ');
@@ -254,52 +254,23 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 ///	@param sLine Line of the map sprite
 /// @param bDebug Whether to print debug message or not
 ///	@return true if map sprite was loaded successfully, false otherwise
-bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
+bool cMapLoader::LoadMapSprite(const std::string& sLine)
 {
 	std::istringstream iss(sLine);
 	char token;
 	iss >> token;
-
-	if (bDebug) {
-		std::cout << "# Current Line = \"" << sLine << "\" -> token=" << token << std::endl;
+	// Create a new Sprite
+	if (token == '$') { 
+		char token;
+		iss >> token;
+		currentSprite = MapObject(token);
 	}
-
-
-
-	if (token == '$') { // New Sprite
-		currentSprite = MapObject();
-		iss >> currentSprite.encode;
-		if (bDebug) {
-			std::cerr << "Create new Sprite('" << currentSprite.encode << "')" << std::endl;
-		}
-	}
-	{ // Continue Loading Last Sprite
-		std::string sAttribute, sValue;
-		std::string raw;
-		while (iss >> raw) {
-			// Find the position of '=' in the raw string
-			const size_t equalPos = raw.find('=');
-
-			// Check if the format is correct (contains '=' character)
-			if (equalPos == std::string::npos) {
-				if (bDebug) {
-					std::cerr << "Assign sAttribute Sprite['" << currentSprite.encode << "']";
-					std::cerr << "->" << sAttribute << " := " << sValue << std::endl;
-				}
-				continue;
-			}
-			// Split the raw string into sAttribute and sValue based on '='
-			sAttribute = raw.substr(0, equalPos);
-			sValue = raw.substr(equalPos + 1);
-			utils::trim(sAttribute);
-			utils::trim(sValue);
-			utils::lowerize(sAttribute);
-			utils::lowerize(sValue);
-
-			if (!currentSprite.SetAttribute(sAttribute, sValue)) {
-				std::cerr << "Unknown sAttribute = \"" << sAttribute << "\" assigning sValue \"" << sValue << "\"";
-				std::cerr << std::endl;
-			}
+	/// Alow sprite data to be read as multiple lines
+	if (token == '$' || token == ':')
+	{
+		std::string sData;
+		while (iss >> sData) {
+			currentSprite.SetAttributeFromData(sData);
 		}
 	}
 	SetSpriteData(currentSprite);

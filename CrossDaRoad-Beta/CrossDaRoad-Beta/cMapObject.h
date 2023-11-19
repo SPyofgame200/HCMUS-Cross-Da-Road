@@ -12,45 +12,52 @@
 #include <string>
 
  /// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
-struct MapObject
+class MapObject
 {
-	// Identity attributes
+public: // Identity attributes
 	char encode;                ///< Sprite encode chacters for map editor
 	std::string sCategory;      ///< Category, allow categorize configuration if needed
 
-	// Flag attributes
+public: // Flag attributes
 	bool isBlocked;             ///< If the player shouldn't be able to move here
 	bool isDanger;              ///< If the player should be killed to move here
 
-	// Sprite attributes
+public: // Sprite attributes
 	std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
 	int32_t nSpritePosX;        ///< X initial position for drawing sprite
 	int32_t nSpritePosY;        ///< Y initial position for drawing sprite
 	int32_t nID;                ///< The ID of the sprite, for player customization
 	
-	// Background attributes
+public: // Background attributes
 	std::string sBackgroundName;///< Background name (*.png), for sprite's background
 	int32_t nBackgroundPosX;    ///< X initial position for drawing background
 	int32_t nBackgroundPosY;    ///< Y initial position for drawing background
 	
-	// Lane attributes
+public: // Lane attributes
 	float fPlatform;            ///< Platform dragging speed if the player land on them
 
-	// Summon attributes
+public: // Summon attributes
 	char summon;			    ///< The chance of summoning another sprite with encoded = summon
 	float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
 	float fCooldown;            ///< The cooldown durations for the two consecutive summoning
 	float fChance;              ///< The probability of summoning in each second
 
-	// Methods
+public: // Constructors & Destructor
 	MapObject();						///< Constructor
+	MapObject(char encode);				///< Constructor
 	~MapObject();					 	///< Destructor
 
-	// Utilities
-	void Debug(char end = '\n') const;  ///< Debug
-	static float ExtractTime(const std::string& timeStr);
+public: // Initializer & Cleanup
+	bool Create();
+	bool Destroy();
 
-	// Setters
+public: // Getters
+	void Debug(char end = '\n') const;  ///< Debug
+
+public: // Extracters
+	float ExtractTime(const std::string& timeStr);
+
+public: // Setters
 	bool SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue);
 	bool SetFlagAttribute(const std::string& sAttribute, const std::string& sValue);
 	bool SetSpriteAttribute(const std::string& sAttribute, const std::string& sValue);
@@ -58,6 +65,7 @@ struct MapObject
 	bool SetLaneAttribute(const std::string& sAttribute, const std::string& sValue);
 	bool SetSummonAttribute(const std::string& sAttribute, const std::string& sValue);
 	bool SetAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetAttributeFromData(const std::string& sData);
 };
 
 #endif // C_MAP_OBJECT_H

@@ -17,6 +17,23 @@
 /// @brief Default constructor 
 MapObject::MapObject()
 {
+	Create();
+}
+
+MapObject::MapObject(char token)
+{
+	Create();
+	encode = token;
+}
+
+/// @brief Destructor
+MapObject::~MapObject()
+{
+	Destroy();
+}
+
+bool MapObject::Create()
+{
 	encode = 0;
 	sSpriteName = "";
 	sBackgroundName = "";
@@ -33,13 +50,73 @@ MapObject::MapObject()
 	fDuration = 0;
 	fCooldown = 0;
 	fChance = 0;
+	return true;
 }
 
-/// @brief Destructor
-MapObject::~MapObject()
+bool MapObject::Destroy()
 {
 	sSpriteName.clear();
-	//std::cerr << "MapObject::~MapObject(): Successfully destructed" << std::endl;
+	sBackgroundName.clear();
+	sCategory.clear();
+	return true;
+}
+
+/// @brief Extract time from string
+/// @param timeStr Time string
+/// @return Time in float format
+float MapObject::ExtractTime(const std::string& timeStr)
+{
+	if (timeStr.empty()) {
+		std::cerr << "Invalid time string." << std::endl;
+		return 0.0;
+	}
+
+	float conversionFactor = 1.0;
+	std::string numericPart;
+	std::string timeType;
+
+	// Find the position of the first non-numeric character
+	size_t pos = 0;
+	while (pos < timeStr.size() && (std::isdigit(timeStr[pos]) || timeStr[pos] == '.')) {
+		numericPart += timeStr[pos];
+		pos++;
+	}
+
+	if (pos < timeStr.size()) {
+		timeType = timeStr.substr(pos);
+	}
+	else {
+		std::cerr << "No time type specified in the time string." << std::endl;
+		return 0.0;
+	}
+
+	if (timeType == "ms") {
+		conversionFactor = static_cast<float>(1.0e-3);
+	}
+	else if (timeType == "us") {
+		conversionFactor = static_cast <float>(1.0e-6);
+	}
+	else if (timeType == "ns") {
+		conversionFactor = static_cast <float>(1.0e-9);
+	}
+	else if (timeType == "s") {
+		conversionFactor = static_cast <float>(1.0); // Seconds
+	}
+	else {
+		std::cerr << "Unrecognized time type: " << timeType << std::endl;
+		return 0.0;
+	}
+
+	std::istringstream numericStream(numericPart);
+	float numericValue;
+
+	if (numericStream >> numericValue) {
+		return numericValue * conversionFactor;
+	}
+	else {
+		std::cerr << "Invalid numeric part in the time string." << std::endl;
+		return 0.0;
+	}
 }
 
 bool MapObject::SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue)
@@ -135,75 +212,42 @@ bool MapObject::SetSummonAttribute(const std::string& sAttribute, const std::str
 	return false;
 }
 
-
-/// @brief Extract time from string
-/// @param timeStr Time string
-/// @return Time in float format
-float MapObject::ExtractTime(const std::string& timeStr)
-{
-	if (timeStr.empty()) {
-		std::cerr << "Invalid time string." << std::endl;
-		return 0.0;
-	}
-
-	float conversionFactor = 1.0;
-	std::string numericPart;
-	std::string timeType;
-
-	// Find the position of the first non-numeric character
-	size_t pos = 0;
-	while (pos < timeStr.size() && (std::isdigit(timeStr[pos]) || timeStr[pos] == '.')) {
-		numericPart += timeStr[pos];
-		pos++;
-	}
-
-	if (pos < timeStr.size()) {
-		timeType = timeStr.substr(pos);
-	}
-	else {
-		std::cerr << "No time type specified in the time string." << std::endl;
-		return 0.0;
-	}
-
-	if (timeType == "ms") {
-		conversionFactor = static_cast<float>(1.0e-3);
-	}
-	else if (timeType == "us") {
-		conversionFactor = static_cast <float>(1.0e-6);
-	}
-	else if (timeType == "ns") {
-		conversionFactor = static_cast <float>(1.0e-9);
-	}
-	else if (timeType == "s") {
-		conversionFactor = static_cast <float>(1.0); // Seconds
-	}
-	else {
-		std::cerr << "Unrecognized time type: " << timeType << std::endl;
-		return 0.0;
-	}
-
-	std::istringstream numericStream(numericPart);
-	float numericValue;
-
-	if (numericStream >> numericValue) {
-		return numericValue * conversionFactor;
-	}
-	else {
-		std::cerr << "Invalid numeric part in the time string." << std::endl;
-		return 0.0;
-	}
-}
-
 bool MapObject::SetAttribute(const std::string& sAttribute, const std::string& sValue)
 {
-	bool bSuccess = true;
-	bSuccess &= SetIdentityAttribute(sAttribute, sValue);
-	bSuccess &= SetFlagAttribute(sAttribute, sValue);
-	bSuccess &= SetSpriteAttribute(sAttribute, sValue);
-	bSuccess &= SetBackgroundAttribute(sAttribute, sValue);
-	bSuccess &= SetLaneAttribute(sAttribute, sValue);
-	bSuccess &= SetSummonAttribute(sAttribute, sValue);
-	return bSuccess;
+	if (SetIdentityAttribute(sAttribute, sValue)) return true;
+	if (SetFlagAttribute(sAttribute, sValue)) return true;
+	if (SetSpriteAttribute(sAttribute, sValue)) return true;
+	if (SetBackgroundAttribute(sAttribute, sValue)) return true;
+	if (SetLaneAttribute(sAttribute, sValue)) return true;
+	if (SetSummonAttribute(sAttribute, sValue)) return true;
+	return false;
+}
+
+bool MapObject::SetAttributeFromData(const std::string& sData)
+{
+	const size_t uDelimiter = sData.find('=');
+	if (uDelimiter == std::string::npos) {
+		std::cerr << "Unknown properties from data [\"" << sData << "\"]" << std::endl;
+		return false;
+	}
+	
+	// Split the raw string into the form `attribute=value`
+	std::string sAttribute, sValue;
+	sAttribute = sData.substr(0, uDelimiter);
+	sValue = sData.substr(uDelimiter + 1);
+
+	// Standardize the value, so it doesnt be case sentitive
+	utils::trim(sAttribute);
+	utils::trim(sValue);
+	utils::lowerize(sAttribute);
+	utils::lowerize(sValue);
+	
+	// Trying to set the attribute if it is possible
+	if (!SetAttribute(sAttribute, sValue)) {
+		std::cerr << "Can not set attribute [" << sAttribute << "] with value " << sValue << std::endl;
+		return false;
+	}
+	return true;
 }
 
 /// @brief Function for debugging
@@ -215,8 +259,7 @@ void MapObject::Debug(char end) const
 		std::cerr << "    [";
 		std::cerr << "name=" << (sSpriteName.empty() ? "NULL" : sSpriteName);
 		std::cerr << ", ";
-		std::cerr << "background="
-			<< (sBackgroundName.empty() ? "NULL" : sBackgroundName);
+		std::cerr << "background=" << (sBackgroundName.empty() ? "NULL" : sBackgroundName);
 		std::cerr << ", ";
 		std::cerr << "category=" << (sCategory.empty() ? "NULL" : sCategory);
 		std::cerr << "]\n";
