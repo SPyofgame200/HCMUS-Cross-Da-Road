@@ -76,10 +76,14 @@ void cMapLoader::PrevLevel()
 /// @brief Update pattern of danger and block
 void cMapLoader::UpdatePattern()
 {
+	platformPattern.clear();
 	dangerPattern.clear();
 	blockPattern.clear();
 	for (const auto& pair : mapSprites) {
 		const auto& sprite = pair.second;
+		if (sprite.GetPlatformDragSpeed() != 0) {
+			platformPattern += sprite.GetCode();
+		}
 		if (sprite.IsBlocked()) {
 			blockPattern += sprite.GetCode();
 		}
@@ -152,6 +156,11 @@ MapObject cMapLoader::GetSpriteData(char graphic) const
 	else {
 		return MapObject();
 	}
+}
+/// @brief Getter for danger pattern
+std::string cMapLoader::GetPlatformPattern() const
+{
+	return platformPattern;
 }
 /// @brief Getter for danger pattern
 std::string cMapLoader::GetDangerPattern() const

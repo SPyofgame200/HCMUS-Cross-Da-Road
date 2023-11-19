@@ -64,7 +64,7 @@ public: // Setters
 	bool SetDanger(int nPosX, int nPosY, bool bValue);
 	bool SetBlock(int nPosX, int nPosY, bool bValue);
 	bool SetCellSize(int nWidth, int nHeight);
-	bool SetPattern(const char* sDangerPattern, const char* sBlockPattern);
+	bool SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern);
 
 public: // Fillers
 	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);

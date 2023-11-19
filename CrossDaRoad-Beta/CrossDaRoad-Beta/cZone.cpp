@@ -251,17 +251,17 @@ bool cZone::SetCellSize(int nWidth, int nHeight)
 /// @param sDangerPattern Character array of danger pattern
 /// @param sBlockPattern Character array of block pattern
 /// @return True if successfully set danger and block pattern, false otherwise
-bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
+bool cZone::SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern)
 {
-	if (sDefaultDangerPattern) {
-		delete[] sDefaultDangerPattern;
-	}
+	CleanArray(sDefaultPlatformPattern);
+	sDefaultPlatformPattern = new char[strlen(sPlatformPattern) + 1];
+	strcpy_s(sDefaultPlatformPattern, strlen(sPlatformPattern) + 1, sPlatformPattern);
+
+	CleanArray(sDefaultDangerPattern);
 	sDefaultDangerPattern = new char[strlen(sDangerPattern) + 1];
 	strcpy_s(sDefaultDangerPattern, strlen(sDangerPattern) + 1, sDangerPattern);
 
-	if (sDefaultBlockPattern) {
-		delete[] sDefaultBlockPattern;
-	}
+	CleanArray(sDefaultBlockPattern);
 	sDefaultBlockPattern = new char[strlen(sBlockPattern) + 1];
 	strcpy_s(sDefaultBlockPattern, strlen(sBlockPattern) + 1, sBlockPattern);
 	return true;
