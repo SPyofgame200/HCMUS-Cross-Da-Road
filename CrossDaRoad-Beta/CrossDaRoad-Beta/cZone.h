@@ -77,8 +77,14 @@ public: // Fillers
 	int FillUnblocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 
 public: // Danger Zone Checkers
-	bool IsDangerPixel(float x, float y) const;
+	bool IsPlatformPixel(float x, float y) const;
+	bool IsPlatformTopLeft(float x, float y, int size) const;
+	bool IsPlatformTopRight(float x, float y, int size) const;
+	bool IsPlatformBottomLeft(float x, float y, int size) const;
+	bool IsPlatformBottomRight(float x, float y, int size) const;
 
+public: // Danger Zone Checkers
+	bool IsDangerPixel(float x, float y) const;
 	bool IsDangerTopLeft(float x, float y, int size) const;
 	bool IsDangerTopRight(float x, float y, int size) const;
 	bool IsDangerBottomLeft(float x, float y, int size) const;
@@ -86,7 +92,6 @@ public: // Danger Zone Checkers
 
 public: // Block Zone Checkers
 	bool IsBlockedPixel(float x, float y) const;
-
 	bool IsBlockedTopLeft(float x, float y, int size) const;
 	bool IsBlockedTopRight(float x, float y, int size) const;
 	bool IsBlockedBottomLeft(float x, float y, int size) const;

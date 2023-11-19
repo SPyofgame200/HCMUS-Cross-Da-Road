@@ -382,6 +382,41 @@ int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTo
 }
 
 ////////////////////////////////////////////////////////////////////////
+/////////////////////// PLATFORM ZONE CHECKERS /////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+bool cZone::IsPlatformPixel(const float x, const float y) const
+{
+	const bool isPlatformPixel = bPlatforms[static_cast<int>(y) * nZoneWidth + static_cast<int>(x)];
+	return isPlatformPixel;
+}
+
+bool cZone::IsPlatformTopLeft(const float x, const float y, const int size) const
+{
+	const bool isPlatformTopLeft = IsPlatformPixel(x * static_cast<float>(size) + 1, y * static_cast<float>(size) + 1);
+	return isPlatformTopLeft;
+}
+
+bool cZone::IsPlatformTopRight(const float x, const float y, const int size) const
+{
+	const bool isPlatformTopRight = IsPlatformPixel((x + 1) * static_cast<float>(size) - 1, y * static_cast<float>(size) + 1);
+	return isPlatformTopRight;
+}
+
+bool cZone::IsPlatformBottomLeft(const float x, const float y, const int size) const
+{
+	const bool isPlatformBottomLeft = IsPlatformPixel(x * static_cast<float>(size) + 1, (y + 1) * static_cast<float>(size) - 1);
+	return isPlatformBottomLeft;
+}
+
+bool cZone::IsPlatformBottomRight(const float x, const float y, const int size) const
+{
+	const bool isPlatformBottomRight = IsPlatformPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
+	return isPlatformBottomRight;
+}
+
+
+////////////////////////////////////////////////////////////////////////
 //////////////////////// DANGER ZONE CHECKERS //////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
