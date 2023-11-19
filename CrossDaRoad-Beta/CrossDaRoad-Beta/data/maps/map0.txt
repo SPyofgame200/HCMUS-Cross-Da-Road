@@ -11,24 +11,24 @@ pqbppppppqpppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 #
 $ , background=magma
 : block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=0
+: spritepos=0:0
 $ p sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=[0:0]
 $ q sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=[x=0:y=0]
 : duration=5s cooldown=5s chance=2% summon=f
 $ b sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=default
 : duration=10s cooldown=2s chance=50% summon=f
 $ w sprite=wall
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
+: spritepos=[0,0]
 $ h sprite=soil
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ f sprite=fire background=wall id=4
+: spritepos=[posx=0,posy=0]
+$ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0

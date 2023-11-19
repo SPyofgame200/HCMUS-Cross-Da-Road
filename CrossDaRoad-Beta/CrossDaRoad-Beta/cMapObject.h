@@ -26,12 +26,13 @@ private: // Sprite attributes
 	std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
 	int32_t nSpritePosX;        ///< X initial position for drawing sprite
 	int32_t nSpritePosY;        ///< Y initial position for drawing sprite
-	int32_t nID;                ///< The ID of the sprite, for player customization
+	int32_t nSpriteFrame;       ///< The number of frame the sprite run, for animation
 	
 private: // Background attributes
 	std::string sBackgroundName;///< Background name (*.png), for sprite's background
 	int32_t nBackgroundPosX;    ///< X initial position for drawing background
 	int32_t nBackgroundPosY;    ///< Y initial position for drawing background
+	int32_t nBackgroundFrame;   ///< The number of frame the background run, for animation
 	
 private: // Lane attributes
 	float fPlatform;            ///< Platform dragging speed if the player land on them
@@ -65,6 +66,7 @@ public: // Getters
 	std::string GetBackgroundName() const;
 	int32_t GetBackgroundPosX() const;
 	int32_t GetBackgroundPosY() const;
+	int32_t GetBackgroundFrameCount() const;
 	float GetPlatformDragSpeed() const;
 	char GetSummonTarget() const;
 	float GetSummonDuration() const;
@@ -87,6 +89,7 @@ public: // Extracters
 	bool ExtractName(std::string &sName, const std::string& sData);
 	bool ExtractFlag(bool &bFlag, const std::string& sData);
 	bool ExtractPosition(int32_t &nPos, const std::string& sData);
+	bool ExtractPositions(int32_t &nPosX, int32_t &nPosY, const std::string& sData);
 	bool ExtractFloat(float &fFloat, const std::string& sData);
 	bool ExtractPercentage(float &fPercentage, const std::string& sData);
 	bool ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const std::string& sData);

@@ -44,11 +44,12 @@ bool MapObject::Create()
 	sSpriteName = "";
 	nSpritePosX = 0;
 	nSpritePosY = 0;
-	nID = 0;
+	nSpriteFrame = 0;
 	/// Background
 	sBackgroundName = "";
 	nBackgroundPosX = 0;
 	nBackgroundPosY = 0;
+	nBackgroundFrame = 0;
 	/// Lane
 	fPlatform = 0.0;
 	/// Summon
@@ -104,7 +105,7 @@ int32_t MapObject::GetSpritePosY() const
 
 int32_t MapObject::GetSpriteFrameCount() const
 {
-	return nID;
+	return nSpriteFrame;
 }
 
 std::string MapObject::GetBackgroundName() const {
@@ -251,6 +252,32 @@ bool MapObject::ExtractPosition(int32_t& nPos, const std::string& sData)
 	return true;
 }
 
+bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
+		return false;
+	}
+
+	if (sData == "default") {
+		nPosX = nPosY = 0;
+		return true;
+	}
+
+	int x, y;
+	std::istringstream iss(sData);
+	if (!(iss >> x >> y)) {
+		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "Failed to extract positions." << std::endl;
+		return false;
+	}
+
+	nPosX = x;
+	nPosY = y;
+	return true;
+}
+
 bool MapObject::ExtractFloat(float& fFloat, const std::string& sData)
 {
 	if (sData.empty()) {
@@ -311,8 +338,11 @@ bool MapObject::SetSpriteAttribute(const std::string& sAttribute, const std::str
 	if (sAttribute == "spritey") {
 		return ExtractPosition(nSpritePosY, sValue);
 	}
-	if (sAttribute == "id") {
-		return ExtractPosition(nID, sValue);
+	if (sAttribute == "spritepos") {
+		return ExtractPositions(nSpritePosX, nSpritePosY, sValue);
+	}
+	if (sAttribute == "spriteframe") {
+		return ExtractPosition(nSpriteFrame, sValue);
 	}
 	return false;
 }
@@ -326,6 +356,9 @@ bool MapObject::SetBackgroundAttribute(const std::string& sAttribute, const std:
 	}
 	if (sAttribute == "backgroundy") {
 		return ExtractPosition(nBackgroundPosY, sValue);
+	}
+	if (sAttribute == "backgroundpos") {
+		return ExtractPositions(nBackgroundPosX, nBackgroundPosY, sValue);
 	}
 	return false;
 }
@@ -418,7 +451,7 @@ std::string MapObject::ShowSpriteData() const
 	oss << "name=\"" << sSpriteName << "\", ";
 	oss << "draw_x=" << nSpritePosX << ", ";
 	oss << "draw_y=" << nSpritePosY << " ";
-	oss << "frames=" << nID << " ";
+	oss << "frames=" << nSpriteFrame << " ";
 	oss << "]";
 	return oss.str();
 }
