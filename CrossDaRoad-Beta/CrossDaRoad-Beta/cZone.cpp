@@ -66,6 +66,7 @@ bool cZone::Create()
 	bBlocks = nullptr;
 	nCellWidth = 0;
 	nCellHeight = 0;
+	sDefaultPlatformPattern = nullptr;
 	sDefaultDangerPattern = nullptr;
 	sDefaultBlockPattern = nullptr;
 	return true;
