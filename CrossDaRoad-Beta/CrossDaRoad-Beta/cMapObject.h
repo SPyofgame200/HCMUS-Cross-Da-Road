@@ -52,7 +52,13 @@ public: // Initializer & Cleanup
 	bool Destroy();
 
 public: // Getters
-	void Debug(char end = '\n') const;  ///< Debug
+	void ShowIdentityData() const;  ///< ShowData
+	void ShowFlagData() const;  ///< ShowData
+	void ShowSpriteData() const;  ///< ShowData
+	void ShowBackgroundData() const;  ///< ShowData
+	void ShowLaneData() const;  ///< ShowData
+	void ShowSummonData() const;  ///< ShowData
+	void ShowData() const;  ///< ShowData
 
 public: // Extracters
 	float ExtractTime(const std::string& timeStr);

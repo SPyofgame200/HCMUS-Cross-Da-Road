@@ -250,54 +250,70 @@ bool MapObject::SetAttributeFromData(const std::string& sData)
 	return true;
 }
 
+void MapObject::ShowIdentityData() const
+{
+	std::cerr << "Identity: [ ";
+	std::cerr << "token=" << encode << ", ";
+	std::cerr << "category=\"" << sCategory << "\" ";
+	std::cerr << "]";
+}
+
+void MapObject::ShowFlagData() const
+{
+	std::cerr << "Flag: [ ";
+	std::cerr << "is_blocked=" << std::boolalpha << encode << ", ";
+	std::cerr << "is_danger=" << std::boolalpha << sCategory << ", ";
+	std::cerr << "]";
+}
+
+void MapObject::ShowSpriteData() const
+{
+	std::cerr << "Sprite: [ ";
+	std::cerr << "name=\"" << sSpriteName << "\", ";
+	std::cerr << "draw_x=" << nSpritePosX << ", ";
+	std::cerr << "draw_y=" << nSpritePosY << " ";
+	std::cerr << "frames=" << nID << " ";
+	std::cerr << "]";
+}
+
+void MapObject::ShowBackgroundData() const
+{
+	std::cerr << "Background: [ ";
+	std::cerr << "name=\"" << sBackgroundName << "\", ";
+	std::cerr << "draw_x=" << nBackgroundPosX << ", ";
+	std::cerr << "draw_y=" << nBackgroundPosY << " ";
+	std::cerr << "]";
+}
+
+void MapObject::ShowLaneData() const
+{
+	std::cerr << "Lane: [ ";
+	std::cerr << "platform_drag=" << fPlatform << ", ";
+	std::cerr << "]";
+}
+
+void MapObject::ShowSummonData() const
+{
+	std::cerr << "Summon: [ ";
+	std::cerr << "summon=" << summon << ", ";
+	std::cerr << "duration=" << fDuration << ", ";
+	std::cerr << "cooldown=" << fCooldown << ", ";
+	std::cerr << "chance=" << fChance << " ";
+	std::cerr << "]";
+}
+
 /// @brief Function for debugging
 /// @param end character to end the line
-void MapObject::Debug(char end) const
+void MapObject::ShowData() const
 {
 	std::cerr << "Sprite[" << encode << "]= {\n";
-	{
-		std::cerr << "    [";
-		std::cerr << "name=" << (sSpriteName.empty() ? "NULL" : sSpriteName);
-		std::cerr << ", ";
-		std::cerr << "background=" << (sBackgroundName.empty() ? "NULL" : sBackgroundName);
-		std::cerr << ", ";
-		std::cerr << "category=" << (sCategory.empty() ? "NULL" : sCategory);
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "isBlocked=" << std::boolalpha << isBlocked;
-		std::cerr << ", ";
-		std::cerr << "isDanger=" << std::boolalpha << isDanger;
-		std::cerr << ", ";
-		std::cerr << "platformSpeed=" << fPlatform;
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "spriteX=" << nSpritePosX;
-		std::cerr << ", ";
-		std::cerr << "spriteY=" << nSpritePosY;
-		std::cerr << ", ";
-		std::cerr << "backgroundX=" << nBackgroundPosX;
-		std::cerr << ", ";
-		std::cerr << "backgroundY=" << nBackgroundPosY;
-		std::cerr << ", ";
-		std::cerr << "id=" << nID;
-		std::cerr << "]\n";
-	}
-	{
-		std::cerr << "    [";
-		std::cerr << "summon=" << summon;
-		std::cerr << ", ";
-		std::cerr << "duration=" << fDuration << "s";
-		std::cerr << ", ";
-		std::cerr << "cooldown=" << fCooldown << "s";
-		std::cerr << ", ";
-		std::cerr << "chance=" << fChance << "%";
-		std::cerr << "]\n";
-	}
-	std::cerr << "}" << end;
+	std::cerr << "      "; ShowIdentityData(); std::cerr << "\n";
+	std::cerr << "          "; ShowFlagData(); std::cerr << "\n";
+	std::cerr << "        "; ShowSpriteData(); std::cerr << "\n";
+	std::cerr << "    "; ShowBackgroundData(); std::cerr << "\n";
+	std::cerr << "          "; ShowLaneData(); std::cerr << "\n";
+	std::cerr << "        "; ShowSummonData(); std::cerr << "\n";
+	std::cerr << "}";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
