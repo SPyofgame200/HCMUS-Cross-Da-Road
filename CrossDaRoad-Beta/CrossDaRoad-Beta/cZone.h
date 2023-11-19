@@ -14,12 +14,14 @@
 class cZone
 {
 private:
-	int nZoneWidth;  ///< width of the zone
-	int nZoneHeight; ///< height of the zone
-	bool* bDangers;  ///< array of danger pixels
-	bool* bBlocks;   ///< array of block pixels
+	int nZoneWidth;   ///< width of the zone
+	int nZoneHeight;  ///< height of the zone
+	bool* bPlatforms; ///< cache-friendly matrix of platform pixels
+	bool* bDangers;   ///< cache-friendly matrix of danger pixels
+	bool* bBlocks;    ///< cache-friendly matrix of block pixels
 	int nCellWidth;
 	int nCellHeight;
+	char* sDefaultPlatformPattern;
 	char* sDefaultDangerPattern;
 	char* sDefaultBlockPattern;
 
@@ -27,6 +29,16 @@ public: // Constructors & Destructor
 	cZone();
 	cZone(int nWidth, int nHeight);
 	~cZone();
+
+private: /// Init-Clean Utilities
+	template<class type>
+	bool CleanArray(type*& pArray);
+	template<class type>
+	bool CleanObject(type*& pObject);
+
+public: /// Initializer & Cleanup
+	bool Create();
+	bool Destroy();
 
 private: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock);

@@ -17,14 +17,7 @@
 /// @brief Default constructor
 cZone::cZone()
 {
-	nZoneWidth = 0;
-	nZoneHeight = 0;
-	bDangers = nullptr;
-	bBlocks = nullptr;
-	nCellWidth = 0;
-	nCellHeight = 0;
-	sDefaultDangerPattern = nullptr;
-	sDefaultBlockPattern = nullptr;
+	Create();
 }
 /// @brief Parameterized constructor
 /// @param nWidth width of the zone
@@ -36,23 +29,57 @@ cZone::cZone(const int nWidth, const int nHeight)
 /// @brief Destructor
 cZone::~cZone()
 {
-	if (bDangers != nullptr) {
-		delete[] bDangers;
-		bDangers = nullptr;
+	if (Destroy()) {
+		std::cerr << "cZone::~cZone(): Successfully destructed" << std::endl;
 	}
-	if (bBlocks != nullptr) {
-		delete[] bBlocks;
-		bBlocks = nullptr;
+}
+
+template<class type>
+bool cZone::CleanArray(type*& pArray)
+{
+	if (pArray) {
+		delete[] pArray;
+		pArray = nullptr;
+		return true;
 	}
-	if (sDefaultDangerPattern != nullptr) {
-		delete[] sDefaultDangerPattern;
-		sDefaultDangerPattern = nullptr;
+	return false;
+}
+
+template<class type>
+bool cZone::CleanObject(type*& pObject)
+{
+	if (pObject) {
+		delete[] pObject;
+		pObject = nullptr;
+		return true;
 	}
-	if (sDefaultBlockPattern != nullptr) {
-		delete[] sDefaultBlockPattern;
-		sDefaultBlockPattern = nullptr;
-	}
-	std::cerr << "cZone::~cZone(): Successfully destructed" << std::endl;
+	return false;
+}
+
+bool cZone::Create()
+{
+	Destroy();
+	nZoneWidth = 0;
+	nZoneHeight = 0;
+	bPlatforms = nullptr;
+	bDangers = nullptr;
+	bBlocks = nullptr;
+	nCellWidth = 0;
+	nCellHeight = 0;
+	sDefaultDangerPattern = nullptr;
+	sDefaultBlockPattern = nullptr;
+	return true;
+}
+
+bool cZone::Destroy()
+{
+	CleanArray(bPlatforms);
+	CleanArray(bDangers);
+	CleanArray(bBlocks);
+	CleanArray(sDefaultPlatformPattern);
+	CleanArray(sDefaultDangerPattern);
+	CleanArray(sDefaultBlockPattern);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
