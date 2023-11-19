@@ -61,14 +61,27 @@ bool MapObject::Destroy()
 	return true;
 }
 
-/// @brief Extract time from string
-/// @param timeStr Time string
-/// @return Time in float format
-float MapObject::ExtractTime(const std::string& timeStr)
+bool MapObject::ExtractToken(char &token, const std::string& sData)
 {
-	if (timeStr.empty()) {
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractTime(NULL): ";
+		std::cerr << "Invalid empty string, expected non-empty size" << std::endl;
+		return false;
+	}
+
+	token = sData[0];
+	return true;
+}
+
+/// @brief Extract time from string
+/// @param sData Time string
+/// @return Time in float format
+bool MapObject::ExtractTime(float &fTime, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractTime(\"" << sData << "\"): ";
 		std::cerr << "Invalid time string." << std::endl;
-		return 0.0;
+		return false;
 	}
 
 	float conversionFactor = 1.0;
@@ -77,17 +90,18 @@ float MapObject::ExtractTime(const std::string& timeStr)
 
 	// Find the position of the first non-numeric character
 	size_t pos = 0;
-	while (pos < timeStr.size() && (std::isdigit(timeStr[pos]) || timeStr[pos] == '.')) {
-		numericPart += timeStr[pos];
+	while (pos < sData.size() && (std::isdigit(sData[pos]) || sData[pos] == '.')) {
+		numericPart += sData[pos];
 		pos++;
 	}
 
-	if (pos < timeStr.size()) {
-		timeType = timeStr.substr(pos);
+	if (pos < sData.size()) {
+		timeType = sData.substr(pos);
 	}
 	else {
+		std::cerr << "MapObject::ExtractTime(\"" << sData << "\"): ";
 		std::cerr << "No time type specified in the time string." << std::endl;
-		return 0.0;
+		return false;
 	}
 
 	if (timeType == "ms") {
@@ -103,55 +117,75 @@ float MapObject::ExtractTime(const std::string& timeStr)
 		conversionFactor = static_cast <float>(1.0); // Seconds
 	}
 	else {
+		std::cerr << "MapObject::ExtractTime(\"" << sData << "\"): ";
 		std::cerr << "Unrecognized time type: " << timeType << std::endl;
-		return 0.0;
+		return false;
 	}
 
 	std::istringstream numericStream(numericPart);
 	float numericValue;
 
 	if (numericStream >> numericValue) {
-		return numericValue * conversionFactor;
+		fTime = numericValue * conversionFactor;
+		return true;
 	}
 	else {
+		std::cerr << "MapObject::ExtractTime(\"" << sData << "\"): ";
 		std::cerr << "Invalid numeric part in the time string." << std::endl;
-		return 0.0;
+		return false;
+	}
+}
+
+
+bool MapObject::ExtractName(std::string& sName, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractName(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size" << std::endl;
+		return false;
 	}
 
+	sName = sData;
+	return true;
+}
 
+bool MapObject::ExtractFlag(bool &bFlag, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractFlag(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
+		return false;
+	}
+
+	bFlag = (sData == "yes" || sData == "ok" || sData == "enable" || sData == "true" || sData == "1" || sData == "enabled");
+	return true;
 }
 
 bool MapObject::SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "token")
 	{
-		encode = sValue[0];
-		return true;
+		return ExtractToken(encode, sValue);
 	}
 	if (sAttribute == "category") {
-		sCategory = sValue;
-		return true;
+		return ExtractName(sCategory, sValue);
 	}
 	return false;
 }
 bool MapObject::SetFlagAttribute(const std::string& sAttribute, const std::string& sValue)
 {
-	bool bValue = (sValue == "true") || (sValue == "yes");
 	if (sAttribute == "block") {
-		isBlocked = bValue;
-		return true;
+		return ExtractFlag(isBlocked, sValue);
 	}
 	if (sAttribute == "danger") {
-		isDanger = bValue;
-		return true;
+		return ExtractFlag(isDanger, sValue);
 	}
 	return false;
 }
 bool MapObject::SetSpriteAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "sprite") {
-		sSpriteName = sValue;
-		return true;
+		return ExtractName(sSpriteName, sValue);
 	}
 	if (sAttribute == "spritex") {
 		nSpritePosX = std::stoi(sValue);
@@ -194,16 +228,13 @@ bool MapObject::SetLaneAttribute(const std::string& sAttribute, const std::strin
 bool MapObject::SetSummonAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "summon") {
-		summon = sValue[0];
-		return true;
+		return ExtractToken(summon, sValue);
 	}
 	if (sAttribute == "duration") {
-		fDuration = ExtractTime(sValue);
-		return true;
+		return ExtractTime(fDuration, sValue);
 	}
 	if (sAttribute == "cooldown") {
-		fCooldown = ExtractTime(sValue);
-		return true;
+		return ExtractTime(fCooldown, sValue);
 	}
 	if (sAttribute == "chance") {
 		std::string sFixed = sValue;
