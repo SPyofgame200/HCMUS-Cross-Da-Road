@@ -84,9 +84,6 @@ private: // Loaders
 
 public: // Loaders
 	bool LoadMapLevel();
-
-private: // Utilities
-	static float ExtractTime(const std::string& timeStr);
 };
 
 #endif // C_MAP_LOADER_H

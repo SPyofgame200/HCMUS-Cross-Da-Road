@@ -9,10 +9,9 @@
  * This file implements string utility functions.
  **/
 
-namespace strutil
+namespace utils
 {
 	const char* sSpacePattern = " ";
-
 	/// @brief Trim from start of string (left)
 	/// @param raw The string to be trimmed
 	/// @param pattern The pattern to be trimmed
@@ -57,8 +56,9 @@ namespace strutil
 	///          returns "spyofgame*****"
 	std::string lpad(const std::string& input, const char paddingChar, const size_t length)
 	{
-		if (input.length() >= length)
+		if (input.length() >= length) {
 			return input;
+		}
 		return std::string(length - input.length(), paddingChar) + input;
 	}
 
@@ -71,9 +71,30 @@ namespace strutil
 	///          returns "spyofgame*****"
 	std::string rpad(const std::string& input, const char paddingChar, const size_t length)
 	{
-		if (input.length() >= length)
+		if (input.length() >= length) {
 			return input;
+		}
 		return input + std::string(length - input.length(), paddingChar);
+	}
+
+	std::string& lowerize(std::string& raw)
+	{
+		for (char& c : raw) {
+			if ('A' <= c && c <= 'Z') {
+				c |= 32;
+			}
+		}
+		return raw;
+	}
+
+	std::string& upperize(std::string& raw)
+	{
+		for (char& c : raw) {
+			if ('a' <= c && c <= 'z') {
+				c &= ~32;
+			}
+		}
+		return raw;
 	}
 
 	/// @brief Remove duplicate characters in a string
@@ -241,7 +262,7 @@ namespace strutil
 		}
 		return result;
 	}
-}; // namespace strutil
+}; // namespace utils
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// END OF FILE ////////////////////////////////////////////////////////////////

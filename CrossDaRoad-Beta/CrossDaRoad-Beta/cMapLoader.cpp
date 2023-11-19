@@ -86,7 +86,7 @@ void cMapLoader::UpdatePattern()
 		if (sprite.isDanger) {
 			dangerPattern += sprite.encode;
 		}
-		sprite.debug();
+		sprite.Debug();
 	}
 }
 
@@ -264,6 +264,8 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 		std::cout << "# Current Line = \"" << sLine << "\" -> token=" << token << std::endl;
 	}
 
+
+
 	if (token == '$') { // New Sprite
 		currentSprite = MapObject();
 		iss >> currentSprite.encode;
@@ -272,84 +274,31 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 		}
 	}
 	{ // Continue Loading Last Sprite
-		std::string attribute, value;
+		std::string sAttribute, sValue;
 		std::string raw;
 		while (iss >> raw) {
 			// Find the position of '=' in the raw string
 			const size_t equalPos = raw.find('=');
 
 			// Check if the format is correct (contains '=' character)
-			if (equalPos != std::string::npos) {
-				// Split the raw string into attribute and value based on '='
-				attribute = raw.substr(0, equalPos);
-				value = raw.substr(equalPos + 1);
+			if (equalPos == std::string::npos) {
 				if (bDebug) {
-					std::cerr << attribute << " vs " << value << std::endl;
+					std::cerr << "Assign sAttribute Sprite['" << currentSprite.encode << "']";
+					std::cerr << "->" << sAttribute << " := " << sValue << std::endl;
 				}
-
-				if (attribute == "sprite") {
-					currentSprite.sSpriteName = value;
-				}
-				else if (attribute == "background") {
-					currentSprite.sBackgroundName = value;
-				}
-				else if (attribute == "category") {
-					currentSprite.sCategory = value;
-				}
-				else if (attribute == "block") {
-					if (value == "true") {
-						currentSprite.isBlocked = true;
-					}
-					else if (value == "false")
-						currentSprite.isBlocked = false;
-				}
-				else if (attribute == "danger") {
-					if (value == "true") {
-						currentSprite.isDanger = true;
-					}
-					else if (value == "false")
-						currentSprite.isDanger = false;
-				}
-				else if (attribute == "platformspeed") {
-					currentSprite.fPlatform = std::stof(value);
-				}
-				else if (attribute == "spriteX") {
-					currentSprite.nSpritePosX = std::stoi(value);
-				}
-				else if (attribute == "spriteY") {
-					currentSprite.nSpritePosY = std::stoi(value);
-				}
-				else if (attribute == "backgroundX") {
-					currentSprite.nBackgroundPosX = std::stoi(value);
-				}
-				else if (attribute == "backgroundY") {
-					currentSprite.nBackgroundPosY = std::stoi(value);
-				}
-				else if (attribute == "id") {
-					currentSprite.nID = std::stoi(value);
-				}
-				else if (attribute == "summon") {
-					currentSprite.summon = value[0];
-				}
-				else if (attribute == "duration") {
-					currentSprite.fDuration = ExtractTime(value);
-				}
-				else if (attribute == "cooldown") {
-					currentSprite.fCooldown = ExtractTime(value);
-				}
-				else if (attribute == "chance") {
-					value.pop_back();
-					currentSprite.fChance = std::stof(value);
-				}
-				else {
-					std::cerr << "Unknown attribute = \"" << attribute << "\" assigning value \"" << value << "\"";
-					std::cerr << std::endl;
-				}
+				continue;
 			}
-			if (bDebug) {
-				std::cerr << "Assign attribute Sprite['" << currentSprite.encode
-					<< "']";
-				std::cerr << "->" << attribute << " := " << value << std::endl;
+			// Split the raw string into sAttribute and sValue based on '='
+			sAttribute = raw.substr(0, equalPos);
+			sValue = raw.substr(equalPos + 1);
+			utils::trim(sAttribute);
+			utils::trim(sValue);
+			utils::lowerize(sAttribute);
+			utils::lowerize(sValue);
+
+			if (!currentSprite.SetAttribute(sAttribute, sValue)) {
+				std::cerr << "Unknown sAttribute = \"" << sAttribute << "\" assigning sValue \"" << sValue << "\"";
+				std::cerr << std::endl;
 			}
 		}
 	}
@@ -369,8 +318,8 @@ bool cMapLoader::LoadMapName(const std::string& sFileName)
 	}
 
 	for (std::string sLine; std::getline(ifs, sLine);) {
-		strutil::deduplicate(sLine, " ");
-		strutil::trim(sLine);
+		utils::deduplicate(sLine, " ");
+		utils::trim(sLine);
 		const size_t nPos = sLine.find(". ");
 		if (nPos != std::string::npos) {
 			const size_t startMapName = nPos + 2;
@@ -414,8 +363,8 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	int nLaneID = 0;
 	bool bLoadingSprite = false;
 	for (std::string sLine; std::getline(ifs, sLine);) {
-		strutil::deduplicate(sLine, " ");
-		strutil::trim(sLine);
+		utils::deduplicate(sLine, " ");
+		utils::trim(sLine);
 		if (sLine.empty())
 			break;
 
@@ -443,64 +392,6 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 bool cMapLoader::LoadMapLevel()
 {
 	return LoadMapLevel(GetMapLevel());
-}
-
-/// @brief Extract time from string
-/// @param timeStr Time string
-/// @return Time in float format
-float cMapLoader::ExtractTime(const std::string& timeStr)
-{
-	if (timeStr.empty()) {
-		std::cerr << "Invalid time string." << std::endl;
-		return 0.0;
-	}
-
-	float conversionFactor = 1.0;
-	std::string numericPart;
-	std::string timeType;
-
-	// Find the position of the first non-numeric character
-	size_t pos = 0;
-	while (pos < timeStr.size() && (std::isdigit(timeStr[pos]) || timeStr[pos] == '.')) {
-		numericPart += timeStr[pos];
-		pos++;
-	}
-
-	if (pos < timeStr.size()) {
-		timeType = timeStr.substr(pos);
-	}
-	else {
-		std::cerr << "No time type specified in the time string." << std::endl;
-		return 0.0;
-	}
-
-	if (timeType == "ms") {
-		conversionFactor = static_cast<float>(1.0e-3);
-	}
-	else if (timeType == "us") {
-		conversionFactor = static_cast <float>(1.0e-6);
-	}
-	else if (timeType == "ns") {
-		conversionFactor = static_cast <float>(1.0e-9);
-	}
-	else if (timeType == "s") {
-		conversionFactor = static_cast <float>(1.0); // Seconds
-	}
-	else {
-		std::cerr << "Unrecognized time type: " << timeType << std::endl;
-		return 0.0;
-	}
-
-	std::istringstream numericStream(numericPart);
-	float numericValue;
-
-	if (numericStream >> numericValue) {
-		return numericValue * conversionFactor;
-	}
-	else {
-		std::cerr << "Invalid numeric part in the time string." << std::endl;
-		return 0.0;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

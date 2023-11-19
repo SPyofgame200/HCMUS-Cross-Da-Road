@@ -549,7 +549,7 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005);
+	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005f);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;

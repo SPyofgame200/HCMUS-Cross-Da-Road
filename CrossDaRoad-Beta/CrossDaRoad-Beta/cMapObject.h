@@ -1,8 +1,8 @@
 /**
  * @file cMapObject.h
- * @brief Contains MapObject struct for sprite data and GraphicCell struct for graphical cell
+ * @brief Contains MapObject class
  *
- * This file contains prototype of MapObject struct and GraphicCell struct
+ * This file contains prototype of MapObject class
  */
 
 
@@ -14,19 +14,29 @@
  /// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
 struct MapObject
 {
+	// Identity attributes
 	char encode;                ///< Sprite encode chacters for map editor
-	std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
-	std::string sBackgroundName;///< Background name (*.png), for sprite's background
 	std::string sCategory;      ///< Category, allow categorize configuration if needed
+
+	// Flag attributes
 	bool isBlocked;             ///< If the player shouldn't be able to move here
 	bool isDanger;              ///< If the player should be killed to move here
-	float fPlatform;            ///< Platform dragging speed if the player land on them
+
+	// Sprite attributes
+	std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
 	int32_t nSpritePosX;        ///< X initial position for drawing sprite
 	int32_t nSpritePosY;        ///< Y initial position for drawing sprite
+	int32_t nID;                ///< The ID of the sprite, for player customization
+	
+	// Background attributes
+	std::string sBackgroundName;///< Background name (*.png), for sprite's background
 	int32_t nBackgroundPosX;    ///< X initial position for drawing background
 	int32_t nBackgroundPosY;    ///< Y initial position for drawing background
-	int32_t nID;                ///< The ID of the sprite, for player customization
+	
+	// Lane attributes
+	float fPlatform;            ///< Platform dragging speed if the player land on them
 
+	// Summon attributes
 	char summon;			    ///< The chance of summoning another sprite with encoded = summon
 	float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
 	float fCooldown;            ///< The cooldown durations for the two consecutive summoning
@@ -35,7 +45,19 @@ struct MapObject
 	// Methods
 	MapObject();						///< Constructor
 	~MapObject();					 	///< Destructor
-	void debug(char end = '\n') const;  ///< Debug
+
+	// Utilities
+	void Debug(char end = '\n') const;  ///< Debug
+	static float ExtractTime(const std::string& timeStr);
+
+	// Setters
+	bool SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetFlagAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetSpriteAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetBackgroundAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetLaneAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetSummonAttribute(const std::string& sAttribute, const std::string& sValue);
+	bool SetAttribute(const std::string& sAttribute, const std::string& sValue);
 };
 
 #endif // C_MAP_OBJECT_H
