@@ -1,4 +1,4 @@
-whwwhwhwhwwwhwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 beach_wave1
+whwwhwhwhwwwhwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 beach_wave 8
 ,,qq,,,,,,qq,,,,,,qq,,,pp,,,,,,pp,,,,,,qq,,,,,,,qq,,,,qq,,,,pp,,  3.0
 pqqpppfpqqpppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
 ,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0

@@ -249,8 +249,9 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 		return false;
 	}
 
-	std::string sUnderlay;
-	ss >> sUnderlay;
+	std::string sUnderlay = "";
+	int nFrame = 0;
+	ss >> sUnderlay >> nFrame;
 
 	std::cout << "Line #" << nLaneID << ": sLane[" << sLane.size() << "] = \"" << sLane << "\", speed=" << fVelocity;
 	if (sUnderlay.size()) {
@@ -260,7 +261,7 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 		std::cout << " no-underlay";
 	}
 	std::cout << std::endl;
-	const cMapLane lane(fVelocity, sLane, nLaneID, sUnderlay);
+	const cMapLane lane(fVelocity, sLane, nLaneID, sUnderlay, nFrame);
 	vecLanes.push_back(lane);
 	return true;
 }
