@@ -123,6 +123,11 @@ int32_t MapObject::GetBackgroundPosY() const
 	return nBackgroundPosY;
 }
 
+int32_t MapObject::GetBackgroundFrameCount() const
+{
+	return nBackgroundFrame;
+}
+
 float MapObject::GetPlatformDragSpeed() const 
 {
 	return fPlatform;
@@ -368,6 +373,9 @@ bool MapObject::SetBackgroundAttribute(const std::string& sAttribute, const std:
 	if (sAttribute == "backgroundpos") {
 		return ExtractPositions(nBackgroundPosX, nBackgroundPosY, sValue);
 	}
+	if (sAttribute == "backgroundframe") {
+		return ExtractPosition(nSpriteFrame, sValue);
+	}
 	return false;
 }
 bool MapObject::SetLaneAttribute(const std::string& sAttribute, const std::string& sValue)
@@ -458,7 +466,7 @@ std::string MapObject::ShowSpriteData() const
 	oss << "Sprite: [ ";
 	oss << "name=\"" << sSpriteName << "\", ";
 	oss << "draw_x=" << nSpritePosX << ", ";
-	oss << "draw_y=" << nSpritePosY << " ";
+	oss << "draw_y=" << nSpritePosY << ", ";
 	oss << "frames=" << nSpriteFrame << " ";
 	oss << "]";
 	return oss.str();
@@ -470,7 +478,8 @@ std::string MapObject::ShowBackgroundData() const
 	oss << "Background: [ ";
 	oss << "name=\"" << sBackgroundName << "\", ";
 	oss << "draw_x=" << nBackgroundPosX << ", ";
-	oss << "draw_y=" << nBackgroundPosY << " ";
+	oss << "draw_y=" << nBackgroundPosY << ", ";
+	oss << "frames=" << nBackgroundFrame << " ";
 	oss << "]";
 	return oss.str();
 }
