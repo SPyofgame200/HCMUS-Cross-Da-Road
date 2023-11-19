@@ -52,16 +52,17 @@ public: // Initializer & Cleanup
 	bool Destroy();
 
 public: // Getters
-	void ShowIdentityData() const;  ///< ShowData
-	void ShowFlagData() const;  ///< ShowData
-	void ShowSpriteData() const;  ///< ShowData
-	void ShowBackgroundData() const;  ///< ShowData
-	void ShowLaneData() const;  ///< ShowData
-	void ShowSummonData() const;  ///< ShowData
-	void ShowData() const;  ///< ShowData
+	std::string ShowIdentityData() const;  ///< ShowData
+	std::string ShowFlagData() const;  ///< ShowData
+	std::string ShowSpriteData() const;  ///< ShowData
+	std::string ShowBackgroundData() const;  ///< ShowData
+	std::string ShowLaneData() const;  ///< ShowData
+	std::string ShowSummonData() const;  ///< ShowData
+	std::string ShowData() const;  ///< ShowData
 
 public: // Extracters
-	float ExtractTime(const std::string& timeStr);
+	char ExtractChar(const std::string& sData);
+	float ExtractTime(const std::string& sData);
 
 public: // Setters
 	bool SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue);

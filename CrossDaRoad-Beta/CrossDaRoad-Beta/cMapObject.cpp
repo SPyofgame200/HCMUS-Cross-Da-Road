@@ -117,6 +117,8 @@ float MapObject::ExtractTime(const std::string& timeStr)
 		std::cerr << "Invalid numeric part in the time string." << std::endl;
 		return 0.0;
 	}
+
+
 }
 
 bool MapObject::SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue)
@@ -250,70 +252,84 @@ bool MapObject::SetAttributeFromData(const std::string& sData)
 	return true;
 }
 
-void MapObject::ShowIdentityData() const
+std::string MapObject::ShowIdentityData() const
 {
-	std::cerr << "Identity: [ ";
-	std::cerr << "token=" << encode << ", ";
-	std::cerr << "category=\"" << sCategory << "\" ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Identity: [ ";
+	oss << "token=" << encode << ", ";
+	oss << "category=\"" << sCategory << "\" ";
+	oss << "]";
+	return oss.str();
 }
 
-void MapObject::ShowFlagData() const
+std::string MapObject::ShowFlagData() const
 {
-	std::cerr << "Flag: [ ";
-	std::cerr << "is_blocked=" << std::boolalpha << encode << ", ";
-	std::cerr << "is_danger=" << std::boolalpha << sCategory << ", ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Flag: [ ";
+	oss << "is_blocked=" << std::boolalpha << isBlocked << ", ";
+	oss << "is_danger=" << std::boolalpha << isDanger << ", ";
+	oss << "]";
+	return oss.str();
 }
 
-void MapObject::ShowSpriteData() const
+std::string MapObject::ShowSpriteData() const
 {
-	std::cerr << "Sprite: [ ";
-	std::cerr << "name=\"" << sSpriteName << "\", ";
-	std::cerr << "draw_x=" << nSpritePosX << ", ";
-	std::cerr << "draw_y=" << nSpritePosY << " ";
-	std::cerr << "frames=" << nID << " ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Sprite: [ ";
+	oss << "name=\"" << sSpriteName << "\", ";
+	oss << "draw_x=" << nSpritePosX << ", ";
+	oss << "draw_y=" << nSpritePosY << " ";
+	oss << "frames=" << nID << " ";
+	oss << "]";
+	return oss.str();
 }
 
-void MapObject::ShowBackgroundData() const
+std::string MapObject::ShowBackgroundData() const
 {
-	std::cerr << "Background: [ ";
-	std::cerr << "name=\"" << sBackgroundName << "\", ";
-	std::cerr << "draw_x=" << nBackgroundPosX << ", ";
-	std::cerr << "draw_y=" << nBackgroundPosY << " ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Background: [ ";
+	oss << "name=\"" << sBackgroundName << "\", ";
+	oss << "draw_x=" << nBackgroundPosX << ", ";
+	oss << "draw_y=" << nBackgroundPosY << " ";
+	oss << "]";
+	return oss.str();
 }
 
-void MapObject::ShowLaneData() const
+std::string MapObject::ShowLaneData() const
 {
-	std::cerr << "Lane: [ ";
-	std::cerr << "platform_drag=" << fPlatform << ", ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Lane: [ ";
+	oss << "platform_drag=" << fPlatform << ", ";
+	oss << "]";
+	return oss.str();
 }
 
-void MapObject::ShowSummonData() const
+std::string MapObject::ShowSummonData() const
 {
-	std::cerr << "Summon: [ ";
-	std::cerr << "summon=" << summon << ", ";
-	std::cerr << "duration=" << fDuration << ", ";
-	std::cerr << "cooldown=" << fCooldown << ", ";
-	std::cerr << "chance=" << fChance << " ";
-	std::cerr << "]";
+	std::ostringstream oss;
+	oss << "Summon: [ ";
+	oss << "summon=" << summon << ", ";
+	oss << "duration=" << fDuration << ", ";
+	oss << "cooldown=" << fCooldown << ", ";
+	oss << "chance=" << fChance << " ";
+	oss << "]";
+	return oss.str();
 }
 
 /// @brief Function for debugging
 /// @param end character to end the line
-void MapObject::ShowData() const
+std::string MapObject::ShowData() const
 {
-	std::cerr << "Sprite[" << encode << "]= {\n";
-	std::cerr << "      "; ShowIdentityData(); std::cerr << "\n";
-	std::cerr << "          "; ShowFlagData(); std::cerr << "\n";
-	std::cerr << "        "; ShowSpriteData(); std::cerr << "\n";
-	std::cerr << "    "; ShowBackgroundData(); std::cerr << "\n";
-	std::cerr << "          "; ShowLaneData(); std::cerr << "\n";
-	std::cerr << "        "; ShowSummonData(); std::cerr << "\n";
-	std::cerr << "}";
+	std::ostringstream oss;
+	oss << "Sprite[" << encode << "]= {\n";
+	oss << "      " << ShowIdentityData() << "\n";
+	oss << "          " << ShowFlagData() << "\n";
+	oss << "        " << ShowSpriteData() << "\n";
+	oss << "    " << ShowBackgroundData() << "\n";
+	oss << "          " << ShowLaneData() << "\n";
+	oss << "        " << ShowSummonData() << "\n";
+	oss << "}";
+	return oss.str();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

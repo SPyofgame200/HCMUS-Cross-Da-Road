@@ -86,8 +86,7 @@ void cMapLoader::UpdatePattern()
 		if (sprite.isDanger) {
 			dangerPattern += sprite.encode;
 		}
-		sprite.ShowData();
-		std::cerr << "\n";
+		std::cout << sprite.ShowData() << std::endl;
 	}
 }
 
