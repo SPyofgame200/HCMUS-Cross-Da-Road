@@ -34,18 +34,24 @@ MapObject::~MapObject()
 
 bool MapObject::Create()
 {
+	/// Identity
 	encode = 0;
-	sSpriteName = "";
-	sBackgroundName = "";
 	sCategory = "";
+	/// Flag
 	isBlocked = false;
 	isDanger = false;
-	fPlatform = 0.0;
+	/// Sprite
+	sSpriteName = "";
 	nSpritePosX = 0;
 	nSpritePosY = 0;
+	nID = 0;
+	/// Background
+	sBackgroundName = "";
 	nBackgroundPosX = 0;
 	nBackgroundPosY = 0;
-	nID = 0;
+	/// Lane
+	fPlatform = 0.0;
+	/// Summon
 	summon = 0;
 	fDuration = 0;
 	fCooldown = 0;
@@ -161,10 +167,50 @@ bool MapObject::ExtractFlag(bool &bFlag, const std::string& sData)
 	return true;
 }
 
+bool MapObject::ExtractPosition(int32_t& nPos, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
+		return false;
+	}
+
+	nPos = std::stoi(sData);
+	return true;
+}
+
+bool MapObject::ExtractFloat(float& fFloat, const std::string& sData)
+{
+	if (sData.empty()) {
+		std::cerr << "MapObject::ExtractFloat(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
+		return false;
+	}
+
+	fFloat = std::stof(sData);
+	return true;
+}
+
+bool MapObject::ExtractPercentage(float& fPercentage, const std::string& sData)
+{
+	if (sData.size() <= 1) {
+		std::cerr << "MapObject::ExtractPercentage(\"" << sData << "\"): ";
+		std::cerr << "Invalid data, expected non-empty string size with suffix %." << std::endl;
+		return false;
+	}
+	int nDataSize = static_cast<int>(sData.size());
+	fPercentage = std::stof(sData.substr(0, static_cast<size_t>(nDataSize - 1)));
+	return true;
+}
+
+bool ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const std::string& sData)
+{
+	return true;
+}
+
 bool MapObject::SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue)
 {
-	if (sAttribute == "token")
-	{
+	if (sAttribute == "token") {
 		return ExtractToken(encode, sValue);
 	}
 	if (sAttribute == "category") {
@@ -188,40 +234,33 @@ bool MapObject::SetSpriteAttribute(const std::string& sAttribute, const std::str
 		return ExtractName(sSpriteName, sValue);
 	}
 	if (sAttribute == "spritex") {
-		nSpritePosX = std::stoi(sValue);
-		return true;
+		return ExtractPosition(nSpritePosX, sValue);
 	}
 	if (sAttribute == "spritey") {
-		nSpritePosY = std::stoi(sValue);
-		return true;
+		return ExtractPosition(nSpritePosY, sValue);
 	}
 	if (sAttribute == "id") {
-		nID = std::stoi(sValue);
-		return true;
+		return ExtractPosition(nID, sValue);
 	}
 	return false;
 }
 bool MapObject::SetBackgroundAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "background") {
-		sBackgroundName = sValue;
-		return true;
+		return ExtractName(sBackgroundName, sValue);
 	}
 	if (sAttribute == "backgroundx") {
-		nBackgroundPosX = std::stoi(sValue);
-		return true;
+		return ExtractPosition(nBackgroundPosX, sValue);
 	}
 	if (sAttribute == "backgroundy") {
-		nBackgroundPosY = std::stoi(sValue);
-		return true;
+		return ExtractPosition(nBackgroundPosY, sValue);
 	}
 	return false;
 }
 bool MapObject::SetLaneAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "platformspeed") {
-		fPlatform = std::stof(sValue);
-		return true;
+		return ExtractFloat(fPlatform, sValue);
 	}
 	return false;
 }
@@ -237,10 +276,7 @@ bool MapObject::SetSummonAttribute(const std::string& sAttribute, const std::str
 		return ExtractTime(fCooldown, sValue);
 	}
 	if (sAttribute == "chance") {
-		std::string sFixed = sValue;
-		sFixed.pop_back();
-		fChance = std::stof(sFixed);
-		return true;
+		return ExtractPercentage(fChance, sValue);
 	}
 	return false;
 }

@@ -61,10 +61,14 @@ public: // Getters
 	std::string ShowData() const;  ///< ShowData
 
 public: // Extracters
-	bool ExtractToken(char &token, const std::string& sData = "");
-	bool ExtractTime(float &fTime, const std::string& sData = "");
-	bool ExtractName(std::string &sName, const std::string& sData = "");
-	bool ExtractFlag(bool &bFlag, const std::string& sData = "");
+	bool ExtractToken(char &token, const std::string& sData);
+	bool ExtractTime(float &fTime, const std::string& sData);
+	bool ExtractName(std::string &sName, const std::string& sData);
+	bool ExtractFlag(bool &bFlag, const std::string& sData);
+	bool ExtractPosition(int32_t &nPos, const std::string& sData);
+	bool ExtractFloat(float &fFloat, const std::string& sData);
+	bool ExtractPercentage(float &fPercentage, const std::string& sData);
+	bool ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const std::string& sData);
 
 public: // Setters
 	bool SetIdentityAttribute(const std::string& sAttribute, const std::string& sValue);
