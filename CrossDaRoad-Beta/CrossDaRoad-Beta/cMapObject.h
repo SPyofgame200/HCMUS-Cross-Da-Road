@@ -51,7 +51,7 @@ public: // Initializer & Cleanup
 	bool Create();
 	bool Destroy();
 
-public: // Getters
+public: // Output
 	std::string ShowIdentityData() const;  ///< ShowData
 	std::string ShowFlagData() const;  ///< ShowData
 	std::string ShowSpriteData() const;  ///< ShowData
@@ -59,6 +59,7 @@ public: // Getters
 	std::string ShowLaneData() const;  ///< ShowData
 	std::string ShowSummonData() const;  ///< ShowData
 	std::string ShowData() const;  ///< ShowData
+	friend std::ostream& operator<<(std::ostream& output, const MapObject& obj);
 
 public: // Extracters
 	bool ExtractToken(char &token, const std::string& sData);

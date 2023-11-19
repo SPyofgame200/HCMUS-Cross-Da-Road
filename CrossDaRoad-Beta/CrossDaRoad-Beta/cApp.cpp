@@ -135,20 +135,8 @@ bool cApp::IsKilled(bool bDebug) const
 	const MapObject dataLeft = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	const MapObject dataRight = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	if (bDebug) {
-		std::cerr << "Left touching[" << dataLeft.encode << "]: ";
-		std::cerr << "sprite \"" << dataLeft.sSpriteName << "\" ";
-		std::cerr << "background = \"" << dataLeft.sBackgroundName << "\" ";
-		std::cerr << "platform speed = " << dataLeft.fPlatform << " ";
-		std::cerr << "lane speed = " << MapLoader.GetLaneRound(fPosY).GetVelocity() << " ";
-		std::cerr << "is Player jumping safe = " << std::boolalpha << Player.IsPlayerCollisionSafe() << " ";
-		std::cerr << std::endl;
-		std::cerr << "Right touching[" << dataRight.encode << "]: ";
-		std::cerr << "sprite \"" << dataRight.sSpriteName << "\" ";
-		std::cerr << "background = \"" << dataRight.sBackgroundName << "\" ";
-		std::cerr << "platform speed = " << dataRight.fPlatform << " ";
-		std::cerr << "lane speed = " << MapLoader.GetLaneRound(fPosY).GetVelocity() << " ";
-		std::cerr << "is Player jumping safe = " << std::boolalpha << Player.IsPlayerCollisionSafe() << " ";
-		std::cerr << std::endl;
+		std::cerr << "Left touching " << dataLeft << std::endl;
+		std::cerr << "Right touching " << dataRight << std::endl;
 	}
 
 	if (Player.IsPlayerCollisionSafe()) {
