@@ -49,7 +49,7 @@ template<class type>
 bool cZone::CleanObject(type*& pObject)
 {
 	if (pObject) {
-		delete[] pObject;
+		delete pObject;
 		pObject = nullptr;
 		return true;
 	}
