@@ -315,8 +315,24 @@ bool MapObject::ExtractPercentage(float& fPercentage, const std::string& sData)
 	return true;
 }
 
-bool ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const std::string& sData)
+bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sValue, const std::string& sData)
 {
+	const size_t uDelimiter = sData.find('=');
+	if (uDelimiter == std::string::npos) {
+		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
+		std::cerr << "Can not extract \"attributes = value\" format from data \"" << sData << "\"" << std::endl;
+		return false;
+	}
+
+	// Split the raw string into the form `attribute=value`
+	sAttribute = sData.substr(0, uDelimiter);
+	sValue = sData.substr(uDelimiter + 1);
+
+	// Standardize the value, so it doesnt be case sentitive
+	utils::trim(sAttribute);
+	utils::trim(sValue);
+	utils::lowerize(sAttribute);
+	utils::lowerize(sValue);
 	return true;
 }
 
@@ -415,24 +431,10 @@ bool MapObject::SetAttribute(const std::string& sAttribute, const std::string& s
 
 bool MapObject::SetAttributeFromData(const std::string& sData)
 {
-	const size_t uDelimiter = sData.find('=');
-	if (uDelimiter == std::string::npos) {
-		std::cerr << "Unknown properties from data [\"" << sData << "\"]" << std::endl;
+	std::string sAttribute, sValue;
+	if (!ExtractAttributeValue(sAttribute, sValue, sData)) {
 		return false;
 	}
-	
-	// Split the raw string into the form `attribute=value`
-	std::string sAttribute, sValue;
-	sAttribute = sData.substr(0, uDelimiter);
-	sValue = sData.substr(uDelimiter + 1);
-
-	// Standardize the value, so it doesnt be case sentitive
-	utils::trim(sAttribute);
-	utils::trim(sValue);
-	utils::lowerize(sAttribute);
-	utils::lowerize(sValue);
-	
-	// Trying to set the attribute if it is possible
 	if (!SetAttribute(sAttribute, sValue)) {
 		std::cerr << "Can not set attribute [" << sAttribute << "] with value " << sValue << std::endl;
 		return false;
