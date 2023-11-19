@@ -108,35 +108,43 @@ int32_t MapObject::GetSpriteFrameCount() const
 	return nSpriteFrame;
 }
 
-std::string MapObject::GetBackgroundName() const {
+std::string MapObject::GetBackgroundName() const 
+{
 	return sBackgroundName;
 }
 
-int32_t MapObject::GetBackgroundPosX() const {
+int32_t MapObject::GetBackgroundPosX() const 
+{
 	return nBackgroundPosX;
 }
 
-int32_t MapObject::GetBackgroundPosY() const {
+int32_t MapObject::GetBackgroundPosY() const 
+{
 	return nBackgroundPosY;
 }
 
-float MapObject::GetPlatformDragSpeed() const {
+float MapObject::GetPlatformDragSpeed() const 
+{
 	return fPlatform;
 }
 
-char MapObject::GetSummonTarget() const {
+char MapObject::GetSummonTarget() const 
+{
 	return summon;
 }
 
-float MapObject::GetSummonDuration() const {
+float MapObject::GetSummonDuration() const 
+{
 	return fDuration;
 }
 
-float MapObject::GetSummonCooldown() const {
+float MapObject::GetSummonCooldown() const 
+{
 	return fCooldown;
 }
 
-float MapObject::GetSummonProbability() const {
+float MapObject::GetSummonProbability() const 
+{
 	return fChance;
 }
 
