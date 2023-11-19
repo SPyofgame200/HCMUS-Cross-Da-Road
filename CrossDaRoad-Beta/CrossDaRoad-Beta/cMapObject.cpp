@@ -78,6 +78,11 @@ bool MapObject::IsDanger() const
 	return isDanger;
 }
 
+bool MapObject::IsPlatform() const
+{
+	return GetPlatformDragSpeed() != 0;
+}
+
 char MapObject::GetCode() const
 {
 	return code;
@@ -456,8 +461,9 @@ std::string MapObject::ShowFlagData() const
 {
 	std::ostringstream oss;
 	oss << "Flag: [ ";
-	oss << "is_blocked=" << std::boolalpha << isBlocked << ", ";
-	oss << "is_danger=" << std::boolalpha << isDanger << ", ";
+	oss << "is_blocked=" << std::boolalpha << IsBlocked() << ", ";
+	oss << "is_danger=" << std::boolalpha << IsDanger() << ", ";
+	oss << "is_platform=" << std::boolalpha << IsPlatform() << " ";
 	oss << "]";
 	return oss.str();
 }
@@ -467,8 +473,7 @@ std::string MapObject::ShowSpriteData() const
 	std::ostringstream oss;
 	oss << "Sprite: [ ";
 	oss << "name=\"" << sSpriteName << "\", ";
-	oss << "draw_x=" << nSpritePosX << ", ";
-	oss << "draw_y=" << nSpritePosY << ", ";
+	oss << "draw_position=(" << nSpritePosX << ":" << nSpritePosY << "), ";
 	oss << "frames=" << nSpriteFrame << " ";
 	oss << "]";
 	return oss.str();
@@ -479,8 +484,7 @@ std::string MapObject::ShowBackgroundData() const
 	std::ostringstream oss;
 	oss << "Background: [ ";
 	oss << "name=\"" << sBackgroundName << "\", ";
-	oss << "draw_x=" << nBackgroundPosX << ", ";
-	oss << "draw_y=" << nBackgroundPosY << ", ";
+	oss << "draw_position=(" << nBackgroundPosX << ":" << nBackgroundPosY << "), ";
 	oss << "frames=" << nBackgroundFrame << " ";
 	oss << "]";
 	return oss.str();
@@ -490,7 +494,7 @@ std::string MapObject::ShowLaneData() const
 {
 	std::ostringstream oss;
 	oss << "Lane: [ ";
-	oss << "platform_drag=" << fPlatform << ", ";
+	oss << "platform_drag=" << fPlatform << " ";
 	oss << "]";
 	return oss.str();
 }
@@ -499,10 +503,10 @@ std::string MapObject::ShowSummonData() const
 {
 	std::ostringstream oss;
 	oss << "Summon: [ ";
-	oss << "summon=" << summon << ", ";
-	oss << "duration=" << fDuration << ", ";
-	oss << "cooldown=" << fCooldown << ", ";
-	oss << "chance=" << fChance << " ";
+	oss << "summon=" << (summon == 0 ? "NULL" : std::string(1, summon)) << ", ";
+	oss << "duration=" << fDuration << "s, ";
+	oss << "cooldown=" << fCooldown << "s, ";
+	oss << "chance=" << fChance << "% ";
 	oss << "]";
 	return oss.str();
 }
@@ -512,8 +516,7 @@ std::string MapObject::ShowSummonData() const
 std::string MapObject::ShowData() const
 {
 	std::ostringstream oss;
-	oss << "Sprite[" << code << "]= {\n";
-	oss << "      " << ShowIdentityData() << "\n";
+	oss << "Sprite[" << code << "]<" << (sCategory.empty() ? "Uncategorized" : sCategory) << "> = {\n";
 	oss << "          " << ShowFlagData() << "\n";
 	oss << "        " << ShowSpriteData() << "\n";
 	oss << "    " << ShowBackgroundData() << "\n";

@@ -81,7 +81,7 @@ void cMapLoader::UpdatePattern()
 	blockPattern.clear();
 	for (const auto& pair : mapSprites) {
 		const auto& sprite = pair.second;
-		if (sprite.GetPlatformDragSpeed() != 0) {
+		if (sprite.IsPlatform()) {
 			platformPattern += sprite.GetCode();
 		}
 		if (sprite.IsBlocked()) {

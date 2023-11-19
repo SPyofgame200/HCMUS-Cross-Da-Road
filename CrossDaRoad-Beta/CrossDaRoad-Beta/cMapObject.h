@@ -55,6 +55,7 @@ public: // Initializer & Cleanup
 public: // Checkers
 	bool IsBlocked() const;
 	bool IsDanger() const;
+	bool IsPlatform() const;
 
 public: // Getters
 	char GetCode() const;
