@@ -17,7 +17,7 @@ $ p sprite=wall background=magma
 : spritepos=[0:0]
 $ q sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spritepos=[x=0:y=0]
+: spritepos=<0,0>
 : duration=5s cooldown=5s chance=2% summon=f
 $ b sprite=wall background=magma
 : block=false danger=false platformspeed=1.0

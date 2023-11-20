@@ -273,7 +273,7 @@ bool MapObject::ExtractPosition(int32_t& nPos, const std::string& sData)
 bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::string& sData)
 {
 	if (sData.empty()) {
-		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
 		return false;
 	}
@@ -286,7 +286,7 @@ bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::stri
 	int x, y;
 	std::istringstream iss(sData);
 	if (!(iss >> x >> y)) {
-		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Failed to extract positions." << std::endl;
 		return false;
 	}
@@ -336,6 +336,12 @@ bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sVal
 		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
 		std::cerr << "Extracted data is empty sAttribute[" << sAttribute.size() << "] & ";
 		std::cerr << "sValue[" << sValue.size() << "]" << std::endl;
+		return false;
+	}
+
+	for (char c : sValue) if (c == '=') {
+		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
+		std::cerr << "Extracted data is invalid, found delimiters inside attribute or values" << std::endl;
 		return false;
 	}
 
