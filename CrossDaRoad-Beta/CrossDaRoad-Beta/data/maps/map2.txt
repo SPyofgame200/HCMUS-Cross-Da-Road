@@ -1,11 +1,11 @@
 mmhhmmhhmmhhmmhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm  0.0
 ,,jjj,,,,,jjj,,,,,jj,,,,,jjj,,,jjj,,,,jjj,,,,jjj,,,,jj,,,,,,jj,, -3.0
 ,,jjj,,,,,jjj,,,,,jj,,,,,jjj,,,jjj,,,,jj,,,,jjj,,,jjj,,,,,,jj,,, -2.5
-......qwe.................qwe..................qwe..............  3.0
-......rty.................rty..................rty..............  3.0
-......uio.................uio..................uio..............  3.0
+......qwe.................qwe..................qwe.............. -3.0
+......rty.................rty..................rty.............. -3.0
+......uio.................uio..................uio.............. -3.0
 pppppmpppppmppppmppppppppppppppppppppppppppppppppppppppppppppppp  0.0
-.........f..........f.............f.............f...........f... -16.0
+.........f..........f.............f.............f...........f... -14.0
 ....f..........f...........f.........f...........f.......f...... -8.0
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 #

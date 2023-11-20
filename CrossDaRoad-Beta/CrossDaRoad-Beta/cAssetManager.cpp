@@ -262,7 +262,6 @@ bool cAssetManager::LoadMapRiverSideSprites()
     bSuccess &= LoadSprite("grass", "grass");
     bSuccess &= LoadAnimation("crocodile", "crocodile", 6);
     bSuccess &= LoadAnimation("crocodile_right", "crocodile_right", 6);
-    bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
 
     return ReportLoadingResult(bSuccess, "River Side map");
 }
@@ -276,6 +275,7 @@ bool cAssetManager::LoadMapIceAgeSprites()
     bSuccess &= LoadSprite("snowed_grass", "snowed_grass");
     bSuccess &= LoadSprite("ice", "ice");
     bSuccess &= LoadSprite("mamut", "mamut");
+    bSuccess &= LoadAnimation("deer", "deer", 6);
 
     return ReportLoadingResult(bSuccess, "Ice Age map");
 }
@@ -289,8 +289,9 @@ bool cAssetManager::LoadMapVolcanoSprites()
     bSuccess &= LoadSprite("volcano", "volcano");
     bSuccess &= LoadSprite("magma", "magma");
     bSuccess &= LoadSprite("pinetree", "pinetree");
+    bSuccess &= LoadAnimation("lava_rock", "lava_rock", 4);
     bSuccess &= LoadAnimation("fire", "fire", 4);
-    bSuccess &= LoadAnimation("magma", "magma", 4);
+    bSuccess &= LoadAnimation("lava", "lava", 12);
 
     return ReportLoadingResult(bSuccess, "Volcano map");
 }
@@ -304,6 +305,7 @@ bool cAssetManager::LoadMapOceanSprites()
     bSuccess &= LoadSprite("ocean", "ocean");
     bSuccess &= LoadAnimation("crab", "crab", 4);
     bSuccess &= LoadAnimation("coconut", "coconut", 8);
+    bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
 
     return ReportLoadingResult(bSuccess, "Ocean map");
 }
