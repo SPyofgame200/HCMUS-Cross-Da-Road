@@ -11,7 +11,7 @@ pqbppppppppppppppppp  0.0
 #
 $ , background=magma
 : block=false danger=true platformspeed=0.0
-: spritepos=0:0
+: spritepos=(0:0)
 $ p sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
 : spritepos=[0:0]
@@ -25,10 +25,10 @@ $ b sprite=wall background=magma
 : duration=10s cooldown=2s chance=50% summon=f
 $ w sprite=wall
 : block=false danger=false platformspeed=0.0
-: spritepos=[0,0]
+: spritepos={0,0}
 $ h
 : block=false danger=false platformspeed=0.0
-: spritepos=[posx=0,posy=0]
+: spritepos=(0,0)
 $ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0

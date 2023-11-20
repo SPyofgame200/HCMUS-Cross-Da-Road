@@ -90,6 +90,7 @@ bool cApp::GameReset()
 	frame4.Reset();
 	frame6.Reset();
 	frame8.Reset();
+	frame12.Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
@@ -559,6 +560,15 @@ bool cApp::DrawStatusBar()
 	return true;
 }
 
+bool cApp::DrawObject(char graphic, const std::string& sName, int nPosX, int nPosY, int nDrawX, int nDrawY)
+{
+	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
+	DrawPartialSprite(nPosX, nPosY, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
+	SetPixelMode(app::Pixel::NORMAL);
+	Zone.Fill(graphic, nPosX, nPosY);
+	return true;
+}
+
 /// @brief Getter for current frame id of player
 int cApp::GetFrameID(const int frame) const
 {
@@ -607,11 +617,17 @@ int cApp::GetFrameID(const int frame, float fTickRate) const
 /// @return String of current frame id of player
 std::string cApp::ShowFrameID(const int frame) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame));
 }
 
 std::string cApp::ShowFrameID(const int frame, float fTickRate) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame, fTickRate));
 }
 

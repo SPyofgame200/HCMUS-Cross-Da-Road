@@ -21,7 +21,6 @@ struct GraphicCell
 	int nCellOffset; 		///< Offset of the cell
 	int nRow; 				///< Row of the cell
 	int nCol; 				///< Column of the cell
-	float fLastDrawn; 		///< Last drawn time of the cell
 
 	// Constructors & Destructor
 	GraphicCell();
@@ -45,12 +44,12 @@ public: // Setters
 
 private: /// Internality
 	std::vector<GraphicCell> GetLaneBackgrounds(const cMapLane& Lane) const;
-	std::vector<GraphicCell> GetLaneObjects(const cMapLane& Lane) const;
+	std::vector<GraphicCell> GetLaneEntities(const cMapLane& Lane) const;
 
 private: // Drawer helpers
 	bool DrawLane(const cMapLane& Lane) const;
 	bool DrawUnderlay(const cMapLane& Lane) const;
-	bool DrawObject(const GraphicCell& Cell) const;
+	bool DrawEntity(const GraphicCell& Cell) const;
 	bool DrawBackground(const GraphicCell& Cell) const;
 
 public: // Drawers

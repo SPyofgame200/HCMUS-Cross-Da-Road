@@ -310,23 +310,45 @@ bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::stri
 
 	if (!bracketStack.empty()) {
 		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
-		std::cerr << "Mismatched brackets." << std::endl;
+		std::cerr << "Mismatched brackets at the suffixes." << std::endl;
 		return false;
 	}
 
 	std::istringstream iss(sData);
 
 	if (sData.find(':') != std::string::npos) {
-		iss >> nPosX >> separator >> nPosY;
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
 	}
 	else if (sData.find(',') != std::string::npos && sData.find(':') == std::string::npos) {
-		iss >> separator >> nPosX >> separator >> separator >> nPosY;
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator;
+		if (iss.peek() == ',' || iss.peek() == '}') {
+			iss.ignore(); // Skip the comma or closing bracket '}'
+		}
+		iss >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
 	}
 	else {
-		iss >> separator >> nPosX >> separator >> nPosY;
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
 	}
 
-	if (iss.fail() || (separator != ',' && separator != '>' && separator != ')' && separator != ':')) {
+	if (iss.fail()) {
 		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Failed to extract positions." << std::endl;
 		return false;
