@@ -194,7 +194,7 @@ bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
+	const int32_t nPosX = Cell.nCol * app->nCellSize;
 	const int32_t nPosY = Cell.nRow * app->nCellSize;
 	const int32_t nDrawX = sprite.GetBackgroundPosX() * app_const::SPRITE_WIDTH;
 	const int32_t nDrawY = sprite.GetBackgroundPosY() * app_const::SPRITE_HEIGHT;
@@ -206,7 +206,7 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 
 	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName + sFrameID);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->DrawPartialSprite(nPosX + Cell.nCellOffset, nPosY, background, nDrawX, nDrawY);
+	app->DrawPartialSprite(nPosX, nPosY, background, nDrawX, nDrawY);
 	app->SetPixelMode(app::Pixel::NORMAL);
 	app->Zone.Fill(Cell.graphic, nPosX, nPosY);
 	return true;
