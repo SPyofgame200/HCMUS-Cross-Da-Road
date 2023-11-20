@@ -104,35 +104,18 @@ std::vector<GraphicCell> hMapDrawer::GetLaneObjects(const cMapLane& Lane) const
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
-	}
+	}	
 
 	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
 		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), nCellOffset, nRow, Cell.nCol));
+			Objects.push_back(GraphicCell(sprite.summon, nCellOffset, nRow, Cell.nCol));
 		}
 	}
 
 	return Objects;
 }
-
-bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
-{
-	if (Lane.HasUnderlay()) {
-		const int32_t nPosX = 0;
-		const int32_t nPosY = Lane.GetLaneID() * app->nCellSize;
-		const int nFrameCount = Lane.GetUnderlayFrameCount();
-		const std::string sUnderlay = Lane.GetUnderlay() + (nFrameCount <= 0 ? "" : app->ShowFrameID(nFrameCount));
-		const app::Sprite* pUnderlay = cAssetManager::GetInstance().GetSprite(sUnderlay);
-		app->SetPixelMode(app::Pixel::MASK);
-		app->DrawSprite(nPosX, nPosY, pUnderlay);
-		app->SetPixelMode(app::Pixel::NORMAL);
-		return true;
-	}
-	return false;
-}
-
 /// @brief Draw lane on screen
 /// @param lane Lane to be drawn
 /// @return True if successful, false otherwise
@@ -157,13 +140,11 @@ bool hMapDrawer::DrawAllLanes() const
 {
 	const std::vector<cMapLane> vecLanes = app->MapLoader.GetLanes();
 	for (const cMapLane& lane : vecLanes) {
-		DrawUnderlay(lane);
 		DrawLane(lane);
 	}
 
 	return true;
 }
-
 /// @brief Draw object on screen
 /// @param Cell Cell to be drawn
 /// @return Always true by default
@@ -172,10 +153,9 @@ bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
 	const int32_t nPosY = Cell.nRow * app->nCellSize;
-	const int32_t nDrawX = sprite.GetSpritePosX() * app_const::SPRITE_WIDTH;
-	const int32_t nDrawY = sprite.GetSpritePosY() * app_const::SPRITE_HEIGHT;
-	int nFrameCount = sprite.GetSpriteFrameCount();
-	const std::string sName = sprite.GetSpriteName() + (nFrameCount <= 0 ? "" : app->ShowFrameID(nFrameCount));
+	const int32_t nDrawX = sprite.nSpritePosX * app_const::SPRITE_WIDTH;
+	const int32_t nDrawY = sprite.nSpritePosY * app_const::SPRITE_HEIGHT;
+	const std::string sName = sprite.sSpriteName + (sprite.nID <= 0 ? "" : app->ShowFrameID(sprite.nID));
 	if (sName.size()) {
 		const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::MASK);
@@ -196,9 +176,9 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
 	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
 	const int32_t nPosY = Cell.nRow * app->nCellSize;
-	const int32_t nDrawX = sprite.GetBackgroundPosX() * app_const::SPRITE_WIDTH;
-	const int32_t nDrawY = sprite.GetBackgroundPosY() * app_const::SPRITE_HEIGHT;
-	const std::string sName = sprite.GetBackgroundName();
+	const int32_t nDrawX = sprite.nBackgroundPosX * app_const::SPRITE_WIDTH;
+	const int32_t nDrawY = sprite.nBackgroundPosY * app_const::SPRITE_HEIGHT;
+	const std::string sName = sprite.sBackgroundName;
 	if (sName.size()) {
 		const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
 		app->SetPixelMode(app::Pixel::NORMAL);
@@ -232,24 +212,24 @@ std::map<int, float> mapLastSummon;
 bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 {
 	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
-	if (sprite.GetSummonTarget() == 0 || sprite.GetSummonProbability() <= 0) {
+	if (sprite.summon == 0 || sprite.fChance <= 0) {
 		return false; // Summon is not enabled or chance is zero or negative
 	}
 
 	float fCurrentTime = app->fTimeSinceStart;
 	int fps = app->GetAppFPS();
 	if (mapLastSummon.count(nID) == false) {
-		std::uniform_real_distribution<float> initialDistribution(0, sprite.GetSummonDuration());
+		std::uniform_real_distribution<float> initialDistribution(0, sprite.fDuration);
 		mapLastSummon[nID] = initialDistribution(generator);
 	}
 	float& fLastSummon = mapLastSummon[nID];
 	const float fDeltaTime = fCurrentTime - fLastSummon;
 
 	if (fDeltaTime >= 0) {
-		if (fDeltaTime <= sprite.GetSummonDuration()) {
+		if (fDeltaTime <= sprite.fDuration) {
 			return true;
 		}
-		else if (fDeltaTime < sprite.GetSummonDuration() + sprite.GetSummonCooldown()) {
+		else if (fDeltaTime < sprite.fDuration + sprite.fCooldown) {
 			return false;
 		}
 	}
@@ -258,7 +238,7 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 		return false;
 	}
 
-	const auto fProbability = static_cast<float>(sprite.GetSummonProbability() / 100.0 / (fps == 0 ? 1 : fps));
+	const auto fProbability = static_cast<float>(sprite.fChance / 100.0 / (fps == 0 ? 1 : fps));
 	const float fGenerated = distribution(generator);
 	if (fGenerated < fProbability) {
 		fLastSummon = fCurrentTime;

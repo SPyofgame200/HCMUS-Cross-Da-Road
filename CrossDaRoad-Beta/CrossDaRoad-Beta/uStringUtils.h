@@ -16,7 +16,7 @@
 #include <random>
 
 /// @brief String utilities
-namespace utils
+namespace strutil
 {
 	extern const char* sSpacePattern; ///< Pattern for space characters
 
@@ -27,8 +27,6 @@ namespace utils
 	std::string lpad(const std::string& input, char paddingChar, size_t length = 1);
 	std::string rpad(const std::string& input, char paddingChar, size_t length = 1);
 
-	std::string& lowerize(std::string& raw);
-	std::string& upperize(std::string& raw);
 	std::string& deduplicate(std::string& raw, const char* pattern = sSpacePattern);
 
 	std::string& camelCaseToSnake(std::string& raw);

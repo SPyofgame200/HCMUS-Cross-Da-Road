@@ -76,21 +76,17 @@ void cMapLoader::PrevLevel()
 /// @brief Update pattern of danger and block
 void cMapLoader::UpdatePattern()
 {
-	platformPattern.clear();
 	dangerPattern.clear();
 	blockPattern.clear();
 	for (const auto& pair : mapSprites) {
 		const auto& sprite = pair.second;
-		if (sprite.IsPlatform()) {
-			platformPattern += sprite.GetCode();
+		if (sprite.isBlocked) {
+			blockPattern += sprite.encode;
 		}
-		if (sprite.IsBlocked()) {
-			blockPattern += sprite.GetCode();
+		if (sprite.isDanger) {
+			dangerPattern += sprite.encode;
 		}
-		if (sprite.IsDanger()) {
-			dangerPattern += sprite.GetCode();
-		}
-		std::cout << sprite.ShowData() << std::endl;
+		sprite.debug();
 	}
 }
 
@@ -158,11 +154,6 @@ MapObject cMapLoader::GetSpriteData(char graphic) const
 	}
 }
 /// @brief Getter for danger pattern
-std::string cMapLoader::GetPlatformPattern() const
-{
-	return platformPattern;
-}
-/// @brief Getter for danger pattern
 std::string cMapLoader::GetDangerPattern() const
 {
 	return dangerPattern;
@@ -222,8 +213,8 @@ std::string cMapLoader::ShowMapInfo() const
 /// @return True if sprite data was set successfully, false otherwise
 bool cMapLoader::SetSpriteData(const MapObject& data)
 {
-	const bool bOverwrite = mapSprites.count(data.GetCode());
-	mapSprites[data.GetCode()] = data;
+	const bool bOverwrite = mapSprites.count(data.encode);
+	mapSprites[data.encode] = data;
 	return bOverwrite;
 }
 
@@ -244,33 +235,18 @@ bool cMapLoader::SetMapLevel(int MapLevel)
 /// @param sLine Line of the map lane 
 /// @param bDebug Whether to print debug message or not
 /// @return True if map lane was loaded successfully, false otherwise
-bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
+bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID, bool bDebug)
 {
-	std::stringstream ss(sLine);
-	std::string sLane;
-	float fVelocity;
-
-	// Read lane, velocity, and background from the line
-	if (!(ss >> sLane >> fVelocity)) {
-		std::cerr << "cMapLoader::LoadMapLane(\"" << sLine << "\", id=" << nLaneID << "): ";
-		std::cerr << "Error: Failed to parse line, extracted content: ";
-		std::cerr << "sLane[" << sLane.size() << "], fVelocity=" << fVelocity << std::endl;
+	std::cout << "Line #" << nLaneID << ": " << sLine << std::endl;
+	const size_t spacePos = sLine.find(' ');
+	if (spacePos == std::string::npos) {
+		std::cout << "Error: Space not found in line: " << sLine << std::endl;
 		return false;
 	}
 
-	std::string sUnderlay = "";
-	int nFrame = 0;
-	ss >> sUnderlay >> nFrame;
-
-	std::cout << "Line #" << nLaneID << ": sLane[" << sLane.size() << "] = \"" << sLane << "\", speed=" << fVelocity;
-	if (sUnderlay.size()) {
-		std::cout << " underlay = \"" << sUnderlay << "\"";
-	}
-	else {
-		std::cout << " no-underlay";
-	}
-	std::cout << std::endl;
-	const cMapLane lane(fVelocity, sLane, nLaneID, sUnderlay, nFrame);
+	const float fVelocity = std::stof(sLine.substr(spacePos + 1));
+	const std::string sLane = sLine.substr(0, spacePos);
+	const cMapLane lane(fVelocity, sLane, nLaneID);
 	vecLanes.push_back(lane);
 	return true;
 }
@@ -278,23 +254,103 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 ///	@param sLine Line of the map sprite
 /// @param bDebug Whether to print debug message or not
 ///	@return true if map sprite was loaded successfully, false otherwise
-bool cMapLoader::LoadMapSprite(const std::string& sLine)
+bool cMapLoader::LoadMapSprite(const std::string& sLine, bool bDebug)
 {
 	std::istringstream iss(sLine);
 	char token;
 	iss >> token;
-	// Create a new Sprite
-	if (token == '$') { 
-		char token;
-		iss >> token;
-		currentSprite = MapObject(token);
+
+	if (bDebug) {
+		std::cout << "# Current Line = \"" << sLine << "\" -> token=" << token << std::endl;
 	}
-	/// Alow sprite data to be read as multiple lines
-	if (token == '$' || token == ':')
-	{
-		std::string sData;
-		while (iss >> sData) {
-			currentSprite.SetAttributeFromData(sData);
+
+	if (token == '$') { // New Sprite
+		currentSprite = MapObject();
+		iss >> currentSprite.encode;
+		if (bDebug) {
+			std::cerr << "Create new Sprite('" << currentSprite.encode << "')" << std::endl;
+		}
+	}
+	{ // Continue Loading Last Sprite
+		std::string attribute, value;
+		std::string raw;
+		while (iss >> raw) {
+			// Find the position of '=' in the raw string
+			const size_t equalPos = raw.find('=');
+
+			// Check if the format is correct (contains '=' character)
+			if (equalPos != std::string::npos) {
+				// Split the raw string into attribute and value based on '='
+				attribute = raw.substr(0, equalPos);
+				value = raw.substr(equalPos + 1);
+				if (bDebug) {
+					std::cerr << attribute << " vs " << value << std::endl;
+				}
+
+				if (attribute == "sprite") {
+					currentSprite.sSpriteName = value;
+				}
+				else if (attribute == "background") {
+					currentSprite.sBackgroundName = value;
+				}
+				else if (attribute == "category") {
+					currentSprite.sCategory = value;
+				}
+				else if (attribute == "block") {
+					if (value == "true") {
+						currentSprite.isBlocked = true;
+					}
+					else if (value == "false")
+						currentSprite.isBlocked = false;
+				}
+				else if (attribute == "danger") {
+					if (value == "true") {
+						currentSprite.isDanger = true;
+					}
+					else if (value == "false")
+						currentSprite.isDanger = false;
+				}
+				else if (attribute == "platformspeed") {
+					currentSprite.fPlatform = std::stof(value);
+				}
+				else if (attribute == "spriteX") {
+					currentSprite.nSpritePosX = std::stoi(value);
+				}
+				else if (attribute == "spriteY") {
+					currentSprite.nSpritePosY = std::stoi(value);
+				}
+				else if (attribute == "backgroundX") {
+					currentSprite.nBackgroundPosX = std::stoi(value);
+				}
+				else if (attribute == "backgroundY") {
+					currentSprite.nBackgroundPosY = std::stoi(value);
+				}
+				else if (attribute == "id") {
+					currentSprite.nID = std::stoi(value);
+				}
+				else if (attribute == "summon") {
+					currentSprite.summon = value[0];
+				}
+				else if (attribute == "duration") {
+					currentSprite.fDuration = ExtractTime(value);
+				}
+				else if (attribute == "cooldown") {
+					currentSprite.fCooldown = ExtractTime(value);
+				}
+				else if (attribute == "chance") {
+					value.pop_back();
+					currentSprite.fChance = std::stof(value);
+				}
+				else {
+					std::cerr << "Unknown attribute = \"" << attribute << "\" assigning value \"" << value << "\"";
+					std::cerr << std::endl;
+				}
+			}
+			if (bDebug) {
+				std::cerr << "Assign attribute Sprite['" << currentSprite.encode
+					<< "']";
+				std::cerr << "->" << attribute << " := " << value << std::endl;
+			}
 		}
 	}
 	SetSpriteData(currentSprite);
@@ -313,8 +369,8 @@ bool cMapLoader::LoadMapName(const std::string& sFileName)
 	}
 
 	for (std::string sLine; std::getline(ifs, sLine);) {
-		utils::deduplicate(sLine, " ");
-		utils::trim(sLine);
+		strutil::deduplicate(sLine, " ");
+		strutil::trim(sLine);
 		const size_t nPos = sLine.find(". ");
 		if (nPos != std::string::npos) {
 			const size_t startMapName = nPos + 2;
@@ -358,8 +414,8 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	int nLaneID = 0;
 	bool bLoadingSprite = false;
 	for (std::string sLine; std::getline(ifs, sLine);) {
-		utils::deduplicate(sLine, " ");
-		utils::trim(sLine);
+		strutil::deduplicate(sLine, " ");
+		strutil::trim(sLine);
 		if (sLine.empty())
 			break;
 
@@ -387,6 +443,64 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 bool cMapLoader::LoadMapLevel()
 {
 	return LoadMapLevel(GetMapLevel());
+}
+
+/// @brief Extract time from string
+/// @param timeStr Time string
+/// @return Time in float format
+float cMapLoader::ExtractTime(const std::string& timeStr)
+{
+	if (timeStr.empty()) {
+		std::cerr << "Invalid time string." << std::endl;
+		return 0.0;
+	}
+
+	float conversionFactor = 1.0;
+	std::string numericPart;
+	std::string timeType;
+
+	// Find the position of the first non-numeric character
+	size_t pos = 0;
+	while (pos < timeStr.size() && (std::isdigit(timeStr[pos]) || timeStr[pos] == '.')) {
+		numericPart += timeStr[pos];
+		pos++;
+	}
+
+	if (pos < timeStr.size()) {
+		timeType = timeStr.substr(pos);
+	}
+	else {
+		std::cerr << "No time type specified in the time string." << std::endl;
+		return 0.0;
+	}
+
+	if (timeType == "ms") {
+		conversionFactor = static_cast<float>(1.0e-3);
+	}
+	else if (timeType == "us") {
+		conversionFactor = static_cast <float>(1.0e-6);
+	}
+	else if (timeType == "ns") {
+		conversionFactor = static_cast <float>(1.0e-9);
+	}
+	else if (timeType == "s") {
+		conversionFactor = static_cast <float>(1.0); // Seconds
+	}
+	else {
+		std::cerr << "Unrecognized time type: " << timeType << std::endl;
+		return 0.0;
+	}
+
+	std::istringstream numericStream(numericPart);
+	float numericValue;
+
+	if (numericStream >> numericValue) {
+		return numericValue * conversionFactor;
+	}
+	else {
+		std::cerr << "Invalid numeric part in the time string." << std::endl;
+		return 0.0;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

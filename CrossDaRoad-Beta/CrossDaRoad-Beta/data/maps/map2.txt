@@ -12,31 +12,31 @@ pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 $ f sprite=penguin background=ice
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ q sprite=deer background=ice spriteFrame=6
+$ q sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ w sprite=deer background=ice spriteFrame=6
+$ w sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ e sprite=deer background=ice spriteFrame=6
+$ e sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ r sprite=deer background=ice spriteFrame=6
+$ r sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=1
-$ t sprite=deer background=ice spriteFrame=6
+$ t sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=1
-$ y sprite=deer background=ice spriteFrame=6
+$ y sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=1
-$ u sprite=deer background=ice spriteFrame=6
+$ u sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=2
-$ i sprite=deer background=ice spriteFrame=6
+$ i sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=2
-$ o sprite=deer background=ice spriteFrame=6
+$ o sprite=deer background=ice id=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=2
 $ m sprite=pinetree

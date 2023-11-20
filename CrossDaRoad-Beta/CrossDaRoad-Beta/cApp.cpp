@@ -93,10 +93,7 @@ bool cApp::GameReset()
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
-	const char* sPlatformPattern = MapLoader.GetPlatformPattern().c_str();
-	const char* sDangerPattern = MapLoader.GetDangerPattern().c_str();
-	const char* sBlockPattern = MapLoader.GetBlockPattern().c_str();
-	Zone.SetPattern(sPlatformPattern, sDangerPattern, sBlockPattern);
+	Zone.SetPattern(MapLoader.GetDangerPattern().c_str(), MapLoader.GetBlockPattern().c_str());
 	return true;
 }
 
@@ -138,8 +135,20 @@ bool cApp::IsKilled(bool bDebug) const
 	const MapObject dataLeft = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	const MapObject dataRight = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
 	if (bDebug) {
-		std::cerr << "Left touching " << dataLeft << std::endl;
-		std::cerr << "Right touching " << dataRight << std::endl;
+		std::cerr << "Left touching[" << dataLeft.encode << "]: ";
+		std::cerr << "sprite \"" << dataLeft.sSpriteName << "\" ";
+		std::cerr << "background = \"" << dataLeft.sBackgroundName << "\" ";
+		std::cerr << "platform speed = " << dataLeft.fPlatform << " ";
+		std::cerr << "lane speed = " << MapLoader.GetLaneRound(fPosY).GetVelocity() << " ";
+		std::cerr << "is Player jumping safe = " << std::boolalpha << Player.IsPlayerCollisionSafe() << " ";
+		std::cerr << std::endl;
+		std::cerr << "Right touching[" << dataRight.encode << "]: ";
+		std::cerr << "sprite \"" << dataRight.sSpriteName << "\" ";
+		std::cerr << "background = \"" << dataRight.sBackgroundName << "\" ";
+		std::cerr << "platform speed = " << dataRight.fPlatform << " ";
+		std::cerr << "lane speed = " << MapLoader.GetLaneRound(fPosY).GetVelocity() << " ";
+		std::cerr << "is Player jumping safe = " << std::boolalpha << Player.IsPlayerCollisionSafe() << " ";
+		std::cerr << std::endl;
 	}
 
 	if (Player.IsPlayerCollisionSafe()) {
@@ -157,8 +166,8 @@ std::string cApp::GetPlayerDeathMessage() const
 	constexpr  float fConst = 2.0;
 	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
 	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	const std::string sLeft = leftData.GetSpriteName();
-	const std::string sRight = rightData.GetSpriteName();
+	const std::string sLeft = leftData.sSpriteName;
+	const std::string sRight = rightData.sSpriteName;
 
 	if (sLeft.empty() && sRight.empty()) {
 		return "Player has been force killed";
@@ -179,7 +188,7 @@ bool cApp::IsPlatformLeft() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
-	return !leftData.GetSpriteName().empty() && std::fabs(leftData.GetPlatformDragSpeed()) > 0;
+	return !leftData.sSpriteName.empty() && std::fabs(leftData.fPlatform) > 0;
 }
 /// @brief Check if Player is on platform at right
 /// @return True if Player is on platform at right, false otherwise
@@ -188,7 +197,7 @@ bool cApp::IsPlatformRight() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
+	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief Check if Player is on platform at center
 /// @return True if Player is on platform at center, false otherwise
@@ -197,7 +206,7 @@ bool cApp::IsPlatformCenter() const
 	const float fPosX = Player.GetPlayerLogicPositionX();
 	const float fPosY = Player.GetPlayerLogicPositionY();
 	const MapObject rightData = GetHitBox(fPosX, fPosY);
-	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
+	return !rightData.sSpriteName.empty() && std::fabs(rightData.fPlatform) > 0;
 }
 /// @brief Check if Player is on platform
 /// @return True if Player is on platform, false otherwise
@@ -277,7 +286,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
 	if (!IsEnginePause() && !bDeath) {
 		fTimeSinceStart = fTickTime;
-		OnUpdateFrame(fTickTime);
+		Player.OnUpdateFrame(fTickTime);
 	}
 	return true;
 }
@@ -540,7 +549,7 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005f);
+	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;
@@ -604,17 +613,6 @@ std::string cApp::ShowFrameID(const int frame) const
 std::string cApp::ShowFrameID(const int frame, float fTickRate) const
 {
 	return std::to_string(GetFrameID(frame, fTickRate));
-}
-
-/// @brief Update player animation frame 
-/// @param fTickTime Time elapsed since last frame
-/// @return Always true by default
-bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
-{
-	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

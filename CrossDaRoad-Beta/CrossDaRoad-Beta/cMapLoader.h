@@ -25,14 +25,13 @@
 class cMapLoader
 {
 private:
-	std::map<char, MapObject> mapSprites; ///< Map of sprite data (key: code, value: MapObject)
+	std::map<char, MapObject> mapSprites; ///< Map of sprite data (key: encode, value: MapObject)
 	std::vector<cMapLane> vecLanes; ///< Vector of lanes in map
 	std::vector<std::string> vecMapNames; ///< Vector of map names
 	std::vector<std::string> vecMapDescriptions; ///< Vector of map descriptions
 
 private:
 	MapObject currentSprite; ///< Current sprite data
-	std::string platformPattern; ///< Danger pattern for map
 	std::string dangerPattern; ///< Danger pattern for map
 	std::string blockPattern; ///< Block pattern for map
 	int nMapLevel; ///< Current map level
@@ -57,7 +56,6 @@ public: // Getters
 	int GetMapLevel() const;
 	int GetMapCount() const;
 	MapObject GetSpriteData(char graphic) const;
-	std::string GetPlatformPattern() const;
 	std::string GetDangerPattern() const;
 	std::string GetBlockPattern() const;
 	std::string GetMapName(int nLevel) const;
@@ -79,13 +77,16 @@ public: // Setters
 	bool SetMapLevel(int MapLevel);
 
 private: // Loaders
-	bool LoadMapLane(const std::string& sLine, int nLineID = 0);
-	bool LoadMapSprite(const std::string& sLine);
+	bool LoadMapLane(const std::string& sLine, int nLineID = 0, bool bDebug = false);
+	bool LoadMapSprite(const std::string& sLine, bool bDebug = false);
 	bool LoadMapName(const std::string& sFileName);
 	bool LoadMapLevel(const int& nMapLevel);
 
 public: // Loaders
 	bool LoadMapLevel();
+
+private: // Utilities
+	static float ExtractTime(const std::string& timeStr);
 };
 
 #endif // C_MAP_LOADER_H
