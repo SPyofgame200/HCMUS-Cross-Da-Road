@@ -560,15 +560,6 @@ bool cApp::DrawStatusBar()
 	return true;
 }
 
-bool cApp::DrawObject(char graphic, const std::string& sName, int nPosX, int nPosY, int nDrawX, int nDrawY)
-{
-	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-	DrawPartialSprite(nPosX, nPosY, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
-	SetPixelMode(app::Pixel::NORMAL);
-	Zone.Fill(graphic, nPosX, nPosY);
-	return true;
-}
-
 /// @brief Getter for current frame id of player
 int cApp::GetFrameID(const int frame) const
 {

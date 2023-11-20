@@ -1,0 +1,5 @@
+#ifndef U_MESSAGE_MANAGER
+#define U_MESSAGE_MANAGER
+
+
+#endif U_MESSAGE_MANAGER
