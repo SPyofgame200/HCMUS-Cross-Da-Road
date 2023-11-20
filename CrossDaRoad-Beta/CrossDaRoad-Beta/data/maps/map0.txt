@@ -1,32 +1,34 @@
-whwwqwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
+whwwhwhwhwwwhwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 beach_wave 8
 ,,qq,,,,,,qq,,,,,,qq,,,pp,,,,,,pp,,,,,,qq,,,,,,,qq,,,,qq,,,,pp,,  3.0
 pqqpppfpqqpppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
-,,pqp,,,,,ppqpp,,,,,pp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0
-,,,qp,,,,,ppqpp,,,,,,pqqp,,,,,pq,,,,,,pp,,,,,,qq,,,,ppqqpp,,,,,, -3.0
-,,,,pppp,,,,,pppqp,,,pqqp,,,,,,,,,qqpp,,,,,pq,,,,,,,,qqpp,,,,,,,  3.0
-fppbbpfpbbpppfppppppppppfppppppppppppppppppppppppppppppppppppppp  0.0
-,,pp,,,,qq,,,,,qp,,pp,,,,,,,,,qp,,,,,,,,,qq,,,,pq,,,,pp,,,,,pq,, -4.0
-,,,pppq,,,,pqpp,,,,,,,,,pqqp,,,,,,pppp,,,,,,,,,ppqq,,,pqqp,,,,,, -3.0
-pqbppppppqpppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
+,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0
+,,,qpqp,,,,,pq,,,,,,pp,,,,,,qq,,,,ppqqpp,,,,,, -3.0
+,,,,p,,,,,qqpp,,,,,,,  3.0
+fppbbpppppppppppp  0.0
+,,pp,,,,,,qq,,,,pq,,,,pp,,,,,pq,, -4.0
+,,,pp,pppp,,,,,,,,,ppqq,,,pqqp,,,,,, -3.0
+pqbppppppppppppppppp  0.0
 #
 $ , background=magma
 : block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=0
+: spritepos=0:0
 $ p sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=[0:0]
 $ q sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=[x=0:y=0]
+: duration=5s cooldown=5s chance=2% summon=f
 $ b sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
-: spriteX=0 spriteY=0
+: spritepos=default
+: duration=10s cooldown=2s chance=50% summon=f
 $ w sprite=wall
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ h sprite=soil
+: spritepos=[0,0]
+$ h
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ f sprite=fire background=wall id=4
+: spritepos=[posx=0,posy=0]
+$ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0

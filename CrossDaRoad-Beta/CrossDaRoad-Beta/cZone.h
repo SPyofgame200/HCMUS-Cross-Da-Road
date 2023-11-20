@@ -14,12 +14,14 @@
 class cZone
 {
 private:
-	int nZoneWidth;  ///< width of the zone
-	int nZoneHeight; ///< height of the zone
-	bool* bDangers;  ///< array of danger pixels
-	bool* bBlocks;   ///< array of block pixels
+	int nZoneWidth;   ///< width of the zone
+	int nZoneHeight;  ///< height of the zone
+	bool* bPlatforms; ///< cache-friendly matrix of platform pixels
+	bool* bDangers;   ///< cache-friendly matrix of danger pixels
+	bool* bBlocks;    ///< cache-friendly matrix of block pixels
 	int nCellWidth;
 	int nCellHeight;
+	char* sDefaultPlatformPattern;
 	char* sDefaultDangerPattern;
 	char* sDefaultBlockPattern;
 
@@ -28,23 +30,41 @@ public: // Constructors & Destructor
 	cZone(int nWidth, int nHeight);
 	~cZone();
 
+private: /// Init-Clean Utilities
+	template<class type>
+	bool CleanArray(type*& pArray);
+	template<class type>
+	bool CleanObject(type*& pObject);
+
+public: /// Initializer & Cleanup
+	bool Create();
+	bool Destroy();
+
 private: // Constructor functions
-	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock);
+	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock, bool bPlatform);
 public: // Constructor functions
 	bool CreateZone(int nWidth, int nHeight);
 
 private: // Checkers
-	static bool IsDanger(const char& graphic, const char* sDangerPattern);
-	static bool IsSafe(const char& graphic, const char* sDangerPattern);
-	static bool IsBlocked(const char& graphic, const char* sBlockPattern);
-	static bool IsUnblocked(const char& graphic, const char* sBlockPattern);
+	bool IsPlatform(const char& graphic, const char* sPlatformPattern);
+	bool IsNonplatform(const char& graphic, const char* sPlatformPattern);
+	bool IsDanger(const char& graphic, const char* sDangerPattern);
+	bool IsSafe(const char& graphic, const char* sDangerPattern);
+	bool IsBlocked(const char& graphic, const char* sBlockPattern);
+	bool IsUnblocked(const char& graphic, const char* sBlockPattern);
+	bool IsPlatform(const char& graphic);
+	bool IsNonplatform(const char& graphic);
+	bool IsDanger(const char& graphic);
+	bool IsSafe(const char& graphic);
+	bool IsBlocked(const char& graphic);
+	bool IsUnblocked(const char& graphic);
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
 	bool SetDanger(int nPosX, int nPosY, bool bValue);
 	bool SetBlock(int nPosX, int nPosY, bool bValue);
 	bool SetCellSize(int nWidth, int nHeight);
-	bool SetPattern(const char* sDangerPattern, const char* sBlockPattern);
+	bool SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern);
 
 public: // Fillers
 	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);

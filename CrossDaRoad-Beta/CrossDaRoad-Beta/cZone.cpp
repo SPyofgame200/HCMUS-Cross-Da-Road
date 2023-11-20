@@ -17,14 +17,7 @@
 /// @brief Default constructor
 cZone::cZone()
 {
-	nZoneWidth = 0;
-	nZoneHeight = 0;
-	bDangers = nullptr;
-	bBlocks = nullptr;
-	nCellWidth = 0;
-	nCellHeight = 0;
-	sDefaultDangerPattern = nullptr;
-	sDefaultBlockPattern = nullptr;
+	Create();
 }
 /// @brief Parameterized constructor
 /// @param nWidth width of the zone
@@ -36,23 +29,58 @@ cZone::cZone(const int nWidth, const int nHeight)
 /// @brief Destructor
 cZone::~cZone()
 {
-	if (bDangers != nullptr) {
-		delete[] bDangers;
-		bDangers = nullptr;
+	if (Destroy()) {
+		std::cerr << "cZone::~cZone(): Successfully destructed" << std::endl;
 	}
-	if (bBlocks != nullptr) {
-		delete[] bBlocks;
-		bBlocks = nullptr;
+}
+
+template<class type>
+bool cZone::CleanArray(type*& pArray)
+{
+	if (pArray) {
+		delete[] pArray;
+		pArray = nullptr;
+		return true;
 	}
-	if (sDefaultDangerPattern != nullptr) {
-		delete[] sDefaultDangerPattern;
-		sDefaultDangerPattern = nullptr;
+	return false;
+}
+
+template<class type>
+bool cZone::CleanObject(type*& pObject)
+{
+	if (pObject) {
+		delete pObject;
+		pObject = nullptr;
+		return true;
 	}
-	if (sDefaultBlockPattern != nullptr) {
-		delete[] sDefaultBlockPattern;
-		sDefaultBlockPattern = nullptr;
-	}
-	std::cerr << "cZone::~cZone(): Successfully destructed" << std::endl;
+	return false;
+}
+
+bool cZone::Create()
+{
+	Destroy();
+	nZoneWidth = 0;
+	nZoneHeight = 0;
+	bPlatforms = nullptr;
+	bDangers = nullptr;
+	bBlocks = nullptr;
+	nCellWidth = 0;
+	nCellHeight = 0;
+	sDefaultPlatformPattern = nullptr;
+	sDefaultDangerPattern = nullptr;
+	sDefaultBlockPattern = nullptr;
+	return true;
+}
+
+bool cZone::Destroy()
+{
+	CleanArray(bPlatforms);
+	CleanArray(bDangers);
+	CleanArray(bBlocks);
+	CleanArray(sDefaultPlatformPattern);
+	CleanArray(sDefaultDangerPattern);
+	CleanArray(sDefaultBlockPattern);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -65,32 +93,44 @@ cZone::~cZone()
 /// @param bDanger value to set danger pixels (true: danger, false: safe)
 /// @param bBlock value to set block pixels (true: block, false: unblock)
 /// @return true if successfully created zone, false otherwise
-bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, const bool bBlock)
+bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, const bool bBlock, const bool bPlatform)
 {
 	if (nWidth <= 0 || nHeight <= 0) {
-		std::cerr << "In cZone.cpp, calling bool cZone::CreateZone(int width = "
-			<< nWidth << ", int height = " << nHeight
-			<< ") is invalid, expected positive integer parameters";
+		std::cerr << "cZone::CreateZone(width = " << nWidth << ", height = " << nHeight << "): ";
+		std::cerr << "Invalid parameters, expected positive integer parameters";
 		return false;
 	}
 	nZoneWidth = nWidth;
 	nZoneHeight = nHeight;
-	bDangers = new bool[nZoneWidth * nZoneHeight];
-	bBlocks = new bool[nZoneWidth * nZoneHeight];
-	memset(bDangers, bDanger, nZoneWidth * nZoneHeight * sizeof(bool));
-	memset(bBlocks, bBlock, nZoneWidth * nZoneHeight * sizeof(bool));
+	const int nZoneSize = nZoneWidth * nZoneHeight;
+	bPlatforms = new bool[nZoneSize];
+	bDangers = new bool[nZoneSize];
+	bBlocks = new bool[nZoneSize];
+	memset(bPlatforms, bPlatform, nZoneSize * sizeof(bool));
+	memset(bDangers, bDanger, nZoneSize * sizeof(bool));
+	memset(bBlocks, bBlock, nZoneSize * sizeof(bool));
 	return true;
 }
 
 /// @brief Create zone with size nWidth x nHeight, set danger and block pixels to safe and unblock
 bool cZone::CreateZone(const int nWidth, const int nHeight)
 {
-	return CreateZone(nWidth, nHeight, false, false);
+	return CreateZone(nWidth, nHeight, false, false, false);
 }
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////// CHECKERS ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+
+bool cZone::IsPlatform(const char& graphic, const char* sPlatformPattern)
+{
+	return strchr(sPlatformPattern, graphic) != nullptr;
+}
+
+bool cZone::IsNonplatform(const char& graphic, const char* sPlatformPattern)
+{
+	return !IsPlatform(graphic, sPlatformPattern);
+}
 
 /// @brief Check if graphic is danger
 /// @param graphic graphic to check 
@@ -122,6 +162,36 @@ bool cZone::IsBlocked(const char& graphic, const char* sBlockPattern)
 bool cZone::IsUnblocked(const char& graphic, const char* sBlockPattern)
 {
 	return !IsBlocked(graphic, sBlockPattern);
+}
+
+bool cZone::IsPlatform(const char& graphic)
+{
+	return IsPlatform(graphic, sDefaultPlatformPattern);
+}
+
+bool cZone::IsNonplatform(const char& graphic)
+{
+	return IsNonplatform(graphic, sDefaultPlatformPattern);
+}
+
+bool cZone::IsDanger(const char& graphic)
+{
+	return IsDanger(graphic, sDefaultDangerPattern);
+}
+
+bool cZone::IsSafe(const char& graphic)
+{
+	return IsSafe(graphic, sDefaultDangerPattern);
+}
+
+bool cZone::IsBlocked(const char& graphic)
+{
+	return IsBlocked(graphic, sDefaultBlockPattern);
+}
+
+bool cZone::IsUnblocked(const char& graphic)
+{
+	return IsUnblocked(graphic, sDefaultBlockPattern);
 }
 /// @brief Check if (x, y) is inside the zone
 /// @param x x coordinate 
@@ -181,17 +251,17 @@ bool cZone::SetCellSize(int nWidth, int nHeight)
 /// @param sDangerPattern Character array of danger pattern
 /// @param sBlockPattern Character array of block pattern
 /// @return True if successfully set danger and block pattern, false otherwise
-bool cZone::SetPattern(const char* sDangerPattern, const char* sBlockPattern)
+bool cZone::SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern)
 {
-	if (sDefaultDangerPattern) {
-		delete[] sDefaultDangerPattern;
-	}
+	CleanArray(sDefaultPlatformPattern);
+	sDefaultPlatformPattern = new char[strlen(sPlatformPattern) + 1];
+	strcpy_s(sDefaultPlatformPattern, strlen(sPlatformPattern) + 1, sPlatformPattern);
+
+	CleanArray(sDefaultDangerPattern);
 	sDefaultDangerPattern = new char[strlen(sDangerPattern) + 1];
 	strcpy_s(sDefaultDangerPattern, strlen(sDangerPattern) + 1, sDangerPattern);
 
-	if (sDefaultBlockPattern) {
-		delete[] sDefaultBlockPattern;
-	}
+	CleanArray(sDefaultBlockPattern);
 	sDefaultBlockPattern = new char[strlen(sBlockPattern) + 1];
 	strcpy_s(sDefaultBlockPattern, strlen(sBlockPattern) + 1, sBlockPattern);
 	return true;

@@ -49,6 +49,7 @@ private: /// Internality
 
 private: // Drawer helpers
 	bool DrawLane(const cMapLane& Lane) const;
+	bool DrawUnderlay(const cMapLane& Lane) const;
 	bool DrawObject(const GraphicCell& Cell) const;
 	bool DrawBackground(const GraphicCell& Cell) const;
 

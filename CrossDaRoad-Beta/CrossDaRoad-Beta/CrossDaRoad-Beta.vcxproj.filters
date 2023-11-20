@@ -24,12 +24,6 @@
     <ClCompile Include="cMapLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cZone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,16 +69,22 @@
     <ClCompile Include="cMapLane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cMapEditor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cMapDrawer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="uAppUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hMapDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hMapEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,12 +96,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cMapLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cZone.h">
@@ -152,16 +146,22 @@
     <ClInclude Include="cMapLane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cMapEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cMapDrawer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="uAppUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hMapDrawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hMapEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -184,5 +184,13 @@
     <Text Include="data\maps\mapNames.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\functionStandard.md" />
+    <None Include="docs\codingStandard.md" />
+    <None Include="docs\projectStandard.md" />
+    <None Include="docs\mapStandard.md" />
+    <None Include="docs\README.md" />
+    <None Include="docs\todo.md" />
   </ItemGroup>
 </Project>

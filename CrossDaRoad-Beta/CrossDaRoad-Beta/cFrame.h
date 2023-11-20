@@ -89,13 +89,13 @@ public: /// Properties Setters
     }
 
 private: /// Utilities
-    static float GetFrameTick(const int nFrameDelay, const float fTickRate = 0.01f)
+    static float GetFrameTick(const int nFrameDelay, const float fTickRate)
     {
         return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
     }
 
 public: /// Updaters
-    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.01f)
+    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate)
     {
         const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
         SetVal(fTickTime / fFrameTick);

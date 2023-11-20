@@ -22,6 +22,6 @@ $ w sprite=wall
 $ h sprite=soil
 : block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
-$ f sprite=fire background=wall id=4
+$ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0

@@ -169,7 +169,6 @@ public: // Player Renderers
 
 public: // Logic-Render Control
 	bool OnPlayerMove();
-	bool OnUpdateFrame(float fTickTime);
 };
 
 #endif // C_PLAYER_H
