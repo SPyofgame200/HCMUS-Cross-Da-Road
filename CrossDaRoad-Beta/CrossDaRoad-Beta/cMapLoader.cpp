@@ -283,8 +283,6 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 ///	@return true if map sprite was loaded successfully, false otherwise
 bool cMapLoader::LoadMapSprite(const std::string& sLine)
 {
-	std::cerr << "line = \"" << sLine << "\"" << std::endl;
-
 	std::istringstream iss(sLine);
 	char token;
 	iss >> token;
