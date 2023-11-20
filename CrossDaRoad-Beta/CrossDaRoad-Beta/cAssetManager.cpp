@@ -263,7 +263,6 @@ bool cAssetManager::LoadMapRiverSideSprites()
     bSuccess &= LoadAnimation("crocodile", "crocodile", 6);
     bSuccess &= LoadAnimation("crocodile_right", "crocodile_right", 6);
     bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
-    bSuccess &= LoadAnimation("magma", "magma", 12);
 
     return ReportLoadingResult(bSuccess, "River Side map");
 }
@@ -291,6 +290,7 @@ bool cAssetManager::LoadMapVolcanoSprites()
     bSuccess &= LoadSprite("magma", "magma");
     bSuccess &= LoadSprite("pinetree", "pinetree");
     bSuccess &= LoadAnimation("fire", "fire", 4);
+    bSuccess &= LoadAnimation("magma", "magma", 4);
 
     return ReportLoadingResult(bSuccess, "Volcano map");
 }
