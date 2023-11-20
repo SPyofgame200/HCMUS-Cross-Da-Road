@@ -332,6 +332,12 @@ bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sVal
 	// Split the raw string into the form `attribute=value`
 	sAttribute = sData.substr(0, uDelimiter);
 	sValue = sData.substr(uDelimiter + 1);
+	if (sAttribute.empty() || sValue.empty()) {
+		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
+		std::cerr << "Extracted data is empty sAttribute[" << sAttribute.size() << "] & ";
+		std::cerr << "sValue[" << sValue.size() << "]" << std::endl;
+		return false;
+	}
 
 	// Standardize the value, so it doesnt be case sentitive
 	utils::trim(sAttribute);

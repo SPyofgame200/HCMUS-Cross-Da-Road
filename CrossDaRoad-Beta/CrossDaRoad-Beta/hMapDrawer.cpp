@@ -184,6 +184,7 @@ bool hMapDrawer::DrawObject(const GraphicCell& Cell) const
 
 		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
 		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
+		app->Zone.FillPlatform(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }

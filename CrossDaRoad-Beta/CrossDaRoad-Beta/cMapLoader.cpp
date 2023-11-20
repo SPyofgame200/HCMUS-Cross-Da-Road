@@ -283,6 +283,8 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 ///	@return true if map sprite was loaded successfully, false otherwise
 bool cMapLoader::LoadMapSprite(const std::string& sLine)
 {
+	std::cerr << "line = \"" << sLine << "\"" << std::endl;
+
 	std::istringstream iss(sLine);
 	char token;
 	iss >> token;
@@ -293,8 +295,7 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine)
 		currentSprite = MapObject(token);
 	}
 	/// Alow sprite data to be read as multiple lines
-	if (token == '$' || token == ':')
-	{
+	if (token == '$' || token == ':') {
 		std::string sData;
 		while (iss >> sData) {
 			currentSprite.SetAttributeFromData(sData);
@@ -315,6 +316,7 @@ bool cMapLoader::LoadMapName(const std::string& sFileName)
 		return false;
 	}
 
+	std::cerr << "Loading map name \"" << sFileName << "\"" << std::endl;
 	for (std::string sLine; std::getline(ifs, sLine);) {
 		utils::deduplicate(sLine, " ");
 		utils::trim(sLine);
@@ -360,6 +362,7 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 
 	int nLaneID = 0;
 	bool bLoadingSprite = false;
+	std::cerr << "Loading map lanes" << std::endl;
 	for (std::string sLine; std::getline(ifs, sLine);) {
 		utils::deduplicate(sLine, " ");
 		utils::trim(sLine);
@@ -367,6 +370,7 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 			break;
 
 		if (sLine.front() == '#') {
+			std::cerr << "Loading map sprites" << std::endl;
 			if (bLoadingSprite) {
 				break;
 			}
