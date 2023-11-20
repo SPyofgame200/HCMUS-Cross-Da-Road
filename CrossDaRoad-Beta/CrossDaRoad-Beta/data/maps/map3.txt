@@ -1,4 +1,4 @@
-wwwwhwwwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
+wwwwhwwwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
 ,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  3.0
 ppppppfppppppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
 ,,pppp,,,,,pppp,,,,,pp,,,,,pppp,,,ppppp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0
@@ -15,6 +15,11 @@ $ , background=magma
 $ p sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
 : spriteX=0 spriteY=0
+: duration=5s cooldown=10s chance=2% summon=l
+$ l sprite=lava_rock spriteFrame=4
+: block=false danger=false platformspeed=0.0
+: spritepos=default
+: duration=3s cooldown=0s chance=100% summon=f
 $ w sprite=wall
 : block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
