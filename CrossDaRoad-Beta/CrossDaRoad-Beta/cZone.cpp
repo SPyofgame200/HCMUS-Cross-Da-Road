@@ -127,7 +127,7 @@ bool cZone::IsPlatform(const char& graphic, const char* sPlatformPattern)
 	return strchr(sPlatformPattern, graphic) != nullptr;
 }
 
-bool cZone::IsNonplatform(const char& graphic, const char* sPlatformPattern)
+bool cZone::IsNotPlatform(const char& graphic, const char* sPlatformPattern)
 {
 	return !IsPlatform(graphic, sPlatformPattern);
 }
@@ -144,7 +144,7 @@ bool cZone::IsDanger(const char& graphic, const char* sDangerPattern)
 /// @param graphic graphic to check
 /// @param sDangerPattern danger pattern to check
 /// @return true if graphic is safe, false otherwise
-bool cZone::IsSafe(const char& graphic, const char* sDangerPattern)
+bool cZone::IsNotDanger(const char& graphic, const char* sDangerPattern)
 {
 	return !IsDanger(graphic, sDangerPattern);
 }
@@ -159,7 +159,7 @@ bool cZone::IsBlocked(const char& graphic, const char* sBlockPattern)
 /// @brief Check if graphic is unblocked
 /// @param graphic graphic to check
 /// @param sBlockPattern block pattern to check
-bool cZone::IsUnblocked(const char& graphic, const char* sBlockPattern)
+bool cZone::IsNotBlocked(const char& graphic, const char* sBlockPattern)
 {
 	return !IsBlocked(graphic, sBlockPattern);
 }
@@ -169,9 +169,9 @@ bool cZone::IsPlatform(const char& graphic)
 	return IsPlatform(graphic, sDefaultPlatformPattern);
 }
 
-bool cZone::IsNonplatform(const char& graphic)
+bool cZone::IsNotPlatform(const char& graphic)
 {
-	return IsNonplatform(graphic, sDefaultPlatformPattern);
+	return IsNotPlatform(graphic, sDefaultPlatformPattern);
 }
 
 bool cZone::IsDanger(const char& graphic)
@@ -179,9 +179,9 @@ bool cZone::IsDanger(const char& graphic)
 	return IsDanger(graphic, sDefaultDangerPattern);
 }
 
-bool cZone::IsSafe(const char& graphic)
+bool cZone::IsNotDanger(const char& graphic)
 {
-	return IsSafe(graphic, sDefaultDangerPattern);
+	return IsNotDanger(graphic, sDefaultDangerPattern);
 }
 
 bool cZone::IsBlocked(const char& graphic)
@@ -189,9 +189,9 @@ bool cZone::IsBlocked(const char& graphic)
 	return IsBlocked(graphic, sDefaultBlockPattern);
 }
 
-bool cZone::IsUnblocked(const char& graphic)
+bool cZone::IsNotBlocked(const char& graphic)
 {
-	return IsUnblocked(graphic, sDefaultBlockPattern);
+	return IsNotBlocked(graphic, sDefaultBlockPattern);
 }
 /// @brief Check if (x, y) is inside the zone
 /// @param x x coordinate 
@@ -289,7 +289,7 @@ int cZone::FillPlatform(const char& graphic, const char* sPlatformPattern, const
 	}
 	return counter;
 }
-int cZone::FillNonplatform(const char& graphic, const char* sPlatformPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
+int cZone::UnfillPlatform(const char& graphic, const char* sPlatformPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
@@ -326,12 +326,12 @@ int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int
 /// @param graphic graphic to fill
 /// @param sDangerPattern danger pattern to check if graphic is danger or not
 /// @return number of safe pixels filled
-int cZone::FillSafe(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
+int cZone::UnfillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
 		for (int y = nTopLeftY; y < nBottomRightY; y++) {
-			counter += SetDanger(x, y, IsSafe(graphic, sDangerPattern));
+			counter += SetDanger(x, y, IsNotDanger(graphic, sDangerPattern));
 		}
 	}
 	return counter;
@@ -362,12 +362,12 @@ int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int
 /// @param graphic graphic to fill
 /// @param sBlockPattern block pattern to check if graphic is block or not
 /// @return number of unblock pixels filled
-int cZone::FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY)
+int cZone::UnfillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY)
 {
 	int counter = 0;
 	for (int x = nTopLeftX; x < nBottomRightX; x++) {
 		for (int y = nTopLeftY; y < nBottomRightY; y++) {
-			counter += SetBlock(x, y, IsUnblocked(graphic, sBlockPattern));
+			counter += SetBlock(x, y, IsNotBlocked(graphic, sBlockPattern));
 		}
 	}
 	return counter;
@@ -377,9 +377,9 @@ int cZone::FillPlatform(const char& graphic, const int nTopLeftX, const int nTop
 	return FillPlatform(graphic, sDefaultPlatformPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
-int cZone::FillNonplatform(const char& graphic, const int nTopLeftX, const int nTopLeftY)
+int cZone::UnfillPlatform(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
-	return FillNonplatform(graphic, sDefaultPlatformPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+	return UnfillPlatform(graphic, sDefaultPlatformPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
 /// @brief Fill danger pixels with graphic in the zone
@@ -396,9 +396,9 @@ int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLe
 /// @param nTopLeftX x coordinate of top left corner
 /// @param nTopLeftY y coordinate of top left corner
 /// @return Number of safe pixels filled
-int cZone::FillSafe(const char& graphic, const int nTopLeftX, const int nTopLeftY)
+int cZone::UnfillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
-	return FillSafe(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+	return UnfillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 /// @brief Fill block pixels with graphic in the zone
 /// @param graphic Graphic character to fill
@@ -414,9 +414,9 @@ int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopL
 /// @param nTopLeftX x coordinate of top left corner
 /// @param nTopLeftY y coordinate of top left corner
 /// @return Number of unblock pixels filled
-int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
+int cZone::UnfillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
-	return FillUnblocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+	return UnfillBlocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
 
@@ -432,9 +432,9 @@ int cZone::Fill(const char& graphic, int nTopLeftX, int nTopLeftY)
 int cZone::Unfill(const char& graphic, int nTopLeftX, int nTopLeftY)
 {
 	int nChange = 0;
-	nChange += FillNonplatform(graphic, nTopLeftX, nTopLeftY);
-	nChange += FillSafe(graphic, nTopLeftX, nTopLeftY);
-	nChange += FillUnblocked(graphic, nTopLeftX, nTopLeftY);
+	nChange += UnfillPlatform(graphic, nTopLeftX, nTopLeftY);
+	nChange += UnfillDanger(graphic, nTopLeftX, nTopLeftY);
+	nChange += UnfillBlocked(graphic, nTopLeftX, nTopLeftY);
 	return nChange;
 }
 

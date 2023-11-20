@@ -40,24 +40,27 @@ public: /// Initializer & Cleanup
 	bool Create();
 	bool Destroy();
 
-private: // Constructor functions
-	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock, bool bPlatform);
 public: // Constructor functions
+	bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock, bool bPlatform);
 	bool CreateZone(int nWidth, int nHeight);
 
-private: // Checkers
+public: // Checkers
 	bool IsPlatform(const char& graphic, const char* sPlatformPattern);
-	bool IsNonplatform(const char& graphic, const char* sPlatformPattern);
 	bool IsDanger(const char& graphic, const char* sDangerPattern);
-	bool IsSafe(const char& graphic, const char* sDangerPattern);
 	bool IsBlocked(const char& graphic, const char* sBlockPattern);
-	bool IsUnblocked(const char& graphic, const char* sBlockPattern);
 	bool IsPlatform(const char& graphic);
-	bool IsNonplatform(const char& graphic);
 	bool IsDanger(const char& graphic);
-	bool IsSafe(const char& graphic);
 	bool IsBlocked(const char& graphic);
-	bool IsUnblocked(const char& graphic);
+	
+public: // Inverse Checkers
+	bool IsNotPlatform(const char& graphic, const char* sPlatformPattern);
+	bool IsNotDanger(const char& graphic, const char* sDangerPattern);
+	bool IsNotBlocked(const char& graphic, const char* sBlockPattern);
+	bool IsNotPlatform(const char& graphic);
+	bool IsNotDanger(const char& graphic);
+	bool IsNotBlocked(const char& graphic);
+
+private: /// Position Checkers
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
@@ -69,18 +72,20 @@ public: // Setters
 
 public: // Fillers
 	int FillPlatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
-	int FillNonplatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
-	int FillSafe(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
-	int FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillPlatform(const char& graphic, int nTopLeftX, int nTopLeftY);
-	int FillNonplatform(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillDanger(const char& graphic, int nTopLeftX, int nTopLeftY);
-	int FillSafe(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
-	int FillUnblocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int Fill(const char& graphic, int nTopLeftX, int nTopLeftY);
+
+public: // Unfillers
+	int UnfillPlatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int UnfillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int UnfillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int UnfillPlatform(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int UnfillDanger(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int UnfillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int Unfill(const char& graphic, int nTopLeftX, int nTopLeftY);
 
 public: // Danger Zone Checkers
