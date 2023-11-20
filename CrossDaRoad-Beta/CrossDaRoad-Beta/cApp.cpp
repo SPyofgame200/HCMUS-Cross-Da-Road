@@ -90,6 +90,7 @@ bool cApp::GameReset()
 	frame4.Reset();
 	frame6.Reset();
 	frame8.Reset();
+	frame12.Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();

@@ -19,8 +19,8 @@ private:
 	bool* bPlatforms; ///< cache-friendly matrix of platform pixels
 	bool* bDangers;   ///< cache-friendly matrix of danger pixels
 	bool* bBlocks;    ///< cache-friendly matrix of block pixels
-	int nCellWidth;
-	int nCellHeight;
+	int nCellWidth;   ///< width of the default filler zone
+	int nCellHeight;  ///< height of the default filler zone
 	char* sDefaultPlatformPattern;
 	char* sDefaultDangerPattern;
 	char* sDefaultBlockPattern;
