@@ -13,25 +13,23 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-GraphicCell::GraphicCell()
+hMapDrawer::GraphicCell::GraphicCell()
 {
 	graphic = 0;
-	nCellOffset = 0;
-	nRow = 0;
-	nCol = 0;
+	nRowPos = 0;
+	nColPos = 0;
 }
 
 /// @brief Parameterized constructor
-GraphicCell::GraphicCell(char graphic, int nCellOffset, int nRow, int nCol)
+hMapDrawer::GraphicCell::GraphicCell(char graphic, int nRowPos, int nColPos)
 {
 	this->graphic = graphic;
-	this->nCellOffset = nCellOffset;
-	this->nRow = nRow;
-	this->nCol = nCol;
+	this->nRowPos = nRowPos;
+	this->nColPos = nColPos;
 }
 
 /// @brief Destructor
-GraphicCell::~GraphicCell() = default;
+hMapDrawer::GraphicCell::~GraphicCell() = default;
 
 /// @brief Default constructor
 hMapDrawer::hMapDrawer()
@@ -76,16 +74,15 @@ bool hMapDrawer::SetupTarget(cApp* app)
 /// @brief Get lane backgrounds on screen
 /// @param Lane Lane to be drawn
 /// @return Vector of graphic cells representing the lane backgrounds
-std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
+hMapDrawer::GraphicLane hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
-	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 
-	std::vector<GraphicCell> Backgrounds;
+	GraphicLane Backgrounds;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
-		Backgrounds.push_back(GraphicCell(graphic, nCellOffset, nRow * app->nCellSize, nCol * app->nCellSize));
+		Backgrounds.push_back(GraphicCell(graphic, nRow * app->nCellSize, nCol * app->nCellSize));
 	}
 
 	return Backgrounds;
@@ -94,25 +91,25 @@ std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) co
 /// @brief Get lane objects on screen
 /// @param Lane Lane to be drawn
 /// @return Vector of graphic cells representing the lane objects
-std::vector<GraphicCell> hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
+hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
 	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 
-	std::vector<GraphicCell> Objects;
+	GraphicLane Objects;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		const int nPosX = nRow * app->nCellSize;
 		const int nPosY = nCol * app->nCellSize - nCellOffset;
-		Objects.push_back(GraphicCell(graphic, nCellOffset, nPosX, nPosY));
+		Objects.push_back(GraphicCell(graphic, nPosX, nPosY));
 	}
 
 	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
 		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), nCellOffset, Cell.nRow, Cell.nCol));
+			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), Cell.nRowPos, Cell.nColPos));
 		}
 	}
 
@@ -140,12 +137,12 @@ bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 /// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 {
-	std::vector<GraphicCell> Backgrounds = GetLaneBackgrounds(Lane);
+	GraphicLane Backgrounds = GetLaneBackgrounds(Lane);
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
 	}
 
-	std::vector<GraphicCell> Objects = GetLaneEntities(Lane);
+	GraphicLane Objects = GetLaneEntities(Lane);
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawEntity(ObjectCell);
 	}
@@ -180,7 +177,7 @@ bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::MASK);
-	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nCol, Cell.nRow, nDrawX, nDrawY);
+	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
 	return true;
 }
 
@@ -198,7 +195,7 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nCol, Cell.nRow, nDrawX, nDrawY);
+	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
 	return true;
 }
 

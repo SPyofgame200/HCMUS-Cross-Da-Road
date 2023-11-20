@@ -14,23 +14,23 @@
 // Forward declaration
 class cApp;
 
-/// @brief Structure for graphic cell 
-struct GraphicCell
-{
-	char graphic; 			///< Character representing the graphic
-	int nCellOffset; 		///< Offset of the cell
-	int nRow; 				///< Row of the cell
-	int nCol; 				///< Column of the cell
-
-	// Constructors & Destructor
-	GraphicCell();
-	GraphicCell(char graphic, int nCellOffset, int nRow, int nCol);
-	~GraphicCell();
-};
-
 /// @brief Class for drawing map on screen
 class hMapDrawer
 {
+private:
+	struct GraphicCell
+	{
+		char graphic; 			///< Character representing the graphic
+		int nRowPos; 		    ///< Row of the cell
+		int nColPos; 			///< Column of the cell
+
+		// Constructors & Destructor
+		GraphicCell();
+		GraphicCell(char graphic, int nRowPos, int nColPos);
+		~GraphicCell();
+	};
+	using GraphicLane = std::vector<GraphicCell>;
+
 private:
 	cApp* app;
 
@@ -43,8 +43,8 @@ public: // Setters
 	bool SetupTarget(cApp* app);
 
 private: /// Internality
-	std::vector<GraphicCell> GetLaneBackgrounds(const cMapLane& Lane) const;
-	std::vector<GraphicCell> GetLaneEntities(const cMapLane& Lane) const;
+	GraphicLane GetLaneBackgrounds(const cMapLane& Lane) const;
+	GraphicLane GetLaneEntities(const cMapLane& Lane) const;
 
 private: // Drawer helpers
 	bool DrawLane(const cMapLane& Lane) const;
