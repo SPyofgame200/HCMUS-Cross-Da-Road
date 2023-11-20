@@ -571,6 +571,9 @@ int cApp::GetFrameID(const int frame) const
 	else if (frame == frame8.GetLimit()) {
 		return frame8.GetID();
 	}
+	else if (frame == frame12.GetLimit()) {
+		return frame12.GetID();
+	}
 	return 0;
 }
 
@@ -588,6 +591,11 @@ int cApp::GetFrameID(const int frame, float fTickRate) const
 	}
 	else if (frame == frame8.GetLimit()) {
 		frame8_t current = frame8;
+		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
+		return current.GetID();
+	}
+	else if (frame == frame12.GetLimit()) {
+		frame12_t current = frame12;
 		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
 		return current.GetID();
 	}
@@ -615,6 +623,7 @@ bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
 	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
+	frame12.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	return true;
 }
 
