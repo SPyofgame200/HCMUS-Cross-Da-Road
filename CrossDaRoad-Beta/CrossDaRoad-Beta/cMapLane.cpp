@@ -14,12 +14,12 @@
 /// @brief Parameterized constructor
 /// @param velocity velocity of the lane
 /// @param lane character representation of the lane ()
-cMapLane::cMapLane(const float velocity, const std::string& lane, int ID, const std::string& background, int frame)
+cMapLane::cMapLane(const float velocity, const std::string& lane, int ID, const std::string& underlay, int frame)
 {
 	fVelocity = velocity;
 	sLane = lane;
 	nID = ID;
-	sUnderlay = background;
+	sUnderlay = underlay;
 	nFrame = frame;
 }
 

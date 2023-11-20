@@ -21,7 +21,7 @@ private: // Properties
 	int nFrame;
 
 public: // Constructors & Destructor
-	cMapLane(float velocity, const std::string& lane, int ID, const std::string &background = "", int nFrame = 0);
+	cMapLane(float velocity, const std::string& lane, int ID, const std::string &underlay = "", int nFrame = 0);
 	cMapLane(const cMapLane& other);
 	~cMapLane() = default;
 

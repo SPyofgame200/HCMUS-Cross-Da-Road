@@ -253,7 +253,7 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 	std::string sLane;
 	float fVelocity;
 
-	// Read lane, velocity, and background from the line
+	// Read lane, velocity from the line
 	if (!(ss >> sLane >> fVelocity)) {
 		std::cerr << "cMapLoader::LoadMapLane(\"" << sLine << "\", id=" << nLaneID << "): ";
 		std::cerr << "Error: Failed to parse line, extracted content: ";
@@ -261,6 +261,7 @@ bool cMapLoader::LoadMapLane(const std::string& sLine, int nLaneID)
 		return false;
 	}
 
+	// Read underlay and its frame count
 	std::string sUnderlay = "";
 	int nFrame = 0;
 	ss >> sUnderlay >> nFrame;

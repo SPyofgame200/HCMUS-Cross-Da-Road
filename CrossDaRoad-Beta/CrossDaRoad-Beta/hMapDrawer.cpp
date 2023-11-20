@@ -212,7 +212,6 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 	return true;
 }
 
-
 //=================================================================================================
 
 #include <random>
