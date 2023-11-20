@@ -283,16 +283,55 @@ bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::stri
 		return true;
 	}
 
-	int x, y;
+	std::vector<char> bracketStack;
+	char separator;
+
+	auto IsMatchingPair = [](char openBracket, char closeBracket) {
+		return (openBracket == '[' && closeBracket == ']')
+			|| (openBracket == '<' && closeBracket == '>')
+			|| (openBracket == '(' && closeBracket == ')')
+			|| (openBracket == '{' && closeBracket == '}');
+	};
+
+
+	for (char c : sData) {
+		if (c == '[' || c == '<' || c == '(' || c == '{') {
+			bracketStack.push_back(c);
+		}
+		else if (c == ']' || c == '>' || c == ')' || c == '}') {
+			if (bracketStack.empty() || !IsMatchingPair(bracketStack.back(), c)) {
+				std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+				std::cerr << "Mismatched brackets." << std::endl;
+				return false;
+			}
+			bracketStack.pop_back();
+		}
+	}
+
+	if (!bracketStack.empty()) {
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+		std::cerr << "Mismatched brackets." << std::endl;
+		return false;
+	}
+
 	std::istringstream iss(sData);
-	if (!(iss >> x >> y)) {
+
+	if (sData.find(':') != std::string::npos) {
+		iss >> nPosX >> separator >> nPosY;
+	}
+	else if (sData.find(',') != std::string::npos && sData.find(':') == std::string::npos) {
+		iss >> separator >> nPosX >> separator >> separator >> nPosY;
+	}
+	else {
+		iss >> separator >> nPosX >> separator >> nPosY;
+	}
+
+	if (iss.fail() || (separator != ',' && separator != '>' && separator != ')' && separator != ':')) {
 		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Failed to extract positions." << std::endl;
 		return false;
 	}
 
-	nPosX = x;
-	nPosY = y;
 	return true;
 }
 
@@ -341,7 +380,7 @@ bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sVal
 
 	for (char c : sValue) if (c == '=') {
 		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
-		std::cerr << "Extracted data is invalid, found delimiters inside attribute or values" << std::endl;
+		std::cerr << "Extracted data is invalid, found delimiters '=' inside attribute or values" << std::endl;
 		return false;
 	}
 

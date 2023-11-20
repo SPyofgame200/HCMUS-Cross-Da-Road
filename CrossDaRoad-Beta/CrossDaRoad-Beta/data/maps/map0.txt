@@ -31,4 +31,4 @@ $ h
 : spritepos=[posx=0,posy=0]
 $ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=0
+: spritepos=[x:0,y:0]
