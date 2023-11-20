@@ -41,24 +41,35 @@ private: // Checkers
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
+	bool SetPlatform(int nPosX, int nPosY, bool bValue);
 	bool SetDanger(int nPosX, int nPosY, bool bValue);
 	bool SetBlock(int nPosX, int nPosY, bool bValue);
 	bool SetCellSize(int nWidth, int nHeight);
 	bool SetPattern(const char* sDangerPattern, const char* sBlockPattern);
 
 public: // Fillers
+	int FillPlatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillNonplatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillSafe(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillPlatform(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int FillNonplatform(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillDanger(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillSafe(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillUnblocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 
 public: // Danger Zone Checkers
-	bool IsDangerPixel(float x, float y) const;
+	bool IsPlatformPixel(float x, float y) const;
+	bool IsPlatformTopLeft(float x, float y, int size) const;
+	bool IsPlatformTopRight(float x, float y, int size) const;
+	bool IsPlatformBottomLeft(float x, float y, int size) const;
+	bool IsPlatformBottomRight(float x, float y, int size) const;
 
+public: // Danger Zone Checkers
+	bool IsDangerPixel(float x, float y) const;
 	bool IsDangerTopLeft(float x, float y, int size) const;
 	bool IsDangerTopRight(float x, float y, int size) const;
 	bool IsDangerBottomLeft(float x, float y, int size) const;
@@ -66,7 +77,6 @@ public: // Danger Zone Checkers
 
 public: // Block Zone Checkers
 	bool IsBlockedPixel(float x, float y) const;
-
 	bool IsBlockedTopLeft(float x, float y, int size) const;
 	bool IsBlockedTopRight(float x, float y, int size) const;
 	bool IsBlockedBottomLeft(float x, float y, int size) const;
