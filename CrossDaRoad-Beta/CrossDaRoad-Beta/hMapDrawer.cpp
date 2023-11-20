@@ -85,7 +85,7 @@ std::vector<GraphicCell> hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) co
 	std::vector<GraphicCell> Backgrounds;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
-		Backgrounds.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
+		Backgrounds.push_back(GraphicCell(graphic, nCellOffset, nRow * app->nCellSize, nCol * app->nCellSize));
 	}
 
 	return Backgrounds;
@@ -103,14 +103,16 @@ std::vector<GraphicCell> hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 	std::vector<GraphicCell> Objects;
 	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
-		Objects.push_back(GraphicCell(graphic, nCellOffset, nRow, nCol));
+		const int nPosX = nRow * app->nCellSize;
+		const int nPosY = nCol * app->nCellSize - nCellOffset;
+		Objects.push_back(GraphicCell(graphic, nCellOffset, nPosX, nPosY));
 	}
 
 	for (int id = 0; id < Objects.size(); ++id) {
 		const GraphicCell& Cell = Objects[id];
 		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), nCellOffset, nRow, Cell.nCol));
+			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), nCellOffset, Cell.nRow, Cell.nCol));
 		}
 	}
 
@@ -170,21 +172,15 @@ bool hMapDrawer::DrawAllLanes() const
 bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-	const int32_t nPosX = Cell.nCol * app->nCellSize - Cell.nCellOffset;
-	const int32_t nPosY = Cell.nRow * app->nCellSize;
-	const int32_t nDrawX = sprite.GetSpritePosX() * app_const::SPRITE_WIDTH;
-	const int32_t nDrawY = sprite.GetSpritePosY() * app_const::SPRITE_HEIGHT;
+	const int32_t nDrawX = sprite.GetSpritePosX();
+	const int32_t nDrawY = sprite.GetSpritePosY();
 	const std::string sName = sprite.GetSpriteName();
 	const std::string sFrameID = app->ShowFrameID(sprite.GetSpriteFrameCount());
 	if (sName.empty()) {
 		return false;
 	}
-
-	const app::Sprite* object = cAssetManager::GetInstance().GetSprite(sName + sFrameID);
 	app->SetPixelMode(app::Pixel::MASK);
-	app->DrawPartialSprite(nPosX, nPosY, object, nDrawX, nDrawY);
-	app->SetPixelMode(app::Pixel::NORMAL);
-	app->Zone.Fill(Cell.graphic, nPosX, nPosY);
+	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nCol, Cell.nRow, nDrawX, nDrawY);
 	return true;
 }
 
@@ -194,21 +190,15 @@ bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 {
 	const MapObject sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-	const int32_t nPosX = Cell.nCol * app->nCellSize;
-	const int32_t nPosY = Cell.nRow * app->nCellSize;
-	const int32_t nDrawX = sprite.GetBackgroundPosX() * app_const::SPRITE_WIDTH;
-	const int32_t nDrawY = sprite.GetBackgroundPosY() * app_const::SPRITE_HEIGHT;
+	const int32_t nDrawX = sprite.GetBackgroundPosX();
+	const int32_t nDrawY = sprite.GetBackgroundPosY();
 	const std::string sName = sprite.GetBackgroundName();
 	const std::string sFrameID = app->ShowFrameID(sprite.GetBackgroundFrameCount());
 	if (sName.empty()) {
 		return false;
 	}
-
-	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName + sFrameID);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->DrawPartialSprite(nPosX, nPosY, background, nDrawX, nDrawY);
-	app->SetPixelMode(app::Pixel::NORMAL);
-	app->Zone.Fill(Cell.graphic, nPosX, nPosY);
+	app->DrawObject(Cell.graphic, sName + sFrameID, Cell.nCol, Cell.nRow, nDrawX, nDrawY);
 	return true;
 }
 
