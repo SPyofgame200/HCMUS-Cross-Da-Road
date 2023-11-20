@@ -80,6 +80,8 @@ public: // Fillers
 	int FillSafe(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillUnblocked(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int Fill(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int Unfill(const char& graphic, int nTopLeftX, int nTopLeftY);
 
 public: // Danger Zone Checkers
 	bool IsPlatformPixel(float x, float y) const;

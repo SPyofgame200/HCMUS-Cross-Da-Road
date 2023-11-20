@@ -419,6 +419,25 @@ int cZone::FillUnblocked(const char& graphic, const int nTopLeftX, const int nTo
 	return FillUnblocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
+
+int cZone::Fill(const char& graphic, int nTopLeftX, int nTopLeftY)
+{
+	int nChange = 0;
+	nChange += FillPlatform(graphic, nTopLeftX, nTopLeftY);
+	nChange += FillDanger(graphic, nTopLeftX, nTopLeftY);
+	nChange += FillBlocked(graphic, nTopLeftX, nTopLeftY);
+	return nChange;
+}
+
+int cZone::Unfill(const char& graphic, int nTopLeftX, int nTopLeftY)
+{
+	int nChange = 0;
+	nChange += FillNonplatform(graphic, nTopLeftX, nTopLeftY);
+	nChange += FillSafe(graphic, nTopLeftX, nTopLeftY);
+	nChange += FillUnblocked(graphic, nTopLeftX, nTopLeftY);
+	return nChange;
+}
+
 ////////////////////////////////////////////////////////////////////////
 /////////////////////// PLATFORM ZONE CHECKERS /////////////////////////
 ////////////////////////////////////////////////////////////////////////
