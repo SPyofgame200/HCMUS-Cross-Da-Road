@@ -204,8 +204,7 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 		app->DrawPartialSprite(nPosX + Cell.nCellOffset, nPosY, background, nDrawX, nDrawY);
 		app->SetPixelMode(app::Pixel::NORMAL);
 
-		app->Zone.FillDanger(Cell.graphic, nPosX, nPosY);
-		app->Zone.FillBlocked(Cell.graphic, nPosX, nPosY);
+		app->Zone.Fill(Cell.graphic, nPosX, nPosY);
 	}
 	return true;
 }
