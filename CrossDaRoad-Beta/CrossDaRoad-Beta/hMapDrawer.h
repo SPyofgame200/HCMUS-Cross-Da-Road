@@ -21,7 +21,6 @@ struct GraphicCell
 	int nCellOffset; 		///< Offset of the cell
 	int nRow; 				///< Row of the cell
 	int nCol; 				///< Column of the cell
-	float fLastDrawn; 		///< Last drawn time of the cell
 
 	// Constructors & Destructor
 	GraphicCell();

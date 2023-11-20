@@ -123,7 +123,7 @@ bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 		const int32_t nPosX = 0;
 		const int32_t nPosY = Lane.GetLaneID() * app->nCellSize;
 		const int nFrameCount = Lane.GetUnderlayFrameCount();
-		const std::string sUnderlay = Lane.GetUnderlay() + (nFrameCount <= 0 ? "" : app->ShowFrameID(nFrameCount, 0.001));
+		const std::string sUnderlay = Lane.GetUnderlay() + app->ShowFrameID(nFrameCount, 0.001f);
 		const app::Sprite* pUnderlay = cAssetManager::GetInstance().GetSprite(sUnderlay);
 		app->SetPixelMode(app::Pixel::MASK);
 		app->DrawSprite(nPosX, nPosY, pUnderlay);
