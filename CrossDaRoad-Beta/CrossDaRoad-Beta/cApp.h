@@ -113,7 +113,6 @@ private: // Game Rendering
 	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
-	bool DrawObject(char graphic, const std::string& sName, int nPosX = 0, int nPosY = 0, int nDrawX = 0, int nDrawY = 0);
 
 private: // Animator
 	int GetFrameID(int frame) const;

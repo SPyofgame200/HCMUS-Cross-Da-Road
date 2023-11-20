@@ -51,6 +51,7 @@ private: // Drawer helpers
 	bool DrawUnderlay(const cMapLane& Lane) const;
 	bool DrawEntity(const GraphicCell& Cell) const;
 	bool DrawBackground(const GraphicCell& Cell) const;
+	bool DrawObject(char graphic, const std::string& sName, int nPosX = 0, int nPosY = 0, int nDrawX = 0, int nDrawY = 0) const;
 
 public: // Drawers
 	bool DrawAllLanes() const;

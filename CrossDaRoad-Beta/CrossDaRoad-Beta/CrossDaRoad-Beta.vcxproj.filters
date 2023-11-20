@@ -87,6 +87,9 @@
     <ClCompile Include="hPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="uMessageManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cApp.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uMessageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
