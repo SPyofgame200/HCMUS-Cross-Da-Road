@@ -61,16 +61,21 @@ private: // Checkers
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
+	bool SetPlatform(int nPosX, int nPosY, bool bValue);
 	bool SetDanger(int nPosX, int nPosY, bool bValue);
 	bool SetBlock(int nPosX, int nPosY, bool bValue);
 	bool SetCellSize(int nWidth, int nHeight);
 	bool SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern);
 
 public: // Fillers
+	int FillPlatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillNonplatform(const char& graphic, const char* sPlatformPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillDanger(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillSafe(const char& graphic, const char* sDangerPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
 	int FillUnblocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY);
+	int FillPlatform(const char& graphic, int nTopLeftX, int nTopLeftY);
+	int FillNonplatform(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillDanger(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillSafe(const char& graphic, int nTopLeftX, int nTopLeftY);
 	int FillBlocked(const char& graphic, int nTopLeftX, int nTopLeftY);
