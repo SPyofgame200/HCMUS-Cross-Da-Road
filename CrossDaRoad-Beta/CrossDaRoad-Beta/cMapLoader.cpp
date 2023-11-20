@@ -289,7 +289,7 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine)
 	char token;
 	iss >> token;
 	// Create a new Sprite
-	if (token == '$') { 
+	if (token == '$') {
 		char token;
 		iss >> token;
 		currentSprite = MapObject(token);

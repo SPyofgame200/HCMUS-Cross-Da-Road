@@ -1,26 +1,34 @@
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh  0.0
-ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
-ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss  0.0
-ssssssbsbsbssssssssbsbsbsssssssbsbsbssssssssbsbsbsssssssbsbsbsss -4.0
-sccccsssssssscsssssccsssssssssssssssssssssssssssssssssssssssssss  0.0
-sscssscssssscccssssscsssssssssssssssssssssssssssssssssssssssssss  0.0
-ssssssssdsssssssdsssssssdssssssdsssssdsssssssdssssssdssssssdssss -4.0
-ssssssssbsssssbsssssbssssbsssssbsssssbsssssbssssssssssssssssssss  5.0
-ssssssssssssscccccssssssssssssssssssssssssssssssssssssssssssssss  0.0
-ssssscssssscccssssssssssssssssssssssssssssccscccssssssssssssssss  0.0
+whwwhwhwhwwwhwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 beach_wave 8
+,,qq,,,,,,qq,,,,,,qq,,,pp,,,,,,pp,,,,,,qq,,,,,,,qq,,,,qq,,,,pp,,  3.0
+pqqpppfpqqpppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
+,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0
+,,,qpqp,,,,,pq,,,,,,pp,,,,,,qq,,,,ppqqpp,,,,,, -3.0
+,,,,p,,,,,qqpp,,,,,,,  3.0
+fppbbpppppppppppp  0.0
+,,pp,,,,,,qq,,,,pq,,,,pp,,,,,pq,, -4.0
+,,,pp,pppp,,,,,,,,,ppqq,,,pqqp,,,,,, -3.0
+pqbppppppppppppppppp  0.0
 #
-$ h background=ocean
+$ , background=magma
+: block=false danger=true platformspeed=0.0
+: spritepos=0:0
+$ p sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spritepos=[0:0]
+$ q sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spritepos=[x=0:y=0]
+: duration=5s cooldown=5s chance=2% summon=f
+$ b sprite=wall background=magma
+: block=false danger=false platformspeed=1.0
+: spritepos=default
+: duration=10s cooldown=2s chance=50% summon=f
+$ w sprite=wall
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ s background=sand
+: spritepos=[0,0]
+$ h
 : block=false danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ c sprite=coconut_tree
-: block=true danger=false platformspeed=0.0
-: spriteX=0 spriteY=0
-$ b sprite=crab background=sand spriteFrame=4
+: spritepos=[posx=0,posy=0]
+$ f sprite=fire background=wall spriteFrame=4
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ d sprite=coconut background=sand spriteFrame=8
-: block=false danger=true platformspeed=0.0
-: SpriteX=0 spriteY=0
