@@ -608,11 +608,17 @@ int cApp::GetFrameID(const int frame, float fTickRate) const
 /// @return String of current frame id of player
 std::string cApp::ShowFrameID(const int frame) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame));
 }
 
 std::string cApp::ShowFrameID(const int frame, float fTickRate) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame, fTickRate));
 }
 
