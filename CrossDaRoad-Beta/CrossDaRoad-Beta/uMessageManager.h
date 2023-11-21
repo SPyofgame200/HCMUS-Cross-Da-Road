@@ -8,6 +8,52 @@
 #include <iomanip>
 #include <future>
 
+namespace text {
+    // Reset
+    constexpr const char* RESET = "\033[0m";
+    // Text color
+    constexpr const char* BLACK = "\033[30m";
+    constexpr const char* RED = "\033[31m";
+    constexpr const char* GREEN = "\033[32m";
+    constexpr const char* YELLOW = "\033[33m";
+    constexpr const char* BLUE = "\033[34m";
+    constexpr const char* MAGENTA = "\033[35m";
+    constexpr const char* CYAN = "\033[36m";
+    constexpr const char* WHITE = "\033[37m";
+    // Bright text color
+    constexpr const char* BRIGHT_BLACK = "\033[1;30m";
+    constexpr const char* BRIGHT_RED = "\033[1;31m";
+    constexpr const char* BRIGHT_GREEN = "\033[1;32m";
+    constexpr const char* BRIGHT_YELLOW = "\033[1;33m";
+    constexpr const char* BRIGHT_BLUE = "\033[1;34m";
+    constexpr const char* BRIGHT_MAGENTA = "\033[1;35m";
+    constexpr const char* BRIGHT_CYAN = "\033[1;36m";
+    constexpr const char* BRIGHT_WHITE = "\033[1;37m";
+}
+
+namespace background {
+    // Background color
+    constexpr const char* BLACK = "\033[40m";
+    constexpr const char* RED = "\033[41m";
+    constexpr const char* GREEN = "\033[42m";
+    constexpr const char* YELLOW = "\033[43m";
+    constexpr const char* BLUE = "\033[44m";
+    constexpr const char* MAGENTA = "\033[45m";
+    constexpr const char* CYAN = "\033[46m";
+    constexpr const char* WHITE = "\033[47m";
+    // Reset background color
+    constexpr const char* RESET = "\033[49m";
+
+    constexpr const char* BRIGHT_BLACK = "\033[1;40m";
+    constexpr const char* BRIGHT_RED = "\033[1;41m";
+    constexpr const char* BRIGHT_GREEN = "\033[1;42m";
+    constexpr const char* BRIGHT_YELLOW = "\033[1;43m";
+    constexpr const char* BRIGHT_BLUE = "\033[1;44m";
+    constexpr const char* BRIGHT_MAGENTA = "\033[1;45m";
+    constexpr const char* BRIGHT_CYAN = "\033[1;46m";
+    constexpr const char* BRIGHT_WHITE = "\033[1;47m";
+}
+
 class MessageManager {
 private: /// Timer
     using clock_t = std::chrono::steady_clock::time_point;
@@ -76,7 +122,7 @@ private: /// Log Internality
     void LogThread(const std::string& functionName, const std::string& message) const {
         std::lock_guard<std::mutex> lock(logMutex);
         LogTimestamp();  // Log timestamp separately
-        std::cerr << functionName << "(): " << message << std::endl;
+        std::cerr << text::RED << functionName << "(): " << message << text::RESET << std::endl;
     }
 };
 
