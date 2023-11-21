@@ -15,7 +15,7 @@ $ h
 $ s background=sand
 : block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
-$ c sprite=coconut_tree
+$ c sprite=coconut_tree background=sand
 : block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
 $ b sprite=crab background=sand spriteFrame=4

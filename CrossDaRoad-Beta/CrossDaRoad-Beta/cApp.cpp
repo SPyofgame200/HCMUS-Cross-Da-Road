@@ -552,7 +552,7 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nHeight_sb = 160;
 
 	constexpr int32_t nPosX_level = 321;
-	constexpr int32_t nPosY_level = 90;
+	constexpr int32_t nPosY_level = 80;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);

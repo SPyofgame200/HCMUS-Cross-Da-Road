@@ -54,7 +54,7 @@ $ h sprite=grass
 $ p sprite=grass
 : block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
-$ , sprite=water category="environment"
+$ , background=water category="environment"
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
 $ . background=soil
