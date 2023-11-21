@@ -338,7 +338,7 @@ bool cApp::DrawNameBox()
 		DrawSprite(0, 0, NameBox);
 	else
 		DrawSprite(0, 0, NameBoxChosen);
-	if (IsKeyHolding(app::Key::K)) {
+	if (IsKeyReleased(app::Key::K)) {
 		SetPixelMode(app::Pixel::MASK);
 		DrawBigText("SPyofgame", 27, 27);
 		SetPixelMode(app::Pixel::NORMAL);
