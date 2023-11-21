@@ -23,11 +23,11 @@ namespace app
 	/// @brief     N, O, P, Q, R, S, T, U, V, W, X, Y, Z
 	/// @brief }
 	/// @return A map with keys in the alphabet category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the alphabet
+	/// @retval mapkeys_t A map with keys in the alphabet
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyAlphabet()
+	mapkeys_t CreateMapKeyAlphabet()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[0x41] = Key::A;
 		mapKeys[0x42] = Key::B;
 		mapKeys[0x43] = Key::C;
@@ -62,10 +62,10 @@ namespace app
 	/// @brief     K5, K6, K7, K8, K9
 	/// @brief }
 	/// @return A map with keys in the numeric category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the numeric category.
-	std::map<uint16_t, uint8_t> CreateMapKeyNumeric()
+	/// @retval mapkeys_t A map with keys in the numeric category.
+	mapkeys_t CreateMapKeyNumeric()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[0x30] = Key::K0;
 		mapKeys[0x31] = Key::K1;
 		mapKeys[0x32] = Key::K2;
@@ -84,11 +84,11 @@ namespace app
 	/// @brief     F7, F8, F9, F10, F11, F12
 	/// @brief }
 	/// @return A map with keys in the function key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the function key
+	/// @retval mapkeys_t A map with keys in the function key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyFunction()
+	mapkeys_t CreateMapKeyFunction()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_F1] = Key::F1;
 		mapKeys[VK_F2] = Key::F2;
 		mapKeys[VK_F3] = Key::F3;
@@ -108,11 +108,11 @@ namespace app
 	/// @brief     UP, DOWN, LEFT, RIGHT
 	/// @brief }
 	/// @return A map with keys in the arrow key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the arrow key
+	/// @retval mapkeys_t A map with keys in the arrow key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyArrow()
+	mapkeys_t CreateMapKeyArrow()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_UP] = Key::UP;
 		mapKeys[VK_DOWN] = Key::DOWN;
 		mapKeys[VK_LEFT] = Key::LEFT;
@@ -127,11 +127,11 @@ namespace app
 	/// @brief     BACK, ESCAPE, ENTER, PAUSE, SCROLL
 	/// @brief }
 	/// @return A map with keys in the special key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the special key
+	/// @retval mapkeys_t A map with keys in the special key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeySpecial()
+	mapkeys_t CreateMapKeySpecial()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_SPACE] = Key::SPACE;
 		mapKeys[VK_TAB] = Key::TAB;
 		mapKeys[VK_SHIFT] = Key::SHIFT;
@@ -155,10 +155,10 @@ namespace app
 	/// @brief     NP5, NP6, NP7, NP8, NP9
 	/// @brief }
 	/// @return A map with keys in the numpad category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the numpad category.
-	std::map<uint16_t, uint8_t> CreateMapKeyNumpad()
+	/// @retval mapkeys_t A map with keys in the numpad category.
+	mapkeys_t CreateMapKeyNumpad()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_NUMPAD0] = Key::NP0;
 		mapKeys[VK_NUMPAD1] = Key::NP1;
 		mapKeys[VK_NUMPAD2] = Key::NP2;
@@ -176,11 +176,11 @@ namespace app
 	/// @brief     NP_MUL, NP_DIV, NP_ADD, NP_SUB, NP_DECIMAL
 	/// @brief }
 	/// @return A map with keys in the operator category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the operator
+	/// @retval mapkeys_t A map with keys in the operator
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyOperator()
+	mapkeys_t CreateMapKeyOperator()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_MULTIPLY] = Key::NP_MUL;
 		mapKeys[VK_DIVIDE] = Key::NP_DIV;
 		mapKeys[VK_ADD] = Key::NP_ADD;
@@ -194,11 +194,11 @@ namespace app
 	/// @brief     PRINT, BREAK, MENU, POWER, SLEEP, CAPS_LOCK
 	/// @brief }
 	/// @return A map with keys in the additional key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the additional key
+	/// @retval mapkeys_t A map with keys in the additional key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyAdditional()
+	mapkeys_t CreateMapKeyAdditional()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_PRINT] = Key::PRINT;
 		mapKeys[VK_PAUSE] = Key::BREAK;
 		mapKeys[VK_MENU] = Key::MENU;
@@ -215,11 +215,11 @@ namespace app
 	/// @brief     MEDIA_UP,   MEDIA_DOWN
 	/// @brief }
 	/// @return A map with keys in the media key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the media key
+	/// @retval mapkeys_t A map with keys in the media key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyMedia()
+	mapkeys_t CreateMapKeyMedia()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_MEDIA_PLAY_PAUSE] = Key::MEDIA_PLAY;
 		mapKeys[VK_MEDIA_STOP] = Key::MEDIA_STOP;
 		mapKeys[VK_MEDIA_PREV_TRACK] = Key::MEDIA_PREV;
@@ -235,11 +235,11 @@ namespace app
 	/// @brief     BACKSLASH, RIGHT_BRACKET, APOSTROPHE, VENDOR
 	/// @brief }
 	/// @return A map with keys in the vendor key category.
-	/// @retval std::map<uint16_t, uint8_t> A map with keys in the vendor key
+	/// @retval mapkeys_t A map with keys in the vendor key
 	/// category.
-	std::map<uint16_t, uint8_t> CreateMapKeyVendor()
+	mapkeys_t CreateMapKeyVendor()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 		mapKeys[VK_OEM_PLUS] = Key::EQUAL;
 		mapKeys[VK_OEM_COMMA] = Key::COMMA;
 		mapKeys[VK_OEM_MINUS] = Key::MINUS;
@@ -263,10 +263,10 @@ namespace app
 	/// @brief }
 	/// @brief with extra 2 keys [0x00] = NONE, [0xFF] = UNDEFINED
 	/// @return A map keys of all categories
-	/// @retval std::map<uint16_t, uint8_t> A map keys of all categories
-	std::map<uint16_t, uint8_t> CreateMapKey()
+	/// @retval mapkeys_t A map keys of all categories
+	mapkeys_t CreateMapKey()
 	{
-		std::map<uint16_t, uint8_t> mapKeys;
+		mapkeys_t mapKeys;
 
 		mapKeys[0x00] = NONE;
 		MergeMapKey(mapKeys, CreateMapKeyAlphabet());

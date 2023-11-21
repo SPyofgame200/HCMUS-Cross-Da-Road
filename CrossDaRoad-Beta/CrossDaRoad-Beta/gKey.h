@@ -181,20 +181,22 @@ namespace app
 		UNUSED
 	};
 
+	using mapkeys_t = std::map<uint16_t, Key>;
+
 	template <typename key_t, typename data_t>
 	void MergeMapKey(std::map<key_t, data_t>& dest, const std::map<key_t, data_t>& source);
 
-	std::map<uint16_t, uint8_t> CreateMapKeyAlphabet();
-	std::map<uint16_t, uint8_t> CreateMapKeyNumeric();
-	std::map<uint16_t, uint8_t> CreateMapKeyFunction();
-	std::map<uint16_t, uint8_t> CreateMapKeyArrow();
-	std::map<uint16_t, uint8_t> CreateMapKeySpecial();
-	std::map<uint16_t, uint8_t> CreateMapKeyNumpad();
-	std::map<uint16_t, uint8_t> CreateMapKeyOperator();
-	std::map<uint16_t, uint8_t> CreateMapKeyAdditional();
-	std::map<uint16_t, uint8_t> CreateMapKeyMedia();
-	std::map<uint16_t, uint8_t> CreateMapKeyVendor();
-	std::map<uint16_t, uint8_t> CreateMapKey();
+	mapkeys_t CreateMapKeyAlphabet();
+	mapkeys_t CreateMapKeyNumeric();
+	mapkeys_t CreateMapKeyFunction();
+	mapkeys_t CreateMapKeyArrow();
+	mapkeys_t CreateMapKeySpecial();
+	mapkeys_t CreateMapKeyNumpad();
+	mapkeys_t CreateMapKeyOperator();
+	mapkeys_t CreateMapKeyAdditional();
+	mapkeys_t CreateMapKeyMedia();
+	mapkeys_t CreateMapKeyVendor();
+	mapkeys_t CreateMapKey();
 
 	bool IsKeyAlphabet(Key key);
 	bool IsKeyNumeric(Key key);
