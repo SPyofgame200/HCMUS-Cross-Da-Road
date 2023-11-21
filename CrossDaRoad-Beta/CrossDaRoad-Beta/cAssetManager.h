@@ -48,6 +48,8 @@ public: // Game Loaders
 	bool LoadExitSprites();
 	bool LoadPauseSprites();
 	bool LoadFontSprites();
+	bool LoadFont1Sprites();
+
 	bool LoadScoreBarSprites();
 
 private: // Player Loaders

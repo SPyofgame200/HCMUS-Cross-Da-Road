@@ -186,6 +186,14 @@ bool cAssetManager::LoadFontSprites()
 
     return ReportLoadingResult(bSuccess, "font");
 }
+
+bool cAssetManager::LoadFont1Sprites()
+{
+    bool bSuccess = true;
+    bSuccess &= LoadSprite("font1", "alphabet_white");
+
+    return ReportLoadingResult(bSuccess, "font1");
+}
 /// @brief Load all score bar sprites
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadScoreBarSprites()
@@ -365,6 +373,8 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadExitSprites();
     bSuccess &= LoadPauseSprites();
     bSuccess &= LoadFontSprites();
+    bSuccess &= LoadFont1Sprites();
+
     bSuccess &= LoadScoreBarSprites();
     bSuccess &= LoadPlayerIdleSprites();
     bSuccess &= LoadPlayerJumpSprites();

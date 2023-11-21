@@ -112,6 +112,8 @@ protected: // File Management
 private: // Game Rendering
 	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
+	bool DrawBigText1(const std::string& sText, int x, int y);
+
 	bool DrawStatusBar();
 
 private: // Animator

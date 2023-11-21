@@ -324,8 +324,40 @@ bool cApp::UpdateDrawNameBox()
 	if (IsKeyReleased(app::Key::UP)) {
 		nameBoxOption--;
 	}
+	if (IsKeyReleased(app::Key::BACK))
+	{	
+		if(playerName.size() > 0)
+			playerName.pop_back();
+		return true;
+	}
+	if (playerName.size() < 10)
+	{
 
-	return true;
+		std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+		char currentKeyA = 'A';
+		for (auto it : mapKeyAlphabet)
+		{	
+			if (IsKeyReleased(it.second))
+			{
+				playerName += currentKeyA;
+				return true;
+			}
+			++currentKeyA;
+		}
+		std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+		char currentKeyN = '1';
+		for(auto it : mapKeyNumeric)
+		{
+			if (IsKeyReleased(it.second))
+			{
+				playerName += currentKeyN;
+				return true;
+			}
+			++currentKeyN;
+		}
+	}
+	
+	return true; 
 }
 /// @brief 
 /// @return 
@@ -339,11 +371,10 @@ bool cApp::DrawNameBox()
 		DrawSprite(0, 0, NameBox);
 	else
 		DrawSprite(0, 0, NameBoxChosen);
-	if (IsKeyReleased(app::Key::K)) {
-		SetPixelMode(app::Pixel::MASK);
-		DrawBigText("SPyofgame", 27, 27);
-		SetPixelMode(app::Pixel::NORMAL);
-	}
+
+	SetPixelMode(app::Pixel::MASK);
+	DrawBigText1(playerName, 155, 70);
+	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
 /// @brief Check if game is rendering or not
@@ -533,6 +564,19 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 		const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
 		const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
 		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+		i++;
+	}
+	return true;
+}
+bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
+{
+	int i = 0;
+	for (const auto c : sText) {
+		constexpr int nFirstASCII = 32;
+		constexpr int nCharsInRow = 16;
+		const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
+		const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
+		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font1"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
 		i++;
 	}
 	return true;
