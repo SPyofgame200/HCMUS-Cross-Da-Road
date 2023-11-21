@@ -4,57 +4,80 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
-#include <thread>
 #include <mutex>
 #include <iomanip>
 #include <future>
 
 class MessageManager {
-public:
+private: /// Timer
+    using clock_t = std::chrono::steady_clock::time_point;
+    mutable clock_t lastMessageTimer;
+    const clock_t origin;
+
+private: /// Prevent Data Race
+    mutable std::mutex tokenMutex;
+    mutable std::mutex logMutex;
+
+private: /// Message controllers
+    const int tokenInterval = 500; // 100 milliseconds interval between tokens
+
+private:
+    clock_t CurrentTime()
+    {
+        return std::chrono::steady_clock::now();
+    }
+
+private: /// Constructor
+    MessageManager() : lastMessageTimer(CurrentTime()), origin(CurrentTime()) {}
+
+public: // Singleton
     static MessageManager& GetInstance() {
         static MessageManager instance;
         return instance;
     }
 
+public: // Loggers
     void Log(const std::string& functionName, const std::string& message) const {
-        auto logTask = std::async(std::launch::async, [=] {
-            std::lock_guard<std::mutex> lock(logMutex);
-
-            auto now = std::chrono::steady_clock::now();
-            auto elapsedSinceStart = std::chrono::duration_cast<std::chrono::milliseconds>(now - programStartTime);
-
-            auto minutes = std::chrono::duration_cast<std::chrono::minutes>(elapsedSinceStart);
-            auto seconds = std::chrono::duration_cast<std::chrono::seconds>(elapsedSinceStart - minutes);
-            auto milliseconds = elapsedSinceStart - minutes - seconds;
-
-            std::cerr << "[" << std::setw(2) << std::setfill('0') << minutes.count() << ":"
-                << std::setw(2) << std::setfill('0') << seconds.count() << "."
-                << std::setw(3) << milliseconds.count() << "] ";
-            std::cerr << functionName << "(): " << message << std::endl;
-            });
+        std::async(std::launch::async, &MessageManager::LogThread, this, functionName, message);
     }
 
+public: // Validators
     bool TryAcquireToken() const {
         std::lock_guard<std::mutex> lock(tokenMutex);
         auto now = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTime);
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer);
 
         if (elapsed.count() >= tokenInterval) {
-            lastMessageTime = now;
+            lastMessageTimer = now;
             return true;
         }
 
         return false;
     }
 
-private:
-    MessageManager() : lastMessageTime(std::chrono::steady_clock::now()), programStartTime(std::chrono::steady_clock::now()) {}
+private: /// Log Internality
+    void LogTimestamp() const {
+        using namespace std::chrono;
 
-    mutable std::mutex tokenMutex;
-    mutable std::mutex logMutex;  // Mutex to synchronize access to logging
-    mutable std::chrono::steady_clock::time_point lastMessageTime;
-    const std::chrono::steady_clock::time_point programStartTime;
-    const int tokenInterval = 500; // 100 milliseconds interval between tokens
+        clock_t now = steady_clock::now();
+        milliseconds elapsedSinceStart = duration_cast<milliseconds>(now - origin);
+
+        minutes minutes_part = duration_cast<minutes>(elapsedSinceStart);
+        seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
+        milliseconds milisec_part = elapsedSinceStart - duration_cast<milliseconds>(minutes_part) - duration_cast<milliseconds>(seconds_part);
+
+        std::cerr << "[" 
+            << std::setw(2) << std::setfill('0') << minutes_part.count() << ":" // minutes
+            << std::setw(2) << std::setfill('0') << seconds_part.count() << "." // seconds
+            << std::setw(3) << std::setfill('0') << milisec_part.count()        // miliseconds
+        << "] ";
+    }
+
+    void LogThread(const std::string& functionName, const std::string& message) const {
+        std::lock_guard<std::mutex> lock(logMutex);
+        LogTimestamp();  // Log timestamp separately
+        std::cerr << functionName << "(): " << message << std::endl;
+    }
 };
 
 // Logging macro
