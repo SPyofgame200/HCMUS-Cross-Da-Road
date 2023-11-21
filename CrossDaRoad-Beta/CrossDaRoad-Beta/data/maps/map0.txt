@@ -1,4 +1,4 @@
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 beach_wave 12
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 beach_wave 12
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
 ,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0
@@ -10,6 +10,9 @@ fppbbpppppppppppp  0.0
 pqbppppppppppppppppp  0.0
 #
 $ , background=magma
+: block=false danger=true platformspeed=0.0
+: spritepos=(0:0)
+$ . background=magmas
 : block=false danger=true platformspeed=0.0
 : spritepos=(0:0)
 $ p sprite=wall background=magma

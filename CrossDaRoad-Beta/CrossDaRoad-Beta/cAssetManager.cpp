@@ -8,6 +8,7 @@
 
 
 #include "cAssetManager.h"
+#include "uMessageManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 ////////////////// CONSTRUCTORS and DESTRUCTORS //////////////////////////
@@ -43,7 +44,9 @@ cAssetManager& cAssetManager::GetInstance()
 app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 {
     if (mapSprites.find(sName) == mapSprites.end()) {
-        std::cerr << "Failed to find sprite (\"" << sName << "\")" << std::endl;
+        LOG_ERROR(
+            "Failed to use sprite - Name: \"" << sName << "\""
+        );
         return nullptr;
     }
     else {
@@ -320,8 +323,12 @@ bool cAssetManager::LoadSprite(const std::string& sName, const std::string& sFil
 {
     auto* spr = new app::Sprite(GetFileLocation(sFileName));
     if (spr == nullptr || spr->GetData() == nullptr) {
-        std::cerr << "cAssetManager::LoadSprite(name=\"" << sName << "\", filename=\"" << sFileName << "\"): ";
-        std::cerr << "Can not found with file \"" << GetFileLocation(sFileName) << "\"" << std::endl;
+        /*
+        LOG_ERROR(
+            "Can not load sprite - Name: " << sName << ", Filename: " << sFileName
+            << ", Location: " << GetFileLocation(sFileName)
+        );
+        */
         return false;
     }
     mapSprites[sName] = spr;
