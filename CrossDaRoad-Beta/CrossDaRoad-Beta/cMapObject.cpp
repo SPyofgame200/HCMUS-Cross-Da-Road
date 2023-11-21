@@ -34,29 +34,32 @@ MapObject::~MapObject()
 
 bool MapObject::Create()
 {
+	using namespace map_object;
 	/// Identity
-	code = 0;
-	sCategory = "";
+	code = NO_TARGET;
+	sCategory = EMPTY_NAME;
 	/// Flag
-	isBlocked = false;
-	isDanger = false;
+	isBlocked = DISABLED;
+	isDanger = DISABLED;
 	/// Sprite
-	sSpriteName = "";
-	nSpritePosX = 0;
-	nSpritePosY = 0;
-	nSpriteFrame = 0;
+	sSpriteName = EMPTY_NAME;
+	nSpritePosX = ZERO;
+	nSpritePosY = ZERO;
+	nSpriteFrame = NO_ANIMATION;
 	/// Background
-	sBackgroundName = "";
-	nBackgroundPosX = 0;
-	nBackgroundPosY = 0;
-	nBackgroundFrame = 0;
+	sBackgroundName = EMPTY_NAME;
+	nBackgroundPosX = ZERO;
+	nBackgroundPosY = ZERO;
+	nBackgroundFrame = NO_ANIMATION;
 	/// Lane
-	fPlatform = 0.0;
+	fPlatformDrag = NO_DRAG;
 	/// Summon
-	summon = 0;
-	fDuration = 0;
-	fCooldown = 0;
-	fChance = 0;
+	summon = NO_TARGET;
+	fDuration = NO_DELAY;
+	fCooldown = NO_DELAY;
+	fPredelay = NO_DELAY;
+	fChance = NO_CHANCE;
+	nSummonLimit = UNLIMITED;
 	return true;
 }
 
@@ -135,10 +138,10 @@ int32_t MapObject::GetBackgroundFrameCount() const
 
 float MapObject::GetPlatformDragSpeed() const 
 {
-	return fPlatform;
+	return fPlatformDrag;
 }
 
-char MapObject::GetSummonTarget() const 
+char MapObject::GetSummon() const 
 {
 	return summon;
 }
@@ -153,9 +156,19 @@ float MapObject::GetSummonCooldown() const
 	return fCooldown;
 }
 
-float MapObject::GetSummonProbability() const 
+float MapObject::GetSummonPredelay() const
+{
+	return fPredelay;
+}
+
+float MapObject::GetSummonChance() const 
 {
 	return fChance;
+}
+
+int MapObject::GetSummonLimit() const
+{
+	return nSummonLimit;
 }
 
 bool MapObject::ExtractToken(char &token, const std::string& sData)
@@ -475,7 +488,7 @@ bool MapObject::SetBackgroundAttribute(const std::string& sAttribute, const std:
 bool MapObject::SetLaneAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "platformspeed") {
-		return ExtractFloat(fPlatform, sValue);
+		return ExtractFloat(fPlatformDrag, sValue);
 	}
 	return false;
 }
@@ -567,7 +580,7 @@ std::string MapObject::ShowLaneData() const
 {
 	std::ostringstream oss;
 	oss << "Lane: [ ";
-	oss << "platform_drag=" << fPlatform << " ";
+	oss << "platform_drag=" << fPlatformDrag << " ";
 	oss << "]";
 	return oss.str();
 }

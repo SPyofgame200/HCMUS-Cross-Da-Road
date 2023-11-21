@@ -109,7 +109,7 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 		const GraphicCell& Cell = Objects[id];
 		if (SuccessSummon(Cell.graphic, id)) {
 			const MapObject& sprite = app->MapLoader.GetSpriteData(Cell.graphic);
-			Objects.push_back(GraphicCell(sprite.GetSummonTarget(), Cell.nRowPos, Cell.nColPos));
+			Objects.push_back(GraphicCell(sprite.GetSummon(), Cell.nRowPos, Cell.nColPos));
 		}
 	}
 
@@ -228,7 +228,7 @@ std::map<int, float> mapLastSummon;
 bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 {
 	const MapObject& sprite = app->MapLoader.GetSpriteData(graphic);
-	if (sprite.GetSummonTarget() == 0 || sprite.GetSummonProbability() <= 0) {
+	if (sprite.GetSummon() == 0 || sprite.GetSummonChance() <= 0) {
 		return false; // Summon is not enabled or chance is zero or negative
 	}
 
@@ -254,7 +254,7 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 		return false;
 	}
 
-	const auto fProbability = static_cast<float>(sprite.GetSummonProbability() / 100.0 / (fps == 0 ? 1 : fps));
+	const auto fProbability = static_cast<float>(sprite.GetSummonChance() / 100.0 / (fps == 0 ? 1 : fps));
 	const float fGenerated = distribution(generator);
 	if (fGenerated < fProbability) {
 		fLastSummon = fCurrentTime;
