@@ -248,7 +248,7 @@ private:
 	bool bKeys[KEYBOARD_SIZE];             ///< The current state of the keyboard.
 	bool bKeysCache[KEYBOARD_SIZE];        ///< The cached state of the keyboard.
 	ButtonState pKeysState[KEYBOARD_SIZE]; ///< The state of the keyboard.
-	std::map<uint16_t, uint8_t> mapKeys;   ///< The map of the keyboard.
+	std::map<uint16_t, app::Key> mapKeys;   ///< The map of the keyboard.
 
 public: // Constructors & Destructor
 	KeyboardState();

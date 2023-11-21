@@ -90,6 +90,7 @@ bool cApp::GameReset()
 	frame4.Reset();
 	frame6.Reset();
 	frame8.Reset();
+	frame12.Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
@@ -551,7 +552,7 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nHeight_sb = 160;
 
 	constexpr int32_t nPosX_level = 321;
-	constexpr int32_t nPosY_level = 90;
+	constexpr int32_t nPosY_level = 80;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
@@ -570,6 +571,9 @@ int cApp::GetFrameID(const int frame) const
 	}
 	else if (frame == frame8.GetLimit()) {
 		return frame8.GetID();
+	}
+	else if (frame == frame12.GetLimit()) {
+		return frame12.GetID();
 	}
 	return 0;
 }
@@ -591,6 +595,11 @@ int cApp::GetFrameID(const int frame, float fTickRate) const
 		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
 		return current.GetID();
 	}
+	else if (frame == frame12.GetLimit()) {
+		frame12_t current = frame12;
+		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
+		return current.GetID();
+	}
 	return 0;
 }
 
@@ -599,11 +608,17 @@ int cApp::GetFrameID(const int frame, float fTickRate) const
 /// @return String of current frame id of player
 std::string cApp::ShowFrameID(const int frame) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame));
 }
 
 std::string cApp::ShowFrameID(const int frame, float fTickRate) const
 {
+	if (frame <= 0) {
+		return "";
+	}
 	return std::to_string(GetFrameID(frame, fTickRate));
 }
 
@@ -615,6 +630,7 @@ bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
 	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
+	frame12.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	return true;
 }
 

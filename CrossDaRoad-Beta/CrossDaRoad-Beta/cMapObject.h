@@ -11,6 +11,20 @@
 
 #include <string>
 
+namespace map_object
+{
+	constexpr char NO_TARGET = 0;
+	constexpr bool DISABLED = false;
+	constexpr bool ENABLED = true;
+	constexpr int32_t ZERO = 0;
+	constexpr int32_t NO_ANIMATION = 0;
+	const std::string EMPTY_NAME = "";
+	constexpr float NO_DRAG = 0.0f;
+	constexpr float NO_DELAY = 0.0f;
+	constexpr float NO_CHANCE = 0.0f;
+	constexpr int32_t UNLIMITED = -1;
+}
+
  /// @brief Sprite data for drawing and collision detection (block, danger, platform, etc.)
 class MapObject
 {
@@ -35,13 +49,15 @@ private: // Background attributes
 	int32_t nBackgroundFrame;   ///< The number of frame the background run, for animation
 	
 private: // Lane attributes
-	float fPlatform;            ///< Platform dragging speed if the player land on them
+	float fPlatformDrag;        ///< Platform dragging speed if the player land on them
 
 private: // Summon attributes
 	char summon;			    ///< The chance of summoning another sprite with encoded = summon
 	float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
 	float fCooldown;            ///< The cooldown durations for the two consecutive summoning
 	float fChance;              ///< The probability of summoning in each second
+	float fPredelay;			///< The first delayed duration before the summon happened
+	int32_t nSummonLimit;		///< The limitation of summons
 
 public: // Constructors & Destructor
 	MapObject();						///< Constructor
@@ -69,10 +85,12 @@ public: // Getters
 	int32_t GetBackgroundPosY() const;
 	int32_t GetBackgroundFrameCount() const;
 	float GetPlatformDragSpeed() const;
-	char GetSummonTarget() const;
+	char GetSummon() const;
 	float GetSummonDuration() const;
 	float GetSummonCooldown() const;
-	float GetSummonProbability() const;
+	float GetSummonPredelay() const;
+	float GetSummonChance() const;
+	int GetSummonLimit() const;
 
 public: // Output
 	std::string ShowIdentityData() const;  ///< ShowData

@@ -447,7 +447,7 @@ bool hPlayer::PlayerMoveX(float fFactorX, int nStep)
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fPartial = (nPos == nStep ? 1.0f : nPos / nStep);
+		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialX = fFrogVelocityX * fFactorX * fPartial;
 		SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
 		if (!IsBlocked() && !IsPlayerOutOfBounds()) {
@@ -465,7 +465,7 @@ bool hPlayer::PlayerMoveY(float fFactorY, int nStep)
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fPartial = (nPos == nStep ? 1.0f : nPos / nStep);
+		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialY = fFrogVelocityY * fFactorY * fPartial;
 		SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
 		if (!IsBlocked() && !IsPlayerOutOfBounds()) {

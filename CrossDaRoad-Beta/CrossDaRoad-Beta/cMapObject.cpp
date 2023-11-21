@@ -34,29 +34,32 @@ MapObject::~MapObject()
 
 bool MapObject::Create()
 {
+	using namespace map_object;
 	/// Identity
-	code = 0;
-	sCategory = "";
+	code = NO_TARGET;
+	sCategory = EMPTY_NAME;
 	/// Flag
-	isBlocked = false;
-	isDanger = false;
+	isBlocked = DISABLED;
+	isDanger = DISABLED;
 	/// Sprite
-	sSpriteName = "";
-	nSpritePosX = 0;
-	nSpritePosY = 0;
-	nSpriteFrame = 0;
+	sSpriteName = EMPTY_NAME;
+	nSpritePosX = ZERO;
+	nSpritePosY = ZERO;
+	nSpriteFrame = NO_ANIMATION;
 	/// Background
-	sBackgroundName = "";
-	nBackgroundPosX = 0;
-	nBackgroundPosY = 0;
-	nBackgroundFrame = 0;
+	sBackgroundName = EMPTY_NAME;
+	nBackgroundPosX = ZERO;
+	nBackgroundPosY = ZERO;
+	nBackgroundFrame = NO_ANIMATION;
 	/// Lane
-	fPlatform = 0.0;
+	fPlatformDrag = NO_DRAG;
 	/// Summon
-	summon = 0;
-	fDuration = 0;
-	fCooldown = 0;
-	fChance = 0;
+	summon = NO_TARGET;
+	fDuration = NO_DELAY;
+	fCooldown = NO_DELAY;
+	fPredelay = NO_DELAY;
+	fChance = NO_CHANCE;
+	nSummonLimit = UNLIMITED;
 	return true;
 }
 
@@ -135,10 +138,10 @@ int32_t MapObject::GetBackgroundFrameCount() const
 
 float MapObject::GetPlatformDragSpeed() const 
 {
-	return fPlatform;
+	return fPlatformDrag;
 }
 
-char MapObject::GetSummonTarget() const 
+char MapObject::GetSummon() const 
 {
 	return summon;
 }
@@ -153,9 +156,19 @@ float MapObject::GetSummonCooldown() const
 	return fCooldown;
 }
 
-float MapObject::GetSummonProbability() const 
+float MapObject::GetSummonPredelay() const
+{
+	return fPredelay;
+}
+
+float MapObject::GetSummonChance() const 
 {
 	return fChance;
+}
+
+int MapObject::GetSummonLimit() const
+{
+	return nSummonLimit;
 }
 
 bool MapObject::ExtractToken(char &token, const std::string& sData)
@@ -273,7 +286,7 @@ bool MapObject::ExtractPosition(int32_t& nPos, const std::string& sData)
 bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::string& sData)
 {
 	if (sData.empty()) {
-		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Invalid data, expected non-empty string size." << std::endl;
 		return false;
 	}
@@ -283,16 +296,77 @@ bool MapObject::ExtractPositions(int32_t& nPosX, int32_t& nPosY, const std::stri
 		return true;
 	}
 
-	int x, y;
+	std::vector<char> bracketStack;
+	char separator;
+
+	auto IsMatchingPair = [](char openBracket, char closeBracket) {
+		return (openBracket == '[' && closeBracket == ']')
+			|| (openBracket == '<' && closeBracket == '>')
+			|| (openBracket == '(' && closeBracket == ')')
+			|| (openBracket == '{' && closeBracket == '}');
+	};
+
+
+	for (char c : sData) {
+		if (c == '[' || c == '<' || c == '(' || c == '{') {
+			bracketStack.push_back(c);
+		}
+		else if (c == ']' || c == '>' || c == ')' || c == '}') {
+			if (bracketStack.empty() || !IsMatchingPair(bracketStack.back(), c)) {
+				std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+				std::cerr << "Mismatched brackets." << std::endl;
+				return false;
+			}
+			bracketStack.pop_back();
+		}
+	}
+
+	if (!bracketStack.empty()) {
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+		std::cerr << "Mismatched brackets at the suffixes." << std::endl;
+		return false;
+	}
+
 	std::istringstream iss(sData);
-	if (!(iss >> x >> y)) {
-		std::cerr << "MapObject::ExtractPosition(\"" << sData << "\"): ";
+
+	if (sData.find(':') != std::string::npos) {
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
+	}
+	else if (sData.find(',') != std::string::npos && sData.find(':') == std::string::npos) {
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator;
+		if (iss.peek() == ',' || iss.peek() == '}') {
+			iss.ignore(); // Skip the comma or closing bracket '}'
+		}
+		iss >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
+	}
+	else {
+		char openingBracket, closingBracket;
+		iss >> openingBracket >> nPosX >> separator >> nPosY >> closingBracket;
+		if (iss.fail() || !IsMatchingPair(openingBracket, closingBracket)) {
+			std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
+			std::cerr << "Failed to extract positions." << std::endl;
+			return false;
+		}
+	}
+
+	if (iss.fail()) {
+		std::cerr << "MapObject::ExtractPositions(\"" << sData << "\"): ";
 		std::cerr << "Failed to extract positions." << std::endl;
 		return false;
 	}
 
-	nPosX = x;
-	nPosY = y;
 	return true;
 }
 
@@ -336,6 +410,12 @@ bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sVal
 		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
 		std::cerr << "Extracted data is empty sAttribute[" << sAttribute.size() << "] & ";
 		std::cerr << "sValue[" << sValue.size() << "]" << std::endl;
+		return false;
+	}
+
+	for (char c : sValue) if (c == '=') {
+		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
+		std::cerr << "Extracted data is invalid, found delimiters '=' inside attribute or values" << std::endl;
 		return false;
 	}
 
@@ -408,7 +488,7 @@ bool MapObject::SetBackgroundAttribute(const std::string& sAttribute, const std:
 bool MapObject::SetLaneAttribute(const std::string& sAttribute, const std::string& sValue)
 {
 	if (sAttribute == "platformspeed") {
-		return ExtractFloat(fPlatform, sValue);
+		return ExtractFloat(fPlatformDrag, sValue);
 	}
 	return false;
 }
@@ -500,7 +580,7 @@ std::string MapObject::ShowLaneData() const
 {
 	std::ostringstream oss;
 	oss << "Lane: [ ";
-	oss << "platform_drag=" << fPlatform << " ";
+	oss << "platform_drag=" << fPlatformDrag << " ";
 	oss << "]";
 	return oss.str();
 }

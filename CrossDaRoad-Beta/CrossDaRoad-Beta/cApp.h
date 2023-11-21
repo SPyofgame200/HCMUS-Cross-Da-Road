@@ -57,6 +57,7 @@ private: // Animator
 	frame4_t frame4;
 	frame6_t frame6;
 	frame8_t frame8;
+	frame12_t frame12;
 
 private: // Special variables
 	std::atomic<bool> bDeath;

@@ -138,5 +138,6 @@ public: /// Animations
 using frame4_t = cFrame<4>;
 using frame6_t = cFrame<6>;
 using frame8_t = cFrame<8>;
+using frame12_t = cFrame<12>;
 
 #endif // C_FRAME_H

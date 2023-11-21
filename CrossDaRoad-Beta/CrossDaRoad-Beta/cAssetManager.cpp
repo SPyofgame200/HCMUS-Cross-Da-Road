@@ -8,6 +8,7 @@
 
 
 #include "cAssetManager.h"
+#include "uMessageManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 ////////////////// CONSTRUCTORS and DESTRUCTORS //////////////////////////
@@ -43,7 +44,9 @@ cAssetManager& cAssetManager::GetInstance()
 app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 {
     if (mapSprites.find(sName) == mapSprites.end()) {
-        std::cerr << "Failed to find sprite (\"" << sName << "\")" << std::endl;
+        LOG_ERROR(
+            "Failed to use sprite - Name: \"" << sName << "\""
+        );
         return nullptr;
     }
     else {
@@ -262,8 +265,6 @@ bool cAssetManager::LoadMapRiverSideSprites()
     bSuccess &= LoadSprite("grass", "grass");
     bSuccess &= LoadAnimation("crocodile", "crocodile", 6);
     bSuccess &= LoadAnimation("crocodile_right", "crocodile_right", 6);
-    bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
-    bSuccess &= LoadAnimation("magma", "magma", 12);
 
     return ReportLoadingResult(bSuccess, "River Side map");
 }
@@ -277,6 +278,7 @@ bool cAssetManager::LoadMapIceAgeSprites()
     bSuccess &= LoadSprite("snowed_grass", "snowed_grass");
     bSuccess &= LoadSprite("ice", "ice");
     bSuccess &= LoadSprite("mamut", "mamut");
+    bSuccess &= LoadAnimation("deer", "deer", 6);
 
     return ReportLoadingResult(bSuccess, "Ice Age map");
 }
@@ -290,7 +292,9 @@ bool cAssetManager::LoadMapVolcanoSprites()
     bSuccess &= LoadSprite("volcano", "volcano");
     bSuccess &= LoadSprite("magma", "magma");
     bSuccess &= LoadSprite("pinetree", "pinetree");
+    bSuccess &= LoadAnimation("lava_rock", "lava_rock", 4);
     bSuccess &= LoadAnimation("fire", "fire", 4);
+    bSuccess &= LoadAnimation("lava", "lava", 12);
 
     return ReportLoadingResult(bSuccess, "Volcano map");
 }
@@ -304,6 +308,7 @@ bool cAssetManager::LoadMapOceanSprites()
     bSuccess &= LoadSprite("ocean", "ocean");
     bSuccess &= LoadAnimation("crab", "crab", 4);
     bSuccess &= LoadAnimation("coconut", "coconut", 8);
+    bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
 
     return ReportLoadingResult(bSuccess, "Ocean map");
 }
@@ -320,8 +325,12 @@ bool cAssetManager::LoadSprite(const std::string& sName, const std::string& sFil
 {
     auto* spr = new app::Sprite(GetFileLocation(sFileName));
     if (spr == nullptr || spr->GetData() == nullptr) {
-        std::cerr << "cAssetManager::LoadSprite(name=\"" << sName << "\", filename=\"" << sFileName << "\"): ";
-        std::cerr << "Can not found with file \"" << GetFileLocation(sFileName) << "\"" << std::endl;
+        /*
+        LOG_ERROR(
+            "Can not load sprite - Name: " << sName << ", Filename: " << sFileName
+            << ", Location: " << GetFileLocation(sFileName)
+        );
+        */
         return false;
     }
     mapSprites[sName] = spr;
