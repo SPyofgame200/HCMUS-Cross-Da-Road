@@ -82,18 +82,20 @@ enum MessageSeverity
 };
 
 class MessageManager {
-private:
+private: /// Timer controls
     using clock_t = std::chrono::steady_clock::time_point;
+    using sysclock_t = std::chrono::system_clock::time_point;
     mutable clock_t lastMessageTimer[4];  // Array for each severity level timer
-    const clock_t origin;
+    const clock_t originTimer;
+    const sysclock_t originSystimer;
 
-private:
+private: /// Avoid data-race between threads
     mutable std::mutex tokenMutex;
     mutable std::mutex logMutex;
 
-private:
-    const int tokenBaseInterval = 100;  // Base interval for token acquisition
-    const int tokenIntervalsMultiplier[4] = { 5, 10, 20, 40 };  // Multiplier for each severity level
+private: /// User customization
+    const int tokenBaseInterval = 100;
+    const int tokenIntervalsMultiplier[4] = { 5, 10, 20, 40 }; // based on the severity
 
 private:
     clock_t CurrentTime()
@@ -101,10 +103,15 @@ private:
         return std::chrono::steady_clock::now();
     }
 
+    sysclock_t CurrentSystime()
+    {
+        return std::chrono::system_clock::now();
+    }
+
 private:
     MessageManager() 
     : lastMessageTimer{ CurrentTime(), CurrentTime(), CurrentTime(), CurrentTime() }
-    , origin(CurrentTime()) 
+    , originTimer(CurrentTime()), originSystimer(CurrentSystime())
     {
     }
 
@@ -137,12 +144,32 @@ public:
     }
 
 private:
-    void LogTimestamp(MessageSeverity eSeverity) const 
+    void LogRealTime() const {
+        using namespace std::chrono;
+
+        auto now = system_clock::now();
+        auto elapsedSinceStart = duration_cast<milliseconds>(now - originSystimer);
+
+        auto minutes_part = duration_cast<minutes>(elapsedSinceStart);
+        auto seconds_part = duration_cast<seconds>(elapsedSinceStart - minutes_part);
+        auto milliseconds_part = duration_cast<milliseconds>(elapsedSinceStart - minutes_part - seconds_part);
+
+        auto time = system_clock::to_time_t(now);
+        tm tm_time;
+        localtime_s(&tm_time, &time);
+
+        std::cerr << text::BRIGHT_BLUE << "["
+            << std::put_time(&tm_time, "%d/%m/%y at %H:%M:%S")
+            << "." << std::setw(6) << std::setfill('0') << milliseconds_part.count()
+        << "] ";
+    }
+
+    void LogTimestamp() const
     {
         using namespace std::chrono;
 
         clock_t now = steady_clock::now();
-        milliseconds elapsedSinceStart = duration_cast<milliseconds>(now - origin);
+        milliseconds elapsedSinceStart = duration_cast<milliseconds>(now - originTimer);
 
         minutes minutes_part = duration_cast<minutes>(elapsedSinceStart);
         seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
@@ -151,8 +178,8 @@ private:
         std::cerr << text::CYAN << "["
             << std::setw(2) << std::setfill('0') << minutes_part.count() << ":"  // minutes
             << std::setw(2) << std::setfill('0') << seconds_part.count() << "."  // seconds
-            << std::setw(3) << std::setfill('0') << milisec_part.count()         // milliseconds
-            << "] ";
+            << std::setw(3) << std::setfill('0') << milisec_part.count() // milliseconds
+        << "] ";
     }
 
     void LogSeverity(MessageSeverity eSeverity, bool bReset = false) const
@@ -183,7 +210,10 @@ private:
 
     void LogThread(const std::string& sFilePath, const std::string& sFunctionName, const std::string& sMessage, MessageSeverity eSeverity) const {
         std::lock_guard<std::mutex> lock(logMutex);
-        LogTimestamp(eSeverity);
+        if (eSeverity == MessageSeverity::SEVERE) {
+            LogRealTime();
+        }
+        LogTimestamp();
         LogSeverity(eSeverity);
         if (sFilePath.size()) {
             std::cerr << text::PURPLE << sFilePath << " -> ";
