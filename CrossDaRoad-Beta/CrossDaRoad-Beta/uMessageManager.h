@@ -137,3 +137,42 @@ private: /// Log Internality
     } while(0)
 
 #endif // U_MESSAGE_MANAGER
+
+/*
+    TODO
+
+    for players, by log level 1 -> 5
+
+    NOTIFY_MESSAGE(message, logfile = default): The app is running fine, just output certain actions
+    - color: Brown
+    - format: [MM:SS] message
+    EVENT_MESSAGE(function_name, message, logfile = default): The app is running fine, just output the current event
+    - color: Cyan
+    - format: [MM:SS.s] function_name(): message
+    WARN_MESSAGE(function_name, message, logfile = default): The app still runs with unwanted side effects
+    - color: Yellow
+    - format: [MM:SS.ss] function_name(parameters): message
+    ERROR_MESSAGE(file_path, function_name, message, logfile = default): The app can not run with current state
+    - color: Orange
+    - format: [MM:SS.ssss] ./file_path/file_name.file_extension::function_name(parameters): message
+    SEVERE_MESSAGE(file_path, function_name, message, this, logfile = default): Something shouldnt happen just happened
+    - color: Red
+    - format: [HH:MM:SS.ssssss] ./file_path/file_name.file_extension::function_name(parameters): message \n std::cerr<<*this<<std::endl;
+
+    for developers
+
+    LOG_MESSAGE(message): I want to output a simple message
+    - output the message
+    - color: Lime
+    - format: same as NOTIFY_MESSAGE
+    INFO_MESSAGE(function_name, message): I want to get the informative message
+    - output current function_name
+    - output the messages with function parameters
+    - color: Blue
+    - format: same as WARN_MESSAGE
+    TRACE_MESSAGE(file_path, function_name, message, this): I want to debug with details states
+    - output current filepath with the namespace and function_name
+    - output the messages with class data
+    - color: Purple
+    - format: same as SEVERE_MESSAGE
+*/
