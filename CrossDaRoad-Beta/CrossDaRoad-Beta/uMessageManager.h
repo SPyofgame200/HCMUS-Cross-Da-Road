@@ -29,9 +29,20 @@ namespace text {
     constexpr const char* BRIGHT_MAGENTA = "\033[1;35m";
     constexpr const char* BRIGHT_CYAN = "\033[1;36m";
     constexpr const char* BRIGHT_WHITE = "\033[1;37m";
+    // Additional text colors
+    constexpr const char* ORANGE = "\033[38;5;208m";
+    constexpr const char* PINK = "\033[38;5;200m";
+    constexpr const char* PURPLE = "\033[38;5;171m";
+    constexpr const char* LIME = "\033[38;5;154m";
+    constexpr const char* TEAL = "\033[38;5;30m";
+    constexpr const char* OLIVE = "\033[38;5;58m";
+    constexpr const char* BROWN = "\033[38;5;130m";
+    constexpr const char* GRAY = "\033[90m";
 }
 
 namespace background {
+    // Reset
+    constexpr const char* RESET = "\033[49m";
     // Background color
     constexpr const char* BLACK = "\033[40m";
     constexpr const char* RED = "\033[41m";
@@ -41,9 +52,7 @@ namespace background {
     constexpr const char* MAGENTA = "\033[45m";
     constexpr const char* CYAN = "\033[46m";
     constexpr const char* WHITE = "\033[47m";
-    // Reset background color
-    constexpr const char* RESET = "\033[49m";
-
+    // Bright blackground colors
     constexpr const char* BRIGHT_BLACK = "\033[1;40m";
     constexpr const char* BRIGHT_RED = "\033[1;41m";
     constexpr const char* BRIGHT_GREEN = "\033[1;42m";
@@ -52,20 +61,39 @@ namespace background {
     constexpr const char* BRIGHT_MAGENTA = "\033[1;45m";
     constexpr const char* BRIGHT_CYAN = "\033[1;46m";
     constexpr const char* BRIGHT_WHITE = "\033[1;47m";
+    // Additional background colors
+    constexpr const char* ORANGE = "\033[48;5;208m";
+    constexpr const char* PINK = "\033[48;5;200m";
+    constexpr const char* PURPLE = "\033[48;5;171m";
+    constexpr const char* LIME = "\033[48;5;154m";
+    constexpr const char* TEAL = "\033[48;5;30m";
+    constexpr const char* OLIVE = "\033[48;5;58m";
+    constexpr const char* BROWN = "\033[48;5;130m";
+    constexpr const char* GRAY = "\033[100m";
 }
 
+enum MessageSeverity
+{
+    LOG = 0,
+    WARN = 1,
+    ERROR = 2,
+    SEVERE = 3,
+    CUSTOMS = 4,
+};
+
 class MessageManager {
-private: /// Timer
+private:
     using clock_t = std::chrono::steady_clock::time_point;
-    mutable clock_t lastMessageTimer;
+    mutable clock_t lastMessageTimer[4];  // Array for each severity level timer
     const clock_t origin;
 
-private: /// Prevent Data Race
+private:
     mutable std::mutex tokenMutex;
     mutable std::mutex logMutex;
 
-private: /// Message controllers
-    const int tokenInterval = 500; // 100 milliseconds interval between tokens
+private:
+    const int tokenBaseInterval = 100;  // Base interval for token acquisition
+    const int tokenIntervalsMultiplier[4] = { 5, 10, 20, 40 };  // Multiplier for each severity level
 
 private:
     clock_t CurrentTime()
@@ -73,36 +101,44 @@ private:
         return std::chrono::steady_clock::now();
     }
 
-private: /// Constructor
-    MessageManager() : lastMessageTimer(CurrentTime()), origin(CurrentTime()) {}
+private:
+    MessageManager() 
+    : lastMessageTimer{ CurrentTime(), CurrentTime(), CurrentTime(), CurrentTime() }
+    , origin(CurrentTime()) 
+    {
+    }
 
-public: // Singleton
-    static MessageManager& GetInstance() {
+public:
+    static MessageManager& GetInstance() 
+    {
         static MessageManager instance;
         return instance;
     }
 
-public: // Loggers
-    void Log(const std::string& functionName, const std::string& message) const {
-        std::async(std::launch::async, &MessageManager::LogThread, this, functionName, message);
+public:
+    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "") const 
+    {
+        std::async(std::launch::async, &MessageManager::LogThread, this, sFilePath, sFunctionName, sMessage, eSeverity);
     }
 
-public: // Validators
-    bool TryAcquireToken() const {
+public:
+    bool TryAcquireToken(MessageSeverity eSeverity) const 
+    {
         std::lock_guard<std::mutex> lock(tokenMutex);
         auto now = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer);
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
-        if (elapsed.count() >= tokenInterval) {
-            lastMessageTimer = now;
+        if (elapsed.count() >= (tokenBaseInterval * tokenIntervalsMultiplier[static_cast<int>(eSeverity)])) {
+            lastMessageTimer[static_cast<int>(eSeverity)] = now;
             return true;
         }
 
         return false;
     }
 
-private: /// Log Internality
-    void LogTimestamp() const {
+private:
+    void LogTimestamp(MessageSeverity eSeverity) const 
+    {
         using namespace std::chrono;
 
         clock_t now = steady_clock::now();
@@ -112,27 +148,87 @@ private: /// Log Internality
         seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
         milliseconds milisec_part = elapsedSinceStart - duration_cast<milliseconds>(minutes_part) - duration_cast<milliseconds>(seconds_part);
 
-        std::cerr << "[" 
-            << std::setw(2) << std::setfill('0') << minutes_part.count() << ":" // minutes
-            << std::setw(2) << std::setfill('0') << seconds_part.count() << "." // seconds
-            << std::setw(3) << std::setfill('0') << milisec_part.count()        // miliseconds
-        << "] ";
+        std::cerr << text::CYAN << "["
+            << std::setw(2) << std::setfill('0') << minutes_part.count() << ":"  // minutes
+            << std::setw(2) << std::setfill('0') << seconds_part.count() << "."  // seconds
+            << std::setw(3) << std::setfill('0') << milisec_part.count()         // milliseconds
+            << "] ";
     }
 
-    void LogThread(const std::string& functionName, const std::string& message) const {
+    void LogSeverity(MessageSeverity eSeverity, bool bReset = false) const
+    {
+        switch (eSeverity)
+        {
+        case LOG:
+            std::cerr << text::GRAY << "[LOG]";
+            break;
+        case WARN:
+            std::cerr << text::YELLOW << "[WARN]";
+            break;
+        case ERROR:
+            std::cerr << text::ORANGE << "[ERROR]";
+            break;
+        case SEVERE:
+            std::cerr << text::RED << "[SEVERE]";
+            break;
+        default:
+            std::cerr << text::BROWN << "[CUSTOM]";
+            break;
+        }
+        std::cerr << " ";
+        if (bReset) {
+            std::cerr << text::RESET << background::RESET << std::endl;
+        }
+    }
+
+    void LogThread(const std::string& sFilePath, const std::string& sFunctionName, const std::string& sMessage, MessageSeverity eSeverity) const {
         std::lock_guard<std::mutex> lock(logMutex);
-        LogTimestamp();  // Log timestamp separately
-        std::cerr << text::RED << functionName << "(): " << message << text::RESET << std::endl;
+        LogTimestamp(eSeverity);
+        LogSeverity(eSeverity);
+        if (sFilePath.size()) {
+            std::cerr << text::PURPLE << sFilePath << " -> ";
+        }
+        if (sFunctionName.size()) {
+            std::cerr << text::WHITE << sFunctionName << "(): ";
+        }
+        std::cerr << text::GRAY << sMessage << text::RESET << std::endl;
     }
 };
 
 // Logging macro
-#define LOG_ERROR(message) \
+#define LOG_MESSAGE(message) \
     do { \
-        if (MessageManager::GetInstance().TryAcquireToken()) { \
+        if (MessageManager::GetInstance().TryAcquireToken(MessageSeverity::LOG)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            MessageManager::GetInstance().Log(__func__, logStream.str()); \
+            MessageManager::GetInstance().Log(MessageSeverity::LOG, logStream.str()); \
+        } \
+    } while(0)
+
+#define WARN_MESSAGE(message) \
+    do { \
+        if (MessageManager::GetInstance().TryAcquireToken(MessageSeverity::WARN)) { \
+            std::ostringstream logStream; \
+            logStream << message; \
+            MessageManager::GetInstance().Log(MessageSeverity::WARN, logStream.str(), __func__); \
+        } \
+    } while(0)
+
+#define ERROR_MESSAGE(message) \
+    do { \
+        if (MessageManager::GetInstance().TryAcquireToken(MessageSeverity::ERROR)) { \
+            std::ostringstream logStream; \
+            logStream << message; \
+            MessageManager::GetInstance().Log(MessageSeverity::ERROR, logStream.str(), __func__, __FILE__); \
+        } \
+    } while(0)
+
+#define SEVERE_MESSAGE(message) \
+    do { \
+        if (MessageManager::GetInstance().TryAcquireToken(MessageSeverity::SEVERE)) { \
+            std::ostringstream logStream; \
+            logStream << message; \
+            MessageManager::GetInstance().Log(MessageSeverity::SEVERE, logStream.str(), __func__, __FILE__); \
         } \
     } while(0)
 

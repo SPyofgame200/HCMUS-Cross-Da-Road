@@ -44,8 +44,17 @@ cAssetManager& cAssetManager::GetInstance()
 app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 {
     if (mapSprites.find(sName) == mapSprites.end()) {
-        LOG_ERROR(
-            "Failed to use sprite - Name: \"" << sName << "\""
+        LOG_MESSAGE(
+            "LOG Failed to use sprite - Name: \"" << sName << "\""
+        );
+        WARN_MESSAGE(
+            "WARN Failed to use sprite - Name: \"" << sName << "\""
+        );
+        ERROR_MESSAGE(
+            "ERROR Failed to use sprite - Name: \"" << sName << "\""
+        );
+        SEVERE_MESSAGE(
+            "SEVERE Failed to use sprite - Name: \"" << sName << "\""
         );
         return nullptr;
     }
