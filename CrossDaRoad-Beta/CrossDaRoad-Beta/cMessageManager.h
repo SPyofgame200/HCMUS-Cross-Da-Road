@@ -69,7 +69,6 @@ public: /// Singleton
 public: /// Validator
     bool TryAcquireToken(MessageSeverity eSeverity) const
     {
-        std::lock_guard<std::mutex> lock(tokenMutex);
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
@@ -85,7 +84,6 @@ public: // Loggers
     void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
     {
         auto future = std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
-        future.wait();
     }
 
     void LogConsoleColor()
