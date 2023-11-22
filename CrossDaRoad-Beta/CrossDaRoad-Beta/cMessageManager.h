@@ -1,5 +1,5 @@
-#ifndef U_MESSAGE_MANAGER
-#define U_MESSAGE_MANAGER
+#ifndef C_MESSAGE_MANAGER
+#define C_MESSAGE_MANAGER
 
 #include <iostream>
 #include <sstream>
@@ -51,6 +51,7 @@ private: /// Constructor & Destructor
     : lastMessageTimer{ CurrentTime(), CurrentTime(), CurrentTime(), CurrentTime() }
     , originTimer(CurrentTime()), originSystimer(CurrentSystime())
     {
+        LogConsoleColor();
         // ...
     }
     ~cMessageManager()
@@ -85,6 +86,11 @@ public: // Loggers
     {
         auto future = std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
         future.wait();
+    }
+
+    void LogConsoleColor()
+    {
+        console::ShowConsoleColor();
     }
 
 public: // Getters
@@ -179,18 +185,24 @@ private: // Log handler
     }
 };
 
-
+// Utilities macros
 #include <tuple>
 template <typename... Args>
 constexpr std::size_t CountArguments(Args...) {
     return sizeof...(Args);
 }
 
-#define PRINT_ARG_COUNT(...) \
+#define LOG_ARG_COUNT(...) \
     do { \
         constexpr std::size_t numArgs = CountArguments(__VA_ARGS__); \
         std::cerr << "[" << numArgs << " args ]" << std::endl; \
     } while(0)
+
+#define LOG_COLORS() \
+    do { \
+       cMessageManager::GetInstance().LogConsoleColor(); \
+    } while(0)
+
 
 // Logging macro
 #define LOG_MESSAGE(message) \
@@ -229,4 +241,4 @@ constexpr std::size_t CountArguments(Args...) {
         } \
     } while(0)
 
-#endif // U_MESSAGE_MANAGER
+#endif // C_MESSAGE_MANAGER

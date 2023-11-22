@@ -10,10 +10,218 @@ namespace app {
 namespace console
 {
     int ClosestColor(int r, int g, int b);
-    std::string GetTextColor(const app::Pixel& pixel);
-    std::string SetBackgroundColor(const app::Pixel& pixel);
-    std::string SetTextColor();
-    std::string SetBackgroundColor();
+    std::string TextColor(const app::Pixel& pixel);
+    std::string BackgroundColor(const app::Pixel& pixel);
+    std::string ResetTextColor();
+    std::string ResetBackgroundColor();
+    void ShowConsoleColor();
+    void ShowConsoleTextColor();
+    void ShowConsoleBackgroundColor();
+}
+
+namespace console
+{
+    // Enum for text colors
+    enum class Color
+    {
+        RESET,
+        BLACK,
+        RED,
+        GREEN,
+        YELLOW,
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE,
+        ORANGE,
+        PINK,
+        PURPLE,
+        LIME,
+        TEAL,
+        OLIVE,
+        BROWN,
+        GRAY,
+        BRIGHT_BLACK,
+        BRIGHT_RED,
+        BRIGHT_GREEN,
+        BRIGHT_YELLOW,
+        BRIGHT_BLUE,
+        BRIGHT_MAGENTA,
+        BRIGHT_CYAN,
+        BRIGHT_WHITE,
+        BRIGHT_ORANGE,
+        BRIGHT_PINK,
+        BRIGHT_PURPLE,
+        BRIGHT_LIME,
+        BRIGHT_TEAL,
+        BRIGHT_OLIVE,
+        BRIGHT_BROWN,
+        BRIGHT_GRAY,
+        VERY_LIGHT_BLACK,
+        VERY_LIGHT_RED,
+        VERY_LIGHT_GREEN,
+        VERY_LIGHT_YELLOW,
+        VERY_LIGHT_BLUE,
+        VERY_LIGHT_MAGENTA,
+        VERY_LIGHT_CYAN,
+        VERY_LIGHT_WHITE,
+        VERY_LIGHT_ORANGE,
+        VERY_LIGHT_PINK,
+        VERY_LIGHT_PURPLE,
+        VERY_LIGHT_LIME,
+        VERY_LIGHT_TEAL,
+        VERY_LIGHT_OLIVE,
+        VERY_LIGHT_BROWN,
+        VERY_LIGHT_GRAY,
+        LIGHT_BLACK,
+        LIGHT_RED,
+        LIGHT_GREEN,
+        LIGHT_YELLOW,
+        LIGHT_BLUE,
+        LIGHT_MAGENTA,
+        LIGHT_CYAN,
+        LIGHT_WHITE,
+        LIGHT_ORANGE,
+        LIGHT_PINK,
+        LIGHT_PURPLE,
+        LIGHT_LIME,
+        LIGHT_TEAL,
+        LIGHT_OLIVE,
+        LIGHT_BROWN,
+        LIGHT_GRAY,
+        DARK_BLACK,
+        DARK_RED,
+        DARK_GREEN,
+        DARK_YELLOW,
+        DARK_BLUE,
+        DARK_MAGENTA,
+        DARK_CYAN,
+        DARK_WHITE,
+        DARK_ORANGE,
+        DARK_PINK,
+        DARK_PURPLE,
+        DARK_LIME,
+        DARK_TEAL,
+        DARK_OLIVE,
+        DARK_BROWN,
+        DARK_GRAY,
+        VERY_DARK_BLACK,
+        VERY_DARK_RED,
+        VERY_DARK_GREEN,
+        VERY_DARK_YELLOW,
+        VERY_DARK_BLUE,
+        VERY_DARK_MAGENTA,
+        VERY_DARK_CYAN,
+        VERY_DARK_WHITE,
+        VERY_DARK_ORANGE,
+        VERY_DARK_PINK,
+        VERY_DARK_PURPLE,
+        VERY_DARK_LIME,
+        VERY_DARK_TEAL,
+        VERY_DARK_OLIVE,
+        VERY_DARK_BROWN,
+        VERY_DARK_GRAY
+    };
+
+    const std::string sColorNames[] = {
+        "RESET",
+        "BLACK",
+        "RED",
+        "GREEN",
+        "YELLOW",
+        "BLUE",
+        "MAGENTA",
+        "CYAN",
+        "WHITE",
+        "ORANGE",
+        "PINK",
+        "PURPLE",
+        "LIME",
+        "TEAL",
+        "OLIVE",
+        "BROWN",
+        "GRAY",
+        "BRIGHT_BLACK",
+        "BRIGHT_RED",
+        "BRIGHT_GREEN",
+        "BRIGHT_YELLOW",
+        "BRIGHT_BLUE",
+        "BRIGHT_MAGENTA",
+        "BRIGHT_CYAN",
+        "BRIGHT_WHITE",
+        "BRIGHT_ORANGE",
+        "BRIGHT_PINK",
+        "BRIGHT_PURPLE",
+        "BRIGHT_LIME",
+        "BRIGHT_TEAL",
+        "BRIGHT_OLIVE",
+        "BRIGHT_BROWN",
+        "BRIGHT_GRAY",
+        "VERY_LIGHT_BLACK",
+        "VERY_LIGHT_RED",
+        "VERY_LIGHT_GREEN",
+        "VERY_LIGHT_YELLOW",
+        "VERY_LIGHT_BLUE",
+        "VERY_LIGHT_MAGENTA",
+        "VERY_LIGHT_CYAN",
+        "VERY_LIGHT_WHITE",
+        "VERY_LIGHT_ORANGE",
+        "VERY_LIGHT_PINK",
+        "VERY_LIGHT_PURPLE",
+        "VERY_LIGHT_LIME",
+        "VERY_LIGHT_TEAL",
+        "VERY_LIGHT_OLIVE",
+        "VERY_LIGHT_BROWN",
+        "VERY_LIGHT_GRAY",
+        "LIGHT_BLACK",
+        "LIGHT_RED",
+        "LIGHT_GREEN",
+        "LIGHT_YELLOW",
+        "LIGHT_BLUE",
+        "LIGHT_MAGENTA",
+        "LIGHT_CYAN",
+        "LIGHT_WHITE",
+        "LIGHT_ORANGE",
+        "LIGHT_PINK",
+        "LIGHT_PURPLE",
+        "LIGHT_LIME",
+        "LIGHT_TEAL",
+        "LIGHT_OLIVE",
+        "LIGHT_BROWN",
+        "LIGHT_GRAY",
+        "DARK_BLACK",
+        "DARK_RED",
+        "DARK_GREEN",
+        "DARK_YELLOW",
+        "DARK_BLUE",
+        "DARK_MAGENTA",
+        "DARK_CYAN",
+        "DARK_WHITE",
+        "DARK_ORANGE",
+        "DARK_PINK",
+        "DARK_PURPLE",
+        "DARK_LIME",
+        "DARK_TEAL",
+        "DARK_OLIVE",
+        "DARK_BROWN",
+        "DARK_GRAY",
+        "VERY_DARK_BLACK",
+        "VERY_DARK_RED",
+        "VERY_DARK_GREEN",
+        "VERY_DARK_YELLOW",
+        "VERY_DARK_BLUE",
+        "VERY_DARK_MAGENTA",
+        "VERY_DARK_CYAN",
+        "VERY_DARK_WHITE",
+        "VERY_DARK_ORANGE",
+        "VERY_DARK_PINK",
+        "VERY_DARK_PURPLE",
+        "VERY_DARK_LIME",
+        "VERY_DARK_TEAL",
+        "VERY_DARK_OLIVE",
+        "VERY_DARK_BROWN",
+        "VERY_DARK_GRAY"
+    };
 }
 
 /// Compile time console text color values
@@ -125,6 +333,111 @@ namespace text
     constexpr const char* VERY_DARK_GRAY = "\033[38;2;64;64;64m";
 }
 
+namespace text
+{
+    // Array of color codes corresponding to the Color enum
+    constexpr const char* S_COLORS[] = {
+        RESET,
+        BLACK,
+        RED,
+        GREEN,
+        YELLOW,
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE,
+        ORANGE,
+        PINK,
+        PURPLE,
+        LIME,
+        TEAL,
+        OLIVE,
+        BROWN,
+        GRAY,
+        BRIGHT_BLACK,
+        BRIGHT_RED,
+        BRIGHT_GREEN,
+        BRIGHT_YELLOW,
+        BRIGHT_BLUE,
+        BRIGHT_MAGENTA,
+        BRIGHT_CYAN,
+        BRIGHT_WHITE,
+        BRIGHT_ORANGE,
+        BRIGHT_PINK,
+        BRIGHT_PURPLE,
+        BRIGHT_LIME,
+        BRIGHT_TEAL,
+        BRIGHT_OLIVE,
+        BRIGHT_BROWN,
+        BRIGHT_GRAY,
+        VERY_LIGHT_BLACK,
+        VERY_LIGHT_RED,
+        VERY_LIGHT_GREEN,
+        VERY_LIGHT_YELLOW,
+        VERY_LIGHT_BLUE,
+        VERY_LIGHT_MAGENTA,
+        VERY_LIGHT_CYAN,
+        VERY_LIGHT_WHITE,
+        VERY_LIGHT_ORANGE,
+        VERY_LIGHT_PINK,
+        VERY_LIGHT_PURPLE,
+        VERY_LIGHT_LIME,
+        VERY_LIGHT_TEAL,
+        VERY_LIGHT_OLIVE,
+        VERY_LIGHT_BROWN,
+        VERY_LIGHT_GRAY,
+        LIGHT_BLACK,
+        LIGHT_RED,
+        LIGHT_GREEN,
+        LIGHT_YELLOW,
+        LIGHT_BLUE,
+        LIGHT_MAGENTA,
+        LIGHT_CYAN,
+        LIGHT_WHITE,
+        LIGHT_ORANGE,
+        LIGHT_PINK,
+        LIGHT_PURPLE,
+        LIGHT_LIME,
+        LIGHT_TEAL,
+        LIGHT_OLIVE,
+        LIGHT_BROWN,
+        LIGHT_GRAY,
+        DARK_BLACK,
+        DARK_RED,
+        DARK_GREEN,
+        DARK_YELLOW,
+        DARK_BLUE,
+        DARK_MAGENTA,
+        DARK_CYAN,
+        DARK_WHITE,
+        DARK_ORANGE,
+        DARK_PINK,
+        DARK_PURPLE,
+        DARK_LIME,
+        DARK_TEAL,
+        DARK_OLIVE,
+        DARK_BROWN,
+        DARK_GRAY,
+        VERY_DARK_BLACK,
+        VERY_DARK_RED,
+        VERY_DARK_GREEN,
+        VERY_DARK_YELLOW,
+        VERY_DARK_BLUE,
+        VERY_DARK_MAGENTA,
+        VERY_DARK_CYAN,
+        VERY_DARK_WHITE,
+        VERY_DARK_ORANGE,
+        VERY_DARK_PINK,
+        VERY_DARK_PURPLE,
+        VERY_DARK_LIME,
+        VERY_DARK_TEAL,
+        VERY_DARK_OLIVE,
+        VERY_DARK_BROWN,
+        VERY_DARK_GRAY
+    };
+    constexpr int N_SIZE = static_cast<int>(std::extent_v<decltype(S_COLORS)>);
+}
+
 /// Compile time console background color values
 namespace background
 {
@@ -147,7 +460,6 @@ namespace background
     constexpr const char* OLIVE = "\033[48;5;58m";
     constexpr const char* BROWN = "\033[48;5;130m";
     constexpr const char* GRAY = "\033[48;5;245m";  // Adjusted to a lighter gray
-
     // Bright background color
     constexpr const char* BRIGHT_BLACK = "\033[100m";
     constexpr const char* BRIGHT_RED = "\033[101m";
@@ -165,7 +477,6 @@ namespace background
     constexpr const char* BRIGHT_OLIVE = "\033[48;5;58;1m";
     constexpr const char* BRIGHT_BROWN = "\033[48;5;130;1m";
     constexpr const char* BRIGHT_GRAY = "\033[48;5;245;1m";
-
     // Very light background color
     constexpr const char* VERY_LIGHT_BLACK = "\033[48;2;128;128;128m";
     constexpr const char* VERY_LIGHT_RED = "\033[48;2;255;204;204m";
@@ -183,7 +494,6 @@ namespace background
     constexpr const char* VERY_LIGHT_OLIVE = "\033[48;2;128;128;0m";
     constexpr const char* VERY_LIGHT_BROWN = "\033[48;2;165;42;42m";
     constexpr const char* VERY_LIGHT_GRAY = "\033[48;2;169;169;169m";
-
     // Light background color
     constexpr const char* LIGHT_BLACK = "\033[48;2;64;64;64m";
     constexpr const char* LIGHT_RED = "\033[48;2;255;102;102m";
@@ -201,7 +511,6 @@ namespace background
     constexpr const char* LIGHT_OLIVE = "\033[48;2;128;128;0m";
     constexpr const char* LIGHT_BROWN = "\033[48;2;165;42;42m";
     constexpr const char* LIGHT_GRAY = "\033[48;2;192;192;192m";
-
     // Dark background color
     constexpr const char* DARK_BLACK = "\033[48;2;32;32;32m";
     constexpr const char* DARK_RED = "\033[48;2;128;0;0m";
@@ -219,7 +528,6 @@ namespace background
     constexpr const char* DARK_OLIVE = "\033[48;2;128;128;0m";
     constexpr const char* DARK_BROWN = "\033[48;2;139;69;19m";
     constexpr const char* DARK_GRAY = "\033[48;2;105;105;105m";
-
     // Very dark background color
     constexpr const char* VERY_DARK_BLACK = "\033[48;2;16;16;16m";
     constexpr const char* VERY_DARK_RED = "\033[48;2;64;0;0m";
@@ -237,6 +545,111 @@ namespace background
     constexpr const char* VERY_DARK_OLIVE = "\033[48;2;128;128;0m";
     constexpr const char* VERY_DARK_BROWN = "\033[48;2;139;69;19m";
     constexpr const char* VERY_DARK_GRAY = "\033[48;2;64;64;64m";
+}
+
+namespace background
+{
+    // Array of color codes corresponding to the Color enum
+    constexpr const char* S_COLORS[] = {
+        RESET,
+        BLACK,
+        RED,
+        GREEN,
+        YELLOW,
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE,
+        ORANGE,
+        PINK,
+        PURPLE,
+        LIME,
+        TEAL,
+        OLIVE,
+        BROWN,
+        GRAY,
+        BRIGHT_BLACK,
+        BRIGHT_RED,
+        BRIGHT_GREEN,
+        BRIGHT_YELLOW,
+        BRIGHT_BLUE,
+        BRIGHT_MAGENTA,
+        BRIGHT_CYAN,
+        BRIGHT_WHITE,
+        BRIGHT_ORANGE,
+        BRIGHT_PINK,
+        BRIGHT_PURPLE,
+        BRIGHT_LIME,
+        BRIGHT_TEAL,
+        BRIGHT_OLIVE,
+        BRIGHT_BROWN,
+        BRIGHT_GRAY,
+        VERY_LIGHT_BLACK,
+        VERY_LIGHT_RED,
+        VERY_LIGHT_GREEN,
+        VERY_LIGHT_YELLOW,
+        VERY_LIGHT_BLUE,
+        VERY_LIGHT_MAGENTA,
+        VERY_LIGHT_CYAN,
+        VERY_LIGHT_WHITE,
+        VERY_LIGHT_ORANGE,
+        VERY_LIGHT_PINK,
+        VERY_LIGHT_PURPLE,
+        VERY_LIGHT_LIME,
+        VERY_LIGHT_TEAL,
+        VERY_LIGHT_OLIVE,
+        VERY_LIGHT_BROWN,
+        VERY_LIGHT_GRAY,
+        LIGHT_BLACK,
+        LIGHT_RED,
+        LIGHT_GREEN,
+        LIGHT_YELLOW,
+        LIGHT_BLUE,
+        LIGHT_MAGENTA,
+        LIGHT_CYAN,
+        LIGHT_WHITE,
+        LIGHT_ORANGE,
+        LIGHT_PINK,
+        LIGHT_PURPLE,
+        LIGHT_LIME,
+        LIGHT_TEAL,
+        LIGHT_OLIVE,
+        LIGHT_BROWN,
+        LIGHT_GRAY,
+        DARK_BLACK,
+        DARK_RED,
+        DARK_GREEN,
+        DARK_YELLOW,
+        DARK_BLUE,
+        DARK_MAGENTA,
+        DARK_CYAN,
+        DARK_WHITE,
+        DARK_ORANGE,
+        DARK_PINK,
+        DARK_PURPLE,
+        DARK_LIME,
+        DARK_TEAL,
+        DARK_OLIVE,
+        DARK_BROWN,
+        DARK_GRAY,
+        VERY_DARK_BLACK,
+        VERY_DARK_RED,
+        VERY_DARK_GREEN,
+        VERY_DARK_YELLOW,
+        VERY_DARK_BLUE,
+        VERY_DARK_MAGENTA,
+        VERY_DARK_CYAN,
+        VERY_DARK_WHITE,
+        VERY_DARK_ORANGE,
+        VERY_DARK_PINK,
+        VERY_DARK_PURPLE,
+        VERY_DARK_LIME,
+        VERY_DARK_TEAL,
+        VERY_DARK_OLIVE,
+        VERY_DARK_BROWN,
+        VERY_DARK_GRAY
+    };
+    constexpr int N_SIZE = static_cast<int>(std::extent_v<decltype(S_COLORS)>);
 }
 
 #endif // U_CONSOLE_COLOR_H
