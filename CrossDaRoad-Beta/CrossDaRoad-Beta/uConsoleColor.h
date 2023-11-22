@@ -11,7 +11,9 @@ namespace console
 {
     int ClosestColor(int r, int g, int b);
     std::string TextColor(const app::Pixel& pixel);
+    std::string TextColor(int r, int g, int b);
     std::string BackgroundColor(const app::Pixel& pixel);
+    std::string BackgroundColor(int r, int g, int b);
     std::string ResetTextColor();
     std::string ResetBackgroundColor();
     void ShowConsoleColor();
@@ -124,6 +126,7 @@ namespace console
         NO_COLOR,
     };
     constexpr int N_SIZE = Color::NO_COLOR + 1;
+    constexpr int N_COLOR = 16;
 
     const std::string sColorNames[N_SIZE] = {
         "RESET",
@@ -222,7 +225,7 @@ namespace console
         "VERY_DARK_TEAL",
         "VERY_DARK_OLIVE",
         "VERY_DARK_BROWN",
-        "VERY_DARK_GRAY"
+        "VERY_DARK_GRAY",
         "NO_COLOR"
     };
 }
