@@ -95,8 +95,8 @@ private: /// Avoid data-race between threads
     mutable std::mutex logMutex;
 
 private: /// User customization
-    const int tokenBaseInterval = 100;
-    const int tokenIntervalsMultiplier[4] = { 5, 10, 20, 40 }; // based on the severity
+    const int nIntervalMilisecond = 100;
+    const int nIntervalMultiplier[4] = { 2, 4, 8, 16 }; // based on the severity
 
 private:
     clock_t CurrentTime()
@@ -114,6 +114,7 @@ private:
     : lastMessageTimer{ CurrentTime(), CurrentTime(), CurrentTime(), CurrentTime() }
     , originTimer(CurrentTime()), originSystimer(CurrentSystime())
     {
+        // ...
     }
 
 public:
@@ -136,7 +137,7 @@ public: /// Validator
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
-        if (elapsed.count() >= (tokenBaseInterval * tokenIntervalsMultiplier[static_cast<int>(eSeverity)])) {
+        if (elapsed.count() >= (nIntervalMilisecond * nIntervalMultiplier[static_cast<int>(eSeverity)])) {
             lastMessageTimer[static_cast<int>(eSeverity)] = now;
             return true;
         }
