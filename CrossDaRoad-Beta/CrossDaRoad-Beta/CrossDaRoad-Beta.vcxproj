@@ -153,6 +153,7 @@
     <ClCompile Include="gWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uAppUtils.cpp" />
+    <ClCompile Include="uConsoleColor.cpp" />
     <ClCompile Include="uMessageManager.cpp" />
     <ClCompile Include="uSound.cpp" />
     <ClCompile Include="uStringUtils.cpp" />
@@ -181,7 +182,8 @@
     <ClInclude Include="gWindow.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uAppUtils.h" />
-    <ClInclude Include="uMessageManager.h" />
+    <ClInclude Include="cMessageManager.h" />
+    <ClInclude Include="uConsoleColor.h" />
     <ClInclude Include="uSound.h" />
     <ClInclude Include="uStringUtils.h" />
   </ItemGroup>
