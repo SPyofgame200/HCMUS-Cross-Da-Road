@@ -1,0 +1,6 @@
+[36m[00:03.120] [90m[LOG] [90mLOG Failed to use sprite - Name: "magmas"[0m
+[36m[00:03.214] [38;5;208m[ERROR] [38;5;171m"C:\Users\Admin\Desktop\Repo\CDR-Beta\CrossDaRoad-Beta\CrossDaRoad-Beta\CrossDaRoad-Beta\cAssetManager.cpp" [37mGetSprite(): [90mERROR Failed to use sprite - Name: "magmas"[0m
+[1;34m[22/11/23 at 15:57:14.000215] [36m[00:03.215] [31m[SEVERE] [38;5;171m"C:\Users\Admin\Desktop\Repo\CDR-Beta\CrossDaRoad-Beta\CrossDaRoad-Beta\CrossDaRoad-Beta\cAssetManager.cpp" [1;34mLine [58] [37mGetSprite(): [90mSEVERE Failed to use sprite - Name: "magmas"[0m
+[36m[00:03.245] [33m[WARN] [37mGetSprite(): [90mWARN Failed to use sprite - Name: "magmas"[0m
+[36m[00:03.329] [90m[LOG] [90mLOG Failed to use sprite - Name: "magmas"[0m
+[36m[00:03.537] [90m[LOG] [90mLOG Failed to use sprite - Name: "magmas"[0m
