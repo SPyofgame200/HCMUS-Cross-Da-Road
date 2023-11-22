@@ -1,7 +1,8 @@
 #ifndef U_CONSOLE_COLOR_H
 #define U_CONSOLE_COLOR_H
 
-namespace text {
+namespace text 
+{
     // Reset
     constexpr const char* RESET = "\033[0m";
     // Text color
@@ -33,7 +34,8 @@ namespace text {
     constexpr const char* GRAY = "\033[90m";
 }
 
-namespace background {
+namespace background 
+{
     // Reset
     constexpr const char* RESET = "\033[49m";
     // Background color
@@ -63,6 +65,20 @@ namespace background {
     constexpr const char* OLIVE = "\033[48;5;58m";
     constexpr const char* BROWN = "\033[48;5;130m";
     constexpr const char* GRAY = "\033[100m";
+}
+
+namespace app {
+    struct Pixel;
+}
+
+#include <string>
+namespace console
+{
+    int ClosestColor(int r, int g, int b);
+    std::string GetTextColor(const app::Pixel& pixel);
+    std::string SetBackgroundColor(const app::Pixel& pixel);
+    std::string SetTextColor();
+    std::string SetBackgroundColor();
 }
 
 #endif // U_CONSOLE_COLOR_H

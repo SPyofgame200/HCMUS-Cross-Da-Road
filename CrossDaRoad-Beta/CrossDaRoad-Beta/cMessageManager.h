@@ -72,7 +72,7 @@ public: /// Validator
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
-        if (elapsed.count() >= (nIntervalMilisecond * nIntervalMultiplier[static_cast<int>(eSeverity)])) {
+        if (elapsed.count() >= static_cast<int64_t>(nIntervalMilisecond) * nIntervalMultiplier[static_cast<int>(eSeverity)]) {
             lastMessageTimer[static_cast<int>(eSeverity)] = now;
             return true;
         }
@@ -83,7 +83,8 @@ public: /// Validator
 public: // Loggers
     void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
     {
-        std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
+        auto future = std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
+        future.wait();
     }
 
 public: // Getters
@@ -181,14 +182,14 @@ private: // Log handler
 
 #include <tuple>
 template <typename... Args>
-constexpr std::size_t ARG_COUNT(Args...) {
+constexpr std::size_t CountArguments(Args...) {
     return sizeof...(Args);
 }
 
 #define PRINT_ARG_COUNT(...) \
     do { \
         constexpr std::size_t numArgs = CountArguments(__VA_ARGS__); \
-        std::cerr << "[" << numArgs << "args ]" << std::endl; \
+        std::cerr << "[" << numArgs << " args ]" << std::endl; \
     } while(0)
 
 // Logging macro
