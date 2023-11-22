@@ -345,7 +345,7 @@ bool cApp::UpdateDrawNameBox()
 			++currentKeyA;
 		}
 		std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
-		char currentKeyN = '1';
+		char currentKeyN = '0';
 		for(auto it : mapKeyNumeric)
 		{
 			if (IsKeyReleased(it.second))
@@ -373,7 +373,7 @@ bool cApp::DrawNameBox()
 		DrawSprite(0, 0, NameBoxChosen);
 
 	SetPixelMode(app::Pixel::MASK);
-	DrawBigText1(playerName, 155, 70);
+	DrawBigText1(playerName, 157, 69);
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
