@@ -37,11 +37,11 @@ namespace console
     void ShowConsoleColor()
     {
         std::cout << "Text Colors:\n";
-        for (int i = 0; i < static_cast<int>(Color::VERY_DARK_BLACK); i++)
+        for (int id = 0; id < console::N_SIZE; id++)
         {
-            std::cout << text::S_COLORS[i] << console::sColorNames[i] << text::RESET;
+            std::cout << text::S_COLORS[id] << console::sColorNames[id] << text::RESET;
             std::cout << " - ";
-            std::cout << background::S_COLORS[i] << console::sColorNames[i] << background::RESET;
+            std::cout << background::S_COLORS[id] << console::sColorNames[id] << background::RESET;
             std::cout << std::endl;
         }
         std::cout << text::RESET << '\n';
@@ -50,9 +50,9 @@ namespace console
     void ShowConsoleTextColor()
     {
         std::cout << "Text Colors:\n";
-        for (int i = 0; i < static_cast<int>(Color::VERY_DARK_BLACK); i++)
+        for (int id = 0; id < console::N_SIZE; id++)
         {
-            std::cout << text::S_COLORS[i] << console::sColorNames[i];
+            std::cout << text::S_COLORS[id] << console::sColorNames[id];
             std::cout << text::RESET << std::endl;
         }
         std::cout << text::RESET << '\n';
@@ -61,9 +61,9 @@ namespace console
     void ShowConsoleBackgroundColor()
     {
         std::cout << "Background Colors:\n";
-        for (int i = 0; i < static_cast<int>(Color::VERY_DARK_BLACK); i++)
+        for (int id = 0; id < console::N_SIZE; id++)
         {
-            std::cout << background::S_COLORS[i] << console::sColorNames[i];
+            std::cout << background::S_COLORS[id] << console::sColorNames[id];
             std::cout << background::RESET << std::endl;
         }
         std::cout << background::RESET << '\n';

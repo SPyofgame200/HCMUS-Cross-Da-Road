@@ -12,11 +12,11 @@
 
 enum MessageSeverity
 {
-    LOG = 0,
-    WARN = 1,
-    ERROR = 2,
-    SEVERE = 3,
-    CUSTOMS = 4,
+    LOG_MESSAGE = 0,
+    WARN_MESSAGE = 1,
+    ERROR_MESSAGE = 2,
+    SEVERE_MESSAGE = 3,
+    SPECIAL_MESSAGE = 4,
 };
 
 class cMessageManager {
@@ -97,7 +97,7 @@ public: // Getters
     std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
     {
         std::ostringstream logStream;
-        if (eSeverity == MessageSeverity::SEVERE) {
+        if (eSeverity == MessageSeverity::SEVERE_MESSAGE) {
             LogRealTime(logStream);
         }
         LogTimestamp(logStream);
@@ -162,20 +162,20 @@ private: // Log handler
     {
         switch (eSeverity)
         {
-        case LOG:
+        case LOG_MESSAGE:
             logStream << text::GRAY << "[LOG]";
             break;
-        case WARN:
+        case WARN_MESSAGE:
             logStream << text::YELLOW << "[WARN]";
             break;
-        case ERROR:
+        case ERROR_MESSAGE:
             logStream << text::ORANGE << "[ERROR]";
             break;
-        case SEVERE:
+        case SEVERE_MESSAGE:
             logStream << text::RED << "[SEVERE]";
             break;
         default:
-            logStream << text::BROWN << "[CUSTOM]";
+            logStream << text::BROWN << "[SPECIAL]";
             break;
         }
         logStream << " ";
@@ -207,37 +207,37 @@ constexpr std::size_t CountArguments(Args...) {
 // Logging macro
 #define LOG_MESSAGE(message) \
     do { \
-        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::LOG)) { \
+        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::LOG_MESSAGE)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            cMessageManager::GetInstance().Log(MessageSeverity::LOG, logStream.str()); \
+            cMessageManager::GetInstance().Log(MessageSeverity::LOG_MESSAGE, logStream.str()); \
         } \
     } while(0)
 
 #define WARN_MESSAGE(message) \
     do { \
-        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::WARN)) { \
+        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::WARN_MESSAGE)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            cMessageManager::GetInstance().Log(MessageSeverity::WARN, logStream.str(), __func__); \
+            cMessageManager::GetInstance().Log(MessageSeverity::WARN_MESSAGE, logStream.str(), __func__); \
         } \
     } while(0)
 
 #define ERROR_MESSAGE(message) \
     do { \
-        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::ERROR)) { \
+        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::ERROR_MESSAGE)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            cMessageManager::GetInstance().Log(MessageSeverity::ERROR, logStream.str(), __func__, __FILE__); \
+            cMessageManager::GetInstance().Log(MessageSeverity::ERROR_MESSAGE, logStream.str(), __func__, __FILE__); \
         } \
     } while(0)
 
 #define SEVERE_MESSAGE(message) \
     do { \
-        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::SEVERE)) { \
+        if (cMessageManager::GetInstance().TryAcquireToken(MessageSeverity::SEVERE_MESSAGE)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            cMessageManager::GetInstance().Log(MessageSeverity::SEVERE, logStream.str(), __func__, __FILE__, __LINE__); \
+            cMessageManager::GetInstance().Log(MessageSeverity::SEVERE_MESSAGE, logStream.str(), __func__, __FILE__, __LINE__); \
         } \
     } while(0)
 

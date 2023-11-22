@@ -22,7 +22,7 @@ namespace console
 namespace console
 {
     // Enum for text colors
-    enum class Color
+    enum Color
     {
         RESET,
         BLACK,
@@ -120,10 +120,12 @@ namespace console
         VERY_DARK_TEAL,
         VERY_DARK_OLIVE,
         VERY_DARK_BROWN,
-        VERY_DARK_GRAY
+        VERY_DARK_GRAY,
+        NO_COLOR,
     };
+    constexpr int N_SIZE = Color::NO_COLOR + 1;
 
-    const std::string sColorNames[] = {
+    const std::string sColorNames[N_SIZE] = {
         "RESET",
         "BLACK",
         "RED",
@@ -221,6 +223,7 @@ namespace console
         "VERY_DARK_OLIVE",
         "VERY_DARK_BROWN",
         "VERY_DARK_GRAY"
+        "NO_COLOR"
     };
 }
 
@@ -331,12 +334,14 @@ namespace text
     constexpr const char* VERY_DARK_OLIVE = "\033[38;2;128;128;0m";
     constexpr const char* VERY_DARK_BROWN = "\033[38;2;139;69;19m";
     constexpr const char* VERY_DARK_GRAY = "\033[38;2;64;64;64m";
+    // Special colors
+    constexpr const char* NO_COLOR = RESET;
 }
 
 namespace text
 {
     // Array of color codes corresponding to the Color enum
-    constexpr const char* S_COLORS[] = {
+    constexpr const char* S_COLORS[console::N_SIZE] = {
         RESET,
         BLACK,
         RED,
@@ -433,9 +438,9 @@ namespace text
         VERY_DARK_TEAL,
         VERY_DARK_OLIVE,
         VERY_DARK_BROWN,
-        VERY_DARK_GRAY
+        VERY_DARK_GRAY,
+        NO_COLOR
     };
-    constexpr int N_SIZE = static_cast<int>(std::extent_v<decltype(S_COLORS)>);
 }
 
 /// Compile time console background color values
@@ -545,12 +550,14 @@ namespace background
     constexpr const char* VERY_DARK_OLIVE = "\033[48;2;128;128;0m";
     constexpr const char* VERY_DARK_BROWN = "\033[48;2;139;69;19m";
     constexpr const char* VERY_DARK_GRAY = "\033[48;2;64;64;64m";
+    // Special colors
+    constexpr const char* NO_COLOR = RESET;
 }
 
 namespace background
 {
     // Array of color codes corresponding to the Color enum
-    constexpr const char* S_COLORS[] = {
+    constexpr const char* S_COLORS[console::N_SIZE] = {
         RESET,
         BLACK,
         RED,
@@ -647,9 +654,9 @@ namespace background
         VERY_DARK_TEAL,
         VERY_DARK_OLIVE,
         VERY_DARK_BROWN,
-        VERY_DARK_GRAY
+        VERY_DARK_GRAY,
+        NO_COLOR
     };
-    constexpr int N_SIZE = static_cast<int>(std::extent_v<decltype(S_COLORS)>);
 }
 
 #endif // U_CONSOLE_COLOR_H
