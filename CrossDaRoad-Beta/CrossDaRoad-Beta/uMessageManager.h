@@ -7,6 +7,7 @@
 #include <mutex>
 #include <iomanip>
 #include <future>
+#include <fstream>
 
 namespace text {
     // Reset
@@ -122,13 +123,13 @@ public:
         return instance;
     }
 
-public:
-    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "") const 
+public: // Loggers
+    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
     {
-        std::async(std::launch::async, &MessageManager::LogThread, this, sFilePath, sFunctionName, sMessage, eSeverity);
+        std::async(std::launch::async, &MessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
     }
 
-public:
+public: /// Validator
     bool TryAcquireToken(MessageSeverity eSeverity) const 
     {
         std::lock_guard<std::mutex> lock(tokenMutex);
@@ -143,8 +144,34 @@ public:
         return false;
     }
 
-private:
-    void LogRealTime() const {
+public: // Getters
+    std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
+    {
+        std::ostringstream logStream;
+        if (eSeverity == MessageSeverity::SEVERE) {
+            LogRealTime(logStream);
+        }
+        LogTimestamp(logStream);
+        LogSeverity(logStream, eSeverity);
+        if (sFilePath.size()) {
+            logStream << text::PURPLE << "\"" << sFilePath << "\" ";
+        }
+        if (nLineIndex) {
+            logStream << text::BRIGHT_BLUE << "Line [" << nLineIndex << "] ";
+        }
+        if (sFunctionName.size()) {
+            logStream << text::WHITE << sFunctionName << "(): ";
+        }
+        logStream << text::GRAY << sMessage << text::RESET;
+        return logStream.str();
+    }
+
+private: // Log handler
+    void LogThread(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const {
+        std::lock_guard<std::mutex> lock(logMutex);
+        std::cerr << GetMessage(eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex) << std::endl;
+    }
+    void LogRealTime(std::ostream& logStream) const {
         using namespace std::chrono;
 
         auto now = system_clock::now();
@@ -158,13 +185,13 @@ private:
         tm tm_time;
         localtime_s(&tm_time, &time);
 
-        std::cerr << text::BRIGHT_BLUE << "["
+        logStream << text::BRIGHT_BLUE << "["
             << std::put_time(&tm_time, "%d/%m/%y at %H:%M:%S")
             << "." << std::setw(6) << std::setfill('0') << milliseconds_part.count()
-        << "] ";
+            << "] ";
     }
 
-    void LogTimestamp() const
+    void LogTimestamp(std::ostream& logStream) const
     {
         using namespace std::chrono;
 
@@ -175,55 +202,52 @@ private:
         seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
         milliseconds milisec_part = elapsedSinceStart - duration_cast<milliseconds>(minutes_part) - duration_cast<milliseconds>(seconds_part);
 
-        std::cerr << text::CYAN << "["
+        logStream << text::CYAN << "["
             << std::setw(2) << std::setfill('0') << minutes_part.count() << ":"  // minutes
             << std::setw(2) << std::setfill('0') << seconds_part.count() << "."  // seconds
             << std::setw(3) << std::setfill('0') << milisec_part.count() // milliseconds
-        << "] ";
+            << "] ";
     }
 
-    void LogSeverity(MessageSeverity eSeverity, bool bReset = false) const
+    void LogSeverity(std::ostream& logStream, MessageSeverity eSeverity, bool bReset = false) const
     {
         switch (eSeverity)
         {
         case LOG:
-            std::cerr << text::GRAY << "[LOG]";
+            logStream << text::GRAY << "[LOG]";
             break;
         case WARN:
-            std::cerr << text::YELLOW << "[WARN]";
+            logStream << text::YELLOW << "[WARN]";
             break;
         case ERROR:
-            std::cerr << text::ORANGE << "[ERROR]";
+            logStream << text::ORANGE << "[ERROR]";
             break;
         case SEVERE:
-            std::cerr << text::RED << "[SEVERE]";
+            logStream << text::RED << "[SEVERE]";
             break;
         default:
-            std::cerr << text::BROWN << "[CUSTOM]";
+            logStream << text::BROWN << "[CUSTOM]";
             break;
         }
-        std::cerr << " ";
+        logStream << " ";
         if (bReset) {
-            std::cerr << text::RESET << background::RESET << std::endl;
+            logStream << text::RESET << background::RESET << std::endl;
         }
-    }
-
-    void LogThread(const std::string& sFilePath, const std::string& sFunctionName, const std::string& sMessage, MessageSeverity eSeverity) const {
-        std::lock_guard<std::mutex> lock(logMutex);
-        if (eSeverity == MessageSeverity::SEVERE) {
-            LogRealTime();
-        }
-        LogTimestamp();
-        LogSeverity(eSeverity);
-        if (sFilePath.size()) {
-            std::cerr << text::PURPLE << sFilePath << " -> ";
-        }
-        if (sFunctionName.size()) {
-            std::cerr << text::WHITE << sFunctionName << "(): ";
-        }
-        std::cerr << text::GRAY << sMessage << text::RESET << std::endl;
     }
 };
+
+
+#include <tuple>
+template <typename... Args>
+constexpr std::size_t ARG_COUNT(Args...) {
+    return sizeof...(Args);
+}
+
+#define PRINT_ARG_COUNT(...) \
+    do { \
+        constexpr std::size_t numArgs = CountArguments(__VA_ARGS__); \
+        std::cerr << "[" << numArgs << "args ]" << std::endl; \
+    } while(0)
 
 // Logging macro
 #define LOG_MESSAGE(message) \
@@ -258,47 +282,8 @@ private:
         if (MessageManager::GetInstance().TryAcquireToken(MessageSeverity::SEVERE)) { \
             std::ostringstream logStream; \
             logStream << message; \
-            MessageManager::GetInstance().Log(MessageSeverity::SEVERE, logStream.str(), __func__, __FILE__); \
+            MessageManager::GetInstance().Log(MessageSeverity::SEVERE, logStream.str(), __func__, __FILE__, __LINE__); \
         } \
     } while(0)
 
 #endif // U_MESSAGE_MANAGER
-
-/*
-    TODO
-
-    for players, by log level 1 -> 5
-
-    NOTIFY_MESSAGE(message, logfile = default): The app is running fine, just output certain actions
-    - color: Brown
-    - format: [MM:SS] message
-    EVENT_MESSAGE(function_name, message, logfile = default): The app is running fine, just output the current event
-    - color: Cyan
-    - format: [MM:SS.s] function_name(): message
-    WARN_MESSAGE(function_name, message, logfile = default): The app still runs with unwanted side effects
-    - color: Yellow
-    - format: [MM:SS.ss] function_name(parameters): message
-    ERROR_MESSAGE(file_path, function_name, message, logfile = default): The app can not run with current state
-    - color: Orange
-    - format: [MM:SS.ssss] ./file_path/file_name.file_extension::function_name(parameters): message
-    SEVERE_MESSAGE(file_path, function_name, message, this, logfile = default): Something shouldnt happen just happened
-    - color: Red
-    - format: [HH:MM:SS.ssssss] ./file_path/file_name.file_extension::function_name(parameters): message \n std::cerr<<*this<<std::endl;
-
-    for developers
-
-    LOG_MESSAGE(message): I want to output a simple message
-    - output the message
-    - color: Lime
-    - format: same as NOTIFY_MESSAGE
-    INFO_MESSAGE(function_name, message): I want to get the informative message
-    - output current function_name
-    - output the messages with function parameters
-    - color: Blue
-    - format: same as WARN_MESSAGE
-    TRACE_MESSAGE(file_path, function_name, message, this): I want to debug with details states
-    - output current filepath with the namespace and function_name
-    - output the messages with class data
-    - color: Purple
-    - format: same as SEVERE_MESSAGE
-*/
