@@ -27,7 +27,6 @@ public:
 		RIGHT_UP = 4, 		///< Right-up direction for player movement
 		LEFT_DOWN = 5, 		///< Left-down direction for player movement
 		RIGHT_DOWN = 6, 	///< Right-down direction for player movement
-		FRONT_VIEW = 7, 	///< [unused], for front view
 	};
 	/// @brief Animation enumeration for player animation
 	enum Animation
@@ -36,7 +35,13 @@ public:
 		JUMP = 1,			///< Jump animation for player
 		LAND = 2,			///< Land animation for player
 	};
-	typedef int frame_t; // for later use
+
+	enum State
+	{
+		ALIVE = 0,
+		DEATH = 1,
+		VICTORY = 2,
+	};
 
 private:
 	float fFrogVelocityX;   ///< Velocity of player in X-axis
@@ -47,7 +52,7 @@ private:
 	float fFrogLogicPosY;	///< Logic position of player in Y-axis
 
 private:
-	frame_t frame6_id_animation_safe;
+	int frame6_id_animation_safe;
 
 private:
 	Direction eDirection;

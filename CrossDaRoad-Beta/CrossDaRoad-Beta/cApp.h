@@ -40,6 +40,7 @@ private: // Interactive Properties (control the map)
 	hPlayer Player;
 	int nameBoxOption = 0;
 	std::string playerName;
+
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
