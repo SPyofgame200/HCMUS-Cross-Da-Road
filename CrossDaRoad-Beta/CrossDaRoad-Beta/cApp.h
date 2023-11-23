@@ -74,15 +74,9 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	MapObject GetHitBox(float x, float y) const;
-	MapObject GetHitBox() const;
+	bool IsKilled() const;
 	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
-
-	bool IsKilled(bool bDebug = false) const;
-	bool IsPlatformLeft() const;
-	bool IsPlatformRight() const;
-	bool IsPlatformCenter() const;
 	bool IsOnPlatform() const;
 
 protected: /// Game Updates

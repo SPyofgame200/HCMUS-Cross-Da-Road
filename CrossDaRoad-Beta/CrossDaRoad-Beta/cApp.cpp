@@ -106,108 +106,27 @@ bool cApp::GameReset()
 ///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Get hitbox of Player at (x, y) position
-///	@param x - X position of Player
-///	@param y - Y position of Player
-///	@return MapObject of hitbox of Player
-MapObject cApp::GetHitBox(float x, float y) const
-{
-	const cMapLane lane = MapLoader.GetLaneRound(y);
-	const int nStartPos = lane.GetStartPos(fTimeSinceStart);
-	const char graphic = lane.GetLaneGraphic(nStartPos + static_cast<int>(x));
-	return MapLoader.GetSpriteData(graphic);
-}
-/// @brief Get hitbox of Player at current position
-///	@return MapObject of hitbox of Player
-MapObject cApp::GetHitBox() const
-{
-	const float fPosX = Player.GetPlayerLogicPositionX();
-	const float fPosY = Player.GetPlayerLogicPositionY();
-	return GetHitBox(fPosX, fPosY);
-}
 /// @brief Check if Player is killed by any object
 /// @param bDebug Whether to print debug information or not
 /// @return True if Player is killed, false otherwise
-bool cApp::IsKilled(bool bDebug) const
+bool cApp::IsKilled() const
 {
-	const float fPosY = Player.GetPlayerLogicPositionY();
-	const float fPosX = Player.GetPlayerLogicPositionX();
-	const bool isHit = Player.IsHit();
-	if (!isHit) {
-		return false;
-	}
-
-	const MapObject dataLeft = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
-	const MapObject dataRight = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	if (bDebug) {
-		std::cerr << "Left touching " << dataLeft << std::endl;
-		std::cerr << "Right touching " << dataRight << std::endl;
-	}
-
 	if (Player.IsPlayerCollisionSafe()) {
 		return false;
 	}
-
-	return true;
+	return Player.IsHit();
 }
 /// @brief Get death message of Player
 /// @return String of death message
 std::string cApp::GetPlayerDeathMessage() const
 {
-	float fPosX = Player.GetPlayerLogicPositionX();
-	float fPosY = Player.GetPlayerLogicPositionY();
-	constexpr  float fConst = 2.0;
-	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
-	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	const std::string sLeft = leftData.GetSpriteName();
-	const std::string sRight = rightData.GetSpriteName();
-
-	if (sLeft.empty() && sRight.empty()) {
-		return "Player has been force killed";
-	}
-	else {
-		if (!sLeft.empty()) {
-			return "Player has been killed by " + sLeft;
-		}
-		else {
-			return "Player has been killed by " + sRight;
-		}
-	}
-}
-/// @brief Check if Player is on platform at left
-/// @return True if Player is on platform at left, false otherwise
-bool cApp::IsPlatformLeft() const
-{
-	const float fPosX = Player.GetPlayerLogicPositionX();
-	const float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject leftData = GetHitBox(fPosX - static_cast<float>(nCellSize) / fConst, fPosY);
-	return !leftData.GetSpriteName().empty() && std::fabs(leftData.GetPlatformDragSpeed()) > 0;
-}
-/// @brief Check if Player is on platform at right
-/// @return True if Player is on platform at right, false otherwise
-bool cApp::IsPlatformRight() const
-{
-	const float fPosX = Player.GetPlayerLogicPositionX();
-	const float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject rightData = GetHitBox(fPosX + static_cast<float>(nCellSize) / fConst, fPosY);
-	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
-}
-/// @brief Check if Player is on platform at center
-/// @return True if Player is on platform at center, false otherwise
-bool cApp::IsPlatformCenter() const
-{
-	const float fPosX = Player.GetPlayerLogicPositionX();
-	const float fPosY = Player.GetPlayerLogicPositionY();
-	const MapObject rightData = GetHitBox(fPosX, fPosY);
-	return !rightData.GetSpriteName().empty() && std::fabs(rightData.GetPlatformDragSpeed()) > 0;
+	return "";
 }
 /// @brief Check if Player is on platform
 /// @return True if Player is on platform, false otherwise
 bool cApp::IsOnPlatform() const
 {
-	return IsPlatformLeft()
-		|| IsPlatformRight()
-		|| IsPlatformCenter();
+	return Player.IsPlatform();
 }
 /// @brief Get platform velocity
 /// @param fElapsedTime Time elapsed since last update
@@ -237,7 +156,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 	if (Player.IsPlayerWin()) {
 		return GameNext();
 	}
-	if (Player.IsPlayerOutOfBounds() || IsKilled(true)) {
+	if (Player.IsPlayerOutOfBounds() || IsKilled()) {
 		return OnPlayerDeath();
 	}
 	return true;
