@@ -52,6 +52,7 @@ private: // Drawer helpers
 	bool DrawEntity(const GraphicCell& Cell) const;
 	bool DrawBackground(const GraphicCell& Cell) const;
 	bool DrawGraphic(const GraphicCell& Cell, const std::string& sName, int nDrawX = 0, int nDrawY = 0) const;
+	void SetHitBox(const GraphicCell& Cell) const;
 
 public: // Drawers
 	bool DrawAllLanes() const;

@@ -139,11 +139,13 @@ bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 	GraphicLane Backgrounds = GetLaneBackgrounds(Lane);
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
+		SetHitBox(BackgroundCell);
 	}
 
 	GraphicLane Objects = GetLaneEntities(Lane);
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawEntity(ObjectCell);
+		SetHitBox(ObjectCell);
 	}
 
 	return true;
@@ -201,11 +203,13 @@ bool hMapDrawer::DrawGraphic(const GraphicCell &Cell, const std::string& sName, 
 	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
 	app->DrawPartialSprite(Cell.nColPos, Cell.nRowPos, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->Zone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
 	return true;
 }
 
-
+void hMapDrawer::SetHitBox(const GraphicCell& Cell) const
+{
+	app->Zone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+}
 //=================================================================================================
 
 #include <random>
