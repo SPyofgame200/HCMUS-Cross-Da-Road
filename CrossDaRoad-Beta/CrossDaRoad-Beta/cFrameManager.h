@@ -44,7 +44,7 @@ public: /// Frame output
     std::string ShowFrameID(const int frame) const;
     std::string ShowFrameID(const int frame, float fTickRate) const;
 
-    bool UpdateFrame(float fTickTime, int nFrameDelay, float fTickRate = 0.001f);
+    bool UpdateFrame(float fTickTime, int nFrameDelay, float fTickRate = 0.01f);
 };
 
 #endif // C_FRAME_MANAGER_H
