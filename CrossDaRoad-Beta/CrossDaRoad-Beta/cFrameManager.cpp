@@ -60,10 +60,26 @@ int cFrameManager::GetFrameID(const int frame) const
 
 int cFrameManager::GetFrameID(const int frame, float fTickRate) const
 {
-    if (frame == frame4.GetLimit()) return frame4.GetID();
-    else if (frame == frame6.GetLimit()) return frame6.GetID();
-    else if (frame == frame8.GetLimit()) return frame8.GetID();
-    else if (frame == frame12.GetLimit()) return frame12.GetID();
+    if (frame == frame4.GetLimit()) {
+        frame4_t current = frame4;
+        current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
+        return current.GetID();
+    }
+    else if (frame == frame6.GetLimit()) {
+        frame6_t current = frame6;
+        current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
+        return current.GetID();
+    }
+    else if (frame == frame8.GetLimit()) {
+        frame8_t current = frame8;
+        current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
+        return current.GetID();
+    }
+    else if (frame == frame12.GetLimit()) {
+        frame12_t current = frame12;
+        current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
+        return current.GetID();
+    }
     return 0;
 }
 
