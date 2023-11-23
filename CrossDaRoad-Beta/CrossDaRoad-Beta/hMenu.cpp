@@ -359,10 +359,8 @@ bool hMenu::Update(const float fElapsedTime)
 /// @brief Display menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool hMenu::RenderAppMenu()
+bool hMenu::RenderAppMenu() const
 {
-	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
-
 	app->Clear(app::BLACK);
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
 	for (int id = 0; id < nAppOptionLimit; id++) {
@@ -428,7 +426,7 @@ bool hMenu::RenderPausing() const
 
 /// @brief Render all app screen (menu, pause, about us, exit)
 /// @return True if render successfully, false otherwise
-bool hMenu::Render()
+bool hMenu::Render() const
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:

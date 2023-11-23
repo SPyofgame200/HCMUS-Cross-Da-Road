@@ -94,7 +94,7 @@ private: // Updater helpers
 	bool UpdateAppExit();
 
 private: // Renderer helpers
-	bool RenderAppMenu();
+	bool RenderAppMenu() const;
 	bool RenderProcced() const;
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
@@ -106,7 +106,7 @@ public: // Updaters
 
 public: // Renderers
 	bool RenderPausing() const;
-	bool Render();
+	bool Render() const;
 };
 
 #endif // C_MENU_H
