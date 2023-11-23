@@ -167,8 +167,9 @@ bool cApp::OnPlayerDeath()
 	Player.OnRenderPlayerDeath();
 	Player.Reset();
 	if (--nLife <= 0) {
-
-		GameInit();
+		PauseEngine();
+		
+		//GameInit();
 	}
 	bDeath = false;
 	return true;
@@ -393,9 +394,16 @@ bool cApp::OnPauseEvent()
 		PauseEngine();
 	}
 	if (IsEnginePause()) { // continue the pause event
-		Menu.UpdatePausing();
-		OnGameRender();
-		Menu.RenderPausing();
+		if (nLife == 0) {
+			Menu.UpdateGameOver();
+			OnGameRender();
+			Menu.RenderGameOver();
+		}
+		else {
+			Menu.UpdatePausing();
+			OnGameRender();
+			Menu.RenderPausing();
+		}
 		return false;
 	}
 	return true; // succesfully handle the pause event
