@@ -27,13 +27,13 @@ $ x sprite=crocodile_right background=soil spriteFrame=6
 $ c sprite=crocodile_right background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ j sprite=wood1
+$ j sprite=wood1 background=water
 : block=false danger=false platformspeed=100.0
 : spriteX=0 spriteY=0
-$ l sprite=wood2
+$ l sprite=wood2 background=water
 : block=false danger=false platformspeed=100.0
 : spriteX=0 spriteY=0
-$ k sprite=wood3
+$ k sprite=wood3 background=water
 : block=false danger=false platformspeed=100.0
 : spriteX=0 spriteY=0
 $ i sprite=lilypad

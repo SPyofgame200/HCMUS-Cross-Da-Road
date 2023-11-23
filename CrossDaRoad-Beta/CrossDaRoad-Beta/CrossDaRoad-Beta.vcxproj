@@ -195,6 +195,7 @@
     <Text Include="data\maps\map2.txt" />
     <Text Include="data\maps\map3.txt" />
     <Text Include="data\maps\map4.txt" />
+    <Text Include="data\maps\map5.txt" />
     <Text Include="data\maps\mapNames.txt" />
     <Text Include="data\report\log.txt" />
   </ItemGroup>
