@@ -503,6 +503,9 @@ bool MapObject::SetSummonAttribute(const std::string& sAttribute, const std::str
 	if (sAttribute == "cooldown") {
 		return ExtractTime(fCooldown, sValue);
 	}
+	if (sAttribute == "predelay") {
+		return ExtractTime(fPredelay, sValue);
+	}
 	if (sAttribute == "chance") {
 		return ExtractPercentage(fChance, sValue);
 	}

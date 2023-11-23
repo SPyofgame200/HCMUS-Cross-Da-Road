@@ -234,7 +234,9 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 	float fCurrentTime = app->fTimeSinceStart;
 	int fps = app->GetAppFPS();
 	if (mapLastSummon.count(nID) == false) {
-		std::uniform_real_distribution<float> initialDistribution(0, sprite.GetSummonDuration());
+		float fMinTime = sprite.GetSummonPredelay();
+		float fMaxTime = sprite.GetSummonPredelay() + sprite.GetSummonDuration();
+		std::uniform_real_distribution<float> initialDistribution(fMinTime, fMaxTime);
 		mapLastSummon[nID] = initialDistribution(generator);
 	}
 	float& fLastSummon = mapLastSummon[nID];

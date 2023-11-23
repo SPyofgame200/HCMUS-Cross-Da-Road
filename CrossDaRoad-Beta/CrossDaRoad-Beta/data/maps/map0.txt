@@ -21,7 +21,7 @@ $ p sprite=wall background=magma
 $ q sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
 : spritepos=<0,0>
-: duration=5s cooldown=5s chance=2% summon=f
+: duration=5s cooldown=5s chance=2% summon=f predelay=2s
 $ b sprite=wall background=magma
 : block=false danger=false platformspeed=1.0
 : spritepos=default
