@@ -55,6 +55,7 @@ public: // Game Loaders
 private: // Player Loaders
 	bool LoadPlayerIdleSprites();
 	bool LoadPlayerJumpSprites();
+	bool LoadPlayerSwimSprites();
 	bool LoadPlayerDeathSprites();
 
 private: // Map Loaders
@@ -62,6 +63,7 @@ private: // Map Loaders
 	bool LoadMapRiverSideSprites();
 	bool LoadMapIceAgeSprites();
 	bool LoadMapVolcanoSprites();
+	bool LoadMapBeachSprites();
 	bool LoadMapOceanSprites();
 
 private: // Loaders
