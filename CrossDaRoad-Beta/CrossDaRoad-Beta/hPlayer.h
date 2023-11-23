@@ -6,8 +6,8 @@
  * This file contains player class for player management, movement, and rendering.
 **/
 
-#ifndef C_PLAYER_H
-#define C_PLAYER_H
+#ifndef H_PLAYER_H
+#define H_PLAYER_H
 
 #include <string>
 #include "uAppConst.h"
@@ -166,4 +166,4 @@ public: // Logic-Render Control
 	bool OnPlayerMove();
 };
 
-#endif // C_PLAYER_H
+#endif // H_PLAYER_H
