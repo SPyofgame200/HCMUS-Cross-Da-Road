@@ -737,6 +737,7 @@ bool hPlayer::OnPlayerMove()
 			OnRenderPlayerJumpStart();
 		}
 		else {
+			OnUpdatePlayerIdle();
 			OnRenderPlayerIdle();
 		}
 		return true;
