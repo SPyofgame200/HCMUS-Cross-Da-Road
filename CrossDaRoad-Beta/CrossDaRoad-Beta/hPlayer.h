@@ -85,22 +85,6 @@ public: // Checkers
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
 
-private: // Collision Detection helpers
-	bool IsPlatformTopLeft() const;
-	bool IsPlatformTopRight() const;
-	bool IsPlatformBottomLeft() const;
-	bool IsPlatformBottomRight() const;
-
-	bool IsHitTopLeft() const;
-	bool IsHitTopRight() const;
-	bool IsHitBottomLeft() const;
-	bool IsHitBottomRight() const;
-
-	bool IsBlockedTopLeft() const;
-	bool IsBlockedTopRight() const;
-	bool IsBlockedBottomLeft() const;
-	bool IsBlockedBottomRight() const;
-
 public: // Collision Detection
 	bool IsPlatform() const;
 	bool IsHit() const;
