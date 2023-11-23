@@ -176,7 +176,7 @@ bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::MASK);
-	return DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
+	return DrawGraphic(Cell, sName + sFrameID, nDrawX, nDrawY);
 }
 
 /// @brief Draw background on screen
@@ -193,15 +193,15 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
-	return DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
+	return DrawGraphic(Cell, sName + sFrameID, nDrawX, nDrawY);
 }
 
-bool hMapDrawer::DrawObject(char graphic, const std::string& sName, int nPosX, int nPosY, int nDrawX, int nDrawY) const
+bool hMapDrawer::DrawGraphic(const GraphicCell &Cell, const std::string& sName, int nDrawX, int nDrawY) const
 {
 	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-	app->DrawPartialSprite(nPosX, nPosY, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
+	app->DrawPartialSprite(Cell.nColPos, Cell.nRowPos, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->Zone.Fill(graphic, nPosX, nPosY);
+	app->Zone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
 	return true;
 }
 
