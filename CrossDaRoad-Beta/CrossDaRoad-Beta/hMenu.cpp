@@ -6,6 +6,7 @@
  * This file implements menu class for menu window management.
 **/
 
+#include "cFrameManager.h"
 #include "hMenu.h"
 #include "cApp.h"
 
@@ -377,7 +378,7 @@ bool hMenu::RenderAppMenu()
 bool hMenu::RenderAboutUs() const
 {
 	app->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + app->ShowFrameID(4);
+	const std::string about_us_dynamic = "about_us_page" + cFrameManager::GetInstance().ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
 	app->DrawSprite(0, 0, object);
 	return true;
