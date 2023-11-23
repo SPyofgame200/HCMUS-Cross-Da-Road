@@ -203,6 +203,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="data\report\log.txt" />
+    <Text Include="data\maps\map5.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\functionStandard.md" />
