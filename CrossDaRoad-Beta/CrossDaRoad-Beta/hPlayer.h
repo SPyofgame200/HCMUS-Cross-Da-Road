@@ -13,6 +13,7 @@
 #include "uAppConst.h"
 class cApp;
 class cZone;
+class hPlayerMovement;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
@@ -61,17 +62,20 @@ private:
 private:
 	cApp* app;
 	std::string Name;
+
 public: // Constructors & Destructor
 	hPlayer();
 	hPlayer(cApp* app);
 	~hPlayer();
+
+public: // Initializer & Clean-up
+	bool SetupTarget(cApp* app);
 
 private: // Reseter helpers
 	void ResetDirection();
 	void ResetAnimation();
 	void ResetPosition();
 	void ResetVelocity();
-	void SetupTarget(cApp* app);
 
 public: // Reseters
 	void Reset();

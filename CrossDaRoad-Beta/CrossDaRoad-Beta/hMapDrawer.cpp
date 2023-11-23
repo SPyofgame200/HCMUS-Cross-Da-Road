@@ -32,14 +32,13 @@ hMapDrawer::GraphicCell::GraphicCell(char graphic, int nRowPos, int nColPos)
 hMapDrawer::GraphicCell::~GraphicCell() = default;
 
 /// @brief Default constructor
-hMapDrawer::hMapDrawer()
+hMapDrawer::hMapDrawer() : app(nullptr)
 {
-	app = nullptr;
 }
 
 /// @brief Parameterized constructor
 /// @param app Pointer to the application
-hMapDrawer::hMapDrawer(cApp* app)
+hMapDrawer::hMapDrawer(cApp* app) : app(nullptr)
 {
 	SetupTarget(app);
 }

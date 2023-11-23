@@ -17,13 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-hPlayer::hPlayer()
+hPlayer::hPlayer() : app(nullptr)
 {
 	Reset();
 }
 
 /// @brief Constructor with app pointer
-hPlayer::hPlayer(cApp* app)
+hPlayer::hPlayer(cApp* app) : app(nullptr)
 {
 	SetupTarget(app);
 	Reset();
@@ -76,9 +76,13 @@ void hPlayer::Reset()
 }
 /// @brief Setup app pointer
 /// @param app Pointer to app
-void hPlayer::SetupTarget(cApp* app)
+bool hPlayer::SetupTarget(cApp* app)
 {
+	if (!app) {
+		return false;
+	}
 	this->app = app;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

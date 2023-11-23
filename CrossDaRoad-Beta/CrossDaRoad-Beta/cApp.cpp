@@ -25,7 +25,7 @@ cApp::cApp()
 {
 	SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
 	Zone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
-	Player = hPlayer(this);
+	Player.SetupTarget(this);
 	MapDrawer = hMapDrawer(this);
 	Menu.InitMenu();
 	GameInit();
