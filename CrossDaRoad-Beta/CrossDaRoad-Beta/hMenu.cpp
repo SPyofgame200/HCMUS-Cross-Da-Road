@@ -110,6 +110,7 @@ bool hMenu::LoadAppOption()
 	switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
+			app->GameInit();
 			break;
 		case APP_GAME:
 			eMenuOption = AppOption::APP_GAME;
@@ -336,6 +337,7 @@ bool hMenu::UpdateGameOver()
 		bPlayAgain = true;
 	}
 	else if (app->IsKeyReleased(app::Key::ENTER)) {
+		app->ResumeEngine();
 		if (bPlayAgain) {
 			app->GameReset();
 			app->GameInit();

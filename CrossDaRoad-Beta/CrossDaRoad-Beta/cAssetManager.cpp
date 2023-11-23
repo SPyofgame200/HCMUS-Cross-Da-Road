@@ -185,6 +185,14 @@ bool cAssetManager::LoadPauseSprites()
     bSuccess &= LoadSprite("pause_exit", "pause_exit");
     bSuccess &= LoadSprite("pause_resume", "pause_resume");
     bSuccess &= LoadSprite("pause_save", "pause_save");
+
+    return ReportLoadingResult(bSuccess, "pause");
+}
+/// @brief Load all pause sprites
+/// @return True if loading is successful, false otherwise
+bool cAssetManager::LoadGameOverSprites()
+{
+    bool bSuccess = true;
     bSuccess &= LoadSprite("game_over", "game_over");
     bSuccess &= LoadSprite("play_again_yes", "play_again_yes");
     bSuccess &= LoadSprite("play_again_no", "play_again_no");
@@ -410,6 +418,7 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadAboutUsSprites();
     bSuccess &= LoadExitSprites();
     bSuccess &= LoadPauseSprites();
+    bSuccess &= LoadGameOverSprites();
     bSuccess &= LoadFontSprites();
     bSuccess &= LoadFont1Sprites();
 
@@ -421,6 +430,7 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadMapRiverSideSprites();
     bSuccess &= LoadMapIceAgeSprites();
     bSuccess &= LoadMapVolcanoSprites();
+    bSuccess &= LoadMapBeachSprites();
     bSuccess &= LoadMapOceanSprites();
 
     return ReportLoadingResult(bSuccess, "all");
