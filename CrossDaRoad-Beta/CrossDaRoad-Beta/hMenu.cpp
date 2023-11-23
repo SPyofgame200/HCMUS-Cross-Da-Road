@@ -464,10 +464,10 @@ bool hMenu::RenderGameOver() const
 
 	app->SetPixelMode(app::Pixel::MASK);
 	if (bPlayAgain) {
-		app->DrawSprite(170, 35, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
+		app->DrawSprite(113, 85, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
 	}
 	else {
-		app->DrawSprite(170, 35, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
+		app->DrawSprite(113, 85, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
