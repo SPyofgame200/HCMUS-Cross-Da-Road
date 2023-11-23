@@ -49,7 +49,6 @@ bool cApp::GameInit()
 	using namespace app_const;
 	fTimeSinceStart = 0;
 	sAppName = APP_NAME;
-	nCellSize = CELL_SIZE;
 	nScore = 0;
 	nLife = 3;
 	MapLoader.Init();
