@@ -675,7 +675,7 @@ bool hPlayer::OnRenderPlayer() const
 	}
 
 	app->SetPixelMode(app::Pixel::MASK);
-	const float nCellSize = static_cast<float>(app->nCellSize);
+	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
 	const int32_t frogXPosition = static_cast<int32_t>(fFrogAnimPosX * nCellSize);
 	const int32_t frogYPosition = static_cast<int32_t>(fFrogAnimPosY * nCellSize);
 	app->DrawSprite(frogXPosition, frogYPosition, froggy);
@@ -694,7 +694,7 @@ bool hPlayer::OnRenderPlayerDeath()
 			std::cerr << "WTF, cant found \"" << froggy_name << ".png\"" << std::endl;
 		}
 
-		const float nCellSize = static_cast<float>(app->nCellSize);
+		const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
 		const int32_t frogXPosition = static_cast<int32_t>(GetPlayerAnimationPositionX() * nCellSize);
 		const int32_t frogYPosition = static_cast<int32_t>(GetPlayerAnimationPositionY() * nCellSize);
 		app->DrawAllLanes();
