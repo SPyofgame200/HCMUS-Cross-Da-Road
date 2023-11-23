@@ -52,6 +52,7 @@ bool cApp::GameInit()
 	nLaneWidth = LANE_WIDTH;
 	nCellSize = CELL_SIZE;
 	nScore = 0;
+	nLife = 3;
 	MapLoader.Init();
 	return true;
 }
@@ -169,6 +170,9 @@ bool cApp::OnPlayerDeath()
 	bDeath = true;
 	Player.OnRenderPlayerDeath();
 	Player.Reset();
+	if (--nLife <= 0) {
+		GameInit();
+	}
 	bDeath = false;
 	return true;
 }
@@ -482,8 +486,11 @@ bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
 		constexpr int nCharsInRow = 16;
 		const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
 		const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
+
+		SetPixelMode(app::Pixel::MASK);
 		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
 		i++;
+		SetPixelMode(app::Pixel::NORMAL);
 	}
 	return true;
 }
@@ -495,7 +502,10 @@ bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
 		constexpr int nCharsInRow = 16;
 		const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
 		const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
+
+		SetPixelMode(app::Pixel::MASK);
 		DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font1"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+		SetPixelMode(app::Pixel::NORMAL);
 		i++;
 	}
 	return true;
@@ -513,13 +523,13 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nOriginY_sb = 0;
 	constexpr int32_t nWidth_sb = 80;
 	constexpr int32_t nHeight_sb = 160;
-
 	constexpr int32_t nPosX_level = 321;
 	constexpr int32_t nPosY_level = 80;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
 	SetPixelMode(app::Pixel::NORMAL);
+	DrawBigText(std::to_string(nLife), nPosX_level, 99);
 	return true;
 }
 

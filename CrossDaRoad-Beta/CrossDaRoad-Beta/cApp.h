@@ -50,6 +50,7 @@ private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
+	int nLife;
 
 private: // Event timers
 	float fTimeSinceStart;
@@ -108,7 +109,6 @@ private: // Game Rendering
 	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
-
 	bool DrawStatusBar();
 
 private: // Animator
