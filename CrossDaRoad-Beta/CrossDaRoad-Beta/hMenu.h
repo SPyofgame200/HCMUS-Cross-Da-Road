@@ -59,6 +59,9 @@ private: /// Pause HUD
 	int nPauseOptionValue; ///< Current option index
 	int nPauseOptionLimit; ///< Maximum number of options
 
+private: /// Game Over HUD
+	bool bPlayAgain = true;
+
 public: // Constructor & Destructor
 	hMenu();
 	hMenu(cApp* app);
@@ -93,6 +96,7 @@ private: // Updater helpers
 
 public: // Updaters
 	bool UpdatePausing();
+	bool UpdateGameOver();
 	bool Update(float fElapsedTime);
 
 private: // Renderer helpers
@@ -103,6 +107,7 @@ private: // Renderer helpers
 
 public: // Renderers
 	bool RenderPausing() const;
+	bool RenderGameOver() const;
 	bool Render();
 };
 

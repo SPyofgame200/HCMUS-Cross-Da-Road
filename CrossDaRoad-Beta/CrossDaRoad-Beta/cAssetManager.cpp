@@ -174,6 +174,9 @@ bool cAssetManager::LoadPauseSprites()
     bSuccess &= LoadSprite("pause_exit", "pause_exit");
     bSuccess &= LoadSprite("pause_resume", "pause_resume");
     bSuccess &= LoadSprite("pause_save", "pause_save");
+    bSuccess &= LoadSprite("game_over", "game_over");
+    bSuccess &= LoadSprite("play_again_yes", "play_again_yes");
+    bSuccess &= LoadSprite("play_again_no", "play_again_no");
 
     return ReportLoadingResult(bSuccess, "pause");
 }

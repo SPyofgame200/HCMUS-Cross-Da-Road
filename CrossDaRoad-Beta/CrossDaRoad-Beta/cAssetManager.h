@@ -49,7 +49,6 @@ public: // Game Loaders
 	bool LoadPauseSprites();
 	bool LoadFontSprites();
 	bool LoadFont1Sprites();
-
 	bool LoadScoreBarSprites();
 
 private: // Player Loaders

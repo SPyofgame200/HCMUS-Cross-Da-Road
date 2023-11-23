@@ -315,6 +315,30 @@ bool hMenu::UpdatePausing()
 	return true; // succesfully handle the pause event
 }
 
+bool hMenu::UpdateGameOver()
+{
+	if (app->IsKeyReleased(app::Key::RIGHT)) {
+		bPlayAgain = false;
+	}
+	else if (app->IsKeyReleased(app::Key::LEFT)) {
+		bPlayAgain = true;
+	}
+	else if (app->IsKeyReleased(app::Key::ENTER)) {
+		if (bPlayAgain) {
+			app->GameReset();
+			app->GameInit();
+			return true;
+		}
+		else
+		{
+			OpenMenu();
+			eMenuOption = AppOption::APP_MENU;
+			return true;
+		}
+	}
+	return true; // successfully handle the game over event;
+}
+
 /// @brief Update all app screen (menu, pause, about us, exit)
 /// @param fElapsedTime Time elapsed since last frame
 /// @return True if update successfully, false otherwise
@@ -412,6 +436,31 @@ bool hMenu::RenderPausing() const
 	const std::string sOptionName = "pause_" + sSelectedLabel;
 	app->SetPixelMode(app::Pixel::MASK);
 	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite(sOptionName));
+	app->SetPixelMode(app::Pixel::NORMAL);
+	return true;
+}
+/// @brief Game over and display game over window on screen
+/// @return Always return true by default
+bool hMenu::RenderGameOver() const
+{
+	/// Overlay
+	app->SetPixelMode(app::Pixel::ALPHA);
+	app->SetBlendFactor(170.0f / 255.0f);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	app->SetBlendFactor(255.0f / 255.0f);
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite("game_over"));
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	if (bPlayAgain) {
+		app->DrawSprite(170, 35, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
+	}
+	else {
+		app->DrawSprite(170, 35, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
+	}
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
