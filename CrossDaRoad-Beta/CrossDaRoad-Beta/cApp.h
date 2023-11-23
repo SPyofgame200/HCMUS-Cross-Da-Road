@@ -40,6 +40,7 @@ private: // Interactive Properties (control the map)
 	hPlayer Player;
 	int nameBoxOption = 0;
 	std::string playerName;
+
 private: // Reinitializable Properties (depended on each map)
 	cZone Zone;
 	cMapLoader MapLoader;
@@ -49,6 +50,7 @@ private: // Customizable Properties (applied to all maps)
 	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
+	int nLife;
 
 private: // Event timers
 	float fTimeSinceStart;
@@ -74,15 +76,9 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	MapObject GetHitBox(float x, float y) const;
-	MapObject GetHitBox() const;
+	bool IsKilled() const;
 	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
-
-	bool IsKilled(bool bDebug = false) const;
-	bool IsPlatformLeft() const;
-	bool IsPlatformRight() const;
-	bool IsPlatformCenter() const;
 	bool IsOnPlatform() const;
 
 protected: /// Game Updates
@@ -113,7 +109,6 @@ private: // Game Rendering
 	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
-
 	bool DrawStatusBar();
 
 private: // Animator

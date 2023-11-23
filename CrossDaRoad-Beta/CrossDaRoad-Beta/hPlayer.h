@@ -6,13 +6,14 @@
  * This file contains player class for player management, movement, and rendering.
 **/
 
-#ifndef C_PLAYER_H
-#define C_PLAYER_H
+#ifndef H_PLAYER_H
+#define H_PLAYER_H
 
 #include <string>
 #include "uAppConst.h"
 class cApp;
 class cZone;
+class hPlayerMovement;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
@@ -27,7 +28,6 @@ public:
 		RIGHT_UP = 4, 		///< Right-up direction for player movement
 		LEFT_DOWN = 5, 		///< Left-down direction for player movement
 		RIGHT_DOWN = 6, 	///< Right-down direction for player movement
-		FRONT_VIEW = 7, 	///< [unused], for front view
 	};
 	/// @brief Animation enumeration for player animation
 	enum Animation
@@ -36,7 +36,13 @@ public:
 		JUMP = 1,			///< Jump animation for player
 		LAND = 2,			///< Land animation for player
 	};
-	typedef int frame_t; // for later use
+
+	enum State
+	{
+		ALIVE = 0,
+		DEATH = 1,
+		VICTORY = 2,
+	};
 
 private:
 	float fFrogVelocityX;   ///< Velocity of player in X-axis
@@ -47,7 +53,7 @@ private:
 	float fFrogLogicPosY;	///< Logic position of player in Y-axis
 
 private:
-	frame_t frame6_id_animation_safe;
+	int frame6_id_animation_safe;
 
 private:
 	Direction eDirection;
@@ -56,17 +62,20 @@ private:
 private:
 	cApp* app;
 	std::string Name;
+
 public: // Constructors & Destructor
 	hPlayer();
 	hPlayer(cApp* app);
 	~hPlayer();
+
+public: // Initializer & Clean-up
+	bool SetupTarget(cApp* app);
 
 private: // Reseter helpers
 	void ResetDirection();
 	void ResetAnimation();
 	void ResetPosition();
 	void ResetVelocity();
-	void SetupTarget(cApp* app);
 
 public: // Reseters
 	void Reset();
@@ -85,18 +94,8 @@ public: // Checkers
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
 
-private: // Collision Detection helpers
-	bool IsHitTopLeft() const;
-	bool IsHitTopRight() const;
-	bool IsHitBottomLeft() const;
-	bool IsHitBottomRight() const;
-
-	bool IsBlockedTopLeft() const;
-	bool IsBlockedTopRight() const;
-	bool IsBlockedBottomLeft() const;
-	bool IsBlockedBottomRight() const;
-
 public: // Collision Detection
+	bool IsPlatform() const;
 	bool IsHit() const;
 	bool IsBlocked() const;
 
@@ -171,4 +170,4 @@ public: // Logic-Render Control
 	bool OnPlayerMove();
 };
 
-#endif // C_PLAYER_H
+#endif // H_PLAYER_H

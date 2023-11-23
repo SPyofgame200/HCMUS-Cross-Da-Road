@@ -237,6 +237,15 @@ bool cAssetManager::LoadPlayerJumpSprites()
 
     return ReportLoadingResult(bSuccess, "player jump");
 }
+/// @brief Load all player swim sprites
+/// @return True if loading is successful, false otherwise
+bool cAssetManager::LoadPlayerSwimSprites()
+{
+    bool bSuccess = true;
+    bSuccess &= LoadAnimation("froggy_swim", "froggy_swim", 6);
+
+    return ReportLoadingResult(bSuccess, "player swim");
+}
 /// @brief Load all player death sprites
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadPlayerDeathSprites()
@@ -315,9 +324,9 @@ bool cAssetManager::LoadMapVolcanoSprites()
 
     return ReportLoadingResult(bSuccess, "Volcano map");
 }
-/// @brief Load all ocean map sprites
+/// @brief Load all beach map sprites
 /// @return True if loading is successful, false otherwise
-bool cAssetManager::LoadMapOceanSprites()
+bool cAssetManager::LoadMapBeachSprites()
 {
     bool bSuccess = true;
     bSuccess &= LoadSprite("sand", "sand");
@@ -326,6 +335,17 @@ bool cAssetManager::LoadMapOceanSprites()
     bSuccess &= LoadAnimation("crab", "crab", 4);
     bSuccess &= LoadAnimation("coconut", "coconut", 8);
     bSuccess &= LoadAnimation("beach_wave", "beach_wave", 12);
+
+    return ReportLoadingResult(bSuccess, "Beach map");
+}
+/// @brief Load all ocean map sprites
+/// @return True if loading is successful, false otherwise
+bool cAssetManager::LoadMapOceanSprites()
+{
+    bool bSuccess = true;
+    bSuccess &= LoadSprite("deep_ocean", "deep_ocean");
+    bSuccess &= LoadAnimation("octopus", "octopus", 6);
+    bSuccess &= LoadAnimation("shark", "shark", 6);
 
     return ReportLoadingResult(bSuccess, "Ocean map");
 }

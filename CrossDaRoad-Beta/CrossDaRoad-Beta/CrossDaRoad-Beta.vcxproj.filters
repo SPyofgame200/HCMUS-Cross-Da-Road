@@ -90,6 +90,12 @@
     <ClCompile Include="uMessageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="uConsoleColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hPlayerMovement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cApp.h">
@@ -167,7 +173,13 @@
     <ClInclude Include="hPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="uMessageManager.h">
+    <ClInclude Include="cMessageManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uConsoleColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hPlayerMovement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -190,6 +202,7 @@
     <Text Include="data\maps\mapNames.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="data\report\log.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\functionStandard.md" />

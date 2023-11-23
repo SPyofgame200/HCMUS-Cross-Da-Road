@@ -1,10 +1,10 @@
 wwwwhwwwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0
 ,,pp,,,,,,pp,,,,,,pp,,,pp,,,,,,pp,,,,,,pp,,,,,,,pp,,,,pp,,,,pp,,  3.0
 ppppppfppppppppfpppppppppppfpppppppppppppppppppppppppppppppppppp  0.0
-,,pppp,,,,,pppp,,,,,pp,,,,,pppp,,,ppppp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0
+,,pppp,,,,,pppp,,,,,pp,,,,,pppp,,,ppppp,,,,pp,,,,ppp,,,,,,,pp,,,  2.0 lava 12
 ,,,pp,,,,,pppp,,,,,,,pppp,,,,,pp,,,,,,pp,,,,,,pp,,,,pppppp,,,,,, -3.0
 ,,,,pppp,,,,,pppp,,,,pppp,,,,,,,,,pppp,,,,,pp,,,,,,,,pppp,,,,,,,  3.0
-fpppppfppppppfppppppppppfppppppppppppppppppppppppppppppppppppppp  0.0
+fpppppfppppppfppppppppppfppppppppppppppppppppppppppppppppppppppp  0.0 lava 12
 ,,pp,,,,pp,,,,,pp,,pp,,,,,,,,,pp,,,,,,,,,pp,,,,pp,,,,pp,,,,,pp,, -4.0
 ,,,pppp,,,,pppp,,,,,,,,,pppp,,,,,,pppp,,,,,,,,,pppp,,,pppp,,,,,, -3.0
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
@@ -19,7 +19,7 @@ $ p sprite=wall background=magma
 $ l sprite=lava_rock spriteFrame=4
 : block=false danger=false platformspeed=0.0
 : spritepos=default
-: duration=2s cooldown=0s chance=100% summon=f
+: duration=2s cooldown=0s chance=100% summon=f predelay=1.5s
 $ w sprite=wall
 : block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0

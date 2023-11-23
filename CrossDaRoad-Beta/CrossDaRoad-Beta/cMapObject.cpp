@@ -503,6 +503,9 @@ bool MapObject::SetSummonAttribute(const std::string& sAttribute, const std::str
 	if (sAttribute == "cooldown") {
 		return ExtractTime(fCooldown, sValue);
 	}
+	if (sAttribute == "predelay") {
+		return ExtractTime(fPredelay, sValue);
+	}
 	if (sAttribute == "chance") {
 		return ExtractPercentage(fChance, sValue);
 	}
@@ -592,6 +595,7 @@ std::string MapObject::ShowSummonData() const
 	oss << "summon=" << (summon == 0 ? "NULL" : std::string(1, summon)) << ", ";
 	oss << "duration=" << fDuration << "s, ";
 	oss << "cooldown=" << fCooldown << "s, ";
+	oss << "predelay=" << fPredelay << "s, ";
 	oss << "chance=" << fChance << "% ";
 	oss << "]";
 	return oss.str();

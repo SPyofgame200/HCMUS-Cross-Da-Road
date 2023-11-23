@@ -32,14 +32,13 @@ hMapDrawer::GraphicCell::GraphicCell(char graphic, int nRowPos, int nColPos)
 hMapDrawer::GraphicCell::~GraphicCell() = default;
 
 /// @brief Default constructor
-hMapDrawer::hMapDrawer()
+hMapDrawer::hMapDrawer() : app(nullptr)
 {
-	app = nullptr;
 }
 
 /// @brief Parameterized constructor
 /// @param app Pointer to the application
-hMapDrawer::hMapDrawer(cApp* app)
+hMapDrawer::hMapDrawer(cApp* app) : app(nullptr)
 {
 	SetupTarget(app);
 }
@@ -235,7 +234,9 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 	float fCurrentTime = app->fTimeSinceStart;
 	int fps = app->GetAppFPS();
 	if (mapLastSummon.count(nID) == false) {
-		std::uniform_real_distribution<float> initialDistribution(0, sprite.GetSummonDuration());
+		float fMinTime = fCurrentTime + sprite.GetSummonPredelay();
+		float fMaxTime = fCurrentTime + sprite.GetSummonPredelay() + sprite.GetSummonDuration();
+		std::uniform_real_distribution<float> initialDistribution(fMinTime, fMaxTime);
 		mapLastSummon[nID] = initialDistribution(generator);
 	}
 	float& fLastSummon = mapLastSummon[nID];

@@ -151,6 +151,7 @@
     <ClCompile Include="gTexture.cpp" />
     <ClCompile Include="gUtils.cpp" />
     <ClCompile Include="gWindow.cpp" />
+    <ClCompile Include="hPlayerMovement.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uAppUtils.cpp" />
     <ClCompile Include="uConsoleColor.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="gTexture.h" />
     <ClInclude Include="gUtils.h" />
     <ClInclude Include="gWindow.h" />
+    <ClInclude Include="hPlayerMovement.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uAppUtils.h" />
     <ClInclude Include="cMessageManager.h" />
@@ -193,6 +195,7 @@
     <Text Include="data\maps\map2.txt" />
     <Text Include="data\maps\map3.txt" />
     <Text Include="data\maps\map4.txt" />
+    <Text Include="data\maps\map5.txt" />
     <Text Include="data\maps\mapNames.txt" />
     <Text Include="data\report\log.txt" />
   </ItemGroup>
