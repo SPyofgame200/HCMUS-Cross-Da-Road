@@ -324,7 +324,7 @@ bool hMenu::Update(const float fElapsedTime)
 		case AppOption::NEW_GAME:
 		{
 			bool result = app->UpdateDrawNameBox();
-			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER))
+			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 			{
 				eMenuOption = APP_GAME;
 			}

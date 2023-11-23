@@ -253,30 +253,33 @@ bool cApp::UpdateDrawNameBox()
 			playerName.pop_back();
 		return true;
 	}
-	if (playerName.size() < 10)
+	if (nameBoxOption % 2 == 0)
 	{
-
-		std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
-		char currentKeyA = 'A';
-		for (auto it : mapKeyAlphabet)
-		{	
-			if (IsKeyReleased(it.second))
-			{
-				playerName += currentKeyA;
-				return true;
-			}
-			++currentKeyA;
-		}
-		std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
-		char currentKeyN = '0';
-		for(auto it : mapKeyNumeric)
+		if (playerName.size() < 9)
 		{
-			if (IsKeyReleased(it.second))
-			{
-				playerName += currentKeyN;
-				return true;
+
+			std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+			char currentKeyA = 'A';
+			for (const auto &it : mapKeyAlphabet)
+			{	
+				if (IsKeyReleased(it.second))
+				{
+					playerName += currentKeyA;
+					return true;
+				}
+				++currentKeyA;
 			}
-			++currentKeyN;
+			std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+			char currentKeyN = '0';
+			for(const auto &it : mapKeyNumeric)
+			{
+				if (IsKeyReleased(it.second))
+				{
+					playerName += currentKeyN;
+					return true;
+				}
+				++currentKeyN;
+			}
 		}
 	}
 	
@@ -296,7 +299,12 @@ bool cApp::DrawNameBox()
 		DrawSprite(0, 0, NameBoxChosen);
 
 	SetPixelMode(app::Pixel::MASK);
-	DrawBigText1(playerName, 157, 69);
+	if (playerName.empty()) {
+		DrawBigText("Input name", 157, 70);
+	}
+	else {
+		DrawBigText1(playerName, 157, 70);
+	}
 	SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
@@ -525,8 +533,11 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nHeight_sb = 160;
 	constexpr int32_t nPosX_level = 321;
 	constexpr int32_t nPosY_level = 80;
+	int nPosX_PlayerName = 312 - playerName.size() * 4;
+	int nPosY_PlayerName = 63;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
+	DrawBigText(playerName, nPosX_PlayerName, nPosY_PlayerName);
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
 	SetPixelMode(app::Pixel::NORMAL);
 	DrawBigText(std::to_string(nLife), nPosX_level, 99);
