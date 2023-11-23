@@ -44,17 +44,8 @@ cAssetManager& cAssetManager::GetInstance()
 app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 {
     if (mapSprites.find(sName) == mapSprites.end()) {
-        LOG_MESSAGE(
-            "LOG Failed to use sprite - Name: \"" << sName << "\""
-        );
-        WARN_MESSAGE(
-            "WARN Failed to use sprite - Name: \"" << sName << "\""
-        );
         ERROR_MESSAGE(
-            "ERROR Failed to use sprite - Name: \"" << sName << "\""
-        );
-        SEVERE_MESSAGE(
-            "SEVERE Failed to use sprite - Name: \"" << sName << "\""
+            "Failed to use sprite - Name: \"" << sName << "\""
         );
         return nullptr;
     }
@@ -243,6 +234,9 @@ bool cAssetManager::LoadPlayerSwimSprites()
 {
     bool bSuccess = true;
     bSuccess &= LoadAnimation("froggy_swim", "froggy_swim", 6);
+    bSuccess &= LoadAnimation("froggy_swim_left", "froggy_swim_left", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle", "froggy_swim_idle", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle_left", "froggy_swim_idle_left", 6);
 
     return ReportLoadingResult(bSuccess, "player swim");
 }

@@ -5,6 +5,7 @@
 **/
 
 #include "hMapDrawer.h"
+#include "uAppConst.h"
 #include "cApp.h"
 #include <vector>
 
@@ -79,9 +80,9 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) con
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
 
 	GraphicLane Backgrounds;
-	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app_const::LANE_WIDTH; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
-		Backgrounds.push_back(GraphicCell(graphic, nRow * app->nCellSize, nCol * app->nCellSize));
+		Backgrounds.push_back(GraphicCell(graphic, nRow * app_const::CELL_SIZE, nCol * app_const::CELL_SIZE));
 	}
 
 	return Backgrounds;
@@ -94,13 +95,13 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 {
 	const int nRow = Lane.GetLaneID();
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
-	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
+	const int nCellOffset = Lane.GetCellOffset(app_const::CELL_SIZE, app->fTimeSinceStart);
 
 	GraphicLane Objects;
-	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app_const::LANE_WIDTH; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
-		const int nPosX = nRow * app->nCellSize;
-		const int nPosY = nCol * app->nCellSize - nCellOffset;
+		const int nPosX = nRow * app_const::CELL_SIZE;
+		const int nPosY = nCol * app_const::CELL_SIZE - nCellOffset;
 		Objects.push_back(GraphicCell(graphic, nPosX, nPosY));
 	}
 
@@ -119,7 +120,7 @@ bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 {
 	if (Lane.HasUnderlay()) {
 		const int32_t nPosX = 0;
-		const int32_t nPosY = Lane.GetLaneID() * app->nCellSize;
+		const int32_t nPosY = Lane.GetLaneID() * app_const::CELL_SIZE;
 		const int nFrameCount = Lane.GetUnderlayFrameCount();
 		const std::string sUnderlay = Lane.GetUnderlay() + app->ShowFrameID(nFrameCount, 0.001f);
 		const app::Sprite* pUnderlay = cAssetManager::GetInstance().GetSprite(sUnderlay);
@@ -139,11 +140,13 @@ bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 	GraphicLane Backgrounds = GetLaneBackgrounds(Lane);
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
+		SetHitBox(BackgroundCell);
 	}
 
 	GraphicLane Objects = GetLaneEntities(Lane);
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawEntity(ObjectCell);
+		SetHitBox(ObjectCell);
 	}
 
 	return true;
@@ -176,7 +179,7 @@ bool hMapDrawer::DrawEntity(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::MASK);
-	return DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
+	return DrawGraphic(Cell, sName + sFrameID, nDrawX, nDrawY);
 }
 
 /// @brief Draw background on screen
@@ -193,19 +196,21 @@ bool hMapDrawer::DrawBackground(const GraphicCell& Cell) const
 		return false;
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
-	return DrawObject(Cell.graphic, sName + sFrameID, Cell.nColPos, Cell.nRowPos, nDrawX, nDrawY);
+	return DrawGraphic(Cell, sName + sFrameID, nDrawX, nDrawY);
 }
 
-bool hMapDrawer::DrawObject(char graphic, const std::string& sName, int nPosX, int nPosY, int nDrawX, int nDrawY) const
+bool hMapDrawer::DrawGraphic(const GraphicCell &Cell, const std::string& sName, int nDrawX, int nDrawY) const
 {
 	const app::Sprite* background = cAssetManager::GetInstance().GetSprite(sName);
-	app->DrawPartialSprite(nPosX, nPosY, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
+	app->DrawPartialSprite(Cell.nColPos, Cell.nRowPos, background, nDrawX * app_const::SPRITE_WIDTH, nDrawY * app_const::SPRITE_HEIGHT);
 	app->SetPixelMode(app::Pixel::NORMAL);
-	app->Zone.Fill(graphic, nPosX, nPosY);
 	return true;
 }
 
-
+void hMapDrawer::SetHitBox(const GraphicCell& Cell) const
+{
+	app->Zone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+}
 //=================================================================================================
 
 #include <random>
