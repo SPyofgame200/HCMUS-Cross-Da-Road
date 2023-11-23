@@ -171,6 +171,7 @@ bool cApp::OnPlayerDeath()
 	Player.OnRenderPlayerDeath();
 	Player.Reset();
 	if (--nLife <= 0) {
+
 		GameInit();
 	}
 	bDeath = false;

@@ -243,6 +243,9 @@ bool cAssetManager::LoadPlayerSwimSprites()
 {
     bool bSuccess = true;
     bSuccess &= LoadAnimation("froggy_swim", "froggy_swim", 6);
+    bSuccess &= LoadAnimation("froggy_swim_left", "froggy_swim_left", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle", "froggy_swim_idle", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle_left", "froggy_swim_idle_left", 6);
 
     return ReportLoadingResult(bSuccess, "player swim");
 }

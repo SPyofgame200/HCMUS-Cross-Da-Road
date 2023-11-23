@@ -1,4 +1,4 @@
-.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 beach_wave 12
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 beach_wave 12
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
 ,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0 lava 12
