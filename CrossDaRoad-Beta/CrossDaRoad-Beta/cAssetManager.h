@@ -43,6 +43,7 @@ public: // Setters
 public: // Game Loaders
 	bool LoadNameBoxSprites();
 	bool LoadMenuSprites();
+	bool LoadContinueSprites();
 	bool LoadSettingSprites();
 	bool LoadAboutUsSprites();
 	bool LoadExitSprites();

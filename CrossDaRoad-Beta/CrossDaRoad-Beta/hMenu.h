@@ -86,20 +86,23 @@ public: // Validators
 	static int FixOption(int& value, int limit);
 
 private: // Updater helpers
+	bool UpdateNewGame();
 	bool UpdateAppMenu();
+	bool UpdateProcced();
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
 
-public: // Updaters
-	bool UpdatePausing();
-	bool Update(float fElapsedTime);
-
 private: // Renderer helpers
 	bool RenderAppMenu();
+	bool RenderProcced() const;
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
+
+public: // Updaters
+	bool UpdatePausing();
+	bool Update(float fElapsedTime);
 
 public: // Renderers
 	bool RenderPausing() const;
