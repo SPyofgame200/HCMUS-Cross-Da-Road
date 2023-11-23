@@ -47,7 +47,6 @@ private: // Reinitializable Properties (depended on each map)
 	hMapDrawer MapDrawer;
 
 private: // Customizable Properties (applied to all maps)
-	int nLaneWidth;
 	int nCellSize;
 	int nScore = 0;
 	int nLife;

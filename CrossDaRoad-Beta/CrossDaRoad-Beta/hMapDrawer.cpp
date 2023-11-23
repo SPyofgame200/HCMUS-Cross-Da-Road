@@ -5,6 +5,7 @@
 **/
 
 #include "hMapDrawer.h"
+#include "uAppConst.h"
 #include "cApp.h"
 #include <vector>
 
@@ -79,7 +80,7 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneBackgrounds(const cMapLane& Lane) con
 	const int nStartPos = Lane.GetStartPos(app->fTimeSinceStart);
 
 	GraphicLane Backgrounds;
-	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app_const::LANE_WIDTH; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		Backgrounds.push_back(GraphicCell(graphic, nRow * app->nCellSize, nCol * app->nCellSize));
 	}
@@ -97,7 +98,7 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 	const int nCellOffset = Lane.GetCellOffset(app->nCellSize, app->fTimeSinceStart);
 
 	GraphicLane Objects;
-	for (int nCol = -1; nCol < app->nLaneWidth; nCol++) {
+	for (int nCol = -1; nCol < app_const::LANE_WIDTH; nCol++) {
 		const char graphic = Lane.GetLaneGraphic(nStartPos + nCol);
 		const int nPosX = nRow * app->nCellSize;
 		const int nPosY = nCol * app->nCellSize - nCellOffset;
