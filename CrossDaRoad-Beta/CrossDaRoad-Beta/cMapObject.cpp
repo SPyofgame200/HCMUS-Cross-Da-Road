@@ -595,6 +595,7 @@ std::string MapObject::ShowSummonData() const
 	oss << "summon=" << (summon == 0 ? "NULL" : std::string(1, summon)) << ", ";
 	oss << "duration=" << fDuration << "s, ";
 	oss << "cooldown=" << fCooldown << "s, ";
+	oss << "predelay=" << fPredelay << "s, ";
 	oss << "chance=" << fChance << "% ";
 	oss << "]";
 	return oss.str();
