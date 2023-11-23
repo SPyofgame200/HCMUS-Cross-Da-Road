@@ -89,26 +89,29 @@ public: // Validators
 	static int FixOption(int& value, int limit);
 
 private: // Updater helpers
+	bool UpdateNewGame();
 	bool UpdateAppMenu();
+	bool UpdateProcced();
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
+
+private: // Renderer helpers
+	bool RenderAppMenu() const;
+	bool RenderProcced() const;
+	bool RenderSetting() const;
+	bool RenderAboutUs() const;
+	bool RenderAppExit() const;
 
 public: // Updaters
 	bool UpdatePausing();
 	bool UpdateGameOver();
 	bool Update(float fElapsedTime);
 
-private: // Renderer helpers
-	bool RenderAppMenu();
-	bool RenderSetting() const;
-	bool RenderAboutUs() const;
-	bool RenderAppExit() const;
-
 public: // Renderers
 	bool RenderPausing() const;
 	bool RenderGameOver() const;
-	bool Render();
+	bool Render() const;
 };
 
 #endif // C_MENU_H

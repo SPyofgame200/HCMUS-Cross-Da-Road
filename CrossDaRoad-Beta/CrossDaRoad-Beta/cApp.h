@@ -53,12 +53,6 @@ private: // Customizable Properties (applied to all maps)
 private: // Event timers
 	float fTimeSinceStart;
 
-private: // Animator
-	frame4_t frame4;
-	frame6_t frame6;
-	frame8_t frame8;
-	frame12_t frame12;
-
 private: // Special variables
 	std::atomic<bool> bDeath;
 
@@ -108,13 +102,6 @@ private: // Game Rendering
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
-
-private: // Animator
-	int GetFrameID(int frame) const;
-	int GetFrameID(int frame, float fTickRate) const;
-	std::string ShowFrameID(int frame) const;
-	std::string ShowFrameID(int frame, float fTickRate) const;
-	bool OnUpdateFrame(float fTickTime, float fTickRate = 0.01f);
 };
 
 #endif // C_APP_H

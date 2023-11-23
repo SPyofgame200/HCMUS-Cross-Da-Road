@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sstream>
 #include <thread>
+#include "cFrameManager.h"
 
 constexpr float fConst = 2.0f;
 
@@ -86,10 +87,7 @@ bool cApp::GameReset()
 	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
 	Zone.CreateZone(ScreenWidth(), ScreenHeight());
 	Player.Reset();
-	frame4.Reset();
-	frame6.Reset();
-	frame8.Reset();
-	frame12.Reset();
+	cFrameManager::GetInstance().Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
@@ -202,7 +200,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
 	if (!IsEnginePause() && !bDeath) {
 		fTimeSinceStart = fTickTime;
-		OnUpdateFrame(fTickTime);
+		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
 	}
 	return true;
 }
@@ -530,7 +528,7 @@ bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005f);
+	const std::string score_board_dynamic = "score_bar" + cFrameManager::GetInstance().ShowFrameID(4, 0.005f);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;
@@ -548,80 +546,6 @@ bool cApp::DrawStatusBar()
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
 	SetPixelMode(app::Pixel::NORMAL);
 	DrawBigText(std::to_string(nLife), nPosX_level, 99);
-	return true;
-}
-
-/// @brief Getter for current frame id of player
-int cApp::GetFrameID(const int frame) const
-{
-	if (frame == frame4.GetLimit()) {
-		return frame4.GetID();
-	}
-	else if (frame == frame6.GetLimit()) {
-		return frame6.GetID();
-	}
-	else if (frame == frame8.GetLimit()) {
-		return frame8.GetID();
-	}
-	else if (frame == frame12.GetLimit()) {
-		return frame12.GetID();
-	}
-	return 0;
-}
-
-int cApp::GetFrameID(const int frame, float fTickRate) const
-{
-	if (frame == frame4.GetLimit()) {
-		frame4_t current = frame4;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame6.GetLimit()) {
-		frame6_t current = frame6;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame8.GetLimit()) {
-		frame8_t current = frame8;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame12.GetLimit()) {
-		frame12_t current = frame12;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	return 0;
-}
-
-/// @brief Get string of current frame id of player
-/// @param frame Frame to get id
-/// @return String of current frame id of player
-std::string cApp::ShowFrameID(const int frame) const
-{
-	if (frame <= 0) {
-		return "";
-	}
-	return std::to_string(GetFrameID(frame));
-}
-
-std::string cApp::ShowFrameID(const int frame, float fTickRate) const
-{
-	if (frame <= 0) {
-		return "";
-	}
-	return std::to_string(GetFrameID(frame, fTickRate));
-}
-
-/// @brief Update player animation frame 
-/// @param fTickTime Time elapsed since last frame
-/// @return Always true by default
-bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
-{
-	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame12.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	return true;
 }
 

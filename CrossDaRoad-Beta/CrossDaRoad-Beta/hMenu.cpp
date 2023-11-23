@@ -6,6 +6,7 @@
  * This file implements menu class for menu window management.
 **/
 
+#include "cFrameManager.h"
 #include "hMenu.h"
 #include "cApp.h"
 
@@ -109,7 +110,6 @@ bool hMenu::LoadAppOption()
 	switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
-			app->GameReset();
 			break;
 		case APP_GAME:
 			eMenuOption = AppOption::APP_GAME;
@@ -205,6 +205,17 @@ int hMenu::FixOption(int& value, int limit)
 ///////////////////////////// UPDATERS ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool hMenu::UpdateNewGame()
+{	
+	bool result = app->UpdateDrawNameBox();
+	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
+	{
+		eMenuOption = APP_GAME;
+		app->GameReset();
+	}
+	return result;
+}
+
 /// @brief Update menu on screen when user press key
 /// @param app Pointer to application
 /// @return Always return true by default
@@ -221,6 +232,7 @@ bool hMenu::UpdateAppMenu()
 	}
 	return true;
 }
+
 
 /// @brief Display settings on screen (sound on/off)
 /// @param app Pointer to application
@@ -346,14 +358,7 @@ bool hMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-		{
-			bool result = app->UpdateDrawNameBox();
-			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
-			{
-				eMenuOption = APP_GAME;
-			}
-			return result;
-		}
+			return UpdateNewGame();
 		case AppOption::APP_GAME:
 			return app->OnGameUpdate(fElapsedTime);
 		case AppOption::SETTINGS:
@@ -378,10 +383,8 @@ bool hMenu::Update(const float fElapsedTime)
 /// @brief Display menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool hMenu::RenderAppMenu()
+bool hMenu::RenderAppMenu() const
 {
-	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
-
 	app->Clear(app::BLACK);
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
 	for (int id = 0; id < nAppOptionLimit; id++) {
@@ -396,12 +399,17 @@ bool hMenu::RenderAppMenu()
 	return true;
 }
 
+bool hMenu::RenderProcced() const
+{
+	return false;
+}
+
 /// @brief Render about us on screen
 /// @return Always return true by default
 bool hMenu::RenderAboutUs() const
 {
 	app->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + app->ShowFrameID(4);
+	const std::string about_us_dynamic = "about_us_page" + cFrameManager::GetInstance().ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
 	app->DrawSprite(0, 0, object);
 	return true;
@@ -467,7 +475,7 @@ bool hMenu::RenderGameOver() const
 
 /// @brief Render all app screen (menu, pause, about us, exit)
 /// @return True if render successfully, false otherwise
-bool hMenu::Render()
+bool hMenu::Render() const
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:

@@ -11,6 +11,7 @@
 #include "cApp.h"
 #include "uAppUtils.h"
 #include "uAppConst.h"
+#include "cFrameManager.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////////////////
@@ -137,13 +138,13 @@ bool hPlayer::IsPlayerIdling() const
 /// @return True if player is landing, false otherwise
 bool hPlayer::IsPlayerLanding() const
 {
-	return app->frame6.IsStopAnimation();
+	return cFrameManager::GetFrame6().IsStopAnimation();
 }
 /// @brief Check if player is safe when having collision
 /// @return True if player is safe, false otherwise
 bool hPlayer::IsPlayerCollisionSafe() const
 {
-	return app->frame6.GetAnimationID() <= frame6_id_animation_safe;
+	return cFrameManager::GetFrame6().GetAnimationID() <= frame6_id_animation_safe;
 }
 /// @brief Check if player is out of bounds of map border
 /// @return True if player is out of bounds, false otherwise
@@ -582,7 +583,7 @@ bool hPlayer::OnUpdatePlayerIdle()
 bool hPlayer::OnUpdatePlayerJumpStart()
 {
 	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	return app->frame6.StartAnimation();
+	return cFrameManager::GetFrame6().StartAnimation();
 }
 /// @brief Update animation when player continue jumping
 /// @return True if player animation is updated, false otherwise
@@ -591,24 +592,24 @@ bool hPlayer::OnUpdatePlayerJumpContinue()
 	if (GetAnimation() == IDLE) {
 		return false;
 	}
-	if (app->frame6.NextAnimation()) {
+	if (cFrameManager::GetFrame6().NextAnimation()) {
 		if (GetDirection() == LEFT) {
-			if (!PlayerMoveLeft(1.0f / app->frame6.GetLimit(), true)) {
+			if (!PlayerMoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == RIGHT) {
-			if (!PlayerMoveRight(1.0f / app->frame6.GetLimit(), true)) {
+			if (!PlayerMoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!PlayerMoveUp(1.0f / app->frame6.GetLimit(), true)) {
+			if (!PlayerMoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!PlayerMoveDown(1.0f / app->frame6.GetLimit(), true)) {
+			if (!PlayerMoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
@@ -661,8 +662,8 @@ bool hPlayer::OnRenderPlayerJumpStop() const
 /// @return Always true by default
 bool hPlayer::OnRenderPlayer() const
 {
-	const int nID = app->frame6.GetAnimationID();
-	const bool isValidID = app->frame6.IsValidID(nID);
+	const int nID = cFrameManager::GetFrame6().GetAnimationID();
+	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
 	const bool isLeft = (IsLeftDirection());
 	const bool isJump = (IsPlayerJumping()) && (isValidID);
 	const std::string froggy_state = std::string(isJump ? "_jump" : "");

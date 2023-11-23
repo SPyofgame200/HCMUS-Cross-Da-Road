@@ -130,6 +130,17 @@ bool cAssetManager::LoadMenuSprites()
 
     return ReportLoadingResult(bSuccess, "menu");
 }
+bool cAssetManager::LoadContinueSprites()
+{
+    bool bSuccess = true;
+    bSuccess &= LoadSprite("continue_menu1", "menu1");
+    bSuccess &= LoadSprite("continue_menu2", "menu2");
+    bSuccess &= LoadSprite("continue_menu3", "menu3");
+    bSuccess &= LoadSprite("continue_menu4", "menu4");
+    bSuccess &= LoadSprite("continue_menu5", "menu5");
+
+    return ReportLoadingResult(bSuccess, "continue_menu");
+}
 /// @brief Load all setting sprites
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadSettingSprites()
@@ -394,6 +405,7 @@ bool cAssetManager::LoadAllSprites()
     bool bSuccess = true;
     bSuccess &= LoadNameBoxSprites();
     bSuccess &= LoadMenuSprites();
+    bSuccess &= LoadContinueSprites();
     bSuccess &= LoadSettingSprites();
     bSuccess &= LoadAboutUsSprites();
     bSuccess &= LoadExitSprites();
