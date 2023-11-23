@@ -110,7 +110,6 @@ bool hMenu::LoadAppOption()
 	switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
-			app->GameReset();
 			break;
 		case APP_GAME:
 			eMenuOption = AppOption::APP_GAME;
@@ -206,6 +205,17 @@ int hMenu::FixOption(int& value, int limit)
 ///////////////////////////// UPDATERS ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool hMenu::UpdateNewGame()
+{	
+	bool result = app->UpdateDrawNameBox();
+	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
+	{
+		eMenuOption = APP_GAME;
+		app->GameReset();
+	}
+	return result;
+}
+
 /// @brief Update menu on screen when user press key
 /// @param app Pointer to application
 /// @return Always return true by default
@@ -222,6 +232,7 @@ bool hMenu::UpdateAppMenu()
 	}
 	return true;
 }
+
 
 /// @brief Display settings on screen (sound on/off)
 /// @param app Pointer to application
@@ -323,14 +334,7 @@ bool hMenu::Update(const float fElapsedTime)
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-		{
-			bool result = app->UpdateDrawNameBox();
-			if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER))
-			{
-				eMenuOption = APP_GAME;
-			}
-			return result;
-		}
+			return UpdateNewGame();
 		case AppOption::APP_GAME:
 			return app->OnGameUpdate(fElapsedTime);
 		case AppOption::SETTINGS:
@@ -371,6 +375,11 @@ bool hMenu::RenderAppMenu()
 		}
 	}
 	return true;
+}
+
+bool hMenu::RenderProcced() const
+{
+	return false;
 }
 
 /// @brief Render about us on screen

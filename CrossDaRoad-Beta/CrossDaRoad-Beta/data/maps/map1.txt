@@ -36,7 +36,7 @@ $ l sprite=wood2 background=water
 $ k sprite=wood3 background=water
 : block=false danger=false platformspeed=100.0
 : spriteX=0 spriteY=0
-$ i sprite=lilypad
+$ i sprite=lilypad background=water
 : block=false danger=false platformspeed=100.0
 : spriteX=0 spriteY=0
 $ n sprite=tree

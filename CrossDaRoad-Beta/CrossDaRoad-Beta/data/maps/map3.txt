@@ -9,17 +9,17 @@ fpppppfppppppfppppppppppfppppppppppppppppppppppppppppppppppppppp  0.0 lava 12
 ,,,pppp,,,,pppp,,,,,,,,,pppp,,,,,,pppp,,,,,,,,,pppp,,,pppp,,,,,, -3.0
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 #
-$ , background=magma
+$ ,
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ p sprite=wall background=magma
+$ p sprite=wall
 : block=false danger=false platformspeed=1.0
 : spriteX=0 spriteY=0
 : duration=4s cooldown=10s chance=0.4% summon=l
 $ l sprite=lava_rock spriteFrame=4
 : block=false danger=false platformspeed=0.0
 : spritepos=default
-: duration=2s cooldown=0s chance=100% summon=f predelay=1.5s
+: duration=2s cooldown=0s chance=100% summon=f predelay=2s
 $ w sprite=wall
 : block=true danger=false platformspeed=0.0
 : spriteX=0 spriteY=0

@@ -130,6 +130,17 @@ bool cAssetManager::LoadMenuSprites()
 
     return ReportLoadingResult(bSuccess, "menu");
 }
+bool cAssetManager::LoadContinueSprites()
+{
+    bool bSuccess = true;
+    bSuccess &= LoadSprite("continue_menu1", "menu1");
+    bSuccess &= LoadSprite("continue_menu2", "menu2");
+    bSuccess &= LoadSprite("continue_menu3", "menu3");
+    bSuccess &= LoadSprite("continue_menu4", "menu4");
+    bSuccess &= LoadSprite("continue_menu5", "menu5");
+
+    return ReportLoadingResult(bSuccess, "continue_menu");
+}
 /// @brief Load all setting sprites
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadSettingSprites()
@@ -234,6 +245,9 @@ bool cAssetManager::LoadPlayerSwimSprites()
 {
     bool bSuccess = true;
     bSuccess &= LoadAnimation("froggy_swim", "froggy_swim", 6);
+    bSuccess &= LoadAnimation("froggy_swim_left", "froggy_swim_left", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle", "froggy_swim_idle", 6);
+    bSuccess &= LoadAnimation("froggy_swim_idle_left", "froggy_swim_idle_left", 6);
 
     return ReportLoadingResult(bSuccess, "player swim");
 }
@@ -388,6 +402,7 @@ bool cAssetManager::LoadAllSprites()
     bool bSuccess = true;
     bSuccess &= LoadNameBoxSprites();
     bSuccess &= LoadMenuSprites();
+    bSuccess &= LoadContinueSprites();
     bSuccess &= LoadSettingSprites();
     bSuccess &= LoadAboutUsSprites();
     bSuccess &= LoadExitSprites();
