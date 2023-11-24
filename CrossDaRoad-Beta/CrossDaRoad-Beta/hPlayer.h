@@ -14,25 +14,25 @@
 
 class cApp;
 class cZone;
-class hPlayerMotion;
-class hPlayerRender;
 class hPlayerHitbox;
+class hPlayerMotion;
 class hPlayerUpdate;
+class hPlayerRender;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
 {
 private: /// Componnets handlers
-	static hPlayerMotion hMotion;
 	static hPlayerHitbox hHitbox;
-	static hPlayerRender hRender;
+	static hPlayerMotion hMotion;
 	static hPlayerUpdate hUpdate;
+	static hPlayerRender hRender;
 
 public: /// Components getters
-	static hPlayerMotion& Motion();
-	static hPlayerRender& Render();
 	static hPlayerHitbox& Hitbox();
+	static hPlayerMotion& Motion();
 	static hPlayerUpdate& Update();
+	static hPlayerRender& Render();
 
 public:
 	/// @brief Direction enumeration for player movement
@@ -86,6 +86,7 @@ public: // Constructors & Destructor
 
 public: // Initializer & Clean-up
 	bool SetupTarget(cApp* ptrApp);
+	bool SetupComponents();
 
 private: // Reseter helpers
 	void ResetDirection();
@@ -95,6 +96,7 @@ private: // Reseter helpers
 
 public: // Reseters
 	void Reset();
+	void SynchronizePosition(bool bAnimToLogic = true);
 
 public: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
@@ -151,12 +153,6 @@ public: // Setters
 
 private: // Validators & Fixers
 	bool OnFixPlayerPosition();
-
-private: // Logic Updater
-	bool OnUpdatePlayerIdle();
-	bool OnUpdatePlayerJumpStart();
-	bool OnUpdatePlayerJumpContinue() const;
-	bool OnUpdatePlayerJumpStop();
 
 public: // Logic-Render Control
 	bool OnPlayerMove();

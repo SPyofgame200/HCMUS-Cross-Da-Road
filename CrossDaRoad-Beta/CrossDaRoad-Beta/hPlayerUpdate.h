@@ -17,6 +17,11 @@ public: // Constructors & Destructor
 public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
 
+public: // Logic Updater
+	bool OnUpdatePlayerIdle();
+	bool OnUpdatePlayerJumpStart();
+	bool OnUpdatePlayerJumpContinue() const;
+	bool OnUpdatePlayerJumpStop();
 };
 
 #endif // H_PLAYER_UPDATE_H

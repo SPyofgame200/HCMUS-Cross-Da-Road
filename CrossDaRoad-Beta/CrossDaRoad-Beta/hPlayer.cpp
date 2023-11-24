@@ -50,18 +50,14 @@ hPlayerUpdate& hPlayer::Update()
 /// @brief Default constructor
 hPlayer::hPlayer() : ptrApp(nullptr)
 {
-	hMotion.SetupTarget(this);
-	hRender.SetupTarget(this);
-	hHitbox.SetupTarget(this);
+	SetupComponents();
 	Reset();
 }
 
 /// @brief Constructor with ptrApp pointer
 hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
 {
-	hMotion.SetupTarget(this);
-	hRender.SetupTarget(this);
-	hHitbox.SetupTarget(this);
+	SetupComponents();
 	SetupTarget(ptrApp);
 	Reset();
 }
@@ -121,6 +117,41 @@ bool hPlayer::SetupTarget(cApp* ptrApp)
 	}
 	this->ptrApp = ptrApp;
 	return true;
+}
+
+bool hPlayer::SetupComponents()
+{
+	if (!hHitbox.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup hitbox component" << std::endl;
+		return false;
+	}
+	if (!hMotion.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup motion component" << std::endl;
+		return false;
+	}
+	if (!hUpdate.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup update component" << std::endl;
+		return false;
+	}
+	if (!hRender.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup render component" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+void hPlayer::SynchronizePosition(bool bAnimToLogic)
+{
+	if (bAnimToLogic) {
+		float fAnimPosX = GetPlayerAnimationPositionX();
+		float fAnimPosY = GetPlayerAnimationPositionY();
+		SetPlayerLogicPosition(fAnimPosX, fAnimPosY);
+	}
+	else {
+		float fLogicPosX = GetPlayerLogicPositionX();
+		float fLogicPosY = GetPlayerLogicPositionY();
+		SetPlayerAnimationPosition(fLogicPosX, fLogicPosY);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -416,66 +447,6 @@ bool hPlayer::OnFixPlayerPosition()
 	return true;
 }
 
-/// @brief Update animation when player idling
-/// @return Always true by default
-bool hPlayer::OnUpdatePlayerIdle()
-{
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	return true;
-}
-
-/// @brief Update animation when player start jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpStart()
-{
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	return cFrameManager::GetFrame6().StartAnimation();
-}
-/// @brief Update animation when player continue jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpContinue() const
-{
-	if (GetAnimation() == IDLE) {
-		return false;
-	}
-	if (cFrameManager::GetFrame6().NextAnimation()) {
-		if (GetDirection() == LEFT) {
-			if (!hMotion.MoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == RIGHT) {
-			if (!hMotion.MoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!hMotion.MoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!hMotion.MoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-/// @brief Update animation when player stop jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpStop()
-{
-	OnFixPlayerPosition();
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	if (GetAnimation() == JUMP) {
-		SetAnimation(IDLE);
-		return true;
-	}
-	return false;
-}
-
 /// @brief Update player animation and render to screen
 /// @return Always true by default
 bool hPlayer::OnPlayerMove()
@@ -499,22 +470,22 @@ bool hPlayer::OnPlayerMove()
 		}
 
 		if (IsPlayerJumping()) {
-			OnUpdatePlayerJumpStart();
+			hUpdate.OnUpdatePlayerJumpStart();
 			hRender.OnRenderPlayerJumpStart();
 		}
 		else {
-			OnUpdatePlayerIdle();
+			hUpdate.OnUpdatePlayerIdle();
 			hRender.OnRenderPlayerIdle();
 		}
 		return true;
 	}
 
 	if (!IsPlayerLanding()) {
-		OnUpdatePlayerJumpContinue();
+		hUpdate.OnUpdatePlayerJumpContinue();
 		hRender.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
-		OnUpdatePlayerJumpStop();
+		hUpdate.OnUpdatePlayerJumpStop();
 		hRender.OnRenderPlayerJumpStop();
 	}
 	return true;
