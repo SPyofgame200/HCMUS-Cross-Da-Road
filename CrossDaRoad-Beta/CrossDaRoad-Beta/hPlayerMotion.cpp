@@ -36,7 +36,7 @@ bool hPlayerMotion::MoveX(float fFactorX, int nStep) const
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialX = ptrPlayer->GetPlayerVelocityX() * fFactorX * fPartial;
-		ptrPlayer->SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
+		ptrPlayer->SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
 		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
 			break;
 		}
@@ -51,7 +51,7 @@ bool hPlayerMotion::MoveY(float fFactorY, int nStep)
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialY = ptrPlayer->GetPlayerVelocityY() * fFactorY * fPartial;
-		ptrPlayer->SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
+		ptrPlayer->SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
 		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
 			break;
 		}
@@ -115,8 +115,8 @@ bool hPlayerMotion::PlatformMoveX(float fFactorX, int nStep)
 	const float fOffsetX = ptrPlayer->GetPlayerVelocityX() * fFactorX;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fOffsetPartialX = fOffsetX * nPos / nStep;
-		ptrPlayer->SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		ptrPlayer->SetPlayerLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
+		ptrPlayer->SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
+		ptrPlayer->SetLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
 		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}
@@ -133,8 +133,8 @@ bool hPlayerMotion::PlatformMoveY(float fFactorY, int nStep)
 	const float fOffsetY = ptrPlayer->GetPlayerVelocityY() * fFactorY;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fOffsetPartialY = fOffsetY * nPos / nStep;
-		ptrPlayer->SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		ptrPlayer->SetPlayerLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
+		ptrPlayer->SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
+		ptrPlayer->SetLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
 		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}

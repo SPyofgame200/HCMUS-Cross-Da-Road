@@ -146,12 +146,12 @@ void hPlayer::SynchronizePosition(bool bAnimToLogic)
 	if (bAnimToLogic) {
 		float fAnimPosX = GetPlayerAnimationPositionX();
 		float fAnimPosY = GetPlayerAnimationPositionY();
-		SetPlayerLogicPosition(fAnimPosX, fAnimPosY);
+		SetLogicPosition(fAnimPosX, fAnimPosY);
 	}
 	else {
 		float fLogicPosX = GetPlayerLogicPositionX();
 		float fLogicPosY = GetPlayerLogicPositionY();
-		SetPlayerAnimationPosition(fLogicPosX, fLogicPosY);
+		SetAnimationPosition(fLogicPosX, fLogicPosY);
 	}
 }
 
@@ -253,7 +253,10 @@ bool hPlayer::IsPlayerWin() const
 }
 bool hPlayer::IsKilled() const
 {
-	return ptrApp->IsKilled();
+	if (IsPlayerCollisionSafe()) {
+		return false;
+	}
+	return Hitbox().IsHit();
 }
 
 bool hPlayer::IsMoveLeft() const
@@ -383,63 +386,63 @@ void hPlayer::SetAnimation(Animation eNewAnimation)
 }
 /// @brief Setter for animation position of player in X-axis
 /// @param fVelocityX New animation position of player in X-axis
-void hPlayer::SetPlayerVelocityX(float fVelocityX)
+void hPlayer::SetVelocityX(float fVelocityX)
 {
 	fFrogVelocityX = FixFloat(fVelocityX);
 }
 /// @brief Setter for animation position of player in Y-axis
 /// @param fVelocityY New animation position of player in Y-axis
-void hPlayer::SetPlayerVelocityY(float fVelocityY)
+void hPlayer::SetVelocityY(float fVelocityY)
 {
 	fFrogVelocityY = FixFloat(fVelocityY);
 }
 /// @brief Setter for velocity of player 
 /// @param fVelocityX New velocity of player in X-axis
 /// @param fVelocityY New velocity of player in Y-axis
-void hPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
+void hPlayer::SetVelocity(float fVelocityX, float fVelocityY)
 {
-	SetPlayerVelocityX(fVelocityX);
-	SetPlayerVelocityY(fVelocityY);
+	SetVelocityX(fVelocityX);
+	SetVelocityY(fVelocityY);
 }
 /// @brief Setter for animation position of player in X-axis
 /// @param fPositionX New animation position of player in X-axis
-void hPlayer::SetPlayerAnimationPositionX(float fPositionX)
+void hPlayer::SetAnimationPositionX(float fPositionX)
 {
 	fFrogAnimPosX = FixFloat(fPositionX);
 }
 /// @brief Setter for animation position of player in Y-axis
 /// @param fPositionY New animation position of player in Y-axis
-void hPlayer::SetPlayerAnimationPositionY(float fPositionY)
+void hPlayer::SetAnimationPositionY(float fPositionY)
 {
 	fFrogAnimPosY = FixFloat(fPositionY);
 }
 /// @brief Setter for animation position of player
 /// @param fPositionX New animation position of player in X-axis
 /// @param fPositionY New animation position of player in Y-axis
-void hPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
+void hPlayer::SetAnimationPosition(float fPositionX, float fPositionY)
 {
-	SetPlayerAnimationPositionX(fPositionX);
-	SetPlayerAnimationPositionY(fPositionY);
+	SetAnimationPositionX(fPositionX);
+	SetAnimationPositionY(fPositionY);
 }
 /// @brief Setter for logic position of player in X-axis
 /// @param fPositionX New logic position of player in X-axis
-void hPlayer::SetPlayerLogicPositionX(float fPositionX)
+void hPlayer::SetLogicPositionX(float fPositionX)
 {
 	fFrogLogicPosX = FixFloat(fPositionX);
 }
 /// @brief Setter for logic position of player in Y-axis
 /// @param fPositionY Logic position of player in Y-axis
-void hPlayer::SetPlayerLogicPositionY(float fPositionY)
+void hPlayer::SetLogicPositionY(float fPositionY)
 {
 	fFrogLogicPosY = FixFloat(fPositionY);
 }
 /// @brief Setter for logic position of player
 /// @param fPositionX Logic position of player in X-axis
 /// @param fPositionY Logic position of player in Y-axis
-void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
+void hPlayer::SetLogicPosition(float fPositionX, float fPositionY)
 {
-	SetPlayerLogicPositionX(fPositionX);
-	SetPlayerLogicPositionY(fPositionY);
+	SetLogicPositionX(fPositionX);
+	SetLogicPositionY(fPositionY);
 }
 /// @brief Setter for player name
 /// @param Name Name of player
@@ -458,7 +461,7 @@ bool hPlayer::OnFixPlayerPosition()
 {
 	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
 	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
-	SetPlayerAnimationPosition(fFixedX, fFixedY);
+	SetAnimationPosition(fFixedX, fFixedY);
 	return true;
 }
 
