@@ -335,7 +335,7 @@ bool hMenu::Update(const float fElapsedTime)
 		case AppOption::NEW_GAME:
 			return UpdateNewGame();
 		case AppOption::APP_GAME:
-			return app->OnGameUpdate(fElapsedTime);
+			return UpdateProcced();
 		case AppOption::SETTINGS:
 			return UpdateSetting();
 		case AppOption::ABOUT_US:
