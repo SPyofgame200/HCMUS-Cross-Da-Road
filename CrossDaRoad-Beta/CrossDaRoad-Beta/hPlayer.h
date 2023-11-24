@@ -151,7 +151,7 @@ private: // Validators & Fixers
 private: // Logic Updater
 	bool OnUpdatePlayerIdle();
 	bool OnUpdatePlayerJumpStart();
-	bool OnUpdatePlayerJumpContinue();
+	bool OnUpdatePlayerJumpContinue() const;
 	bool OnUpdatePlayerJumpStop();
 
 private: // Player Renderer 

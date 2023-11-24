@@ -49,7 +49,7 @@ namespace app
 
 	public: // Setters
 		void SetSampleMode(app::Sprite::Mode mode = app::Sprite::Mode::NORMAL);
-		bool SetPixel(int32_t x, int32_t y, Pixel p);
+		bool SetPixel(int32_t x, int32_t y, Pixel p) const;
 
 	public: // Getters
 		bool Inside(int32_t x, int32_t y) const;

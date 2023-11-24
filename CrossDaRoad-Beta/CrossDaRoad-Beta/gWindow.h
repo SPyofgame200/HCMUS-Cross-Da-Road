@@ -34,7 +34,7 @@ namespace app
 		HWND GetWindowHandler() const;
 
 	public: // Setters
-		bool SetTitle(const std::string& sTitle);
+		bool SetTitle(const std::string& sTitle) const;
 		bool SetIcon(const std::string& sFilePath);
 		bool SetFavicon(const std::string& sFilePath);
 

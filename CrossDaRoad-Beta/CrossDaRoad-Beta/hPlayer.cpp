@@ -436,7 +436,7 @@ bool hPlayer::OnUpdatePlayerJumpStart()
 }
 /// @brief Update animation when player continue jumping
 /// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpContinue()
+bool hPlayer::OnUpdatePlayerJumpContinue() const
 {
 	if (GetAnimation() == IDLE) {
 		return false;

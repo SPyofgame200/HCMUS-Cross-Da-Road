@@ -28,7 +28,7 @@ bool hPlayerMovement::SetupTarget(hPlayer* ptrPlayer)
 	return true;
 }
 
-bool hPlayerMovement::MoveX(float fFactorX, int nStep)
+bool hPlayerMovement::MoveX(float fFactorX, int nStep) const
 {
 	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
 	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();

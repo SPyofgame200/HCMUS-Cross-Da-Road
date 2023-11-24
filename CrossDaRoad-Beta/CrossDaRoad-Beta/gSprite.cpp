@@ -281,7 +281,7 @@ namespace app
 	/// @param x x-coordinate of the pixel to set
 	/// @param y y-coordinate of the pixel to set
 	/// @param p Pixel to set
-	bool Sprite::SetPixel(const int32_t x, const int32_t y, const Pixel p)
+	bool Sprite::SetPixel(const int32_t x, const int32_t y, const Pixel p) const
 	{
 		if (Inside(x, y)) {
 			pColData[y * width + x] = p;
