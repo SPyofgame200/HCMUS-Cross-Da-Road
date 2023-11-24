@@ -207,8 +207,8 @@ int hMenu::FixOption(int& value, int limit)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool hMenu::UpdateNewGame()
-{	
-	bool result = app->UpdateDrawNameBox();
+{
+	const bool result = app->UpdateDrawNameBox();
 	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{
 		eMenuOption = APP_GAME;
