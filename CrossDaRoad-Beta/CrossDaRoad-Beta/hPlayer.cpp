@@ -12,10 +12,14 @@
 #include "uAppUtils.h"
 #include "uAppConst.h"
 #include "cFrameManager.h"
+#include "hPlayerMovement.h"
+#include "hPlayerRenderer.h"
+#include "hPlayerPhysical.h"
 
 
 hPlayerMovement hPlayer::hMovement;
 hPlayerRenderer hPlayer::hRenderer;
+hPlayerPhysical hPlayer::hPhysical;
 
 hPlayerMovement& hPlayer::Movement()
 {
@@ -25,6 +29,11 @@ hPlayerMovement& hPlayer::Movement()
 hPlayerRenderer& hPlayer::Renderer()
 {
 	return hRenderer;
+}
+
+hPlayerPhysical& hPlayer::Physical()
+{
+	return hPhysical;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

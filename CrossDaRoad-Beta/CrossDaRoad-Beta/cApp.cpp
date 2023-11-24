@@ -12,6 +12,9 @@
 #include <sstream>
 #include <thread>
 #include "cFrameManager.h"
+#include "hPlayerMovement.h"
+#include "hPlayerRenderer.h"
+#include "hPlayerPhysical.h"
 
 constexpr float fConst = 2.0f;
 
