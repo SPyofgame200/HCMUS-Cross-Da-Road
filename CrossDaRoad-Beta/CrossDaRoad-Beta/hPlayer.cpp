@@ -43,6 +43,12 @@ hPlayerUpdate& hPlayer::Update()
 	return hUpdate;
 }
 
+cPlayerStatus& hPlayer::Status()
+{
+	return status;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,39 +80,17 @@ hPlayer::~hPlayer()
 //////////////////////////////////////////// RESETTERS /////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Reset player direction
-void hPlayer::ResetDirection()
+/// @brief Reset player properties
+void hPlayer::Reset()
 {
-	eDirection = RIGHT;
-	eAnimation = IDLE;
-	eSituation = ALIVE;
-}
-/// @brief Reset player animation
-void hPlayer::ResetAnimation()
-{
+	status.Reset();
 	frame6_id_animation_safe = 5;
-}
-/// @brief Reset player position
-void hPlayer::ResetPosition()
-{
 	fFrogAnimPosX = app_const::FROG_X_RESET;
 	fFrogAnimPosY = app_const::FROG_Y_RESET;
 	fFrogLogicPosX = app_const::FROG_X_RESET;
 	fFrogLogicPosY = app_const::FROG_Y_RESET;
-}
-/// @brief Reset player velocity
-void hPlayer::ResetVelocity()
-{
 	fFrogVelocityX = app_const::FROG_X_VELOCITY;
 	fFrogVelocityY = app_const::FROG_Y_VELOCITY;
-}
-/// @brief Reset player properties
-void hPlayer::Reset()
-{
-	ResetDirection();
-	ResetAnimation();
-	ResetPosition();
-	ResetVelocity();
 }
 
 /// @brief Setup ptrApp pointer
@@ -159,51 +143,12 @@ void hPlayer::SynchronizePosition(bool bAnimToLogic)
 ///////////////////////////////////////////// CHECKERS /////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Check if player is facing exact direction
-/// @param eCompare Direction to compare
-/// @return True if player is facing exact direction, false otherwise
-bool hPlayer::IsExactDirection(Direction eCompare) const
-{
-	return eDirection == eCompare;
-}
 
-/// @brief Check if player is doing exact animation
-/// @param eCompare Animation to compare
-/// @return True if player is doing exact animation, false otherwise
-bool hPlayer::IsExactAnimation(Animation eCompare) const
-{
-	return eAnimation == eCompare;
-}
-
-/// @brief Check if player is doing exact animation
-/// @param eCompare Animation to compare
-/// @return True if player is doing exact animation, false otherwise
-bool hPlayer::IsExactSituation(Situation eCompare) const
-{
-	return eSituation == eCompare;
-}
-
-/// @brief Check if player is facing left direction
-/// @return True if player is facing left direction, false otherwise
-bool hPlayer::IsLeftDirection() const
-{
-	return (eDirection == LEFT)
-		|| (eDirection == LEFT_UP)
-		|| (eDirection == LEFT_DOWN);
-}
-/// @brief Check if player is facing right direction
-/// @return True if player is facing right direction, false otherwise
-bool hPlayer::IsRightDirection() const
-{
-	return (eDirection == RIGHT)
-		|| (eDirection == RIGHT_UP)
-		|| (eDirection == RIGHT_DOWN);
-}
 /// @brief Check if player is jumping
 /// @return True if player is jumping, false otherwise
 bool hPlayer::IsPlayerJumping() const
 {
-	return (GetAnimation() == JUMP);
+	return (status.GetAnimation() == cPlayerStatus::JUMP);
 }
 bool hPlayer::IsPlayerMoving() const
 {
@@ -214,13 +159,13 @@ bool hPlayer::IsPlayerMoving() const
 }
 bool hPlayer::IsPlayerStartingJump() const
 {
-	return (GetAnimation() == IDLE) && IsPlayerMoving();
+	return (status.GetAnimation() == cPlayerStatus::IDLE) && IsPlayerMoving();
 }
 /// @brief Check if player is idling
 /// @return True if player is idling, false otherwise
 bool hPlayer::IsPlayerIdling() const
 {
-	return (GetAnimation() == IDLE) && !IsPlayerMoving();
+	return (status.GetAnimation() == cPlayerStatus::IDLE) && !IsPlayerMoving();
 }
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
@@ -318,24 +263,7 @@ bool hPlayer::CanMoveDown() const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Getter for current direction of player
-hPlayer::Direction hPlayer::GetDirection() const
-{
-	return eDirection;
-}
-/// @brief Getter for current animation of player
-hPlayer::Animation hPlayer::GetAnimation() const
-{
-	return eAnimation;
-}
-
-/// @brief Getter for current animation of player
-hPlayer::Situation hPlayer::GetSituation() const
-{
-	return eSituation;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
 
 /// @brief Getter for animation position of player in X-axis
 float hPlayer::GetPlayerAnimationPositionX() const
@@ -383,18 +311,7 @@ float hPlayer::FixFloat(float fValue, int nDigits)
 	return ldexpf(roundf(ldexpf(fValue, nDigits)), -nDigits);
 }
 
-/// @brief Setter for current direction of player
-/// @param eNewDirection New direction of player
-void hPlayer::SetDirection(Direction eNewDirection)
-{
-	eDirection = eNewDirection;
-}
-/// @brief Setter for current animation of player
-/// @param eNewAnimation New animation of player
-void hPlayer::SetAnimation(Animation eNewAnimation)
-{
-	eAnimation = eNewAnimation;
-}
+
 /// @brief Setter for animation position of player in X-axis
 /// @param fVelocityX New animation position of player in X-axis
 void hPlayer::SetVelocityX(float fVelocityX)
