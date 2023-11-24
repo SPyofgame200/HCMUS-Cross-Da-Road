@@ -7,8 +7,6 @@
 #define H_MAP_DRAWER_H
 
 #include "cMapLane.h"
-#include "cMapObject.h"
-#include "cMapObject.h"
 #include <vector>
 
 // Forward declaration
