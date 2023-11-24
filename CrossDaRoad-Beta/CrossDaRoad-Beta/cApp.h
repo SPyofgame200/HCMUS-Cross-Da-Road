@@ -60,10 +60,7 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	bool IsKilled() const;
-	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
-	bool IsOnPlatform() const;
 
 protected: /// Game Updates
 	bool OnGameUpdate(float fElapsedTime);

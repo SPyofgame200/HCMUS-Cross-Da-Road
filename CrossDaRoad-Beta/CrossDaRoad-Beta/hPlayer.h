@@ -147,15 +147,16 @@ public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
 	void SetAnimation(Animation eNewAnimation);
-	void SetPlayerVelocityX(float fVelocityX);
-	void SetPlayerVelocityY(float fVelocityY);
-	void SetPlayerVelocity(float fVelocityX, float fVelocityY);
-	void SetPlayerAnimationPositionX(float fPositionX);
-	void SetPlayerAnimationPositionY(float fPositionY);
-	void SetPlayerAnimationPosition(float fPositionX, float fPositionY);
-	void SetPlayerLogicPositionX(float fPositionX);
-	void SetPlayerLogicPositionY(float fPositionY);
-	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
+	void SetAnimation(Situation eNewAnimation);
+	void SetVelocityX(float fVelocityX);
+	void SetVelocityY(float fVelocityY);
+	void SetVelocity(float fVelocityX, float fVelocityY);
+	void SetAnimationPositionX(float fPositionX);
+	void SetAnimationPositionY(float fPositionY);
+	void SetAnimationPosition(float fPositionX, float fPositionY);
+	void SetLogicPositionX(float fPositionX);
+	void SetLogicPositionY(float fPositionY);
+	void SetLogicPosition(float fPositionX, float fPositionY);
 	void SetPlayerName(const std::string& Name);
 
 private: // Validators & Fixers

@@ -104,28 +104,6 @@ bool cApp::GameReset()
 ///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Check if Player is killed by any object
-/// @param bDebug Whether to print debug information or not
-/// @return True if Player is killed, false otherwise
-bool cApp::IsKilled() const
-{
-	if (Player.IsPlayerCollisionSafe()) {
-		return false;
-	}
-	return Player.Hitbox().IsHit();
-}
-/// @brief Get death message of Player
-/// @return String of death message
-std::string cApp::GetPlayerDeathMessage() const
-{
-	return "";
-}
-/// @brief Check if Player is on platform
-/// @return True if Player is on platform, false otherwise
-bool cApp::IsOnPlatform() const
-{
-	return Player.Hitbox().IsOnPlatform();
-}
 /// @brief Get platform velocity
 /// @param fElapsedTime Time elapsed since last update
 /// @return Velocity of platform
@@ -147,14 +125,16 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
-	if (IsOnPlatform()) { // Frog is moved by platforms
+	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
 		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
 		Player.Motion().PlatformDetector();
 	}
 	if (Player.IsPlayerWin()) {
 		return GameNext();
 	}
-	if (Player.IsPlayerOutOfBounds() || IsKilled()) {
+	if (Player.IsPlayerOutOfBounds() || Player.IsKilled()) {
+		Player.Render().OnRenderPlayerDeath();
+		Player.Reset();
 		return OnPlayerDeath();
 	}
 	return true;
@@ -163,14 +143,9 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 /// @return Always returns true by default
 bool cApp::OnPlayerDeath()
 {
-	std::cout << GetPlayerDeathMessage() << std::endl;
 	bDeath = true;
-	Player.Render().OnRenderPlayerDeath();
-	Player.Reset();
 	if (--nLife <= 0) {
 		PauseEngine();
-		
-		//GameInit();
 	}
 	bDeath = false;
 	return true;
@@ -363,9 +338,9 @@ bool cApp::OnGameLoad()
 
 			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
 				MapLoader.SetMapLevel(MapLevel);
-				Player.SetPlayerAnimationPosition(AnimationPositionX, AnimationPositionY);
-				Player.SetPlayerLogicPosition(LogicPositionX, LogicPositionY);
-				Player.SetPlayerVelocity(VelocityX, VelocityY);
+				Player.SetAnimationPosition(AnimationPositionX, AnimationPositionY);
+				Player.SetLogicPosition(LogicPositionX, LogicPositionY);
+				Player.SetVelocity(VelocityX, VelocityY);
 				fin.close();
 				return true;
 			}
