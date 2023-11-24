@@ -120,7 +120,7 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 {
 	if (Lane.HasUnderlay()) {
-		const int32_t nPosX = 0;
+		constexpr int32_t nPosX = 0;
 		const int32_t nPosY = Lane.GetLaneID() * app_const::CELL_SIZE;
 		const int nFrameCount = Lane.GetUnderlayFrameCount();
 		const std::string sUnderlay = Lane.GetUnderlay() + cFrameManager::GetInstance().ShowFrameID(nFrameCount, 0.001f);

@@ -538,7 +538,7 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nPosX_level = 321;
 	constexpr int32_t nPosY_level = 80;
 	const int nPosX_PlayerName = static_cast<int>(312 - playerName.size() * 4);
-	const int nPosY_PlayerName = 63;
+	constexpr int nPosY_PlayerName = 63;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(playerName, nPosX_PlayerName, nPosY_PlayerName);
