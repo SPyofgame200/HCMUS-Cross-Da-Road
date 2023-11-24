@@ -94,6 +94,7 @@ private: // Game Rendering
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
+	void ForceSleep(float fTime) { Sleep(fTime); }
 };
 
 #endif // C_APP_H

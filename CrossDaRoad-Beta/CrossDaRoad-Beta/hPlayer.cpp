@@ -15,10 +15,16 @@
 
 
 hPlayerMovement hPlayer::hMovement;
+hPlayerRenderer hPlayer::hRenderer;
 
 hPlayerMovement& hPlayer::Movement()
 {
 	return hMovement;
+}
+
+hPlayerRenderer& hPlayer::Renderer()
+{
+	return hRenderer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,25 +32,27 @@ hPlayerMovement& hPlayer::Movement()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-hPlayer::hPlayer() : app(nullptr)
+hPlayer::hPlayer() : ptrApp(nullptr)
 {
 	hMovement.SetupTarget(this);
+	hRenderer.SetupTarget(this);
 	Reset();
 }
 
-/// @brief Constructor with app pointer
-hPlayer::hPlayer(cApp* app) : app(nullptr)
+/// @brief Constructor with ptrApp pointer
+hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
 {
 	hMovement.SetupTarget(this);
-	SetupTarget(app);
+	hRenderer.SetupTarget(this);
+	SetupTarget(ptrApp);
 	Reset();
 }
 
 /// @brief Destructor
 hPlayer::~hPlayer()
 {
-	// No, we are not deleting anything, cApp* app is controlled by cApp
-	app = nullptr;
+	// No, we are not deleting anything, cApp* ptrApp is controlled by cApp
+	ptrApp = nullptr;
 	std::cerr << "hPlayer::~hPlayer(): Successfully destructed" << std::endl;
 }
 
@@ -86,14 +94,14 @@ void hPlayer::Reset()
 	ResetVelocity();
 }
 
-/// @brief Setup app pointer
-/// @param app Pointer to app
-bool hPlayer::SetupTarget(cApp* app)
+/// @brief Setup ptrApp pointer
+/// @param ptrApp Pointer to ptrApp
+bool hPlayer::SetupTarget(cApp* ptrApp)
 {
-	if (!app) {
+	if (!ptrApp) {
 		return false;
 	}
-	this->app = app;
+	this->ptrApp = ptrApp;
 	return true;
 }
 
@@ -186,7 +194,7 @@ bool hPlayer::IsPlatform() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return ptrApp->Zone.IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
 }
 /// @brief Check if player is hit by danger zone
 /// @return True if player is hit by danger zone, false otherwise
@@ -194,7 +202,7 @@ bool hPlayer::IsHit() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return ptrApp->Zone.IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
 }
 /// @brief Check if player is blocked by block zone
 /// @return True if player is blocked by block zone, false otherwise
@@ -202,13 +210,13 @@ bool hPlayer::IsBlocked() const
 {
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsBlockedTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return ptrApp->Zone.IsBlockedTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
 }
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-	if (app->IsMoveUp() && !CanMoveUp()) {
+	if (ptrApp->IsMoveUp() && !CanMoveUp()) {
 		return true;
 	}
 	const float fPosY = GetPlayerLogicPositionY();
@@ -216,24 +224,24 @@ bool hPlayer::IsPlayerWin() const
 }
 bool hPlayer::IsKilled() const
 {
-	return app->IsKilled();
+	return ptrApp->IsKilled();
 }
 
 bool hPlayer::IsMoveLeft() const
 {
-	return app->IsMoveLeft();
+	return ptrApp->IsMoveLeft();
 }
 bool hPlayer::IsMoveRight() const
 {
-	return app->IsMoveRight();
+	return ptrApp->IsMoveRight();
 }
 bool hPlayer::IsMoveUp() const
 {
-	return app->IsMoveUp();
+	return ptrApp->IsMoveUp();
 }
 bool hPlayer::IsMoveDown() const
 {
-	return app->IsMoveDown();
+	return ptrApp->IsMoveDown();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -479,133 +487,76 @@ bool hPlayer::OnUpdatePlayerJumpStop()
 	return false;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool hPlayer::OnRenderPlayerIdle() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpStart() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpContinue() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpStop() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-/// @brief Render player animation to screen
-/// @return Always true by default
-bool hPlayer::OnRenderPlayer() const
-{
-	const int nID = cFrameManager::GetFrame6().GetAnimationID();
-	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
-	const bool isLeft = (IsLeftDirection());
-	const bool isJump = (IsPlayerJumping()) && (isValidID);
-	const std::string froggy_state = std::string(isJump ? "_jump" : "");
-	const std::string froggy_direction = std::string(isLeft ? "_left" : "");
-	const std::string froggy_id = (isJump ? std::to_string(nID) : "");
-	const std::string froggy_name = "froggy" + froggy_state + froggy_direction + froggy_id;
-	const auto froggy = cAssetManager::GetInstance().GetSprite(froggy_name);
-	if (froggy == nullptr) {
-		std::cerr << "WTF, cant found " << froggy_name << std::endl;
-	}
-
-	app->SetPixelMode(app::Pixel::MASK);
-	constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-	const int32_t frogXPosition = static_cast<int32_t>(fFrogAnimPosX * nCellSize);
-	const int32_t frogYPosition = static_cast<int32_t>(fFrogAnimPosY * nCellSize);
-	app->DrawSprite(frogXPosition, frogYPosition, froggy);
-	app->SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
-
-/// @brief Render player death animation to screen
-/// @return Always true by default
-bool hPlayer::OnRenderPlayerDeath()
-{
-	for (int id = 1; id <= 6; ++id) {
-		const std::string froggy_name = "froggy_death" + std::to_string(id);;
-		const auto froggy = cAssetManager::GetInstance().GetSprite(froggy_name);
-		if (froggy == nullptr) {
-			std::cerr << "WTF, cant found \"" << froggy_name << ".png\"" << std::endl;
-		}
-
-		constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-		const int32_t frogXPosition = static_cast<int32_t>(GetPlayerAnimationPositionX() * nCellSize);
-		const int32_t frogYPosition = static_cast<int32_t>(GetPlayerAnimationPositionY() * nCellSize);
-		app->DrawAllLanes();
-		app->SetPixelMode(app::Pixel::MASK);
-		app->DrawSprite(frogXPosition, frogYPosition, froggy);
-		app->SetPixelMode(app::Pixel::NORMAL);
-		app->DrawStatusBar();
-
-		app->RenderTexture();
-		Sleep(100);
-	}
-	Reset();
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /// @brief Update player animation and render to screen
 /// @return Always true by default
 bool hPlayer::OnPlayerMove()
 {
 	if (IsPlayerIdling()) {
-		if (app->IsMoveLeft()) {
+		if (ptrApp->IsMoveLeft()) {
 			SetAnimation(JUMP);
 			SetDirection(LEFT);
 		}
-		else if (app->IsMoveRight()) {
+		else if (ptrApp->IsMoveRight()) {
 			SetAnimation(JUMP);
 			SetDirection(RIGHT);
 		}
-		else if (app->IsMoveUp()) {
+		else if (ptrApp->IsMoveUp()) {
 			SetAnimation(JUMP);
 			SetDirection(IsLeftDirection() ? LEFT_UP : RIGHT_UP);
 		}
-		else if (app->IsMoveDown()) {
+		else if (ptrApp->IsMoveDown()) {
 			SetAnimation(JUMP);
 			SetDirection(IsLeftDirection() ? LEFT_DOWN : RIGHT_DOWN);
 		}
 
 		if (IsPlayerJumping()) {
 			OnUpdatePlayerJumpStart();
-			OnRenderPlayerJumpStart();
+			hRenderer.OnRenderPlayerJumpStart();
 		}
 		else {
 			OnUpdatePlayerIdle();
-			OnRenderPlayerIdle();
+			hRenderer.OnRenderPlayerIdle();
 		}
 		return true;
 	}
 
 	if (!IsPlayerLanding()) {
 		OnUpdatePlayerJumpContinue();
-		OnRenderPlayerJumpContinue();
+		hRenderer.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
 		OnUpdatePlayerJumpStop();
-		OnRenderPlayerJumpStop();
+		hRenderer.OnRenderPlayerJumpStop();
 	}
 	return true;
+}
+
+bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
+{
+	const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
+	if (froggy == nullptr) {
+		std::cerr << "WTF, cant found " << sSpriteName << std::endl;
+	}
+
+	if (bReloadMap) {
+		ptrApp->DrawAllLanes();
+	}
+	ptrApp->SetPixelMode(app::Pixel::MASK);
+	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+	const int32_t frogXPosition = static_cast<int32_t>(GetPlayerAnimationPositionX() * nCellSize);
+	const int32_t frogYPosition = static_cast<int32_t>(GetPlayerAnimationPositionY() * nCellSize);
+	ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
+	ptrApp->SetPixelMode(app::Pixel::NORMAL);
+	if (bForceRender) {
+		ptrApp->DrawStatusBar();
+		ptrApp->RenderTexture();
+	}
+	return true;
+}
+
+void hPlayer::Sleep(float fTime)
+{
+	ptrApp->ForceSleep(fTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

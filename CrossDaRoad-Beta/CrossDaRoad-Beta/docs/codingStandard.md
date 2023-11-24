@@ -133,6 +133,7 @@ Code standards are important for the following reasons:
   - `s-*` for string variables.
   - `e-*` for enum variables.
   - `p-*` for variables of type `Pixel`.
+  - `ptr-*` for variables of pointet type `type*`.
   - `vec-*` for variables of type `std::vector<>`.
   - `arr-*` for variables of type `std::array<>`.
   - `map-*` for variables of type `std::map<>`.
