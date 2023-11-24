@@ -56,6 +56,9 @@ private: /// Menu HUD
 private: 
 	int ContinueMenuOption = 0;
 	bool start = false;
+
+	int nameBoxOption = 0;
+
 private: /// Pause HUD
 	PauseOption ePauseOption; ///< Current option 
 	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
@@ -98,6 +101,7 @@ private: // Updater helpers
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
+	bool UpdateNameBox();
 
 private: // Renderer helpers
 	bool RenderAppMenu() const;
@@ -105,7 +109,7 @@ private: // Renderer helpers
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
-
+	bool RenderNameBox() const;
 public: // Updaters
 	bool UpdatePausing();
 	bool UpdateGameOver();

@@ -210,8 +210,8 @@ int hMenu::FixOption(int& value, int limit)
 
 bool hMenu::UpdateNewGame()
 {
-	const bool result = app->UpdateDrawNameBox();
-	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
+	const bool result = UpdateNameBox();
+	if (nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{
 		eMenuOption = APP_GAME;
 		app->GameReset();
@@ -326,6 +326,73 @@ bool hMenu::UpdateAppExit()
 		bWantToExit = true;
 		return true;
 	}
+	return true;
+}
+
+bool hMenu::UpdateNameBox()
+{
+	if (app->IsKeyReleased(app::Key::DOWN)) {
+		nameBoxOption++;
+	}
+	if (app->IsKeyReleased(app::Key::UP)) {
+		nameBoxOption--;
+	}
+	if (app->IsKeyReleased(app::Key::BACK))
+	{
+		if (app->playerName.size() > 0)
+			app->playerName.pop_back();
+		return true;
+	}
+	if (nameBoxOption % 2 == 0)
+	{
+		if (app->playerName.size() < 9)
+		{
+			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+			char currentKeyA = 'A';
+			for (const auto& it : mapKeyAlphabet)
+			{
+				if (app->IsKeyReleased(it.second))
+				{
+					app->playerName += currentKeyA;
+					return true;
+				}
+				++currentKeyA;
+			}
+			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+			char currentKeyN = '0';
+			for (const auto& it : mapKeyNumeric)
+			{
+				if (app->IsKeyReleased(it.second))
+				{
+					app->playerName += currentKeyN;
+					return true;
+				}
+				++currentKeyN;
+			}
+		}
+	}
+
+	return true;
+}
+bool hMenu::RenderNameBox() const
+{
+	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
+	const app::Sprite* NameBoxChosen = cAssetManager::GetInstance().GetSprite("start_chosen");
+
+	app->Clear(app::BLACK);
+	if (nameBoxOption % 2 == 0)
+		app->DrawSprite(0, 0, NameBox);
+	else
+		app->DrawSprite(0, 0, NameBoxChosen);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	if (app->playerName.empty()) {
+		app->DrawBigText("Input name", 157, 71);
+	}
+	else {
+		app->DrawBigText1(app->playerName, 157, 70);
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
 
@@ -534,7 +601,7 @@ bool hMenu::Render() const
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->DrawNameBox();
+			return RenderNameBox();
 		case AppOption::CONTINUE:
 			return RenderProceed();
 		case AppOption::SETTINGS:

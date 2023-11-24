@@ -150,6 +150,7 @@ bool cApp::OnPlayerDeath()
 	bDeath = false;
 	return true;
 }
+
 /// @brief Draw all lanes, render Player, draw status bar
 /// @return Always returns true by default
 bool cApp::OnGameRender()
@@ -214,74 +215,10 @@ bool cApp::OnDisplaySaveBox()
 }
 /// @brief 
 /// @return 
-bool cApp::UpdateDrawNameBox()
-{
-	if (IsKeyReleased(app::Key::DOWN)) {
-		nameBoxOption++;
-	}
-	if (IsKeyReleased(app::Key::UP)) {
-		nameBoxOption--;
-	}
-	if (IsKeyReleased(app::Key::BACK))
-	{	
-		if(playerName.size() > 0)
-			playerName.pop_back();
-		return true;
-	}
-	if (nameBoxOption % 2 == 0)
-	{
-		if (playerName.size() < 9)
-		{
-			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
-			char currentKeyA = 'A';
-			for (const auto &it : mapKeyAlphabet)
-			{	
-				if (IsKeyReleased(it.second))
-				{
-					playerName += currentKeyA;
-					return true;
-				}
-				++currentKeyA;
-			}
-			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
-			char currentKeyN = '0';
-			for(const auto &it : mapKeyNumeric)
-			{
-				if (IsKeyReleased(it.second))
-				{
-					playerName += currentKeyN;
-					return true;
-				}
-				++currentKeyN;
-			}
-		}
-	}
-	
-	return true; 
-}
+
 /// @brief 
 /// @return 
-bool cApp::DrawNameBox()
-{
-	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
-	const app::Sprite* NameBoxChosen = cAssetManager::GetInstance().GetSprite("start_chosen");
 
-	Clear(app::BLACK);
-	if (nameBoxOption % 2 == 0)
-		DrawSprite(0, 0, NameBox);
-	else
-		DrawSprite(0, 0, NameBoxChosen);
-
-	SetPixelMode(app::Pixel::MASK);
-	if (playerName.empty()) {
-		DrawBigText("Input name", 157, 70);
-	}
-	else {
-		DrawBigText1(playerName, 157, 70);
-	}
-	SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
 /// @brief Check if game is rendering or not
 /// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
