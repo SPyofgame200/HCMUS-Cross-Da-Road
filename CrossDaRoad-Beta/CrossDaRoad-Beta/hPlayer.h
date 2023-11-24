@@ -11,11 +11,12 @@
 
 #include <string>
 #include "uAppConst.h"
-#include "hPlayerMovement.h"
-#include "hPlayerRenderer.h"
 
 class cApp;
 class cZone;
+class hPlayerMovement;
+class hPlayerRenderer;
+class hPlayerPhysical;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
@@ -23,10 +24,12 @@ class hPlayer
 private: /// Componnets handlers
 	static hPlayerMovement hMovement;
 	static hPlayerRenderer hRenderer;
+	static hPlayerPhysical hPhysical;
 
 public: /// Components getters
 	static hPlayerMovement& Movement();
 	static hPlayerRenderer& Renderer();
+	static hPlayerPhysical& Physical();
 
 public:
 	/// @brief Direction enumeration for player movement
