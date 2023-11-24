@@ -7,7 +7,7 @@ pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0
 .....t........................t.............................t... -25.0 
 ..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
 ..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
-pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
+pppppnpppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
 $ a sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0

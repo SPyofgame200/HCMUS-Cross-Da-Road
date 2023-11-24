@@ -204,29 +204,144 @@ bool hPlayer::IsPlayerOutOfBounds() const
 ///////////////////////////////////////////// COLLISIONS DETECTION /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Check if player is hit by danger zone
-/// @return True if player is hit by danger zone, false otherwise
-bool hPlayer::IsPlatform() const
+/// @brief Check if player is hit by danger zone at top left corner
+/// @return True if player is hit by danger zone at top left corner, false otherwise
+bool hPlayer::IsHitTopLeft() const
 {
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	return ptrApp->Zone.IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	const float fPosX = GetPlayerLogicPositionX();
+	const float fPosY = GetPlayerLogicPositionY();
+	const bool isHitTopLeft = ptrApp->Zone.IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isHitTopLeft;
+}
+/// @brief Check if player is hit by danger zone at top right corner
+/// @return True if player is hit by danger zone at top right corner, false otherwise
+bool hPlayer::IsHitTopRight() const
+{
+	const float fPosX = GetPlayerLogicPositionX();
+	const float fPosY = GetPlayerLogicPositionY();
+	const bool isHitTopRight = ptrApp->Zone.IsDangerTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isHitTopRight;
+}
+/// @brief Check if player is hit by danger zone at bottom left corner
+/// @return True if player is hit by danger zone at bottom left corner, false otherwise
+bool hPlayer::IsHitBottomLeft() const
+{
+	const float fPosX = GetPlayerLogicPositionX();
+	const float fPosY = GetPlayerLogicPositionY();
+	const bool isHitBottomLeft = ptrApp->Zone.IsDangerBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isHitBottomLeft;
+}
+/// @brief Check if player is hit by danger zone at bottom right corner
+/// @return True if player is hit by danger zone at bottom right corner, false otherwise
+bool hPlayer::IsHitBottomRight() const
+{
+	const float fPosX = GetPlayerLogicPositionX();
+	const float fPosY = GetPlayerLogicPositionY();
+	const bool isHitBottomRight = ptrApp->Zone.IsDangerBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isHitBottomRight;
 }
 /// @brief Check if player is hit by danger zone
 /// @return True if player is hit by danger zone, false otherwise
 bool hPlayer::IsHit() const
 {
+	return IsHitTopLeft()
+		|| IsHitTopRight()
+		|| IsHitBottomLeft()
+		|| IsHitBottomRight();
+}
+/// @brief Check if player is blocked by block zone at top left corner
+/// @return True if player is blocked by block zone at top left corner, false otherwise
+bool hPlayer::IsBlockedTopLeft() const
+{
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	return ptrApp->Zone.IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	const bool isBlockedTopLeft = ptrApp->Zone.IsBlockedTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isBlockedTopLeft;
+}
+/// @brief Check if player is blocked by block zone at top right corner
+/// @return True if player is blocked by block zone at top right corner, false otherwise
+bool hPlayer::IsBlockedTopRight() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isBlockedTopRight = ptrApp->Zone.IsBlockedTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isBlockedTopRight;
+}
+/// @brief Check if player is blocked by block zone at bottom left corner
+/// @return True if player is blocked by block zone at bottom left corner, false otherwise
+bool hPlayer::IsBlockedBottomLeft() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isBlockedBottomLeft = ptrApp->Zone.IsBlockedBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isBlockedBottomLeft;
+}
+/// @brief Check if player is blocked by block zone at bottom right corner
+/// @return True if player is blocked by block zone at bottom right corner, false otherwise
+bool hPlayer::IsBlockedBottomRight() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isBlockedBottomRight = ptrApp->Zone.IsBlockedBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isBlockedBottomRight;
 }
 /// @brief Check if player is blocked by block zone
 /// @return True if player is blocked by block zone, false otherwise
 bool hPlayer::IsBlocked() const
 {
+	return IsBlockedTopLeft()
+		|| IsBlockedTopRight()
+		|| IsBlockedBottomLeft()
+		|| IsBlockedBottomRight();
+}
+/// @brief Check if player is on a platform at top left corner
+/// @return True if player is on a platform at top left corner, false otherwise
+bool hPlayer::IsOnPlatformTopLeft() const
+{
 	const float fPosX = GetPlayerAnimationPositionX();
 	const float fPosY = GetPlayerAnimationPositionY();
-	return ptrApp->Zone.IsBlockedTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	const bool isOnPlatformTopLeft = ptrApp->Zone.IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isOnPlatformTopLeft;
+}
+
+/// @brief Check if player is on a platform at top right corner
+/// @return True if player is on a platform at top right corner, false otherwise
+bool hPlayer::IsOnPlatformTopRight() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isOnPlatformTopRight = ptrApp->Zone.IsPlatformTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isOnPlatformTopRight;
+}
+
+/// @brief Check if player is on a platform at bottom left corner
+/// @return True if player is on a platform at bottom left corner, false otherwise
+bool hPlayer::IsOnPlatformBottomLeft() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isOnPlatformBottomLeft = ptrApp->Zone.IsPlatformBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+	return isOnPlatformBottomLeft;
+}
+
+/// @brief Check if player is on a platform at bottom right corner
+/// @return True if player is on a platform at bottom right corner, false otherwise
+bool hPlayer::IsOnPlatformBottomRight() const
+{
+	const float fPosX = GetPlayerAnimationPositionX();
+	const float fPosY = GetPlayerAnimationPositionY();
+	const bool isOnPlatformBottomRight = ptrApp->Zone.IsPlatformBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+	return isOnPlatformBottomRight;
+}
+
+/// @brief Check if player is on a platform
+/// @return True if player is on a platform, false otherwise
+bool hPlayer::IsOnPlatform() const
+{
+	return IsOnPlatformTopLeft()
+		|| IsOnPlatformTopRight()
+		|| IsOnPlatformBottomLeft()
+		|| IsOnPlatformBottomRight();
 }
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise

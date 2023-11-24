@@ -118,9 +118,21 @@ public: /// Motion Checkers
 	bool IsMoveDown() const;
 
 public: // Collision Detection
-	bool IsPlatform() const;
+	bool IsHitTopLeft() const;
+	bool IsHitTopRight() const;
+	bool IsHitBottomLeft() const;
+	bool IsHitBottomRight() const;
 	bool IsHit() const;
+	bool IsBlockedTopLeft() const;
+	bool IsBlockedTopRight() const;
+	bool IsBlockedBottomLeft() const;
+	bool IsBlockedBottomRight() const;
 	bool IsBlocked() const;
+	bool IsOnPlatformTopLeft() const;
+	bool IsOnPlatformTopRight() const;
+	bool IsOnPlatformBottomLeft() const;
+	bool IsOnPlatformBottomRight() const;
+	bool IsOnPlatform() const;
 
 public: // Validators
 	bool CanMoveLeft() const;

@@ -124,7 +124,7 @@ std::string cApp::GetPlayerDeathMessage() const
 /// @return True if Player is on platform, false otherwise
 bool cApp::IsOnPlatform() const
 {
-	return Player.IsPlatform();
+	return Player.IsOnPlatform();
 }
 /// @brief Get platform velocity
 /// @param fElapsedTime Time elapsed since last update
