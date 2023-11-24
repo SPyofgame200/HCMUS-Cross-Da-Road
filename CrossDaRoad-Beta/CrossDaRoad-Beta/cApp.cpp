@@ -109,7 +109,7 @@ bool cApp::GameReset()
 /// @return Velocity of platform
 float cApp::GetPlatformVelocity(const float fElapsedTime) const
 {
-	const float fPosY = Player.GetPlayerLogicPositionY();
+	const float fPosY = Player.Physic().GetPlayerLogicPositionY();
 	const float fVelocityX = MapLoader.GetLaneRound(fPosY).GetVelocity();
 	const float fMovedX = fVelocityX * fElapsedTime;
 	return fMovedX;
@@ -132,7 +132,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 	if (Player.IsPlayerWin()) {
 		return GameNext();
 	}
-	if (Player.IsPlayerOutOfBounds() || Player.IsKilled()) {
+	if (Player.IsForceKilled() || Player.IsKilled()) {
 		return OnPlayerDeath();
 	}
 	return true;
@@ -238,12 +238,12 @@ bool cApp::OnGameSave() const
 		std::ofstream fout(sSaveFilePath);
 		if (fout.is_open()) {
 			fout << MapLoader.GetMapLevel() << std::endl;
-			fout << Player.GetPlayerVelocityX() << std::endl;
-			fout << Player.GetPlayerVelocityY() << std::endl;
-			fout << Player.GetPlayerAnimationPositionX() << std::endl;
-			fout << Player.GetPlayerAnimationPositionY() << std::endl;
-			fout << Player.GetPlayerLogicPositionX() << std::endl;
-			fout << Player.GetPlayerLogicPositionY();
+			fout << Player.Physic().GetPlayerVelocityX() << std::endl;
+			fout << Player.Physic().GetPlayerVelocityY() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionY() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionY();
 			fout.close();
 			return true;
 		}
@@ -276,9 +276,9 @@ bool cApp::OnGameLoad()
 
 			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
 				MapLoader.SetMapLevel(MapLevel);
-				Player.SetAnimationPosition(AnimationPositionX, AnimationPositionY);
-				Player.SetLogicPosition(LogicPositionX, LogicPositionY);
-				Player.SetVelocity(VelocityX, VelocityY);
+				Player.Physic().SetAnimationPosition(AnimationPositionX, AnimationPositionY);
+				Player.Physic().SetLogicPosition(LogicPositionX, LogicPositionY);
+				Player.Physic().SetVelocity(VelocityX, VelocityY);
 				fin.close();
 				return true;
 			}

@@ -36,7 +36,7 @@ bool hPlayerUpdate::SetupTarget(hPlayer* ptrPlayer)
 /// @return Always true by default
 bool hPlayerUpdate::OnUpdatePlayerIdle()
 {
-	ptrPlayer->SynchronizePosition();
+	ptrPlayer->Physic().SynchronizePosition();
 	return true;
 }
 
@@ -70,7 +70,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStart()
 			ptrPlayer->Status().SetDirection(PlayerDirection::RIGHT_DOWN);
 		}
 	}
-	ptrPlayer->SynchronizePosition();
+	ptrPlayer->Physic().SynchronizePosition();
 	return cFrameManager::GetFrame6().StartAnimation();
 }
 /// @brief Update animation when player continue jumping
@@ -111,7 +111,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpContinue() const
 /// @return True if player animation is updated, false otherwise
 bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 {
-	ptrPlayer->SynchronizePosition();
+	ptrPlayer->Physic().SynchronizePosition();
 	if (ptrPlayer->Status().GetAnimation() == PlayerAnimation::JUMP) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::IDLE);
 		return true;

@@ -1,5 +1,5 @@
-#ifndef C_PLAYER_STATUS
-#define C_PLAYER_STATUS
+#ifndef C_PLAYER_STATUS_H
+#define C_PLAYER_STATUS_H
 
 class cPlayerStatus
 {
@@ -39,10 +39,10 @@ private: // Status
 	Animation eAnimation;
 	Situation eSituation;
 	
-public:
+public: // Constructors & Destructor
 	cPlayerStatus();
 
-public:
+public: // Initializer & Clean-up
 	void Reset();
 
 public: /// Checkers
@@ -67,5 +67,4 @@ using PlayerDirection = cPlayerStatus::Direction;
 using PlayerAnimation = cPlayerStatus::Animation;
 using PlayerSituation = cPlayerStatus::Situation;
 
-#endif C_PLAYER_STATUS
-
+#endif C_PLAYER_STATUS_H
