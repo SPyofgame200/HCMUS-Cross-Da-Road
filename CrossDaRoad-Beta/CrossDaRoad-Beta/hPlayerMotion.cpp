@@ -1,3 +1,4 @@
+#include "hPlayerHitbox.h"
 #include "hPlayerMotion.h"
 #include "uAppConst.h"
 #include "hPlayer.h"
@@ -36,7 +37,7 @@ bool hPlayerMotion::MoveX(float fFactorX, int nStep) const
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialX = ptrPlayer->GetPlayerVelocityX() * fFactorX * fPartial;
 		ptrPlayer->SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		if (!ptrPlayer->IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
+		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
 			break;
 		}
 	}
@@ -51,7 +52,7 @@ bool hPlayerMotion::MoveY(float fFactorY, int nStep)
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
 		const float fOffsetPartialY = ptrPlayer->GetPlayerVelocityY() * fFactorY * fPartial;
 		ptrPlayer->SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		if (!ptrPlayer->IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
+		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
 			break;
 		}
 	}
@@ -116,7 +117,7 @@ bool hPlayerMotion::PlatformMoveX(float fFactorX, int nStep)
 		const float fOffsetPartialX = fOffsetX * nPos / nStep;
 		ptrPlayer->SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
 		ptrPlayer->SetPlayerLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
-		if (!ptrPlayer->IsBlocked()) {
+		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}
 	}
@@ -134,7 +135,7 @@ bool hPlayerMotion::PlatformMoveY(float fFactorY, int nStep)
 		const float fOffsetPartialY = fOffsetY * nPos / nStep;
 		ptrPlayer->SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
 		ptrPlayer->SetPlayerLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
-		if (!ptrPlayer->IsBlocked()) {
+		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}
 	}

@@ -117,23 +117,6 @@ public: /// Motion Checkers
 	bool IsMoveUp() const;
 	bool IsMoveDown() const;
 
-public: // Collision Detection
-	bool IsHitTopLeft() const;
-	bool IsHitTopRight() const;
-	bool IsHitBottomLeft() const;
-	bool IsHitBottomRight() const;
-	bool IsHit() const;
-	bool IsBlockedTopLeft() const;
-	bool IsBlockedTopRight() const;
-	bool IsBlockedBottomLeft() const;
-	bool IsBlockedBottomRight() const;
-	bool IsBlocked() const;
-	bool IsOnPlatformTopLeft() const;
-	bool IsOnPlatformTopRight() const;
-	bool IsOnPlatformBottomLeft() const;
-	bool IsOnPlatformBottomRight() const;
-	bool IsOnPlatform() const;
-
 public: // Validators
 	bool CanMoveLeft() const;
 	bool CanMoveRight() const;
@@ -178,7 +161,10 @@ private: // Logic Updater
 public: // Logic-Render Control
 	bool OnPlayerMove();
 	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
+
+public: // Special
 	void Sleep(float fTime);
+	cZone* GetZone();
 };
 
 #endif // H_PLAYER_H

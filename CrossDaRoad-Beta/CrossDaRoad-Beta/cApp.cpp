@@ -112,7 +112,7 @@ bool cApp::IsKilled() const
 	if (Player.IsPlayerCollisionSafe()) {
 		return false;
 	}
-	return Player.IsHit();
+	return Player.Hitbox().IsHit();
 }
 /// @brief Get death message of Player
 /// @return String of death message
@@ -124,7 +124,7 @@ std::string cApp::GetPlayerDeathMessage() const
 /// @return True if Player is on platform, false otherwise
 bool cApp::IsOnPlatform() const
 {
-	return Player.IsOnPlatform();
+	return Player.Hitbox().IsOnPlatform();
 }
 /// @brief Get platform velocity
 /// @param fElapsedTime Time elapsed since last update
