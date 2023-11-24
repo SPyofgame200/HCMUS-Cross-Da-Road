@@ -10,7 +10,6 @@
 #define H_PLAYER_H
 
 #include <string>
-#include "uAppConst.h"
 #include "hPlayerMovement.h"
 
 class cApp;
