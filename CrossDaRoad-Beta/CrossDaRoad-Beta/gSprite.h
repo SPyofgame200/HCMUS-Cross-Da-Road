@@ -9,9 +9,8 @@
 #ifndef G_SPRITE_H
 #define G_SPRITE_H
 
-#include <string>
 #include "gResourcePack.h"
-#include "gConst.h"
+#include "gUtils.h"
 
 namespace app
 {
