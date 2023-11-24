@@ -3,12 +3,7 @@
  * @brief Contains implementation of MapObject and GraphicCell structs
 **/
 
-#include "uStringUtils.h"
 #include "cMapObject.h"
-#include <iostream>
-#include <sstream>
-#include <chrono>
-#include <map>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////// MAP OBJECTS ///////////////////////////////////////////
@@ -389,7 +384,7 @@ bool MapObject::ExtractPercentage(float& fPercentage, const std::string& sData)
 		std::cerr << "Invalid data, expected non-empty string size with suffix %." << std::endl;
 		return false;
 	}
-	int nDataSize = static_cast<int>(sData.size());
+	const int nDataSize = static_cast<int>(sData.size());
 	fPercentage = std::stof(sData.substr(0, static_cast<size_t>(nDataSize - 1)));
 	return true;
 }
@@ -413,7 +408,7 @@ bool MapObject::ExtractAttributeValue(std::string& sAttribute, std::string& sVal
 		return false;
 	}
 
-	for (char c : sValue) if (c == '=') {
+	for (const char c : sValue) if (c == '=') {
 		std::cerr << "MapObject::ExtractAttributeValue(&,&,\"" << sData << "\"): ";
 		std::cerr << "Extracted data is invalid, found delimiters '=' inside attribute or values" << std::endl;
 		return false;

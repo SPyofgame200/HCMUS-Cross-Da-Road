@@ -120,7 +120,7 @@ hMapDrawer::GraphicLane hMapDrawer::GetLaneEntities(const cMapLane& Lane) const
 bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 {
 	if (Lane.HasUnderlay()) {
-		const int32_t nPosX = 0;
+		constexpr int32_t nPosX = 0;
 		const int32_t nPosY = Lane.GetLaneID() * app_const::CELL_SIZE;
 		const int nFrameCount = Lane.GetUnderlayFrameCount();
 		const std::string sUnderlay = Lane.GetUnderlay() + cFrameManager::GetInstance().ShowFrameID(nFrameCount, 0.001f);
@@ -138,13 +138,13 @@ bool hMapDrawer::DrawUnderlay(const cMapLane& Lane) const
 /// @return True if successful, false otherwise
 bool hMapDrawer::DrawLane(const cMapLane& Lane) const
 {
-	GraphicLane Backgrounds = GetLaneBackgrounds(Lane);
+	const GraphicLane Backgrounds = GetLaneBackgrounds(Lane);
 	for (const GraphicCell& BackgroundCell : Backgrounds) {
 		DrawBackground(BackgroundCell);
 		SetHitBox(BackgroundCell);
 	}
 
-	GraphicLane Objects = GetLaneEntities(Lane);
+	const GraphicLane Objects = GetLaneEntities(Lane);
 	for (const GraphicCell& ObjectCell : Objects) {
 		DrawEntity(ObjectCell);
 		SetHitBox(ObjectCell);
@@ -237,11 +237,11 @@ bool hMapDrawer::SuccessSummon(char graphic, int nID) const
 		return false; // Summon is not enabled or chance is zero or negative
 	}
 
-	float fCurrentTime = app->fTimeSinceStart;
-	int fps = app->GetAppFPS();
+	const float fCurrentTime = app->fTimeSinceStart;
+	const int fps = app->GetAppFPS();
 	if (mapLastSummon.count(nID) == false) {
-		float fMinTime = fCurrentTime + sprite.GetSummonPredelay();
-		float fMaxTime = fCurrentTime + sprite.GetSummonPredelay() + sprite.GetSummonDuration();
+		const float fMinTime = fCurrentTime + sprite.GetSummonPredelay();
+		const float fMaxTime = fCurrentTime + sprite.GetSummonPredelay() + sprite.GetSummonDuration();
 		std::uniform_real_distribution<float> initialDistribution(fMinTime, fMaxTime);
 		mapLastSummon[nID] = initialDistribution(generator);
 	}

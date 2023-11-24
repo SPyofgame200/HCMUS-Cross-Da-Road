@@ -207,8 +207,8 @@ int hMenu::FixOption(int& value, int limit)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool hMenu::UpdateNewGame()
-{	
-	bool result = app->UpdateDrawNameBox();
+{
+	const bool result = app->UpdateDrawNameBox();
 	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{
 		eMenuOption = APP_GAME;
@@ -461,15 +461,15 @@ bool hMenu::RenderGameOver() const
 	app->SetPixelMode(app::Pixel::NORMAL);
 
 	app->SetPixelMode(app::Pixel::MASK);
-	app->DrawSprite(120, 55, cAssetManager::GetInstance().GetSprite("game_over"));
+	app->DrawSprite(120, 45, cAssetManager::GetInstance().GetSprite("game_over"));
 	app->SetPixelMode(app::Pixel::NORMAL);
 
 	app->SetPixelMode(app::Pixel::MASK);
 	if (bPlayAgain) {
-		app->DrawSprite(113, 85, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
+		app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
 	}
 	else {
-		app->DrawSprite(113, 85, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
+		app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;

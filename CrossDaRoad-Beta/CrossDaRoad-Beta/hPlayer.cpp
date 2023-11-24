@@ -408,7 +408,7 @@ void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 }
 /// @brief Setter for player name
 /// @param Name Name of player
-void hPlayer::SetPlayerName(std::string Name)
+void hPlayer::SetPlayerName(const std::string& Name)
 {
 	this->Name = Name;
 }
@@ -444,7 +444,7 @@ bool hPlayer::OnUpdatePlayerJumpStart()
 }
 /// @brief Update animation when player continue jumping
 /// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpContinue()
+bool hPlayer::OnUpdatePlayerJumpContinue() const
 {
 	if (GetAnimation() == IDLE) {
 		return false;

@@ -10,26 +10,18 @@
 
 // Core game
 #include "gGameEngine.h"
-// Utilities
-#include "uAppConst.h"
 // Game Data
-#include "cMapObject.h"
 #include "cZone.h"
 // UI & HUD
-#include "cAssetManager.h"
 #include "cMapLoader.h"
 #include "hMapDrawer.h"
-#include "cFrame.h"
 // Event Handlers
 #include "hPlayer.h"
 #include "hMenu.h"
-// Standard
-#include <map>
-#include <string>
-#include <vector>
+
 
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
-class cApp : public app::GameEngine
+class cApp final : public app::GameEngine
 {
 	friend class hMenu;
 	friend class hPlayer;

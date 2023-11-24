@@ -206,7 +206,7 @@ bool cZone::IsInside(const int x, const int y) const
 ////////////////////////////// SETTERS /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-bool cZone::SetPlatform(const int nPosX, const int nPosY, const bool bValue)
+bool cZone::SetPlatform(const int nPosX, const int nPosY, const bool bValue) const
 {
 	if (!IsInside(nPosX, nPosY)) {
 		return false;

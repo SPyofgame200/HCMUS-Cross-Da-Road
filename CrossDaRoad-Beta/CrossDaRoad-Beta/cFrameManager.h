@@ -37,12 +37,12 @@ public: /// Setters & Reseters
     void Reset();
 
 public: /// Getters
-    int GetFrameID(const int frame) const;
-    int GetFrameID(const int frame, float fTickRate) const;
+    int GetFrameID(int frame) const;
+    int GetFrameID(int frame, float fTickRate) const;
 
 public: /// Frame output
-    std::string ShowFrameID(const int frame) const;
-    std::string ShowFrameID(const int frame, float fTickRate) const;
+    std::string ShowFrameID(int frame) const;
+    std::string ShowFrameID(int frame, float fTickRate) const;
 
     bool UpdateFrame(float fTickTime, int nFrameDelay, float fTickRate = 0.01f);
 };

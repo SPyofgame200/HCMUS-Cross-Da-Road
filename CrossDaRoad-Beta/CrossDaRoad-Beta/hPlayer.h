@@ -146,7 +146,7 @@ public: // Setters
 	void SetPlayerLogicPositionX(float fPositionX);
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
-	void SetPlayerName(std::string Name);
+	void SetPlayerName(const std::string& Name);
 
 private: // Validators & Fixers
 	bool OnFixPlayerPosition();
@@ -154,7 +154,7 @@ private: // Validators & Fixers
 private: // Logic Updater
 	bool OnUpdatePlayerIdle();
 	bool OnUpdatePlayerJumpStart();
-	bool OnUpdatePlayerJumpContinue();
+	bool OnUpdatePlayerJumpContinue() const;
 	bool OnUpdatePlayerJumpStop();
 
 public: // Logic-Render Control

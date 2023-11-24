@@ -6,10 +6,8 @@
 **/
 
 #include "cApp.h"
-#include "uSound.h"
 #include "uStringUtils.h"
 #include <Windows.h>
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <thread>
@@ -255,8 +253,7 @@ bool cApp::UpdateDrawNameBox()
 	{
 		if (playerName.size() < 9)
 		{
-
-			std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
 			char currentKeyA = 'A';
 			for (const auto &it : mapKeyAlphabet)
 			{	
@@ -267,7 +264,7 @@ bool cApp::UpdateDrawNameBox()
 				}
 				++currentKeyA;
 			}
-			std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
 			char currentKeyN = '0';
 			for(const auto &it : mapKeyNumeric)
 			{
@@ -319,7 +316,7 @@ bool cApp::OnRenderEvent()
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
-	std::string FileName = Player.GetPlayerName();
+	const std::string FileName = Player.GetPlayerName();
 	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);
@@ -538,8 +535,8 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nHeight_sb = 160;
 	constexpr int32_t nPosX_level = 321;
 	constexpr int32_t nPosY_level = 80;
-	int nPosX_PlayerName = 312 - playerName.size() * 4;
-	int nPosY_PlayerName = 63;
+	const int nPosX_PlayerName = static_cast<int>(312 - playerName.size() * 4);
+	constexpr int nPosY_PlayerName = 63;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(playerName, nPosX_PlayerName, nPosY_PlayerName);

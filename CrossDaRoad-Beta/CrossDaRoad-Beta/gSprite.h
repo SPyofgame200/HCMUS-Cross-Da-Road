@@ -9,9 +9,8 @@
 #ifndef G_SPRITE_H
 #define G_SPRITE_H
 
-#include <string>
 #include "gResourcePack.h"
-#include "gConst.h"
+#include "gUtils.h"
 
 namespace app
 {
@@ -49,7 +48,7 @@ namespace app
 
 	public: // Setters
 		void SetSampleMode(app::Sprite::Mode mode = app::Sprite::Mode::NORMAL);
-		bool SetPixel(int32_t x, int32_t y, Pixel p);
+		bool SetPixel(int32_t x, int32_t y, Pixel p) const;
 
 	public: // Getters
 		bool Inside(int32_t x, int32_t y) const;

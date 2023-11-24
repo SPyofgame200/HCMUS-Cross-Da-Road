@@ -8,7 +8,6 @@
 #ifndef C_ASSET_MANAGER_H
 #define C_ASSET_MANAGER_H
 
-#include "uAppConst.h"
 #include <map>
 #include "gSprite.h"
 

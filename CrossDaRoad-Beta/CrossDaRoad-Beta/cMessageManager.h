@@ -3,11 +3,9 @@
 
 #include <iostream>
 #include <sstream>
-#include <chrono>
-#include <mutex>
 #include <iomanip>
 #include <future>
-#include <fstream>
+
 #include "uConsoleColor.h"
 
 enum MessageSeverity
@@ -69,8 +67,8 @@ public: /// Singleton
 public: /// Validator
     bool TryAcquireToken(MessageSeverity eSeverity) const
     {
-        auto now = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
+	    const auto now = std::chrono::steady_clock::now();
+	    const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
         if (elapsed.count() >= static_cast<int64_t>(nIntervalMilisecond) * nIntervalMultiplier[static_cast<int>(eSeverity)]) {
             lastMessageTimer[static_cast<int>(eSeverity)] = now;
@@ -81,7 +79,7 @@ public: /// Validator
     }
 
 public: // Loggers
-    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
+    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& sFilePath = "", int nLineIndex = 0) const
     {
         auto future = std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
     }
@@ -92,7 +90,7 @@ public: // Loggers
     }
 
 public: // Getters
-    std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
+    std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& sFilePath = "", int nLineIndex = 0) const
     {
         std::ostringstream logStream;
         if (eSeverity == MessageSeverity::SEVERE_MESSAGE) {
@@ -114,21 +112,21 @@ public: // Getters
     }
 
 private: // Log handler
-    void LogThread(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const {
+    void LogThread(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& sFilePath = "", int nLineIndex = 0) const {
         std::lock_guard<std::mutex> lock(logMutex);
         std::cerr << GetMessage(eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex) << std::endl;
     }
     void LogRealTime(std::ostream& logStream) const {
         using namespace std::chrono;
 
-        auto now = system_clock::now();
-        auto elapsedSinceStart = duration_cast<milliseconds>(now - originSystimer);
+        const auto now = system_clock::now();
+        const auto elapsedSinceStart = duration_cast<milliseconds>(now - originSystimer);
 
-        auto minutes_part = duration_cast<minutes>(elapsedSinceStart);
-        auto seconds_part = duration_cast<seconds>(elapsedSinceStart - minutes_part);
-        auto milliseconds_part = duration_cast<milliseconds>(elapsedSinceStart - minutes_part - seconds_part);
+        const auto minutes_part = duration_cast<minutes>(elapsedSinceStart);
+        const auto seconds_part = duration_cast<seconds>(elapsedSinceStart - minutes_part);
+        const auto milliseconds_part = duration_cast<milliseconds>(elapsedSinceStart - minutes_part - seconds_part);
 
-        auto time = system_clock::to_time_t(now);
+        const auto time = system_clock::to_time_t(now);
         tm tm_time;
         localtime_s(&tm_time, &time);
 
@@ -142,12 +140,12 @@ private: // Log handler
     {
         using namespace std::chrono;
 
-        clock_t now = steady_clock::now();
-        milliseconds elapsedSinceStart = duration_cast<milliseconds>(now - originTimer);
+        const clock_t now = steady_clock::now();
+        const milliseconds elapsedSinceStart = duration_cast<milliseconds>(now - originTimer);
 
-        minutes minutes_part = duration_cast<minutes>(elapsedSinceStart);
-        seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
-        milliseconds milisec_part = elapsedSinceStart - duration_cast<milliseconds>(minutes_part) - duration_cast<milliseconds>(seconds_part);
+        const minutes minutes_part = duration_cast<minutes>(elapsedSinceStart);
+        const seconds seconds_part = duration_cast<seconds>(elapsedSinceStart - duration_cast<milliseconds>(minutes_part));
+        const milliseconds milisec_part = elapsedSinceStart - duration_cast<milliseconds>(minutes_part) - duration_cast<milliseconds>(seconds_part);
 
         logStream << text::CYAN << "["
             << std::setw(2) << std::setfill('0') << minutes_part.count() << ":"  // minutes

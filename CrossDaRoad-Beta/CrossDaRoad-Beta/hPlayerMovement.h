@@ -18,7 +18,7 @@ public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
 
 public: /// Positional Move
-	bool MoveX(float fFactorX, int nStep = 16);
+	bool MoveX(float fFactorX, int nStep = 16) const;
 	bool MoveY(float fFactorX, int nStep = 16);
 	bool Move(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 

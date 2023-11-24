@@ -10,7 +10,6 @@
 #define G_RESOURCE_PACK_H
 
 #include <fstream>
-#include <string>
 #include <map>
 #include "gPixel.h"
 #include "gConst.h"

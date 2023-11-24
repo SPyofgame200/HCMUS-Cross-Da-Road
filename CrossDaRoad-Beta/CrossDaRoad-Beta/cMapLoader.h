@@ -12,14 +12,12 @@
 #include "cMapObject.h"
 #include "uStringUtils.h"
 #include "uAppConst.h"
-#include <iostream>
+
+
 #include <sstream>
 #include <fstream>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <map>
 
+#include <map>
 
 /// @brief Class for map loader and manipulation in game
 class cMapLoader

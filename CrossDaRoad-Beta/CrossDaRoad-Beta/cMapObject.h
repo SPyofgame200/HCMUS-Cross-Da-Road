@@ -9,7 +9,10 @@
 #ifndef C_MAP_OBJECT_H
 #define C_MAP_OBJECT_H
 
-#include <string>
+#include "uStringUtils.h"
+
+#include <iostream>
+#include <sstream>
 
 namespace map_object
 {
