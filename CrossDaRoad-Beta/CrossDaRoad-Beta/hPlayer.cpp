@@ -481,58 +481,35 @@ bool hPlayer::OnFixPlayerPosition()
 bool hPlayer::OnUpdate()
 {
 	if (IsPlayerIdling()) {
-		hUpdate.OnUpdatePlayerIdle();
-		return true;
+		return hUpdate.OnUpdatePlayerIdle();
 	}
-
 	if (IsPlayerStartingJump()) {
-		if (ptrApp->IsMoveLeft()) {
-			SetAnimation(JUMP);
-			SetDirection(LEFT);
-		}
-		else if (ptrApp->IsMoveRight()) {
-			SetAnimation(JUMP);
-			SetDirection(RIGHT);
-		}
-		else if (ptrApp->IsMoveUp()) {
-			SetAnimation(JUMP);
-			SetDirection(IsLeftDirection() ? LEFT_UP : RIGHT_UP);
-		}
-		else if (ptrApp->IsMoveDown()) {
-			SetAnimation(JUMP);
-			SetDirection(IsLeftDirection() ? LEFT_DOWN : RIGHT_DOWN);
-		}
-		hUpdate.OnUpdatePlayerJumpStart();
+		return hUpdate.OnUpdatePlayerJumpStart();
 	}
-
 	if (!IsPlayerLanding()) {
-		hUpdate.OnUpdatePlayerJumpContinue();
+		return hUpdate.OnUpdatePlayerJumpContinue();
 	}
 	else { /// Jump completed
-		hUpdate.OnUpdatePlayerJumpStop();
+		return hUpdate.OnUpdatePlayerJumpStop();
 	}
-	return true;
+	return false;
 }
 
 bool hPlayer::OnRender()
 {
 	if (IsPlayerIdling()) {
-		hRender.OnRenderPlayerIdle();
-		return true;
+		return hRender.OnRenderPlayerIdle();
 	}
-
 	if (IsPlayerStartingJump()) {
-		hRender.OnRenderPlayerJumpStart();
-		return true;
+		return hRender.OnRenderPlayerJumpStart();
 	}
-
 	if (!IsPlayerLanding()) {
-		hRender.OnRenderPlayerJumpContinue();
+		return hRender.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
-		hRender.OnRenderPlayerJumpStop();
+		return hRender.OnRenderPlayerJumpStop();
 	}
-	return true;
+	return false;
 }
 
 

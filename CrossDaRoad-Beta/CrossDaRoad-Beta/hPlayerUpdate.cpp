@@ -43,6 +43,22 @@ bool hPlayerUpdate::OnUpdatePlayerIdle()
 /// @return True if player animation is updated, false otherwise
 bool hPlayerUpdate::OnUpdatePlayerJumpStart()
 {
+	if (ptrPlayer->IsMoveLeft()) {
+		ptrPlayer->SetAnimation(ptrPlayer->JUMP);
+		ptrPlayer->SetDirection(ptrPlayer->LEFT);
+	}
+	else if (ptrPlayer->IsMoveRight()) {
+		ptrPlayer->SetAnimation(ptrPlayer->JUMP);
+		ptrPlayer->SetDirection(ptrPlayer->RIGHT);
+	}
+	else if (ptrPlayer->IsMoveUp()) {
+		ptrPlayer->SetAnimation(ptrPlayer->JUMP);
+		ptrPlayer->SetDirection(ptrPlayer->IsLeftDirection() ? ptrPlayer->LEFT_UP : ptrPlayer->RIGHT_UP);
+	}
+	else if (ptrPlayer->IsMoveDown()) {
+		ptrPlayer->SetAnimation(ptrPlayer->JUMP);
+		ptrPlayer->SetDirection(ptrPlayer->IsLeftDirection() ? ptrPlayer->LEFT_DOWN : ptrPlayer->RIGHT_DOWN);
+	}
 	ptrPlayer->SynchronizePosition();
 	return cFrameManager::GetFrame6().StartAnimation();
 }
