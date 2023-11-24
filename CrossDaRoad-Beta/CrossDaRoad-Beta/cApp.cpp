@@ -124,7 +124,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
-	Player.OnPlayerMove();
+	Player.OnUpdate();
 	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
 		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
 		Player.Motion().PlatformDetector();
@@ -133,8 +133,6 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 		return GameNext();
 	}
 	if (Player.IsPlayerOutOfBounds() || Player.IsKilled()) {
-		Player.Render().OnRenderPlayerDeath();
-		Player.Reset();
 		return OnPlayerDeath();
 	}
 	return true;
@@ -144,6 +142,8 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 bool cApp::OnPlayerDeath()
 {
 	bDeath = true;
+	Player.Render().OnRenderPlayerDeath();
+	Player.Reset();
 	if (--nLife <= 0) {
 		PauseEngine();
 	}
@@ -154,6 +154,7 @@ bool cApp::OnPlayerDeath()
 /// @return Always returns true by default
 bool cApp::OnGameRender()
 {
+	Player.OnRender();
 	DrawAllLanes();
 	Player.Render().OnRenderPlayer();
 	DrawStatusBar();

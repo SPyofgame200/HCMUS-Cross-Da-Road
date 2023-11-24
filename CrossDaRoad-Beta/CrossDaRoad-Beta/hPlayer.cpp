@@ -205,11 +205,22 @@ bool hPlayer::IsPlayerJumping() const
 {
 	return (GetAnimation() == JUMP);
 }
+bool hPlayer::IsPlayerMoving() const
+{
+	return (IsMoveUp())
+		|| (IsMoveDown())
+		|| (IsMoveLeft())
+		|| (IsMoveRight());
+}
+bool hPlayer::IsPlayerStartingJump() const
+{
+	return (GetAnimation() == IDLE) && IsPlayerMoving();
+}
 /// @brief Check if player is idling
 /// @return True if player is idling, false otherwise
 bool hPlayer::IsPlayerIdling() const
 {
-	return (GetAnimation() == IDLE);
+	return (GetAnimation() == IDLE) && !IsPlayerMoving();
 }
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
@@ -467,9 +478,14 @@ bool hPlayer::OnFixPlayerPosition()
 
 /// @brief Update player animation and render to screen
 /// @return Always true by default
-bool hPlayer::OnPlayerMove()
+bool hPlayer::OnUpdate()
 {
 	if (IsPlayerIdling()) {
+		hUpdate.OnUpdatePlayerIdle();
+		return true;
+	}
+
+	if (IsPlayerStartingJump()) {
 		if (ptrApp->IsMoveLeft()) {
 			SetAnimation(JUMP);
 			SetDirection(LEFT);
@@ -486,28 +502,39 @@ bool hPlayer::OnPlayerMove()
 			SetAnimation(JUMP);
 			SetDirection(IsLeftDirection() ? LEFT_DOWN : RIGHT_DOWN);
 		}
-
-		if (IsPlayerJumping()) {
-			hUpdate.OnUpdatePlayerJumpStart();
-			hRender.OnRenderPlayerJumpStart();
-		}
-		else {
-			hUpdate.OnUpdatePlayerIdle();
-			hRender.OnRenderPlayerIdle();
-		}
-		return true;
+		hUpdate.OnUpdatePlayerJumpStart();
 	}
 
 	if (!IsPlayerLanding()) {
 		hUpdate.OnUpdatePlayerJumpContinue();
-		hRender.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
 		hUpdate.OnUpdatePlayerJumpStop();
+	}
+	return true;
+}
+
+bool hPlayer::OnRender()
+{
+	if (IsPlayerIdling()) {
+		hRender.OnRenderPlayerIdle();
+		return true;
+	}
+
+	if (IsPlayerStartingJump()) {
+		hRender.OnRenderPlayerJumpStart();
+		return true;
+	}
+
+	if (!IsPlayerLanding()) {
+		hRender.OnRenderPlayerJumpContinue();
+	}
+	else { /// Jump completed
 		hRender.OnRenderPlayerJumpStop();
 	}
 	return true;
 }
+
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
 {

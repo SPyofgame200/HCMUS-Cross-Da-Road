@@ -109,7 +109,9 @@ public: // Checkers helpers
 	bool IsExactSituation(Situation eCompare) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
+	bool IsPlayerMoving() const;
 	bool IsPlayerJumping() const;
+	bool IsPlayerStartingJump() const;
 	bool IsPlayerIdling() const;
 	bool IsPlayerLanding() const;
 
@@ -163,7 +165,8 @@ private: // Validators & Fixers
 	bool OnFixPlayerPosition();
 
 public: // Logic-Render Control
-	bool OnPlayerMove();
+	bool OnUpdate();
+	bool OnRender();
 	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
 
 public: // Special
