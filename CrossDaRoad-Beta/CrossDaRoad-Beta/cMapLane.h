@@ -39,8 +39,8 @@ public: // Getters
 	char GetLaneGraphic(int nPos, bool bWrapAroundPosition = true) const;
 
 private: // Utilities
-	static int FixValue(int& nValue, const size_t nLimit);
-	static int FixValue(int& nValue, const int nLimit);
+	static int FixValue(int& nValue, size_t nLimit);
+	static int FixValue(int& nValue, int nLimit);
 
 public:	// Setters
 	void SetVelocity(float velocity);

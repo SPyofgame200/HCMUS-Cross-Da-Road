@@ -4,7 +4,6 @@
 
 #pragma comment(lib, "user32.lib")
 #include <thread>
-#include <windows.h>
 
 #include "gConst.h"
 #include "gKey.h"

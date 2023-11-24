@@ -8,7 +8,6 @@
 #ifndef C_ASSET_MANAGER_H
 #define C_ASSET_MANAGER_H
 
-#include "uAppConst.h"
 #include <map>
 #include "gSprite.h"
 
@@ -48,9 +47,9 @@ public: // Game Loaders
 	bool LoadAboutUsSprites();
 	bool LoadExitSprites();
 	bool LoadPauseSprites();
+	bool LoadGameOverSprites();
 	bool LoadFontSprites();
 	bool LoadFont1Sprites();
-
 	bool LoadScoreBarSprites();
 
 private: // Player Loaders

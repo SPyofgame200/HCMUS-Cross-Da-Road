@@ -10,26 +10,18 @@
 
 // Core game
 #include "gGameEngine.h"
-// Utilities
-#include "uAppConst.h"
 // Game Data
-#include "cMapObject.h"
 #include "cZone.h"
 // UI & HUD
-#include "cAssetManager.h"
 #include "cMapLoader.h"
 #include "hMapDrawer.h"
-#include "cFrame.h"
 // Event Handlers
 #include "hPlayer.h"
 #include "hMenu.h"
-// Standard
-#include <map>
-#include <string>
-#include <vector>
+
 
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
-class cApp : public app::GameEngine
+class cApp final : public app::GameEngine
 {
 	friend class hMenu;
 	friend class hPlayer;
@@ -53,12 +45,6 @@ private: // Customizable Properties (applied to all maps)
 private: // Event timers
 	float fTimeSinceStart;
 
-private: // Animator
-	frame4_t frame4;
-	frame6_t frame6;
-	frame8_t frame8;
-	frame12_t frame12;
-
 private: // Special variables
 	std::atomic<bool> bDeath;
 
@@ -74,10 +60,7 @@ protected: // Constructor & Destructor Procedure
 	bool GameReset();
 
 protected: // Collision Detection
-	bool IsKilled() const;
-	std::string GetPlayerDeathMessage() const;
 	float GetPlatformVelocity(float fElapsedTime) const;
-	bool IsOnPlatform() const;
 
 protected: /// Game Updates
 	bool OnGameUpdate(float fElapsedTime);
@@ -110,13 +93,7 @@ private: // Game Rendering
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
-
-private: // Animator
-	int GetFrameID(int frame) const;
-	int GetFrameID(int frame, float fTickRate) const;
-	std::string ShowFrameID(int frame) const;
-	std::string ShowFrameID(int frame, float fTickRate) const;
-	bool OnUpdateFrame(float fTickTime, float fTickRate = 0.01f);
+	void ForceSleep(float fTime) { Sleep(static_cast<DWORD>(fTime)); }
 };
 
 #endif // C_APP_H

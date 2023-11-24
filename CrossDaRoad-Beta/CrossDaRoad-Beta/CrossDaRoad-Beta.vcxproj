@@ -134,6 +134,7 @@
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cAssetManager.cpp" />
     <ClCompile Include="cFrame.cpp" />
+    <ClCompile Include="cFrameManager.cpp" />
     <ClCompile Include="hMapDrawer.cpp" />
     <ClCompile Include="hMapEditor.cpp" />
     <ClCompile Include="cMapLane.cpp" />
@@ -151,7 +152,10 @@
     <ClCompile Include="gTexture.cpp" />
     <ClCompile Include="gUtils.cpp" />
     <ClCompile Include="gWindow.cpp" />
-    <ClCompile Include="hPlayerMovement.cpp" />
+    <ClCompile Include="hPlayerMotion.cpp" />
+    <ClCompile Include="hPlayerHitbox.cpp" />
+    <ClCompile Include="hPlayerRender.cpp" />
+    <ClCompile Include="hPlayerUpdate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uAppUtils.cpp" />
     <ClCompile Include="uConsoleColor.cpp" />
@@ -163,6 +167,7 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cAssetManager.h" />
     <ClInclude Include="cFrame.h" />
+    <ClInclude Include="cFrameManager.h" />
     <ClInclude Include="hMapDrawer.h" />
     <ClInclude Include="hMapEditor.h" />
     <ClInclude Include="cMapLane.h" />
@@ -181,7 +186,10 @@
     <ClInclude Include="gTexture.h" />
     <ClInclude Include="gUtils.h" />
     <ClInclude Include="gWindow.h" />
-    <ClInclude Include="hPlayerMovement.h" />
+    <ClInclude Include="hPlayerMotion.h" />
+    <ClInclude Include="hPlayerHitbox.h" />
+    <ClInclude Include="hPlayerRender.h" />
+    <ClInclude Include="hPlayerUpdate.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uAppUtils.h" />
     <ClInclude Include="cMessageManager.h" />

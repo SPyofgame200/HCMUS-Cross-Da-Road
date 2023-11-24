@@ -1,5 +1,3 @@
-#include "uStringUtils.h"
-
 /**
  * @file uStringUtils.cpp
  * @author SPyOfGame
@@ -8,6 +6,9 @@
  *
  * This file implements string utility functions.
  **/
+
+#include "uStringUtils.h"
+
 
 namespace utils
 {

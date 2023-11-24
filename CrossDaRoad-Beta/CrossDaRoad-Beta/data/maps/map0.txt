@@ -1,40 +1,62 @@
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 beach_wave 12
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 0.0 
-,,pqppp,,,,,qqpp,,,pqqpp,,,,qp,,,,ppp,,,,,,,pp,,,  2.0 lava 12
-,,,qpqp,,,,,pq,,,,,,pp,,,,,,qq,,,,ppqqpp,,,,,, -3.0
-,,,,p,,,,,qqpp,,,,,,,  3.0
-fpppppppppppppppp  0.0 lava 12
-,,pp,,,,,,qq,,,,pq,,,,pp,,,,,pq,, -4.0
-,,,pp,pppp,,,,,,,,,ppqq,,,pqqp,,,,,, -3.0
-pqbppppppppppppppppp  0.0
+wwwhhwwwhhwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 
+,,,jllk,,jllllk,,,,,,,jllk,,,,,ii,,,jlllk,,,,jllllk,,,,jlllk,,,, -3.0 
+,,,,jllk,,,,,jllk,,,,jllk,,,,,,,,,jllk,,,,,ii,,,,,,jllllk,,,,,,,  3.0 
+,,jlk,,,,,jlk,,,,,ii,,,,,jlk,,,jlk,,,,ii,,,,jllk,,,,ii,,,,,,ii,,  2.0 
+pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0 
+....asd.......asd....asd..........asd........asd.......asd......  3.0 
+.....t........................t.............................t... -25.0 
+..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
+..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
+pppppnpppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
-$ ,
+$ a sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
-: spritepos=(0:0)
-$ . background=magmas
+: spriteX=0 spriteY=0
+$ s sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
-: spritepos=(0:0)
-$ p sprite=wall
-: block=false danger=false platformspeed=1.0
-: spritepos=[0:0]
-$ q sprite=wall
-: block=false danger=false platformspeed=1.0
-: spritepos=<0,0>
-$ l sprite=lava_rock spriteFrame=4
-: block=false danger=false platformspeed=0.0
-: spritepos=default
-: duration=2s cooldown=0s chance=100% summon=f predelay=1.5s
-$ b sprite=wall background=magma
-: block=false danger=false platformspeed=1.0
-: spritepos=default
-: duration=10s cooldown=2s chance=50% summon=l
-$ w sprite=wall
-: block=false danger=false platformspeed=0.0
-: spritepos={0,0}
-$ h
-: block=false danger=false platformspeed=0.0
-: spritepos=(0,0)
-$ f sprite=fire background=wall spriteFrame=4
+: spriteX=1 spriteY=0
+$ d sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
+: spriteX=2 spriteY=0
+$ z sprite=crocodile_right background=soil spriteFrame=6
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ x sprite=crocodile_right background=soil spriteFrame=6
+: block=false danger=true platformspeed=0.0
+: spriteX=1 spriteY=0
+$ c sprite=crocodile_right background=soil spriteFrame=6
+: block=false danger=true platformspeed=0.0
+: spriteX=2 spriteY=0
+$ j sprite=wood1 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ l sprite=wood2 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ k sprite=wood3 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ i sprite=lilypad background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ n sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ w sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ t sprite=kiwi background=soil
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ h sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ p sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ , background=water category="environment"
+: block=false danger=true platformspeed=0.0
+: spriteX=0 spriteY=0
+$ . background=soil
+: block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0

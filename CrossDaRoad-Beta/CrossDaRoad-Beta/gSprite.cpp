@@ -7,16 +7,7 @@
 **/
 
 #include "gSprite.h"
-#include "gUtils.h"
 
-#include <Windows.h>
-#include <algorithm>
-#include <cwchar>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Graphic Interface
 #pragma comment(lib, "gdi32.lib")
@@ -281,7 +272,7 @@ namespace app
 	/// @param x x-coordinate of the pixel to set
 	/// @param y y-coordinate of the pixel to set
 	/// @param p Pixel to set
-	bool Sprite::SetPixel(const int32_t x, const int32_t y, const Pixel p)
+	bool Sprite::SetPixel(const int32_t x, const int32_t y, const Pixel p) const
 	{
 		if (Inside(x, y)) {
 			pColData[y * width + x] = p;

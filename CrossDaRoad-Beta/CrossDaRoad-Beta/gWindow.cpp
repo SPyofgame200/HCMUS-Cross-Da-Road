@@ -101,7 +101,7 @@ namespace app
 	/// @brief Setter for the window title
 	/// @param sTitle String to be set as the window title
 	/// @return Always true by default
-	bool Window::SetTitle(const std::string& sTitle)
+	bool Window::SetTitle(const std::string& sTitle) const
 	{
 		SetWindowText(windowHandler, to_text(sTitle));
 		return true;

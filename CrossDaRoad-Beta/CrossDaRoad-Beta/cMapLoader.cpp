@@ -289,9 +289,9 @@ bool cMapLoader::LoadMapSprite(const std::string& sLine)
 	iss >> token;
 	// Create a new Sprite
 	if (token == '$') {
-		char token;
-		iss >> token;
-		currentSprite = MapObject(token);
+		char temp;
+		iss >> temp;
+		currentSprite = MapObject(temp);
 	}
 	/// Alow sprite data to be read as multiple lines
 	if (token == '$' || token == ':') {
@@ -354,8 +354,8 @@ bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 	if (!ifs.is_open()) {
 		std::cout << "Failed to open file: " << sFileName << std::endl;
 		std::cerr << "Error state: " << ifs.rdstate() << std::endl;
-		const std::string& sFileName = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
-		std::cout << "File Path: " << sFileName << std::endl;
+		const std::string& s_file_name = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
+		std::cout << "File Path: " << s_file_name << std::endl;
 		return false;
 	}
 

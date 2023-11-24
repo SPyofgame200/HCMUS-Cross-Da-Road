@@ -6,6 +6,7 @@
  * This file implements menu class for menu window management.
 **/
 
+#include "cFrameManager.h"
 #include "hMenu.h"
 #include "cApp.h"
 
@@ -109,6 +110,7 @@ bool hMenu::LoadAppOption()
 	switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
+			app->GameInit();
 			break;
 		case CONTUNUE:
 			eMenuOption = AppOption::CONTUNUE;
@@ -207,8 +209,8 @@ int hMenu::FixOption(int& value, int limit)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool hMenu::UpdateNewGame()
-{	
-	bool result = app->UpdateDrawNameBox();
+{
+	const bool result = app->UpdateDrawNameBox();
 	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{
 		eMenuOption = APP_GAME;
@@ -343,6 +345,31 @@ bool hMenu::UpdatePausing()
 	return true; // succesfully handle the pause event
 }
 
+bool hMenu::UpdateGameOver()
+{
+	if (app->IsKeyReleased(app::Key::RIGHT)) {
+		bPlayAgain = false;
+	}
+	else if (app->IsKeyReleased(app::Key::LEFT)) {
+		bPlayAgain = true;
+	}
+	else if (app->IsKeyReleased(app::Key::ENTER)) {
+		app->ResumeEngine();
+		if (bPlayAgain) {
+			app->GameReset();
+			app->GameInit();
+			return true;
+		}
+		else
+		{
+			OpenMenu();
+			eMenuOption = AppOption::APP_MENU;
+			return true;
+		}
+	}
+	return true; // successfully handle the game over event;
+}
+
 /// @brief Update all app screen (menu, pause, about us, exit)
 /// @param fElapsedTime Time elapsed since last frame
 /// @return True if update successfully, false otherwise
@@ -377,10 +404,8 @@ bool hMenu::Update(const float fElapsedTime)
 /// @brief Display menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
-bool hMenu::RenderAppMenu()
+bool hMenu::RenderAppMenu() const
 {
-	nAppOptionValue = (nAppOptionValue % nAppOptionLimit + nAppOptionLimit) % nAppOptionLimit;
-
 	app->Clear(app::BLACK);
 	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("menu_background"));
 	for (int id = 0; id < nAppOptionLimit; id++) {
@@ -439,7 +464,7 @@ bool hMenu::RenderProceed() const
 bool hMenu::RenderAboutUs() const
 {
 	app->Clear(app::BLACK);
-	const std::string about_us_dynamic = "about_us_page" + app->ShowFrameID(4);
+	const std::string about_us_dynamic = "about_us_page" + cFrameManager::GetInstance().ShowFrameID(4);
 	const auto object = cAssetManager::GetInstance().GetSprite(about_us_dynamic);
 	app->DrawSprite(0, 0, object);
 	return true;
@@ -477,10 +502,35 @@ bool hMenu::RenderPausing() const
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
+/// @brief Game over and display game over window on screen
+/// @return Always return true by default
+bool hMenu::RenderGameOver() const
+{
+	/// Overlay
+	app->SetPixelMode(app::Pixel::ALPHA);
+	app->SetBlendFactor(170.0f / 255.0f);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	app->SetBlendFactor(255.0f / 255.0f);
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	app->DrawSprite(120, 45, cAssetManager::GetInstance().GetSprite("game_over"));
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	if (bPlayAgain) {
+		app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
+	}
+	else {
+		app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
+	return true;
+}
 
 /// @brief Render all app screen (menu, pause, about us, exit)
 /// @return True if render successfully, false otherwise
-bool hMenu::Render()
+bool hMenu::Render() const
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:

@@ -64,7 +64,7 @@ private: /// Position Checkers
 	bool IsInside(int x, int y) const;
 
 public: // Setters 
-	bool SetPlatform(int nPosX, int nPosY, bool bValue);
+	bool SetPlatform(int nPosX, int nPosY, bool bValue) const;
 	bool SetDanger(int nPosX, int nPosY, bool bValue);
 	bool SetBlock(int nPosX, int nPosY, bool bValue);
 	bool SetCellSize(int nWidth, int nHeight);

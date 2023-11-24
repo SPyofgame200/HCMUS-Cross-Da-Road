@@ -10,7 +10,7 @@
 #define C_MENU_H
 
 #include "uSound.h"
-#include "uAppConst.h"
+//#include "uAppConst.h"
 #include "cAssetManager.h"
 #include <vector>
 
@@ -62,6 +62,9 @@ private: /// Pause HUD
 	int nPauseOptionValue; ///< Current option index
 	int nPauseOptionLimit; ///< Maximum number of options
 
+private: /// Game Over HUD
+	bool bPlayAgain = true;
+
 public: // Constructor & Destructor
 	hMenu();
 	hMenu(cApp* app);
@@ -105,11 +108,13 @@ private: // Renderer helpers
 
 public: // Updaters
 	bool UpdatePausing();
+	bool UpdateGameOver();
 	bool Update(float fElapsedTime);
 
 public: // Renderers
 	bool RenderPausing() const;
-	bool Render();
+	bool RenderGameOver() const;
+	bool Render() const;
 };
 
 #endif // C_MENU_H

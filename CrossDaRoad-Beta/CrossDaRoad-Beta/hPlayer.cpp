@@ -11,29 +11,62 @@
 #include "cApp.h"
 #include "uAppUtils.h"
 #include "uAppConst.h"
+#include "cFrameManager.h"
+#include "hPlayerMotion.h"
+#include "hPlayerRender.h"
+#include "hPlayerHitbox.h"
+#include "hPlayerUpdate.h"
+
+
+hPlayerMotion hPlayer::hMotion;
+hPlayerRender hPlayer::hRender;
+hPlayerHitbox hPlayer::hHitbox;
+hPlayerUpdate hPlayer::hUpdate;
+
+hPlayerMotion& hPlayer::Motion()
+{
+	return hMotion;
+}
+
+hPlayerRender& hPlayer::Render()
+{
+	return hRender;
+}
+
+hPlayerHitbox& hPlayer::Hitbox()
+{
+	return hHitbox;
+}
+
+hPlayerUpdate& hPlayer::Update()
+{
+	return hUpdate;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-hPlayer::hPlayer() : app(nullptr)
+hPlayer::hPlayer() : ptrApp(nullptr)
 {
+	SetupComponents();
 	Reset();
 }
 
-/// @brief Constructor with app pointer
-hPlayer::hPlayer(cApp* app) : app(nullptr)
+/// @brief Constructor with ptrApp pointer
+hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
 {
-	SetupTarget(app);
+	SetupComponents();
+	SetupTarget(ptrApp);
 	Reset();
 }
 
 /// @brief Destructor
 hPlayer::~hPlayer()
 {
-	// No, we are not deleting anything, cApp* app is controlled by cApp
-	app = nullptr;
+	// No, we are not deleting anything, cApp* ptrApp is controlled by cApp
+	ptrApp = nullptr;
 	std::cerr << "hPlayer::~hPlayer(): Successfully destructed" << std::endl;
 }
 
@@ -46,6 +79,7 @@ void hPlayer::ResetDirection()
 {
 	eDirection = RIGHT;
 	eAnimation = IDLE;
+	eSituation = ALIVE;
 }
 /// @brief Reset player animation
 void hPlayer::ResetAnimation()
@@ -74,15 +108,51 @@ void hPlayer::Reset()
 	ResetPosition();
 	ResetVelocity();
 }
-/// @brief Setup app pointer
-/// @param app Pointer to app
-bool hPlayer::SetupTarget(cApp* app)
+
+/// @brief Setup ptrApp pointer
+/// @param ptrApp Pointer to ptrApp
+bool hPlayer::SetupTarget(cApp* ptrApp)
 {
-	if (!app) {
+	if (!ptrApp) {
 		return false;
 	}
-	this->app = app;
+	this->ptrApp = ptrApp;
 	return true;
+}
+
+bool hPlayer::SetupComponents()
+{
+	if (!hHitbox.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup hitbox component" << std::endl;
+		return false;
+	}
+	if (!hMotion.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup motion component" << std::endl;
+		return false;
+	}
+	if (!hUpdate.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup update component" << std::endl;
+		return false;
+	}
+	if (!hRender.SetupTarget(this)) {
+		std::cerr << "hPlayer::SetupComponent(): Failed to setup render component" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+void hPlayer::SynchronizePosition(bool bAnimToLogic)
+{
+	if (bAnimToLogic) {
+		float fAnimPosX = GetPlayerAnimationPositionX();
+		float fAnimPosY = GetPlayerAnimationPositionY();
+		SetLogicPosition(fAnimPosX, fAnimPosY);
+	}
+	else {
+		float fLogicPosX = GetPlayerLogicPositionX();
+		float fLogicPosY = GetPlayerLogicPositionY();
+		SetAnimationPosition(fLogicPosX, fLogicPosY);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +173,14 @@ bool hPlayer::IsExactDirection(Direction eCompare) const
 bool hPlayer::IsExactAnimation(Animation eCompare) const
 {
 	return eAnimation == eCompare;
+}
+
+/// @brief Check if player is doing exact animation
+/// @param eCompare Animation to compare
+/// @return True if player is doing exact animation, false otherwise
+bool hPlayer::IsExactSituation(Situation eCompare) const
+{
+	return eSituation == eCompare;
 }
 
 /// @brief Check if player is facing left direction
@@ -137,13 +215,13 @@ bool hPlayer::IsPlayerIdling() const
 /// @return True if player is landing, false otherwise
 bool hPlayer::IsPlayerLanding() const
 {
-	return app->frame6.IsStopAnimation();
+	return cFrameManager::GetFrame6().IsStopAnimation();
 }
 /// @brief Check if player is safe when having collision
 /// @return True if player is safe, false otherwise
 bool hPlayer::IsPlayerCollisionSafe() const
 {
-	return app->frame6.GetAnimationID() <= frame6_id_animation_safe;
+	return cFrameManager::GetFrame6().GetAnimationID() <= frame6_id_animation_safe;
 }
 /// @brief Check if player is out of bounds of map border
 /// @return True if player is out of bounds, false otherwise
@@ -163,44 +241,39 @@ bool hPlayer::IsPlayerOutOfBounds() const
 	}
 	return false;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////// COLLISIONS DETECTION /////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Check if player is hit by danger zone
-/// @return True if player is hit by danger zone, false otherwise
-bool hPlayer::IsPlatform() const
-{
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
-}
-/// @brief Check if player is hit by danger zone
-/// @return True if player is hit by danger zone, false otherwise
-bool hPlayer::IsHit() const
-{
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
-}
-/// @brief Check if player is blocked by block zone
-/// @return True if player is blocked by block zone, false otherwise
-bool hPlayer::IsBlocked() const
-{
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	return app->Zone.IsBlockedTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
-}
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-	if (app->IsMoveUp() && !CanMoveUp()) {
+	if (ptrApp->IsMoveUp() && !CanMoveUp()) {
 		return true;
 	}
 	const float fPosY = GetPlayerLogicPositionY();
 	return (fPosY < app_const::TOP_BORDER);
+}
+bool hPlayer::IsKilled() const
+{
+	if (IsPlayerCollisionSafe()) {
+		return false;
+	}
+	return Hitbox().IsHit();
+}
+
+bool hPlayer::IsMoveLeft() const
+{
+	return ptrApp->IsMoveLeft();
+}
+bool hPlayer::IsMoveRight() const
+{
+	return ptrApp->IsMoveRight();
+}
+bool hPlayer::IsMoveUp() const
+{
+	return ptrApp->IsMoveUp();
+}
+bool hPlayer::IsMoveDown() const
+{
+	return ptrApp->IsMoveDown();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,6 +318,12 @@ hPlayer::Direction hPlayer::GetDirection() const
 hPlayer::Animation hPlayer::GetAnimation() const
 {
 	return eAnimation;
+}
+
+/// @brief Getter for current animation of player
+hPlayer::Situation hPlayer::GetSituation() const
+{
+	return eSituation;
 }
 
 /// @brief Getter for animation position of player in X-axis
@@ -307,252 +386,69 @@ void hPlayer::SetAnimation(Animation eNewAnimation)
 }
 /// @brief Setter for animation position of player in X-axis
 /// @param fVelocityX New animation position of player in X-axis
-void hPlayer::SetPlayerVelocityX(float fVelocityX)
+void hPlayer::SetVelocityX(float fVelocityX)
 {
 	fFrogVelocityX = FixFloat(fVelocityX);
 }
 /// @brief Setter for animation position of player in Y-axis
 /// @param fVelocityY New animation position of player in Y-axis
-void hPlayer::SetPlayerVelocityY(float fVelocityY)
+void hPlayer::SetVelocityY(float fVelocityY)
 {
 	fFrogVelocityY = FixFloat(fVelocityY);
 }
 /// @brief Setter for velocity of player 
 /// @param fVelocityX New velocity of player in X-axis
 /// @param fVelocityY New velocity of player in Y-axis
-void hPlayer::SetPlayerVelocity(float fVelocityX, float fVelocityY)
+void hPlayer::SetVelocity(float fVelocityX, float fVelocityY)
 {
-	SetPlayerVelocityX(fVelocityX);
-	SetPlayerVelocityY(fVelocityY);
+	SetVelocityX(fVelocityX);
+	SetVelocityY(fVelocityY);
 }
 /// @brief Setter for animation position of player in X-axis
 /// @param fPositionX New animation position of player in X-axis
-void hPlayer::SetPlayerAnimationPositionX(float fPositionX)
+void hPlayer::SetAnimationPositionX(float fPositionX)
 {
 	fFrogAnimPosX = FixFloat(fPositionX);
 }
 /// @brief Setter for animation position of player in Y-axis
 /// @param fPositionY New animation position of player in Y-axis
-void hPlayer::SetPlayerAnimationPositionY(float fPositionY)
+void hPlayer::SetAnimationPositionY(float fPositionY)
 {
 	fFrogAnimPosY = FixFloat(fPositionY);
 }
 /// @brief Setter for animation position of player
 /// @param fPositionX New animation position of player in X-axis
 /// @param fPositionY New animation position of player in Y-axis
-void hPlayer::SetPlayerAnimationPosition(float fPositionX, float fPositionY)
+void hPlayer::SetAnimationPosition(float fPositionX, float fPositionY)
 {
-	SetPlayerAnimationPositionX(fPositionX);
-	SetPlayerAnimationPositionY(fPositionY);
+	SetAnimationPositionX(fPositionX);
+	SetAnimationPositionY(fPositionY);
 }
 /// @brief Setter for logic position of player in X-axis
 /// @param fPositionX New logic position of player in X-axis
-void hPlayer::SetPlayerLogicPositionX(float fPositionX)
+void hPlayer::SetLogicPositionX(float fPositionX)
 {
 	fFrogLogicPosX = FixFloat(fPositionX);
 }
 /// @brief Setter for logic position of player in Y-axis
 /// @param fPositionY Logic position of player in Y-axis
-void hPlayer::SetPlayerLogicPositionY(float fPositionY)
+void hPlayer::SetLogicPositionY(float fPositionY)
 {
 	fFrogLogicPosY = FixFloat(fPositionY);
 }
 /// @brief Setter for logic position of player
 /// @param fPositionX Logic position of player in X-axis
 /// @param fPositionY Logic position of player in Y-axis
-void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
+void hPlayer::SetLogicPosition(float fPositionX, float fPositionY)
 {
-	SetPlayerLogicPositionX(fPositionX);
-	SetPlayerLogicPositionY(fPositionY);
+	SetLogicPositionX(fPositionX);
+	SetLogicPositionY(fPositionY);
 }
 /// @brief Setter for player name
 /// @param Name Name of player
-void hPlayer::SetPlayerName(std::string Name)
+void hPlayer::SetPlayerName(const std::string& Name)
 {
 	this->Name = Name;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////// MOVEMENTS ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Move player in X-axis
-/// @param fFactorX Factor of movement in X-axis
-/// @param nStep Number of steps to move
-/// @return Always true by default
-bool hPlayer::PlayerMoveX(float fFactorX, int nStep)
-{
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
-		const float fOffsetPartialX = fFrogVelocityX * fFactorX * fPartial;
-		SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		if (!IsBlocked() && !IsPlayerOutOfBounds()) {
-			break;
-		}
-	}
-	return true;
-}
-/// @brief Move player in Y-axis
-/// @param fFactorY Factor of movement in Y-axis
-/// @param nStep Number of steps to move
-/// @return Always true by default
-bool hPlayer::PlayerMoveY(float fFactorY, int nStep)
-{
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
-		const float fOffsetPartialY = fFrogVelocityY * fFactorY * fPartial;
-		SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		if (!IsBlocked() && !IsPlayerOutOfBounds()) {
-			break;
-		}
-	}
-	return true;
-}
-/// @brief Move player in X-axis and Y-axis
-/// @param fFactorX Factor of movement in X-axis
-/// @param fFactorY Factor of movement in Y-axis
-/// @param fFactorScale Factor of movement scale
-/// @param nStep Number of steps to move
-/// @return True if player successfully moved, false otherwise
-bool hPlayer::PlayerMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
-{
-	return PlayerMoveX(fFactorX * fFactorScale, nStep)
-		&& PlayerMoveY(fFactorY * fFactorScale, nStep);
-}
-/// @brief Check if Player successfully moved left (by key released)
-bool hPlayer::PlayerMoveLeft(float factor, bool forced)
-{
-	if ((forced || app->IsMoveLeft()) && CanMoveLeft()) {
-		PlayerMove(-1, 0, factor);
-	}
-	return true;
-}
-/// @brief Check if Player successfully moved right (by key released)
-bool hPlayer::PlayerMoveRight(float factor, bool forced)
-{
-	if ((forced || app->IsMoveRight()) && CanMoveRight()) {
-		PlayerMove(+1, 0, factor);
-	}
-	return true;
-}
-/// @brief Check if Player successfully moved up (by key released)
-bool hPlayer::PlayerMoveUp(float factor, bool forced)
-{
-	if ((forced || app->IsMoveUp()) && CanMoveUp()) {
-		PlayerMove(0, -1, factor);
-	}
-	return true;
-}
-//// @brief Check if Player successfully moved down (by key released)
-bool hPlayer::PlayerMoveDown(float factor, bool forced)
-{
-	if ((forced || app->IsMoveDown()) && CanMoveDown()) {
-		PlayerMove(0, +1, factor);
-	}
-	return true;
-}
-/// @brief Check if Player successfully moved (by key released)
-bool hPlayer::PlayerMoveTryAll(float factor, bool forced)
-{
-	bool ok = true;
-	ok &= PlayerMoveLeft(factor, forced);
-	ok &= PlayerMoveRight(factor, forced);
-	ok &= PlayerMoveUp(factor, forced);
-	ok &= PlayerMoveDown(factor, forced);
-	return ok;
-}
-/// @brief Detect if player is on platform
-/// @param nStep Number of steps to detect
-/// @param fFactor Factor of movement scale
-/// @return True if player is on platform, false otherwise
-bool hPlayer::PlayerPlatformDetector(int nStep, float fFactor)
-{
-	if (app->IsMoveRight() && app->IsKilled()) {
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveRight(fFactor, true);
-			if (!app->IsKilled()) {
-				return false;
-			}
-		}
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveLeft(fFactor, true);
-			if (!app->IsKilled()) {
-				return false;
-			}
-		}
-	}
-	if (!app->IsMoveLeft() && app->IsKilled()) {
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveLeft(fFactor, true);
-			if (!app->IsKilled()) {
-				return false;
-			}
-		}
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveRight(fFactor, true);
-			if (!app->IsKilled()) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-/// @brief Check if Player successfully moved on platform in X-axis
-/// @param fFactorX Factor of movement in X-axis
-/// @param nStep Number of steps to move
-/// @return Always true by default
-bool hPlayer::PlayerPlatformMoveX(float fFactorX, int nStep)
-{
-	const float fRealPosX = GetPlayerLogicPositionX();
-	const float fRealPosY = GetPlayerLogicPositionY();
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	const float fOffsetX = fFrogVelocityX * fFactorX;
-	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialX = fFrogVelocityX * fFactorX * nPos / nStep;
-		SetPlayerAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		SetPlayerLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
-		if (!IsBlocked()) {
-			break;
-		}
-	}
-	return true;
-}
-/// @brief Check if Player successfully moved on platform in Y-axis
-/// @param fFactorY Factor of movement in Y-axis
-/// @param nStep Number of steps to move
-/// @return Always true by default
-bool hPlayer::PlayerPlatformMoveY(float fFactorY, int nStep)
-{
-	const float fRealPosX = GetPlayerLogicPositionX();
-	const float fRealPosY = GetPlayerLogicPositionY();
-	const float fPosX = GetPlayerAnimationPositionX();
-	const float fPosY = GetPlayerAnimationPositionY();
-	const float fOffsetY = fFrogVelocityY * fFactorY;
-	for (int nPos = nStep; nPos >= 0; --nPos) {
-		const float fOffsetPartialY = fFrogVelocityY * fFactorY * nPos / nStep;
-		SetPlayerAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		SetPlayerLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
-		if (!IsBlocked()) {
-			break;
-		}
-	}
-	return true;
-}
-/// @brief Check if Player successfully moved on platform
-/// @param fFactorX Factor of movement in X-axis
-/// @param fFactorY Factor of movement in Y-axis
-/// @param fFactorScale Factor of movement scale
-/// @param nStep Number of steps to move
-/// @return Always true by default
-bool hPlayer::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
-{
-	return PlayerPlatformMoveX(fFactorX * fFactorScale) && PlayerPlatformMoveY(fFactorY * fFactorScale);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -565,199 +461,91 @@ bool hPlayer::OnFixPlayerPosition()
 {
 	const float fFixedX = utils::Clamp(FixFloat(GetPlayerAnimationPositionX(), 1), app_const::LEFT_BORDER, app_const::RIGHT_BORDER);
 	const float fFixedY = utils::Clamp(FixFloat(GetPlayerAnimationPositionY(), 1), app_const::TOP_BORDER, app_const::BOTTOM_BORDER);
-	SetPlayerAnimationPosition(fFixedX, fFixedY);
+	SetAnimationPosition(fFixedX, fFixedY);
 	return true;
 }
-
-/// @brief Update animation when player idling
-/// @return Always true by default
-bool hPlayer::OnUpdatePlayerIdle()
-{
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	return true;
-}
-
-/// @brief Update animation when player start jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpStart()
-{
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	return app->frame6.StartAnimation();
-}
-/// @brief Update animation when player continue jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpContinue()
-{
-	if (GetAnimation() == IDLE) {
-		return false;
-	}
-	if (app->frame6.NextAnimation()) {
-		if (GetDirection() == LEFT) {
-			if (!PlayerMoveLeft(1.0f / app->frame6.GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == RIGHT) {
-			if (!PlayerMoveRight(1.0f / app->frame6.GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!PlayerMoveUp(1.0f / app->frame6.GetLimit(), true)) {
-				return false;
-			}
-		}
-		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!PlayerMoveDown(1.0f / app->frame6.GetLimit(), true)) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-/// @brief Update animation when player stop jumping
-/// @return True if player animation is updated, false otherwise
-bool hPlayer::OnUpdatePlayerJumpStop()
-{
-	OnFixPlayerPosition();
-	SetPlayerLogicPosition(fFrogAnimPosX, fFrogAnimPosY);
-	if (GetAnimation() == JUMP) {
-		SetAnimation(IDLE);
-		return true;
-	}
-	return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool hPlayer::OnRenderPlayerIdle() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpStart() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpContinue() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-bool hPlayer::OnRenderPlayerJumpStop() const
-{
-	OnRenderPlayer();
-	return true;
-}
-
-/// @brief Render player animation to screen
-/// @return Always true by default
-bool hPlayer::OnRenderPlayer() const
-{
-	const int nID = app->frame6.GetAnimationID();
-	const bool isValidID = app->frame6.IsValidID(nID);
-	const bool isLeft = (IsLeftDirection());
-	const bool isJump = (IsPlayerJumping()) && (isValidID);
-	const std::string froggy_state = std::string(isJump ? "_jump" : "");
-	const std::string froggy_direction = std::string(isLeft ? "_left" : "");
-	const std::string froggy_id = (isJump ? std::to_string(nID) : "");
-	const std::string froggy_name = "froggy" + froggy_state + froggy_direction + froggy_id;
-	const auto froggy = cAssetManager::GetInstance().GetSprite(froggy_name);
-	if (froggy == nullptr) {
-		std::cerr << "WTF, cant found " << froggy_name << std::endl;
-	}
-
-	app->SetPixelMode(app::Pixel::MASK);
-	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-	const int32_t frogXPosition = static_cast<int32_t>(fFrogAnimPosX * nCellSize);
-	const int32_t frogYPosition = static_cast<int32_t>(fFrogAnimPosY * nCellSize);
-	app->DrawSprite(frogXPosition, frogYPosition, froggy);
-	app->SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
-
-/// @brief Render player death animation to screen
-/// @return Always true by default
-bool hPlayer::OnRenderPlayerDeath()
-{
-	for (int id = 1; id <= 6; ++id) {
-		const std::string froggy_name = "froggy_death" + std::to_string(id);;
-		const auto froggy = cAssetManager::GetInstance().GetSprite(froggy_name);
-		if (froggy == nullptr) {
-			std::cerr << "WTF, cant found \"" << froggy_name << ".png\"" << std::endl;
-		}
-
-		const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-		const int32_t frogXPosition = static_cast<int32_t>(GetPlayerAnimationPositionX() * nCellSize);
-		const int32_t frogYPosition = static_cast<int32_t>(GetPlayerAnimationPositionY() * nCellSize);
-		app->DrawAllLanes();
-		app->SetPixelMode(app::Pixel::MASK);
-		app->DrawSprite(frogXPosition, frogYPosition, froggy);
-		app->SetPixelMode(app::Pixel::NORMAL);
-		app->DrawStatusBar();
-
-		app->RenderTexture();
-		Sleep(100);
-	}
-	Reset();
-	return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Update player animation and render to screen
 /// @return Always true by default
 bool hPlayer::OnPlayerMove()
 {
 	if (IsPlayerIdling()) {
-		if (app->IsMoveLeft()) {
+		if (ptrApp->IsMoveLeft()) {
 			SetAnimation(JUMP);
 			SetDirection(LEFT);
 		}
-		else if (app->IsMoveRight()) {
+		else if (ptrApp->IsMoveRight()) {
 			SetAnimation(JUMP);
 			SetDirection(RIGHT);
 		}
-		else if (app->IsMoveUp()) {
+		else if (ptrApp->IsMoveUp()) {
 			SetAnimation(JUMP);
 			SetDirection(IsLeftDirection() ? LEFT_UP : RIGHT_UP);
 		}
-		else if (app->IsMoveDown()) {
+		else if (ptrApp->IsMoveDown()) {
 			SetAnimation(JUMP);
 			SetDirection(IsLeftDirection() ? LEFT_DOWN : RIGHT_DOWN);
 		}
 
 		if (IsPlayerJumping()) {
-			OnUpdatePlayerJumpStart();
-			OnRenderPlayerJumpStart();
+			hUpdate.OnUpdatePlayerJumpStart();
+			hRender.OnRenderPlayerJumpStart();
 		}
 		else {
-			OnUpdatePlayerIdle();
-			OnRenderPlayerIdle();
+			hUpdate.OnUpdatePlayerIdle();
+			hRender.OnRenderPlayerIdle();
 		}
 		return true;
 	}
 
 	if (!IsPlayerLanding()) {
-		OnUpdatePlayerJumpContinue();
-		OnRenderPlayerJumpContinue();
+		hUpdate.OnUpdatePlayerJumpContinue();
+		hRender.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
-		OnUpdatePlayerJumpStop();
-		OnRenderPlayerJumpStop();
+		hUpdate.OnUpdatePlayerJumpStop();
+		hRender.OnRenderPlayerJumpStop();
 	}
 	return true;
 }
 
+bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
+{
+	const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
+	if (froggy == nullptr) {
+		std::cerr << "WTF, cant found " << sSpriteName << std::endl;
+	}
+
+	if (bReloadMap) {
+		ptrApp->DrawAllLanes();
+	}
+	ptrApp->SetPixelMode(app::Pixel::MASK);
+	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+	const int32_t frogXPosition = static_cast<int32_t>(GetPlayerAnimationPositionX() * nCellSize);
+	const int32_t frogYPosition = static_cast<int32_t>(GetPlayerAnimationPositionY() * nCellSize);
+	ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
+	ptrApp->SetPixelMode(app::Pixel::NORMAL);
+	if (bForceRender) {
+		ptrApp->DrawStatusBar();
+		ptrApp->RenderTexture();
+	}
+	return true;
+}
+
+void hPlayer::Sleep(float fTime)
+{
+	ptrApp->ForceSleep(fTime);
+}
+
+cZone* hPlayer::GetZone()
+{
+	if (ptrApp) {
+		return &(ptrApp->Zone);
+	}
+	else {
+		return nullptr; // or handle the case where ptrApp is null
+	}
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// END OF FILE ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

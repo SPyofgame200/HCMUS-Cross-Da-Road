@@ -6,13 +6,15 @@
 **/
 
 #include "cApp.h"
-#include "uSound.h"
 #include "uStringUtils.h"
 #include <Windows.h>
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <thread>
+#include "cFrameManager.h"
+#include "hPlayerMotion.h"
+#include "hPlayerRender.h"
+#include "hPlayerHitbox.h"
 
 constexpr float fConst = 2.0f;
 
@@ -86,10 +88,7 @@ bool cApp::GameReset()
 	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
 	Zone.CreateZone(ScreenWidth(), ScreenHeight());
 	Player.Reset();
-	frame4.Reset();
-	frame6.Reset();
-	frame8.Reset();
-	frame12.Reset();
+	cFrameManager::GetInstance().Reset();
 
 	Clear(app::BLACK);
 	MapLoader.LoadMapLevel();
@@ -105,28 +104,6 @@ bool cApp::GameReset()
 ///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Check if Player is killed by any object
-/// @param bDebug Whether to print debug information or not
-/// @return True if Player is killed, false otherwise
-bool cApp::IsKilled() const
-{
-	if (Player.IsPlayerCollisionSafe()) {
-		return false;
-	}
-	return Player.IsHit();
-}
-/// @brief Get death message of Player
-/// @return String of death message
-std::string cApp::GetPlayerDeathMessage() const
-{
-	return "";
-}
-/// @brief Check if Player is on platform
-/// @return True if Player is on platform, false otherwise
-bool cApp::IsOnPlatform() const
-{
-	return Player.IsPlatform();
-}
 /// @brief Get platform velocity
 /// @param fElapsedTime Time elapsed since last update
 /// @return Velocity of platform
@@ -148,14 +125,16 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
-	if (IsOnPlatform()) { // Frog is moved by platforms
-		Player.PlayerPlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
-		Player.PlayerPlatformDetector();
+	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
+		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
+		Player.Motion().PlatformDetector();
 	}
 	if (Player.IsPlayerWin()) {
 		return GameNext();
 	}
-	if (Player.IsPlayerOutOfBounds() || IsKilled()) {
+	if (Player.IsPlayerOutOfBounds() || Player.IsKilled()) {
+		Player.Render().OnRenderPlayerDeath();
+		Player.Reset();
 		return OnPlayerDeath();
 	}
 	return true;
@@ -164,13 +143,9 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 /// @return Always returns true by default
 bool cApp::OnPlayerDeath()
 {
-	std::cout << GetPlayerDeathMessage() << std::endl;
 	bDeath = true;
-	Player.OnRenderPlayerDeath();
-	Player.Reset();
 	if (--nLife <= 0) {
-
-		GameInit();
+		PauseEngine();
 	}
 	bDeath = false;
 	return true;
@@ -180,7 +155,7 @@ bool cApp::OnPlayerDeath()
 bool cApp::OnGameRender()
 {
 	DrawAllLanes();
-	Player.OnRenderPlayer();
+	Player.Render().OnRenderPlayer();
 	DrawStatusBar();
 	return true;
 }
@@ -201,7 +176,7 @@ bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
 	if (!IsEnginePause() && !bDeath) {
 		fTimeSinceStart = fTickTime;
-		OnUpdateFrame(fTickTime);
+		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
 	}
 	return true;
 }
@@ -256,8 +231,7 @@ bool cApp::UpdateDrawNameBox()
 	{
 		if (playerName.size() < 9)
 		{
-
-			std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
 			char currentKeyA = 'A';
 			for (const auto &it : mapKeyAlphabet)
 			{	
@@ -268,7 +242,7 @@ bool cApp::UpdateDrawNameBox()
 				}
 				++currentKeyA;
 			}
-			std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
 			char currentKeyN = '0';
 			for(const auto &it : mapKeyNumeric)
 			{
@@ -320,7 +294,7 @@ bool cApp::OnRenderEvent()
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
-	std::string FileName = Player.GetPlayerName();
+	const std::string FileName = Player.GetPlayerName();
 	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);
@@ -364,9 +338,9 @@ bool cApp::OnGameLoad()
 
 			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
 				MapLoader.SetMapLevel(MapLevel);
-				Player.SetPlayerAnimationPosition(AnimationPositionX, AnimationPositionY);
-				Player.SetPlayerLogicPosition(LogicPositionX, LogicPositionY);
-				Player.SetPlayerVelocity(VelocityX, VelocityY);
+				Player.SetAnimationPosition(AnimationPositionX, AnimationPositionY);
+				Player.SetLogicPosition(LogicPositionX, LogicPositionY);
+				Player.SetVelocity(VelocityX, VelocityY);
 				fin.close();
 				return true;
 			}
@@ -395,9 +369,16 @@ bool cApp::OnPauseEvent()
 		PauseEngine();
 	}
 	if (IsEnginePause()) { // continue the pause event
-		Menu.UpdatePausing();
-		OnGameRender();
-		Menu.RenderPausing();
+		if (nLife == 0) {
+			Menu.UpdateGameOver();
+			OnGameRender();
+			Menu.RenderGameOver();
+		}
+		else {
+			Menu.UpdatePausing();
+			OnGameRender();
+			Menu.RenderPausing();
+		}
 		return false;
 	}
 	return true; // succesfully handle the pause event
@@ -522,7 +503,7 @@ bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
-	const std::string score_board_dynamic = "score_bar" + ShowFrameID(4, 0.005f);
+	const std::string score_board_dynamic = "score_bar" + cFrameManager::GetInstance().ShowFrameID(4, 0.005f);
 	const auto object = cAssetManager::GetInstance().GetSprite(score_board_dynamic);
 	constexpr int32_t nOffSetX_sb = 272;
 	constexpr int32_t nOffSetY_sb = 0;
@@ -532,88 +513,14 @@ bool cApp::DrawStatusBar()
 	constexpr int32_t nHeight_sb = 160;
 	constexpr int32_t nPosX_level = 321;
 	constexpr int32_t nPosY_level = 80;
-	int nPosX_PlayerName = 312 - playerName.size() * 4;
-	int nPosY_PlayerName = 63;
+	const int nPosX_PlayerName = static_cast<int>(312 - playerName.size() * 4);
+	constexpr int nPosY_PlayerName = 63;
 	DrawPartialSprite(nOffSetX_sb, nOffSetY_sb, object, nOriginX_sb, nOriginY_sb, nWidth_sb, nHeight_sb);
 	SetPixelMode(app::Pixel::MASK);
 	DrawBigText(playerName, nPosX_PlayerName, nPosY_PlayerName);
 	DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
 	SetPixelMode(app::Pixel::NORMAL);
 	DrawBigText(std::to_string(nLife), nPosX_level, 99);
-	return true;
-}
-
-/// @brief Getter for current frame id of player
-int cApp::GetFrameID(const int frame) const
-{
-	if (frame == frame4.GetLimit()) {
-		return frame4.GetID();
-	}
-	else if (frame == frame6.GetLimit()) {
-		return frame6.GetID();
-	}
-	else if (frame == frame8.GetLimit()) {
-		return frame8.GetID();
-	}
-	else if (frame == frame12.GetLimit()) {
-		return frame12.GetID();
-	}
-	return 0;
-}
-
-int cApp::GetFrameID(const int frame, float fTickRate) const
-{
-	if (frame == frame4.GetLimit()) {
-		frame4_t current = frame4;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame6.GetLimit()) {
-		frame6_t current = frame6;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame8.GetLimit()) {
-		frame8_t current = frame8;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	else if (frame == frame12.GetLimit()) {
-		frame12_t current = frame12;
-		current.UpdateFrame(fTimeSinceStart, GetFrameDelay(), fTickRate);
-		return current.GetID();
-	}
-	return 0;
-}
-
-/// @brief Get string of current frame id of player
-/// @param frame Frame to get id
-/// @return String of current frame id of player
-std::string cApp::ShowFrameID(const int frame) const
-{
-	if (frame <= 0) {
-		return "";
-	}
-	return std::to_string(GetFrameID(frame));
-}
-
-std::string cApp::ShowFrameID(const int frame, float fTickRate) const
-{
-	if (frame <= 0) {
-		return "";
-	}
-	return std::to_string(GetFrameID(frame, fTickRate));
-}
-
-/// @brief Update player animation frame 
-/// @param fTickTime Time elapsed since last frame
-/// @return Always true by default
-bool cApp::OnUpdateFrame(float fTickTime, float fTickRate)
-{
-	frame4.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame6.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame8.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
-	frame12.UpdateFrame(fTickTime, GetFrameDelay(), fTickRate);
 	return true;
 }
 

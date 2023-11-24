@@ -11,13 +11,29 @@
 
 #include <string>
 #include "uAppConst.h"
+
 class cApp;
 class cZone;
-class hPlayerMovement;
+class hPlayerHitbox;
+class hPlayerMotion;
+class hPlayerUpdate;
+class hPlayerRender;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
 {
+private: /// Componnets handlers
+	static hPlayerHitbox hHitbox;
+	static hPlayerMotion hMotion;
+	static hPlayerUpdate hUpdate;
+	static hPlayerRender hRender;
+
+public: /// Components getters
+	static hPlayerHitbox& Hitbox();
+	static hPlayerMotion& Motion();
+	static hPlayerUpdate& Update();
+	static hPlayerRender& Render();
+
 public:
 	/// @brief Direction enumeration for player movement
 	enum Direction
@@ -32,16 +48,20 @@ public:
 	/// @brief Animation enumeration for player animation
 	enum Animation
 	{
-		IDLE = 0,			///< Idle animation for player
-		JUMP = 1,			///< Jump animation for player
-		LAND = 2,			///< Land animation for player
+		IDLE = 0,			///< When the player doing nothing
+		JUMP = 1,			///< When the player is moving, it jumps
+		LAND = 2,			///< When the player stopped jumpings
+		MOVE = 3,			///< [Unused] When the player can not jump, for example: sinksand
+		SWIM = 4,			///< [Unused] When the player moving in a fluide environment like lakes
+		TRAP = 5,			///< [Unused] When the player is locked in a position
 	};
-
-	enum State
+	/// @brief Situation enumeration for player interaction
+	enum Situation
 	{
-		ALIVE = 0,
-		DEATH = 1,
-		VICTORY = 2,
+		ALIVE = 0,	/// [TODO] When the player is fine
+		DEATH = 1,	/// [TODO] When the player is killed
+		WIN = 2,	/// [Unused] When the player passed a level
+		LOSE = 3,	/// [Unused] When the player died all its life
 	};
 
 private:
@@ -58,18 +78,20 @@ private:
 private:
 	Direction eDirection;
 	Animation eAnimation;
+	Situation eSituation;
 
 private:
-	cApp* app;
+	cApp* ptrApp;
 	std::string Name;
 
 public: // Constructors & Destructor
 	hPlayer();
-	hPlayer(cApp* app);
+	hPlayer(cApp* ptrApp);
 	~hPlayer();
 
 public: // Initializer & Clean-up
-	bool SetupTarget(cApp* app);
+	bool SetupTarget(cApp* ptrApp);
+	bool SetupComponents();
 
 private: // Reseter helpers
 	void ResetDirection();
@@ -79,10 +101,12 @@ private: // Reseter helpers
 
 public: // Reseters
 	void Reset();
+	void SynchronizePosition(bool bAnimToLogic = true);
 
-private: // Checkers helpers
+public: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
+	bool IsExactSituation(Situation eCompare) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
 	bool IsPlayerJumping() const;
@@ -93,13 +117,15 @@ public: // Checkers
 	bool IsPlayerCollisionSafe() const;
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
+	bool IsKilled() const;
 
-public: // Collision Detection
-	bool IsPlatform() const;
-	bool IsHit() const;
-	bool IsBlocked() const;
+public: /// Motion Checkers
+	bool IsMoveLeft() const;
+	bool IsMoveRight() const;
+	bool IsMoveUp() const;
+	bool IsMoveDown() const;
 
-private: // Validators
+public: // Validators
 	bool CanMoveLeft() const;
 	bool CanMoveRight() const;
 	bool CanMoveUp() const;
@@ -108,6 +134,7 @@ private: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
+	Situation GetSituation() const;
 	float GetPlayerAnimationPositionX() const;
 	float GetPlayerAnimationPositionY() const;
 	float GetPlayerLogicPositionX() const;
@@ -120,54 +147,28 @@ public: // Setters
 	static float FixFloat(float fValue, int nDigits = 9);
 	void SetDirection(Direction eNewDirection);
 	void SetAnimation(Animation eNewAnimation);
-	void SetPlayerVelocityX(float fVelocityX);
-	void SetPlayerVelocityY(float fVelocityY);
-	void SetPlayerVelocity(float fVelocityX, float fVelocityY);
-	void SetPlayerAnimationPositionX(float fPositionX);
-	void SetPlayerAnimationPositionY(float fPositionY);
-	void SetPlayerAnimationPosition(float fPositionX, float fPositionY);
-	void SetPlayerLogicPositionX(float fPositionX);
-	void SetPlayerLogicPositionY(float fPositionY);
-	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
-	void SetPlayerName(std::string Name);
-
-public: // Movements
-	bool PlayerMoveX(float fFactorX, int nStep = 16);
-	bool PlayerMoveY(float fFactorX, int nStep = 16);
-	bool PlayerMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
-	bool PlayerMoveLeft(float factor = 1, bool forced = false);
-	bool PlayerMoveRight(float factor = 1, bool forced = false);
-	bool PlayerMoveUp(float factor = 1, bool forced = false);
-	bool PlayerMoveDown(float factor = 1, bool forced = false);
-	bool PlayerMoveTryAll(float factor = 1, bool forced = false);
-	bool PlayerPlatformMoveX(float fFactorX, int nStep = 16);
-	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
-
-public: // Movements
-	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
-	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
+	void SetAnimation(Situation eNewAnimation);
+	void SetVelocityX(float fVelocityX);
+	void SetVelocityY(float fVelocityY);
+	void SetVelocity(float fVelocityX, float fVelocityY);
+	void SetAnimationPositionX(float fPositionX);
+	void SetAnimationPositionY(float fPositionY);
+	void SetAnimationPosition(float fPositionX, float fPositionY);
+	void SetLogicPositionX(float fPositionX);
+	void SetLogicPositionY(float fPositionY);
+	void SetLogicPosition(float fPositionX, float fPositionY);
+	void SetPlayerName(const std::string& Name);
 
 private: // Validators & Fixers
 	bool OnFixPlayerPosition();
 
-private: // Logic Updater
-	bool OnUpdatePlayerIdle();
-	bool OnUpdatePlayerJumpStart();
-	bool OnUpdatePlayerJumpContinue();
-	bool OnUpdatePlayerJumpStop();
-
-private: // Player Renderer 
-	bool OnRenderPlayerIdle() const;
-	bool OnRenderPlayerJumpStart() const;
-	bool OnRenderPlayerJumpContinue() const;
-	bool OnRenderPlayerJumpStop() const;
-
-public: // Player Renderers
-	bool OnRenderPlayer() const;
-	bool OnRenderPlayerDeath();
-
 public: // Logic-Render Control
 	bool OnPlayerMove();
+	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
+
+public: // Special
+	void Sleep(float fTime);
+	cZone* GetZone();
 };
 
 #endif // H_PLAYER_H
