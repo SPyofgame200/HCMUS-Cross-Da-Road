@@ -30,7 +30,6 @@ class cApp final : public app::GameEngine
 private: // Interactive Properties (control the map)
 	hMenu Menu;
 	hPlayer Player;
-	int nameBoxOption = 0;
 	std::string playerName;
 
 private: // Reinitializable Properties (depended on each map)
@@ -74,8 +73,7 @@ protected: /// Game Updates
 	bool OnGameSave() const;
 	bool OnGameLoad();
 	bool OnCreateNewName();
-	bool DrawNameBox();
-	bool UpdateDrawNameBox();
+	
 	bool OnDisplaySaveBox();
 
 
