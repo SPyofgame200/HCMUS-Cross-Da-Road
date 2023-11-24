@@ -1,18 +1,18 @@
-#ifndef H_PLAYER_MOVEMENT_H
-#define H_PLAYER_MOVEMENT_H
+#ifndef H_PLAYER_MOTION_H
+#define H_PLAYER_MOTION_H
 
 // forward declaration
 class hPlayer;
 
-class hPlayerMovement
+class hPlayerMotion
 {
 private: // Dependency
 	hPlayer* ptrPlayer;
 
 public: // Constructors & Destructor
-	hPlayerMovement();
-	hPlayerMovement(hPlayer* ptrPlayer);
-	~hPlayerMovement();
+	hPlayerMotion();
+	hPlayerMotion(hPlayer* ptrPlayer);
+	~hPlayerMotion();
 
 public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
@@ -38,4 +38,4 @@ public: // Dependent Move
 	bool PlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 };
 
-#endif H_PLAYER_MOVEMENT_H
+#endif // H_PLAYER_MOTION_H

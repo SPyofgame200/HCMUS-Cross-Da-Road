@@ -1,23 +1,23 @@
-#ifndef H_PLAYER_RENDERER_H
-#define H_PLAYER_RENDERER_H
+#ifndef H_PLAYER_RENDER_H
+#define H_PLAYER_RENDER_H
 
 // forward declaration
 class hPlayer;
 
-class hPlayerRenderer
+class hPlayerRender
 {
 private: // Dependency
 	hPlayer* ptrPlayer;
 
 public: // Constructors & Destructor
-	hPlayerRenderer();
-	hPlayerRenderer(hPlayer* ptrPlayer);
-	~hPlayerRenderer();
+	hPlayerRender();
+	hPlayerRender(hPlayer* ptrPlayer);
+	~hPlayerRender();
 
 public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
 
-public: // Player Renderer 
+public: // Player Render 
 	bool OnRenderPlayerIdle() const;
 	bool OnRenderPlayerJumpStart() const;
 	bool OnRenderPlayerJumpContinue() const;
@@ -29,4 +29,4 @@ public: // Player Renderers
 
 };
 
-#endif //H_PLAYER_RENDERER_H
+#endif // H_PLAYER_RENDER_H

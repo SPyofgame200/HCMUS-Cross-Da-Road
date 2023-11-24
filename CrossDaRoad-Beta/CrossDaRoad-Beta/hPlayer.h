@@ -14,22 +14,25 @@
 
 class cApp;
 class cZone;
-class hPlayerMovement;
-class hPlayerRenderer;
-class hPlayerPhysical;
+class hPlayerMotion;
+class hPlayerRender;
+class hPlayerHitbox;
+class hPlayerUpdate;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
 {
 private: /// Componnets handlers
-	static hPlayerMovement hMovement;
-	static hPlayerRenderer hRenderer;
-	static hPlayerPhysical hPhysical;
+	static hPlayerMotion hMotion;
+	static hPlayerHitbox hHitbox;
+	static hPlayerRender hRender;
+	static hPlayerUpdate hUpdate;
 
 public: /// Components getters
-	static hPlayerMovement& Movement();
-	static hPlayerRenderer& Renderer();
-	static hPlayerPhysical& Physical();
+	static hPlayerMotion& Motion();
+	static hPlayerRender& Render();
+	static hPlayerHitbox& Hitbox();
+	static hPlayerUpdate& Update();
 
 public:
 	/// @brief Direction enumeration for player movement
@@ -108,7 +111,7 @@ public: // Checkers
 	bool IsPlayerWin() const;
 	bool IsKilled() const;
 
-public: /// Movement Checkers
+public: /// Motion Checkers
 	bool IsMoveLeft() const;
 	bool IsMoveRight() const;
 	bool IsMoveUp() const;

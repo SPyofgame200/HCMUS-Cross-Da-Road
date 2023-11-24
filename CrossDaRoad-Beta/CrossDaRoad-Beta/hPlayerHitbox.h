@@ -1,22 +1,22 @@
-#ifndef H_PLAYER_PHYSICAL_H
-#define H_PLAYER_PHYSICAL_H
+#ifndef H_PLAYER_HITBOX_H
+#define H_PLAYER_HITBOX_H
 
 // forward declaration
 class hPlayer;
 
-class hPlayerPhysical
+class hPlayerHitbox
 {
 private: // Dependency
 	hPlayer* ptrPlayer;
 
 public: // Constructors & Destructor
-	hPlayerPhysical();
-	hPlayerPhysical(hPlayer* ptrPlayer);
-	~hPlayerPhysical();
+	hPlayerHitbox();
+	hPlayerHitbox(hPlayer* ptrPlayer);
+	~hPlayerHitbox();
 
 public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
 
 };
 
-#endif H_PLAYER_PHYSICAL_H
+#endif // H_PLAYER_HITBOX_H

@@ -12,28 +12,35 @@
 #include "uAppUtils.h"
 #include "uAppConst.h"
 #include "cFrameManager.h"
-#include "hPlayerMovement.h"
-#include "hPlayerRenderer.h"
-#include "hPlayerPhysical.h"
+#include "hPlayerMotion.h"
+#include "hPlayerRender.h"
+#include "hPlayerHitbox.h"
+#include "hPlayerUpdate.h"
 
 
-hPlayerMovement hPlayer::hMovement;
-hPlayerRenderer hPlayer::hRenderer;
-hPlayerPhysical hPlayer::hPhysical;
+hPlayerMotion hPlayer::hMotion;
+hPlayerRender hPlayer::hRender;
+hPlayerHitbox hPlayer::hHitbox;
+hPlayerUpdate hPlayer::hUpdate;
 
-hPlayerMovement& hPlayer::Movement()
+hPlayerMotion& hPlayer::Motion()
 {
-	return hMovement;
+	return hMotion;
 }
 
-hPlayerRenderer& hPlayer::Renderer()
+hPlayerRender& hPlayer::Render()
 {
-	return hRenderer;
+	return hRender;
 }
 
-hPlayerPhysical& hPlayer::Physical()
+hPlayerHitbox& hPlayer::Hitbox()
 {
-	return hPhysical;
+	return hHitbox;
+}
+
+hPlayerUpdate& hPlayer::Update()
+{
+	return hUpdate;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,16 +50,16 @@ hPlayerPhysical& hPlayer::Physical()
 /// @brief Default constructor
 hPlayer::hPlayer() : ptrApp(nullptr)
 {
-	hMovement.SetupTarget(this);
-	hRenderer.SetupTarget(this);
+	hMotion.SetupTarget(this);
+	hRender.SetupTarget(this);
 	Reset();
 }
 
 /// @brief Constructor with ptrApp pointer
 hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
 {
-	hMovement.SetupTarget(this);
-	hRenderer.SetupTarget(this);
+	hMotion.SetupTarget(this);
+	hRender.SetupTarget(this);
 	SetupTarget(ptrApp);
 	Reset();
 }
@@ -460,22 +467,22 @@ bool hPlayer::OnUpdatePlayerJumpContinue() const
 	}
 	if (cFrameManager::GetFrame6().NextAnimation()) {
 		if (GetDirection() == LEFT) {
-			if (!hMovement.MoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMotion.MoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == RIGHT) {
-			if (!hMovement.MoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMotion.MoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!hMovement.MoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMotion.MoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!hMovement.MoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMotion.MoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
@@ -520,22 +527,22 @@ bool hPlayer::OnPlayerMove()
 
 		if (IsPlayerJumping()) {
 			OnUpdatePlayerJumpStart();
-			hRenderer.OnRenderPlayerJumpStart();
+			hRender.OnRenderPlayerJumpStart();
 		}
 		else {
 			OnUpdatePlayerIdle();
-			hRenderer.OnRenderPlayerIdle();
+			hRender.OnRenderPlayerIdle();
 		}
 		return true;
 	}
 
 	if (!IsPlayerLanding()) {
 		OnUpdatePlayerJumpContinue();
-		hRenderer.OnRenderPlayerJumpContinue();
+		hRender.OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
 		OnUpdatePlayerJumpStop();
-		hRenderer.OnRenderPlayerJumpStop();
+		hRender.OnRenderPlayerJumpStop();
 	}
 	return true;
 }

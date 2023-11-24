@@ -96,7 +96,7 @@ private: // Updater helpers
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
 
-private: // Renderer helpers
+private: // Render helpers
 	bool RenderAppMenu() const;
 	bool RenderProcced() const;
 	bool RenderSetting() const;

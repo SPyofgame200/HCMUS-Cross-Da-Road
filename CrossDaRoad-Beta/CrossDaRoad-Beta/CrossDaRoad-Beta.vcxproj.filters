@@ -93,16 +93,19 @@
     <ClCompile Include="uConsoleColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hPlayerMovement.cpp">
+    <ClCompile Include="hPlayerMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cFrameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hPlayerRenderer.cpp">
+    <ClCompile Include="hPlayerRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hPlayerPhysical.cpp">
+    <ClCompile Include="hPlayerHitbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hPlayerUpdate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,16 +191,19 @@
     <ClInclude Include="uConsoleColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hPlayerMovement.h">
+    <ClInclude Include="hPlayerMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cFrameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hPlayerRenderer.h">
+    <ClInclude Include="hPlayerRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hPlayerPhysical.h">
+    <ClInclude Include="hPlayerHitbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hPlayerUpdate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

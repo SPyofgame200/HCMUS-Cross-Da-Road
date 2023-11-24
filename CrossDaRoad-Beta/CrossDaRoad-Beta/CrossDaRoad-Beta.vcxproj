@@ -152,9 +152,10 @@
     <ClCompile Include="gTexture.cpp" />
     <ClCompile Include="gUtils.cpp" />
     <ClCompile Include="gWindow.cpp" />
-    <ClCompile Include="hPlayerMovement.cpp" />
-    <ClCompile Include="hPlayerPhysical.cpp" />
-    <ClCompile Include="hPlayerRenderer.cpp" />
+    <ClCompile Include="hPlayerMotion.cpp" />
+    <ClCompile Include="hPlayerHitbox.cpp" />
+    <ClCompile Include="hPlayerRender.cpp" />
+    <ClCompile Include="hPlayerUpdate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uAppUtils.cpp" />
     <ClCompile Include="uConsoleColor.cpp" />
@@ -185,9 +186,10 @@
     <ClInclude Include="gTexture.h" />
     <ClInclude Include="gUtils.h" />
     <ClInclude Include="gWindow.h" />
-    <ClInclude Include="hPlayerMovement.h" />
-    <ClInclude Include="hPlayerPhysical.h" />
-    <ClInclude Include="hPlayerRenderer.h" />
+    <ClInclude Include="hPlayerMotion.h" />
+    <ClInclude Include="hPlayerHitbox.h" />
+    <ClInclude Include="hPlayerRender.h" />
+    <ClInclude Include="hPlayerUpdate.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uAppUtils.h" />
     <ClInclude Include="cMessageManager.h" />

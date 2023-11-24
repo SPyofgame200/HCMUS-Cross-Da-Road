@@ -1,27 +1,27 @@
-#include "hPlayerRenderer.h"
+#include "hPlayerRender.h"
 #include "cAssetManager.h"
 #include "cFrameManager.h"
 #include "uAppConst.h"
 #include "hPlayer.h"
 #include <iostream>
 
-hPlayerRenderer::hPlayerRenderer() : ptrPlayer(nullptr)
+hPlayerRender::hPlayerRender() : ptrPlayer(nullptr)
 {
 
 }
 
-hPlayerRenderer::hPlayerRenderer(hPlayer* ptrPlayer) : ptrPlayer(nullptr)
+hPlayerRender::hPlayerRender(hPlayer* ptrPlayer) : ptrPlayer(nullptr)
 {
 	SetupTarget(ptrPlayer);
 }
 
-hPlayerRenderer::~hPlayerRenderer()
+hPlayerRender::~hPlayerRender()
 {
 	ptrPlayer = nullptr;
-	std::cerr << "hPlayerRenderer::~hPlayerRenderer(): Successfully destructed" << std::endl;
+	std::cerr << "hPlayerRender::~hPlayerRender(): Successfully destructed" << std::endl;
 }
 
-bool hPlayerRenderer::SetupTarget(hPlayer* ptrPlayer)
+bool hPlayerRender::SetupTarget(hPlayer* ptrPlayer)
 {
 	if (!ptrPlayer) {
 		return false;
@@ -34,25 +34,25 @@ bool hPlayerRenderer::SetupTarget(hPlayer* ptrPlayer)
 ///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool hPlayerRenderer::OnRenderPlayerIdle() const
+bool hPlayerRender::OnRenderPlayerIdle() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool hPlayerRenderer::OnRenderPlayerJumpStart() const
+bool hPlayerRender::OnRenderPlayerJumpStart() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool hPlayerRenderer::OnRenderPlayerJumpContinue() const
+bool hPlayerRender::OnRenderPlayerJumpContinue() const
 {
 	OnRenderPlayer();
 	return true;
 }
 
-bool hPlayerRenderer::OnRenderPlayerJumpStop() const
+bool hPlayerRender::OnRenderPlayerJumpStop() const
 {
 	OnRenderPlayer();
 	return true;
@@ -60,7 +60,7 @@ bool hPlayerRenderer::OnRenderPlayerJumpStop() const
 
 /// @brief Render player animation to screen
 /// @return Always true by default
-bool hPlayerRenderer::OnRenderPlayer() const
+bool hPlayerRender::OnRenderPlayer() const
 {
 	const int nID = cFrameManager::GetFrame6().GetAnimationID();
 	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
@@ -76,7 +76,7 @@ bool hPlayerRenderer::OnRenderPlayer() const
 
 /// @brief Render player death animation to screen
 /// @return Always true by default
-bool hPlayerRenderer::OnRenderPlayerDeath()
+bool hPlayerRender::OnRenderPlayerDeath()
 {
 	for (int id = 1; id <= 6; ++id) {
 		const std::string sPlayerName = "froggy_death" + std::to_string(id);;

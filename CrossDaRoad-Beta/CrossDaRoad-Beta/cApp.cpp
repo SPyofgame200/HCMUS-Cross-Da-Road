@@ -12,9 +12,9 @@
 #include <sstream>
 #include <thread>
 #include "cFrameManager.h"
-#include "hPlayerMovement.h"
-#include "hPlayerRenderer.h"
-#include "hPlayerPhysical.h"
+#include "hPlayerMotion.h"
+#include "hPlayerRender.h"
+#include "hPlayerHitbox.h"
 
 constexpr float fConst = 2.0f;
 
@@ -148,8 +148,8 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
 	if (IsOnPlatform()) { // Frog is moved by platforms
-		Player.Movement().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
-		Player.Movement().PlatformDetector();
+		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
+		Player.Motion().PlatformDetector();
 	}
 	if (Player.IsPlayerWin()) {
 		return GameNext();
@@ -165,7 +165,7 @@ bool cApp::OnPlayerDeath()
 {
 	std::cout << GetPlayerDeathMessage() << std::endl;
 	bDeath = true;
-	Player.Renderer().OnRenderPlayerDeath();
+	Player.Render().OnRenderPlayerDeath();
 	Player.Reset();
 	if (--nLife <= 0) {
 		PauseEngine();
@@ -180,7 +180,7 @@ bool cApp::OnPlayerDeath()
 bool cApp::OnGameRender()
 {
 	DrawAllLanes();
-	Player.Renderer().OnRenderPlayer();
+	Player.Render().OnRenderPlayer();
 	DrawStatusBar();
 	return true;
 }
