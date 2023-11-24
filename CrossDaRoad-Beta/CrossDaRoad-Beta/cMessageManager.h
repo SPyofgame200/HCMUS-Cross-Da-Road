@@ -7,7 +7,7 @@
 #include <mutex>
 #include <iomanip>
 #include <future>
-#include <fstream>
+
 #include "uConsoleColor.h"
 
 enum MessageSeverity
