@@ -143,7 +143,7 @@ public: // Setters
 	void SetPlayerLogicPositionX(float fPositionX);
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
-	void SetPlayerName(std::string Name);
+	void SetPlayerName(const std::string& Name);
 
 private: // Validators & Fixers
 	bool OnFixPlayerPosition();

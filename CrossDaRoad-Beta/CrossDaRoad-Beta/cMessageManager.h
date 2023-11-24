@@ -81,7 +81,7 @@ public: /// Validator
     }
 
 public: // Loggers
-    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
+    void Log(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& & sFilePath = "", int nLineIndex = 0) const
     {
         auto future = std::async(std::launch::async, &cMessageManager::LogThread, this, eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex);
     }
@@ -92,7 +92,7 @@ public: // Loggers
     }
 
 public: // Getters
-    std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const
+    std::string GetMessage(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& & sFilePath = "", int nLineIndex = 0) const
     {
         std::ostringstream logStream;
         if (eSeverity == MessageSeverity::SEVERE_MESSAGE) {
@@ -114,7 +114,7 @@ public: // Getters
     }
 
 private: // Log handler
-    void LogThread(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string sFilePath = "", int nLineIndex = 0) const {
+    void LogThread(MessageSeverity eSeverity, const std::string& sMessage, const std::string& sFunctionName = "", const std::string& & sFilePath = "", int nLineIndex = 0) const {
         std::lock_guard<std::mutex> lock(logMutex);
         std::cerr << GetMessage(eSeverity, sMessage, sFunctionName, sFilePath, nLineIndex) << std::endl;
     }

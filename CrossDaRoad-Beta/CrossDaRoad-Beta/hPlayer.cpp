@@ -400,7 +400,7 @@ void hPlayer::SetPlayerLogicPosition(float fPositionX, float fPositionY)
 }
 /// @brief Setter for player name
 /// @param Name Name of player
-void hPlayer::SetPlayerName(std::string Name)
+void hPlayer::SetPlayerName(const std::string& Name)
 {
 	this->Name = Name;
 }
