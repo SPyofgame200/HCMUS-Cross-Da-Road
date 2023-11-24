@@ -6,10 +6,8 @@
 **/
 
 #include "cApp.h"
-#include "uSound.h"
 #include "uStringUtils.h"
 #include <Windows.h>
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <thread>
