@@ -21,7 +21,7 @@
 
 
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
-class cApp : public app::GameEngine
+class cApp final : public app::GameEngine
 {
 	friend class hMenu;
 	friend class hPlayer;
