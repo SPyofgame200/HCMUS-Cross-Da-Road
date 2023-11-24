@@ -7,16 +7,7 @@
 **/
 
 #include "gSprite.h"
-#include "gUtils.h"
 
-#include <Windows.h>
-#include <algorithm>
-#include <cwchar>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 // Graphic Interface
 #pragma comment(lib, "gdi32.lib")
