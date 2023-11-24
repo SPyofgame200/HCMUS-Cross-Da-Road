@@ -29,4 +29,4 @@ public: // Player Renderers
 
 };
 
-#endif H_PLAYER_RENDERER_H
+#endif //H_PLAYER_RENDERER_H
