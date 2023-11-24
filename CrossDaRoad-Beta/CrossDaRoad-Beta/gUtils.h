@@ -13,8 +13,6 @@
 #include <string>
 #include <memory>
 
-
-
 namespace app
 {
 	std::wstring to_wstring(const std::string& utf8String);
