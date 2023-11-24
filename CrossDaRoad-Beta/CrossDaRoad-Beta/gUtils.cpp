@@ -7,10 +7,7 @@
 **/
 
 #include "gUtils.h"
-#include <Windows.h>
-#include <iostream>
-#include <memory>
-#include <string>
+
 
 /**
  * @namespace app
