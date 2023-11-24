@@ -147,8 +147,8 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 {
 	Player.OnPlayerMove();
 	if (IsOnPlatform()) { // Frog is moved by platforms
-		Player.PlayerPlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
-		Player.PlayerPlatformDetector();
+		Player.Movement().PlayerPlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
+		Player.Movement().PlayerPlatformDetector();
 	}
 	if (Player.IsPlayerWin()) {
 		return GameNext();

@@ -11,13 +11,20 @@
 
 #include <string>
 #include "uAppConst.h"
+#include "hPlayerMovement.h"
+
 class cApp;
 class cZone;
-class hPlayerMovement;
 
 /// @brief Class for player management, movement, and rendering
 class hPlayer
 {
+private: /// Componnets handlers
+	static hPlayerMovement hMovement;
+
+public: /// Components getters
+	static hPlayerMovement& Movement();
+
 public:
 	/// @brief Direction enumeration for player movement
 	enum Direction
@@ -93,13 +100,20 @@ public: // Checkers
 	bool IsPlayerCollisionSafe() const;
 	bool IsPlayerOutOfBounds() const;
 	bool IsPlayerWin() const;
+	bool IsKilled() const;
+
+public: /// Movement Checkers
+	bool IsMoveLeft() const;
+	bool IsMoveRight() const;
+	bool IsMoveUp() const;
+	bool IsMoveDown() const;
 
 public: // Collision Detection
 	bool IsPlatform() const;
 	bool IsHit() const;
 	bool IsBlocked() const;
 
-private: // Validators
+public: // Validators
 	bool CanMoveLeft() const;
 	bool CanMoveRight() const;
 	bool CanMoveUp() const;
@@ -130,22 +144,6 @@ public: // Setters
 	void SetPlayerLogicPositionY(float fPositionY);
 	void SetPlayerLogicPosition(float fPositionX, float fPositionY);
 	void SetPlayerName(std::string Name);
-
-public: // Movements
-	bool PlayerMoveX(float fFactorX, int nStep = 16);
-	bool PlayerMoveY(float fFactorX, int nStep = 16);
-	bool PlayerMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
-	bool PlayerMoveLeft(float factor = 1, bool forced = false);
-	bool PlayerMoveRight(float factor = 1, bool forced = false);
-	bool PlayerMoveUp(float factor = 1, bool forced = false);
-	bool PlayerMoveDown(float factor = 1, bool forced = false);
-	bool PlayerMoveTryAll(float factor = 1, bool forced = false);
-	bool PlayerPlatformMoveX(float fFactorX, int nStep = 16);
-	bool PlayerPlatformMoveY(float fFactorY, int nStep = 16);
-
-public: // Movements
-	bool PlayerPlatformDetector(int nStep = app_const::CELL_SIZE, float fFactor = 1.0f / app_const::CELL_SIZE);
-	bool PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale = 1, int nStep = 16);
 
 private: // Validators & Fixers
 	bool OnFixPlayerPosition();

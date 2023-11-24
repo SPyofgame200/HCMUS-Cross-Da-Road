@@ -1,66 +1,62 @@
-................................................................  0.0
-................................................................  0.0
-................................................................  0.0
-.......qwer................qwer.................qwer............  0.0
-.......tyui................tyui.................tyui............  0.0
-..asd..................asd..................asd.................  0.0
-..fgh..................fgh..................fgh.................  0.0
-..jkl..................jkl..................jkl.................  0.0
-................................................................  0.0
-................................................................  0.0
-
+wwwhhwwwhhwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww  0.0 
+,,,jllk,,jllllk,,,,,,,jllk,,,,,ii,,,jlllk,,,,jllllk,,,,jlllk,,,, -3.0 
+,,,,jllk,,,,,jllk,,,,jllk,,,,,,,,,jllk,,,,,ii,,,,,,jllllk,,,,,,,  3.0 
+,,jlk,,,,,jlk,,,,,ii,,,,,jlk,,,jlk,,,,ii,,,,jllk,,,,ii,,,,,,ii,,  2.0 
+pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0 
+....asd.......asd....asd..........asd........asd.......asd......  3.0 
+.....t........................t.............................t... -25.0 
+..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
+..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
+pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
-$ . background=deep_ocean
+$ a sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ q sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=0
-$ w sprite=shark background=deep_ocean spriteFrame=6
+$ s sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ e sprite=shark background=deep_ocean spriteFrame=6
+$ d sprite=crocodile background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ r sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=3 spriteY=0
-$ t sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=1
-$ y sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=1 spriteY=1
-$ u sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=2 spriteY=1
-$ i sprite=shark background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=3 spriteY=1
-$ a sprite=octopus background=deep_ocean spriteFrame=6
+$ z sprite=crocodile_right background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ s sprite=octopus background=deep_ocean spriteFrame=6
+$ x sprite=crocodile_right background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ d sprite=octopus background=deep_ocean spriteFrame=6
+$ c sprite=crocodile_right background=soil spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ f sprite=octopus background=deep_ocean spriteFrame=6
+$ j sprite=wood1 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ l sprite=wood2 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ k sprite=wood3 background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ i sprite=lilypad background=water
+: block=false danger=false platformspeed=100.0
+: spriteX=0 spriteY=0
+$ n sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ w sprite=tree
+: block=true danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ t sprite=kiwi background=soil
 : block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=1
-$ g sprite=octopus background=deep_ocean spriteFrame=6
+: spriteX=0 spriteY=0
+$ h sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ p sprite=grass
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
+$ , background=water category="environment"
 : block=false danger=true platformspeed=0.0
-: spriteX=1 spriteY=1
-$ h sprite=octopus background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=2 spriteY=1
-$ j sprite=octopus background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=0 spriteY=2
-$ k sprite=octopus background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=1 spriteY=2
-$ l sprite=octopus background=deep_ocean spriteFrame=6
-: block=false danger=true platformspeed=0.0
-: spriteX=2 spriteY=2
+: spriteX=0 spriteY=0
+$ . background=soil
+: block=false danger=false platformspeed=0.0
+: spriteX=0 spriteY=0
