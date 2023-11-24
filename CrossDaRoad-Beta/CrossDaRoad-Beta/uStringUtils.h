@@ -9,6 +9,8 @@
 #ifndef U_STRING_UTILS_H
 #define U_STRING_UTILS_H
 
+#include <string>
+#include <vector>
 #include <random>
 
 /// @brief String utilities
