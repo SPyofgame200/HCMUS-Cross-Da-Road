@@ -133,11 +133,11 @@ bool cAssetManager::LoadMenuSprites()
 bool cAssetManager::LoadContinueSprites()
 {
     bool bSuccess = true;
-    bSuccess &= LoadSprite("continue_menu1", "menu1");
-    bSuccess &= LoadSprite("continue_menu2", "menu2");
-    bSuccess &= LoadSprite("continue_menu3", "menu3");
-    bSuccess &= LoadSprite("continue_menu4", "menu4");
-    bSuccess &= LoadSprite("continue_menu5", "menu5");
+    bSuccess &= LoadSprite("menu1", "continue_menu1");
+    bSuccess &= LoadSprite("menu2", "continue_menu2");
+    bSuccess &= LoadSprite("menu3", "continue_menu3");
+    bSuccess &= LoadSprite("menu4", "continue_menu4");
+    bSuccess &= LoadSprite("menu5", "continue_menu5");
 
     return ReportLoadingResult(bSuccess, "continue_menu");
 }

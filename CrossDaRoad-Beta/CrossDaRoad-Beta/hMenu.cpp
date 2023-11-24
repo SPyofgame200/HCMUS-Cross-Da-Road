@@ -110,10 +110,8 @@ bool hMenu::LoadAppOption()
 		case NEW_GAME:
 			eMenuOption = AppOption::NEW_GAME;
 			break;
-		case APP_GAME:
-			eMenuOption = AppOption::APP_GAME;
-			app->GameReset();
-			app->OnGameLoad();
+		case CONTUNUE:
+			eMenuOption = AppOption::CONTUNUE;
 			break;
 		case SETTINGS:
 			eMenuOption = AppOption::SETTINGS;
@@ -123,6 +121,10 @@ bool hMenu::LoadAppOption()
 			break;
 		case APP_EXIT:
 			eMenuOption = AppOption::APP_EXIT;
+			break;
+		case APP_GAME:
+			eMenuOption = AppOption::APP_GAME;
+			app->GameReset();
 			break;
 		default:
 			std::cerr << "hMenu::LoadAppOption(): ";
@@ -232,6 +234,21 @@ bool hMenu::UpdateAppMenu()
 	return true;
 }
 
+bool hMenu::UpdateProceed()
+{	
+	if (app->IsKeyReleased(app::Key::LEFT)) {
+		FixOption(--ContinueMenuOption, 5);
+	}
+	if (app->IsKeyReleased(app::Key::RIGHT)) {
+		FixOption(++ContinueMenuOption, 5);
+	}
+	if (app->IsKeyReleased(app::Key::ENTER)) {
+		eMenuOption = APP_GAME;
+	}
+	return true;
+}
+
+
 
 /// @brief Display settings on screen (sound on/off)
 /// @param app Pointer to application
@@ -334,8 +351,8 @@ bool hMenu::Update(const float fElapsedTime)
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return UpdateNewGame();
-		case AppOption::APP_GAME:
-			return UpdateProcced();
+		case AppOption::CONTUNUE:
+			return UpdateProceed();
 		case AppOption::SETTINGS:
 			return UpdateSetting();
 		case AppOption::ABOUT_US:
@@ -344,6 +361,8 @@ bool hMenu::Update(const float fElapsedTime)
 			return UpdateAppExit();
 		case AppOption::APP_MENU:
 			return UpdateAppMenu();
+		case AppOption::APP_GAME:
+			return app->OnGameUpdate(fElapsedTime);
 		default:
 			std::cerr << "hMenu::Update(fElapsedTime=" << fElapsedTime << "):";
 			std::cerr << "Menu went wrong" << std::endl;
@@ -376,9 +395,43 @@ bool hMenu::RenderAppMenu()
 	return true;
 }
 
-bool hMenu::RenderProcced() const
-{
-	return false;
+bool hMenu::RenderProceed() const
+{	
+	const app::Sprite* Menu1 = cAssetManager::GetInstance().GetSprite("menu1");
+	const app::Sprite* Menu2 = cAssetManager::GetInstance().GetSprite("menu2");
+	const app::Sprite* Menu3 = cAssetManager::GetInstance().GetSprite("menu3");
+	const app::Sprite* Menu4 = cAssetManager::GetInstance().GetSprite("menu4");
+	const app::Sprite* Menu5 = cAssetManager::GetInstance().GetSprite("menu5");
+	app->Clear(app::BLACK);
+	if (start)
+	{
+		
+		return true;
+	}
+	app->SetPixelMode(app::Pixel::MASK);
+	if (ContinueMenuOption % 5 == 0)
+	{
+		app->DrawSprite(0, 0, Menu1);
+	}
+	else if (ContinueMenuOption % 5 == 1)
+	{
+		app->DrawSprite(0, 0, Menu2);
+	}
+	else if (ContinueMenuOption % 5 == 2)
+	{
+		app->DrawSprite(0, 0, Menu3);
+	}
+	else if (ContinueMenuOption % 5 == 3)
+	{
+		app->DrawSprite(0, 0, Menu4);
+	}
+	else if (ContinueMenuOption % 5 == 4)
+	{
+		app->DrawSprite(0, 0, Menu5);
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
+	
+	return true;
 }
 
 /// @brief Render about us on screen
@@ -432,8 +485,8 @@ bool hMenu::Render()
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return app->DrawNameBox();
-		case AppOption::APP_GAME:
-			return app->OnGameRender();
+		case AppOption::CONTUNUE:
+			return RenderProceed();
 		case AppOption::SETTINGS:
 			return RenderSetting();
 		case AppOption::ABOUT_US:
@@ -442,6 +495,8 @@ bool hMenu::Render()
 			return RenderAppExit();
 		case AppOption::APP_MENU:
 			return RenderAppMenu();
+		case AppOption::APP_GAME:
+			return app->OnGameRender();
 		default:
 			std::cerr << "hMenu::Render(*app):";
 			std::cerr << "Menu went wrong" << std::endl;

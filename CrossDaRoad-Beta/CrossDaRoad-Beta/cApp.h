@@ -94,6 +94,8 @@ protected: /// Game Updates
 	bool DrawNameBox();
 	bool UpdateDrawNameBox();
 	bool OnDisplaySaveBox();
+
+
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
 	bool OnForcePauseEvent() override;
