@@ -25,7 +25,7 @@ public:
 	enum AppOption
 	{
 		NEW_GAME = 0, ///< New game window
-		CONTUNUE = 1,
+		CONTINUE = 1,
 		SETTINGS = 2, ///< Settings window
 		ABOUT_US = 3, ///< About us window
 		APP_EXIT = 4, ///< Exit application window
@@ -100,7 +100,7 @@ private: // Updater helpers
 	bool UpdateAppExit();
 
 private: // Renderer helpers
-	bool RenderAppMenu();
+	bool RenderAppMenu() const;
 	bool RenderProceed() const;
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;

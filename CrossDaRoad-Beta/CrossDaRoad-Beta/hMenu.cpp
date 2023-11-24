@@ -112,8 +112,8 @@ bool hMenu::LoadAppOption()
 			eMenuOption = AppOption::NEW_GAME;
 			app->GameInit();
 			break;
-		case CONTUNUE:
-			eMenuOption = AppOption::CONTUNUE;
+		case CONTINUE:
+			eMenuOption = AppOption::CONTINUE;
 			break;
 		case SETTINGS:
 			eMenuOption = AppOption::SETTINGS;
@@ -378,7 +378,7 @@ bool hMenu::Update(const float fElapsedTime)
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return UpdateNewGame();
-		case AppOption::CONTUNUE:
+		case AppOption::CONTINUE:
 			return UpdateProceed();
 		case AppOption::SETTINGS:
 			return UpdateSetting();
@@ -535,7 +535,7 @@ bool hMenu::Render() const
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return app->DrawNameBox();
-		case AppOption::CONTUNUE:
+		case AppOption::CONTINUE:
 			return RenderProceed();
 		case AppOption::SETTINGS:
 			return RenderSetting();
