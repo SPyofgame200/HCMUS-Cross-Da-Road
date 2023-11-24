@@ -5,7 +5,7 @@ mmhhmmhhmmhhmmhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm  0.0
 ......rty.................rty..................rty.............. -3.0
 ......uio.................uio..................uio.............. -3.0
 pppppmpppppmppppmppppppppppppppppppppppppppppppppppppppppppppppp  0.0
-.........f..........f.............f.............f...........f... -14.0
+.........f..........f.............f.............f...........f... -12.0
 ....f..........f...........f.........f...........f.......f...... -8.0
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0
 #
