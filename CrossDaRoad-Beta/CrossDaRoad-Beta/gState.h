@@ -12,8 +12,7 @@
 #define G_STATE_H
 
 #include "gKey.h"
-#include <cstring>
-#include <cstdint>
+
 #include <iostream>
 #include <chrono>
 #include <string>
