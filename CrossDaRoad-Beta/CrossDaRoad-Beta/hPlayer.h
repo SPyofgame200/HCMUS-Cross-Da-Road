@@ -12,6 +12,7 @@
 #include <string>
 #include "uAppConst.h"
 #include "hPlayerMovement.h"
+#include "hPlayerRenderer.h"
 
 class cApp;
 class cZone;
@@ -21,9 +22,11 @@ class hPlayer
 {
 private: /// Componnets handlers
 	static hPlayerMovement hMovement;
+	static hPlayerRenderer hRenderer;
 
 public: /// Components getters
 	static hPlayerMovement& Movement();
+	static hPlayerRenderer& Renderer();
 
 public:
 	/// @brief Direction enumeration for player movement
@@ -67,16 +70,16 @@ private:
 	Animation eAnimation;
 
 private:
-	cApp* app;
+	cApp* ptrApp;
 	std::string Name;
 
 public: // Constructors & Destructor
 	hPlayer();
-	hPlayer(cApp* app);
+	hPlayer(cApp* ptrApp);
 	~hPlayer();
 
 public: // Initializer & Clean-up
-	bool SetupTarget(cApp* app);
+	bool SetupTarget(cApp* ptrApp);
 
 private: // Reseter helpers
 	void ResetDirection();
@@ -87,7 +90,7 @@ private: // Reseter helpers
 public: // Reseters
 	void Reset();
 
-private: // Checkers helpers
+public: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
 	bool IsLeftDirection() const;
@@ -154,18 +157,10 @@ private: // Logic Updater
 	bool OnUpdatePlayerJumpContinue();
 	bool OnUpdatePlayerJumpStop();
 
-private: // Player Renderer 
-	bool OnRenderPlayerIdle() const;
-	bool OnRenderPlayerJumpStart() const;
-	bool OnRenderPlayerJumpContinue() const;
-	bool OnRenderPlayerJumpStop() const;
-
-public: // Player Renderers
-	bool OnRenderPlayer() const;
-	bool OnRenderPlayerDeath();
-
 public: // Logic-Render Control
 	bool OnPlayerMove();
+	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
+	void Sleep(float fTime);
 };
 
 #endif // H_PLAYER_H

@@ -164,7 +164,7 @@ bool cApp::OnPlayerDeath()
 {
 	std::cout << GetPlayerDeathMessage() << std::endl;
 	bDeath = true;
-	Player.OnRenderPlayerDeath();
+	Player.Renderer().OnRenderPlayerDeath();
 	Player.Reset();
 	if (--nLife <= 0) {
 		PauseEngine();
@@ -179,7 +179,7 @@ bool cApp::OnPlayerDeath()
 bool cApp::OnGameRender()
 {
 	DrawAllLanes();
-	Player.OnRenderPlayer();
+	Player.Renderer().OnRenderPlayer();
 	DrawStatusBar();
 	return true;
 }
