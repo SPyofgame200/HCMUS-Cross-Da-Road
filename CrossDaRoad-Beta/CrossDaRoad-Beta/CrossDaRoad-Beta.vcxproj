@@ -153,6 +153,7 @@
     <ClCompile Include="gUtils.cpp" />
     <ClCompile Include="gWindow.cpp" />
     <ClCompile Include="hPlayerMovement.cpp" />
+    <ClCompile Include="hPlayerRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="uAppUtils.cpp" />
     <ClCompile Include="uConsoleColor.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="gUtils.h" />
     <ClInclude Include="gWindow.h" />
     <ClInclude Include="hPlayerMovement.h" />
+    <ClInclude Include="hPlayerRenderer.h" />
     <ClInclude Include="uAppConst.h" />
     <ClInclude Include="uAppUtils.h" />
     <ClInclude Include="cMessageManager.h" />

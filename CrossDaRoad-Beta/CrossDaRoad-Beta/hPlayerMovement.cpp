@@ -1,4 +1,5 @@
 #include "hPlayerMovement.h"
+#include "uAppConst.h"
 #include "hPlayer.h"
 #include <iostream>
 
@@ -27,7 +28,7 @@ bool hPlayerMovement::SetupTarget(hPlayer* ptrPlayer)
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveX(float fFactorX, int nStep)
+bool hPlayerMovement::MoveX(float fFactorX, int nStep)
 {
 	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
 	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
@@ -42,7 +43,7 @@ bool hPlayerMovement::PlayerMoveX(float fFactorX, int nStep)
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveY(float fFactorY, int nStep)
+bool hPlayerMovement::MoveY(float fFactorY, int nStep)
 {
 	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
 	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
@@ -57,87 +58,54 @@ bool hPlayerMovement::PlayerMoveY(float fFactorY, int nStep)
 	return true;
 }
 
-bool hPlayerMovement::PlayerMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
+bool hPlayerMovement::Move(float fFactorX, float fFactorY, float fFactorScale, int nStep)
 {
-	return PlayerMoveX(fFactorX * fFactorScale, nStep) && PlayerMoveY(fFactorY * fFactorScale, nStep);
+	return MoveX(fFactorX * fFactorScale, nStep) && MoveY(fFactorY * fFactorScale, nStep);
 }
 
-bool hPlayerMovement::PlayerMoveLeft(float factor, bool forced)
+bool hPlayerMovement::MoveLeft(float factor, bool forced)
 {
 	if ((forced || ptrPlayer->IsMoveLeft()) && ptrPlayer->CanMoveLeft()) {
-		PlayerMove(-1, 0, factor);
+		Move(-1, 0, factor);
 	}
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveRight(float factor, bool forced)
+bool hPlayerMovement::MoveRight(float factor, bool forced)
 {
 	if ((forced || ptrPlayer->IsMoveRight()) && ptrPlayer->CanMoveRight()) {
-		PlayerMove(+1, 0, factor);
+		Move(+1, 0, factor);
 	}
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveUp(float factor, bool forced)
+bool hPlayerMovement::MoveUp(float factor, bool forced)
 {
 	if ((forced || ptrPlayer->IsMoveUp()) && ptrPlayer->CanMoveUp()) {
-		PlayerMove(0, -1, factor);
+		Move(0, -1, factor);
 	}
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveDown(float factor, bool forced)
+bool hPlayerMovement::MoveDown(float factor, bool forced)
 {
 	if ((forced || ptrPlayer->IsMoveDown()) && ptrPlayer->CanMoveDown()) {
-		PlayerMove(0, +1, factor);
+		Move(0, +1, factor);
 	}
 	return true;
 }
 
-bool hPlayerMovement::PlayerMoveTryAll(float factor, bool forced)
+bool hPlayerMovement::MoveTryAll(float factor, bool forced)
 {
 	bool ok = true;
-	ok &= PlayerMoveLeft(factor, forced);
-	ok &= PlayerMoveRight(factor, forced);
-	ok &= PlayerMoveUp(factor, forced);
-	ok &= PlayerMoveDown(factor, forced);
+	ok &= MoveLeft(factor, forced);
+	ok &= MoveRight(factor, forced);
+	ok &= MoveUp(factor, forced);
+	ok &= MoveDown(factor, forced);
 	return ok;
 }
 
-bool hPlayerMovement::PlayerPlatformDetector(int nStep, float fFactor)
-{
-	if (ptrPlayer->IsMoveRight() && ptrPlayer->IsKilled()) {
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveRight(fFactor, true);
-			if (!ptrPlayer->IsKilled()) {
-				return false;
-			}
-		}
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveLeft(fFactor, true);
-			if (!ptrPlayer->IsKilled()) {
-				return false;
-			}
-		}
-	}
-	if (!ptrPlayer->IsMoveLeft() && ptrPlayer->IsKilled()) {
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveLeft(fFactor, true);
-			if (!ptrPlayer->IsKilled()) {
-				return false;
-			}
-		}
-		for (int step = 1; step <= nStep; ++step) {
-			PlayerMoveRight(fFactor, true);
-			if (!ptrPlayer->IsKilled()) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-bool hPlayerMovement::PlayerPlatformMoveX(float fFactorX, int nStep)
+bool hPlayerMovement::PlatformMoveX(float fFactorX, int nStep)
 {
 	const float fRealPosX = ptrPlayer->GetPlayerLogicPositionX();
 	const float fRealPosY = ptrPlayer->GetPlayerLogicPositionY();
@@ -155,7 +123,7 @@ bool hPlayerMovement::PlayerPlatformMoveX(float fFactorX, int nStep)
 	return true;
 }
 
-bool hPlayerMovement::PlayerPlatformMoveY(float fFactorY, int nStep)
+bool hPlayerMovement::PlatformMoveY(float fFactorY, int nStep)
 {
 	const float fRealPosX = ptrPlayer->GetPlayerLogicPositionX();
 	const float fRealPosY = ptrPlayer->GetPlayerLogicPositionY();
@@ -173,7 +141,51 @@ bool hPlayerMovement::PlayerPlatformMoveY(float fFactorY, int nStep)
 	return true;
 }
 
-bool hPlayerMovement::PlayerPlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
+bool hPlayerMovement::PlatformDetector(int nStep, float fFactor)
 {
-	return PlayerPlatformMoveX(fFactorX * fFactorScale, nStep) && PlayerPlatformMoveY(fFactorY * fFactorScale, nStep);
+	if (ptrPlayer->IsMoveRight() && ptrPlayer->IsKilled()) {
+		for (int step = 1; step <= nStep; ++step) {
+			MoveRight(fFactor, true);
+			if (!ptrPlayer->IsKilled()) {
+				return false;
+			}
+		}
+		for (int step = 1; step <= nStep; ++step) {
+			MoveLeft(fFactor, true);
+			if (!ptrPlayer->IsKilled()) {
+				return false;
+			}
+		}
+	}
+	if (!ptrPlayer->IsMoveLeft() && ptrPlayer->IsKilled()) {
+		for (int step = 1; step <= nStep; ++step) {
+			MoveLeft(fFactor, true);
+			if (!ptrPlayer->IsKilled()) {
+				return false;
+			}
+		}
+		for (int step = 1; step <= nStep; ++step) {
+			MoveRight(fFactor, true);
+			if (!ptrPlayer->IsKilled()) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool hPlayerMovement::PlatformDetector(int nCellSize)
+{
+	return PlatformDetector(nCellSize, 1.0f / nCellSize);
+}
+
+bool hPlayerMovement::PlatformDetector()
+{
+	return PlatformDetector(app_const::CELL_SIZE);
+}
+
+
+bool hPlayerMovement::PlatformMove(float fFactorX, float fFactorY, float fFactorScale, int nStep)
+{
+	return PlatformMoveX(fFactorX * fFactorScale, nStep) && PlatformMoveY(fFactorY * fFactorScale, nStep);
 }

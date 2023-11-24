@@ -443,22 +443,22 @@ bool hPlayer::OnUpdatePlayerJumpContinue()
 	}
 	if (cFrameManager::GetFrame6().NextAnimation()) {
 		if (GetDirection() == LEFT) {
-			if (!hMovement.PlayerMoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMovement.MoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == RIGHT) {
-			if (!hMovement.PlayerMoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMovement.MoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_UP || GetDirection() == RIGHT_UP) {
-			if (!hMovement.PlayerMoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMovement.MoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (GetDirection() == LEFT_DOWN || GetDirection() == RIGHT_DOWN) {
-			if (!hMovement.PlayerMoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!hMovement.MoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
 				return false;
 			}
 		}
