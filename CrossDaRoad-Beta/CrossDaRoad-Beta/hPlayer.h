@@ -48,16 +48,20 @@ public:
 	/// @brief Animation enumeration for player animation
 	enum Animation
 	{
-		IDLE = 0,			///< Idle animation for player
-		JUMP = 1,			///< Jump animation for player
-		LAND = 2,			///< Land animation for player
+		IDLE = 0,			///< When the player doing nothing
+		JUMP = 1,			///< When the player is moving, it jumps
+		LAND = 2,			///< When the player stopped jumpings
+		MOVE = 3,			///< [Unused] When the player can not jump, for example: sinksand
+		SWIM = 4,			///< [Unused] When the player moving in a fluide environment like lakes
+		TRAP = 5,			///< [Unused] When the player is locked in a position
 	};
-
-	enum State
+	/// @brief Situation enumeration for player interaction
+	enum Situation
 	{
-		ALIVE = 0,
-		DEATH = 1,
-		VICTORY = 2,
+		ALIVE = 0,	/// [TODO] When the player is fine
+		DEATH = 1,	/// [TODO] When the player is killed
+		WIN = 2,	/// [Unused] When the player passed a level
+		LOSE = 3,	/// [Unused] When the player died all its life
 	};
 
 private:
@@ -74,6 +78,7 @@ private:
 private:
 	Direction eDirection;
 	Animation eAnimation;
+	Situation eSituation;
 
 private:
 	cApp* ptrApp;
@@ -101,6 +106,7 @@ public: // Reseters
 public: // Checkers helpers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
+	bool IsExactSituation(Situation eCompare) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
 	bool IsPlayerJumping() const;
@@ -128,6 +134,7 @@ public: // Validators
 public: // Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
+	Situation GetSituation() const;
 	float GetPlayerAnimationPositionX() const;
 	float GetPlayerAnimationPositionY() const;
 	float GetPlayerLogicPositionX() const;

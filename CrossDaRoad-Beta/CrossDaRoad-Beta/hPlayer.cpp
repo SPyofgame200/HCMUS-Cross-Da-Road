@@ -79,6 +79,7 @@ void hPlayer::ResetDirection()
 {
 	eDirection = RIGHT;
 	eAnimation = IDLE;
+	eSituation = ALIVE;
 }
 /// @brief Reset player animation
 void hPlayer::ResetAnimation()
@@ -172,6 +173,14 @@ bool hPlayer::IsExactDirection(Direction eCompare) const
 bool hPlayer::IsExactAnimation(Animation eCompare) const
 {
 	return eAnimation == eCompare;
+}
+
+/// @brief Check if player is doing exact animation
+/// @param eCompare Animation to compare
+/// @return True if player is doing exact animation, false otherwise
+bool hPlayer::IsExactSituation(Situation eCompare) const
+{
+	return eSituation == eCompare;
 }
 
 /// @brief Check if player is facing left direction
@@ -306,6 +315,12 @@ hPlayer::Direction hPlayer::GetDirection() const
 hPlayer::Animation hPlayer::GetAnimation() const
 {
 	return eAnimation;
+}
+
+/// @brief Getter for current animation of player
+hPlayer::Situation hPlayer::GetSituation() const
+{
+	return eSituation;
 }
 
 /// @brief Getter for animation position of player in X-axis
