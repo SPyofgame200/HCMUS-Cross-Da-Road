@@ -70,6 +70,11 @@ cPlayerRecord& hPlayer::Record()
 	return record;
 }
 
+cPlayerMoment& hPlayer::Moment()
+{
+	return moment;
+}
+
 const cPlayerStatus& hPlayer::Status() const
 {
 	return status;
@@ -83,6 +88,11 @@ const cPlayerPhysic& hPlayer::Physic() const
 const cPlayerRecord& hPlayer::Record() const
 {
 	return record;
+}
+
+const cPlayerMoment& hPlayer::Moment() const
+{
+	return moment;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,17 +171,11 @@ bool hPlayer::SetupComponents()
 ///////////////////////////////////////////// CHECKERS /////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Check if player is landing
-/// @return True if player is landing, false otherwise
-bool hPlayer::IsPlayerLanding() const
-{
-	return cFrameManager::GetFrame6().IsStopAnimation();
-}
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-	if (ptrApp->IsMoveUp() && !Physic().CanMoveUp()) {
+	if (Status().IsMoveUp() && !Physic().CanMoveUp()) {
 		return true;
 	}
 	const float fPosY = Physic().GetPlayerLogicPositionY();

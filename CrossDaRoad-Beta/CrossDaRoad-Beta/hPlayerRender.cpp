@@ -99,7 +99,7 @@ bool hPlayerRender::OnRender()
 	if (ptrPlayer->Status().IsPlayerStartingJump()) {
 		return OnRenderPlayerJumpStart();
 	}
-	if (!ptrPlayer->IsPlayerLanding()) {
+	if (!ptrPlayer->Moment().IsPlayerLanding()) {
 		return OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
@@ -112,7 +112,7 @@ bool hPlayerRender::OnRender()
 /// @return True if player is safe, false otherwise
 bool hPlayerRender::IsCollisionSafe() const
 {
-	return cFrameManager::GetFrame6().GetAnimationID() <= ptrPlayer->Record().GetSafeAnimationID();
+	return cFrameManager::GetFrame6().GetAnimationID() <= ptrPlayer->Moment().GetSafeAnimationID();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////

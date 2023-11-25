@@ -129,7 +129,7 @@ bool hPlayerUpdate::OnUpdate()
 	if (ptrPlayer->Status().IsPlayerStartingJump()) {
 		return OnUpdatePlayerJumpStart();
 	}
-	if (!ptrPlayer->IsPlayerLanding()) {
+	if (!ptrPlayer->Moment().IsPlayerLanding()) {
 		return OnUpdatePlayerJumpContinue();
 	}
 	else { /// Jump completed

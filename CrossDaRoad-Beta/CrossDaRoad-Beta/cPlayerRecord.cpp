@@ -7,13 +7,7 @@ cPlayerRecord::cPlayerRecord()
 
 void cPlayerRecord::Reset()
 {
-	frame6_id_animation_safe = 5;
 	sName = "";
-}
-
-int cPlayerRecord::GetSafeAnimationID() const
-{
-	return frame6_id_animation_safe;
 }
 
 /// @brief Getter for player name

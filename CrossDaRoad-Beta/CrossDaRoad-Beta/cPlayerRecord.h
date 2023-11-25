@@ -5,9 +5,6 @@
 
 class cPlayerRecord
 {
-private: // might be moved into cPlayerCustom
-	int frame6_id_animation_safe;
-
 private: // Player data 
 	std::string sName;
 
@@ -16,9 +13,6 @@ public: // Constructors & Destructor
 
 public: // Initializer & Clean-up
 	void Reset();
-
-public: // Utilities (might be moved into cPlayerCustom)
-	int GetSafeAnimationID() const;
 
 public: // Getters
 	std::string GetPlayerName() const;
