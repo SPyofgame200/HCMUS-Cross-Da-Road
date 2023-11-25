@@ -262,6 +262,7 @@ The game engine stores game data in the following structure:
 
 - **data/**
   - **assets/** (contains game assets)
+    - ***.png**
   - **icons/** (contains game icons)
     - ***.png**
   - **maps/** (contains game maps describing the game world)
