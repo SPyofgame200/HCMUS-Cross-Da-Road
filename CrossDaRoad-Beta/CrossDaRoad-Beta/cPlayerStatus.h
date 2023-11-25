@@ -77,10 +77,14 @@ public: /// Initializer & Clean-up
 	void Reset();
 
 public: /// Checkers
-	bool IsExactDirection(Direction eCompare) const;
-	bool IsExactAnimation(Animation eCompare) const;
-	bool IsExactSituation(Situation eCompare) const;
-	bool IsExactIntention(Intention eCompare) const;
+	bool IsDirection(Direction eCompare) const;
+	bool IsAnimation(Animation eCompare) const;
+	bool IsSituation(Situation eCompare) const;
+	bool IsIntention(Intention eCompare) const;
+	bool IsDirection(std::initializer_list<Direction> eCompareList) const;
+	bool IsAnimation(std::initializer_list<Animation> eCompareList) const;
+	bool IsSituation(std::initializer_list<Situation> eCompareList) const;
+	bool IsIntention(std::initializer_list<Intention> eCompareList) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
 	bool IsJumpAnimation() const;

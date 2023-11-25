@@ -81,25 +81,24 @@ bool hPlayerUpdate::OnUpdatePlayerJumpContinue() const
 		return false;
 	}
 	if (ptrPlayer->Moment().NextAnimation()) {
-		if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT) {
-			if (!ptrPlayer->Motion().MoveLeft(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
+		float fSpeed = 1.0f / ptrPlayer->Moment().GetLimit();
+		if (ptrPlayer->Status().IsDirection(PlayerDirection::LEFT)) {
+			if (!ptrPlayer->Motion().MoveLeft(fSpeed, true)) {
 				return false;
 			}
 		}
-		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT) {
-			if (!ptrPlayer->Motion().MoveRight(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
+		else if (ptrPlayer->Status().IsDirection(PlayerDirection::RIGHT)) {
+			if (!ptrPlayer->Motion().MoveRight(fSpeed, true)) {
 				return false;
 			}
 		}
-		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT_UP 
-			  || ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT_UP) {
-			if (!ptrPlayer->Motion().MoveUp(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
+		else if (ptrPlayer->Status().IsDirection({ PlayerDirection::LEFT_UP, PlayerDirection::RIGHT_UP })) {
+			if (!ptrPlayer->Motion().MoveUp(fSpeed, true)) {
 				return false;
 			}
 		}
-		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT_DOWN
-			  || ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT_DOWN) {
-			if (!ptrPlayer->Motion().MoveDown(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
+		else if (ptrPlayer->Status().IsDirection({ PlayerDirection::LEFT_DOWN, PlayerDirection::RIGHT_DOWN })) {
+			if (!ptrPlayer->Motion().MoveDown(fSpeed, true)) {
 				return false;
 			}
 		}
@@ -113,7 +112,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 {
 	ptrPlayer->Physic().OnFixPlayerPosition();
 	ptrPlayer->Physic().SynchronizePosition();
-	if (ptrPlayer->Status().GetAnimation() == PlayerAnimation::JUMP) {
+	if (ptrPlayer->Status().IsAnimation(PlayerAnimation::JUMP)) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::IDLE);
 		return true;
 	}

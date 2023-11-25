@@ -21,7 +21,7 @@ void cPlayerStatus::Reset()
 /// @brief Check if player is facing exact direction
 /// @param eCompare Direction to compare
 /// @return True if player is facing exact direction, false otherwise
-bool cPlayerStatus::IsExactDirection(Direction eCompare) const
+bool cPlayerStatus::IsDirection(Direction eCompare) const
 {
     return eDirection == eCompare;
 }
@@ -29,7 +29,7 @@ bool cPlayerStatus::IsExactDirection(Direction eCompare) const
 /// @brief Check if player is doing exact animation
 /// @param eCompare Animation to compare
 /// @return True if player is doing exact animation, false otherwise
-bool cPlayerStatus::IsExactAnimation(Animation eCompare) const
+bool cPlayerStatus::IsAnimation(Animation eCompare) const
 {
     return eAnimation == eCompare;
 }
@@ -37,7 +37,7 @@ bool cPlayerStatus::IsExactAnimation(Animation eCompare) const
 /// @brief Check if player is doing exact animation
 /// @param eCompare Animation to compare
 /// @return True if player is doing exact animation, false otherwise
-bool cPlayerStatus::IsExactSituation(Situation eCompare) const
+bool cPlayerStatus::IsSituation(Situation eCompare) const
 {
     return eSituation == eCompare;
 }
@@ -45,9 +45,49 @@ bool cPlayerStatus::IsExactSituation(Situation eCompare) const
 /// @brief Check if player is doing exact animation
 /// @param eCompare Animation to compare
 /// @return True if player is doing exact animation, false otherwise
-bool cPlayerStatus::IsExactIntention(Intention eCompare) const
+bool cPlayerStatus::IsIntention(Intention eCompare) const
 {
     return eIntention == eCompare;
+}
+
+bool cPlayerStatus::IsDirection(std::initializer_list<Direction> eCompareList) const
+{
+    for (Direction eCompare : eCompareList) {
+        if (IsDirection(eCompare)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool cPlayerStatus::IsAnimation(std::initializer_list<Animation> eCompareList) const
+{
+    for (Animation eCompare : eCompareList) {
+        if (IsAnimation(eCompare)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool cPlayerStatus::IsSituation(std::initializer_list<Situation> eCompareList) const
+{
+    for (Situation eCompare : eCompareList) {
+        if (IsSituation(eCompare)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool cPlayerStatus::IsIntention(std::initializer_list<Intention> eCompareList) const
+{
+    for (Intention eCompare : eCompareList) {
+        if (IsIntention(eCompare)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /// @brief Check if player is facing left direction
