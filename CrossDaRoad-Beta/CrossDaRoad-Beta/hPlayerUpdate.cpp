@@ -1,11 +1,12 @@
 #include "hPlayerUpdate.h"
 #include "hPlayerMotion.h"
-#include "cAssetManager.h"
 #include "cFrameManager.h"
-#include "cPlayerStatus.h"
-#include "uAppConst.h"
 #include "hPlayer.h"
-#include <iostream>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 hPlayerUpdate::hPlayerUpdate() : ptrPlayer(nullptr)
 {
