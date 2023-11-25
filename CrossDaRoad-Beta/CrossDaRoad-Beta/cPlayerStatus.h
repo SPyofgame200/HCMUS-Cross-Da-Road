@@ -141,6 +141,7 @@ public: /// Checkers
 public: /// Animation
 	bool IsIdling() const;
 	bool IsStartJumping() const;
+	bool IsDeath() const;
 };
 
 using PlayerDirection = cPlayerStatus::Direction;

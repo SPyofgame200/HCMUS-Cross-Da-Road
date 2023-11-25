@@ -32,6 +32,14 @@ bool hPlayerUpdate::SetupTarget(hPlayer* ptrPlayer)
 	return true;
 }
 
+bool hPlayerUpdate::OnUpdatePlayerDeath()
+{
+	if (ptrPlayer->Moment().NextAnimation()) {
+		// ...
+	}
+	return true;
+}
+
 /// @brief Update animation when player idling
 /// @return Always true by default
 bool hPlayerUpdate::OnUpdatePlayerIdle()
@@ -121,6 +129,9 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 
 bool hPlayerUpdate::OnUpdate()
 {
+	if (ptrPlayer->Status().IsDeath()) {
+		return OnUpdatePlayerDeath();
+	}
 	if (ptrPlayer->Status().IsIdling()) {
 		return OnUpdatePlayerIdle();
 	}

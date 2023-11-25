@@ -80,18 +80,19 @@ bool hPlayerRender::OnRenderPlayer() const
 /// @return Always true by default
 bool hPlayerRender::OnRenderPlayerDeath()
 {
-	for (int id = 1; id <= 6; ++id) {
-		const std::string sPlayerName = "froggy_death" + std::to_string(id);;
-		const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
-		ptrPlayer->Draw(sPlayerName, true, true);
-		ptrPlayer->Sleep(100);
-	}
-	ptrPlayer->Reset();
+	const int nID = ptrPlayer->Moment().GetAnimationID();
+	const std::string sPlayerName = "froggy_death" + std::to_string(nID);
+	const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
+	ptrPlayer->Draw(sPlayerName, true, true);
+	std::cout << sPlayerName << std::endl;
 	return true;
 }
 
 bool hPlayerRender::OnRender()
 {
+	if (ptrPlayer->Status().IsDeath()) {
+		return OnRenderPlayerDeath();
+	}
 	if (ptrPlayer->Status().IsIdling()) {
 		return OnRenderPlayerIdle();
 	}

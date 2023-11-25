@@ -10,6 +10,7 @@
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
+#include "hPlayerUpdate.h"
 
 //=================================================================================================
 // Include new header files here
@@ -144,12 +145,10 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 bool cApp::OnPlayerDeath()
 {
 	bDeath = true;
-	Player.Render().OnRenderPlayerDeath();
-	Player.Reset();
-	if (--nLife <= 0) {
-		PauseEngine();
-	}
-	bDeath = false;
+	--nLife;
+	Player.Status().SetSituation(PlayerSituation::DEATH);
+	Player.Moment().StartAnimation();
+	PauseEngine();
 	return true;
 }
 
@@ -157,7 +156,6 @@ bool cApp::OnPlayerDeath()
 /// @return Always returns true by default
 bool cApp::OnGameRender()
 {
-	Player.OnRender();
 	DrawAllLanes();
 	Player.Render().OnRenderPlayer();
 	DrawStatusBar();
@@ -179,8 +177,8 @@ bool cApp::OnCreateEvent()
 bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
 {
 	if (!IsEnginePause() && !bDeath) {
-		fTimeSinceStart = fTickTime;
 		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
+		fTimeSinceStart = fTickTime;
 	}
 	return true;
 }
@@ -299,7 +297,7 @@ bool cApp::OnGameLoad()
 	return false;
 }
 /// @brief Event that called when application is paused
-bool cApp::OnPauseEvent()
+bool cApp::OnPauseEvent(float fTickTime)
 {
 	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
 		Menu.ResetMenu();
@@ -308,17 +306,34 @@ bool cApp::OnPauseEvent()
 	else if (Menu.IsOnGame() && IsKeyReleased(app::Key::ESCAPE)) {
 		PauseEngine();
 	}
-	if (IsEnginePause()) { // continue the pause event
-		if (nLife == 0) {
+	if (IsEnginePause() && bDeath) { /// handle death pausing event
+		if (nLife <= 0) {
 			Menu.UpdateGameOver();
 			OnGameRender();
 			Menu.RenderGameOver();
+			return false;
 		}
-		else {
-			Menu.UpdatePausing();
+		if (Player.Moment().IsStopAnimation()) {
+			bDeath = false;
+			ResumeEngine();
+			GameReset();
+			return true;
+		}
+		if (Player.Status().IsDeath()) {
+			cFrameManager::GetFrame6().UpdateFrame(fTickTime, GetFrameDelay());
+			Player.OnUpdate();
+			Player.OnRender();
 			OnGameRender();
-			Menu.RenderPausing();
+			return false;
 		}
+		return false;
+	}
+
+	if (IsEnginePause()) { // continue the pause event
+		Menu.UpdatePausing();
+		Player.OnRender();
+		OnGameRender();
+		Menu.RenderPausing();
 		return false;
 	}
 	return true; // succesfully handle the pause event

@@ -304,3 +304,8 @@ bool cPlayerStatus::IsIdling() const
 {
     return (IsIdleAnimation()) && !(IsMove());
 }
+
+bool cPlayerStatus::IsDeath() const
+{
+    return (eSituation == DEATH);
+}

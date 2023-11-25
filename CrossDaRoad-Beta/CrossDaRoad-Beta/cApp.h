@@ -83,7 +83,7 @@ protected: /// Game Updates
 
 
 	bool OnRenderEvent() override;
-	bool OnPauseEvent() override;
+	bool OnPauseEvent(float fTickTime) override;
 	bool OnForcePauseEvent() override;
 	bool OnDestroyEvent() override;
 	bool OnForceDestroyEvent() override;

@@ -184,7 +184,7 @@ namespace app
 
 	/// @brief Called when the application is paused.
 	/// @return Always returns true by default.
-	bool GameEngine::OnPauseEvent()
+	bool GameEngine::OnPauseEvent(float fTickTime)
 	{
 		// TODO: Handle pausing the application and its behavior.
 		// If pause handling is successful, return true; otherwise, return false (keep
@@ -576,7 +576,7 @@ namespace app
 				fLastRunTime = frame.GetTickTime();
 				OnFixedUpdateEvent(engine::AFTER_POST_PROCCESSING_EVENT);
 				const float fStartPauseTime = frame.GetTickTime();
-				while (bEngineRunning && !OnPauseEvent()) {
+				while (bEngineRunning && !OnPauseEvent(frame.GetTickTime())) {
 					frame.WaitMicroseconds(frame.GetDelay());
 					RenderTexture();
 					UpdateKeyboardInput();

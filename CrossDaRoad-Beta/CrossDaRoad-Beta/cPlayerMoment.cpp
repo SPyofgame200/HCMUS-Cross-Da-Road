@@ -23,6 +23,10 @@ bool cPlayerMoment::NextAnimation(bool bUpdate)
 {
 	return frame.NextAnimation(bUpdate);
 }
+bool cPlayerMoment::IsStopAnimation() const
+{
+	return frame.IsStopAnimation();
+}
 
 int cPlayerMoment::GetLimit() const
 {

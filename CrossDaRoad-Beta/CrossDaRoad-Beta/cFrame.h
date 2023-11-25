@@ -101,7 +101,7 @@ private: /// Utilities
     }
 
 public: /// Updaters
-    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate)
+    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f)
     {
         const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
         SetVal(fTickTime / fFrameTick);
@@ -115,6 +115,7 @@ public: /// Animations
     }
     bool IsStopAnimation() const
     {
+        std::cout << nAnimationFrame << " " << GetMaxID() << std::endl;
         return nAnimationFrame >= GetMaxID();
     }
     bool StartAnimation()

@@ -42,7 +42,7 @@ namespace app
 		virtual bool OnUpdateEvent(float fElapsedTime);
 		virtual bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime);
 		virtual bool OnRenderEvent();
-		virtual bool OnPauseEvent();
+		virtual bool OnPauseEvent(float fTickTime);
 		virtual bool OnDestroyEvent();
 		virtual bool OnForcePauseEvent();
 		virtual bool OnForceDestroyEvent();

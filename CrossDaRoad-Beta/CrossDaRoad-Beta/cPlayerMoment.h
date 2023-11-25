@@ -18,6 +18,7 @@ public: /// Initializer & Clean-up
 public:
 	bool StartAnimation();
 	bool NextAnimation(bool bUpdate = true);
+	bool IsStopAnimation() const;
 
 public: /// Getters
 	int GetLimit() const;
