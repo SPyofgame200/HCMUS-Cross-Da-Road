@@ -1,8 +1,12 @@
 #include "hPlayerHitbox.h"
-#include "uAppConst.h"
 #include "hPlayer.h"
 #include "cZone.h"
 #include <iostream>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 hPlayerHitbox::hPlayerHitbox() : ptrPlayer(nullptr)
 {
