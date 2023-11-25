@@ -11,14 +11,14 @@ void cPlayerRecord::Reset()
 }
 
 /// @brief Getter for player name
-std::string cPlayerRecord::GetPlayerName() const
+std::string cPlayerRecord::GetName() const
 {
 	return sName;
 }
 
 /// @brief Setter for player name
 /// @param Name Name of player
-void cPlayerRecord::SetPlayerName(const std::string& Name)
+void cPlayerRecord::SetName(const std::string& Name)
 {
 	this->sName = Name;
 }

@@ -27,9 +27,6 @@ public: // Player Renderers
 	bool OnRenderPlayer() const;
 	bool OnRenderPlayerDeath();
 	bool OnRender();
-
-public: // Checkers
-	bool IsCollisionSafe() const;
 };
 
 #endif // H_PLAYER_RENDER_H

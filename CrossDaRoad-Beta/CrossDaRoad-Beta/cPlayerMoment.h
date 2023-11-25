@@ -16,7 +16,8 @@ public: /// Getters
 	int GetSafeAnimationID() const;
 
 public: /// Checkers
-	bool IsPlayerLanding() const;
+	bool IsJumpingStop() const;
+	bool IsJumpingSafe() const;
 };
 
 #endif // C_PLAYER_MOMENT_H

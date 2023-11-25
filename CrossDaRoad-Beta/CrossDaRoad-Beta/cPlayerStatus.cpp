@@ -254,13 +254,13 @@ bool cPlayerStatus::IsMove(std::initializer_list<Intention> eList) const
     return false;
 }
 
-bool cPlayerStatus::IsPlayerStartingJump() const
+bool cPlayerStatus::IsStartJumping() const
 {
     return (IsIdleAnimation()) && (IsMove());
 }
 /// @brief Check if player is idling
 /// @return True if player is idling, false otherwise
-bool cPlayerStatus::IsPlayerIdling() const
+bool cPlayerStatus::IsIdling() const
 {
     return (IsIdleAnimation()) && !(IsMove());
 }

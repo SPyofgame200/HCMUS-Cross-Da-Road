@@ -135,8 +135,8 @@ public: /// Checkers
 	bool IsMove(std::initializer_list<Intention> eList) const;
 
 public: /// Animation
-	bool IsPlayerStartingJump() const;
-	bool IsPlayerIdling() const;
+	bool IsIdling() const;
+	bool IsStartJumping() const;
 };
 
 using PlayerDirection = cPlayerStatus::Direction;

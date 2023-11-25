@@ -234,7 +234,7 @@ bool cApp::OnRenderEvent()
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
-	const std::string FileName = Player.Record().GetPlayerName();
+	const std::string FileName = Player.Record().GetName();
 	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);

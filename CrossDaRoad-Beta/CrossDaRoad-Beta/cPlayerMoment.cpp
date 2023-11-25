@@ -18,7 +18,13 @@ int cPlayerMoment::GetSafeAnimationID() const
 
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
-bool cPlayerMoment::IsPlayerLanding() const
+bool cPlayerMoment::IsJumpingStop() const
 {
 	return cFrameManager::GetFrame6().IsStopAnimation();
+}
+/// @brief Check if player is safe when having collision
+/// @return True if player is safe, false otherwise
+bool cPlayerMoment::IsJumpingSafe() const
+{
+	return cFrameManager::GetFrame6().GetAnimationID() <= GetSafeAnimationID();
 }

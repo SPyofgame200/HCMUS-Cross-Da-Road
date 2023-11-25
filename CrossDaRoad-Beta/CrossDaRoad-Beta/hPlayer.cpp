@@ -187,7 +187,7 @@ bool hPlayer::IsForceKilled() const
 }
 bool hPlayer::IsKilled() const
 {
-	if (Render().IsCollisionSafe()) {
+	if (Status().IsJumpAnimation() && Moment().IsJumpingSafe()) {
 		return false;
 	}
 	return Hitbox().IsHit();

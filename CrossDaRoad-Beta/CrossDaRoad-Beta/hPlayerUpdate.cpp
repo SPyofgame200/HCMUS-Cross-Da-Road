@@ -123,13 +123,13 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 
 bool hPlayerUpdate::OnUpdate()
 {
-	if (ptrPlayer->Status().IsPlayerIdling()) {
+	if (ptrPlayer->Status().IsIdling()) {
 		return OnUpdatePlayerIdle();
 	}
-	if (ptrPlayer->Status().IsPlayerStartingJump()) {
+	if (ptrPlayer->Status().IsStartJumping()) {
 		return OnUpdatePlayerJumpStart();
 	}
-	if (!ptrPlayer->Moment().IsPlayerLanding()) {
+	if (!ptrPlayer->Moment().IsJumpingStop()) {
 		return OnUpdatePlayerJumpContinue();
 	}
 	else { /// Jump completed

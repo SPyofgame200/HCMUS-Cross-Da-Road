@@ -15,10 +15,10 @@ public: // Initializer & Clean-up
 	void Reset();
 
 public: // Getters
-	std::string GetPlayerName() const;
+	std::string GetName() const;
 
 public: // Setters
-	void SetPlayerName(const std::string& sName);
+	void SetName(const std::string& sName);
 
 };
 

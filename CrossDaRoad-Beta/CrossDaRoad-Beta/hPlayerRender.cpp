@@ -93,13 +93,13 @@ bool hPlayerRender::OnRenderPlayerDeath()
 
 bool hPlayerRender::OnRender()
 {
-	if (ptrPlayer->Status().IsPlayerIdling()) {
+	if (ptrPlayer->Status().IsIdling()) {
 		return OnRenderPlayerIdle();
 	}
-	if (ptrPlayer->Status().IsPlayerStartingJump()) {
+	if (ptrPlayer->Status().IsStartJumping()) {
 		return OnRenderPlayerJumpStart();
 	}
-	if (!ptrPlayer->Moment().IsPlayerLanding()) {
+	if (!ptrPlayer->Moment().IsJumpingStop()) {
 		return OnRenderPlayerJumpContinue();
 	}
 	else { /// Jump completed
@@ -108,12 +108,6 @@ bool hPlayerRender::OnRender()
 	return false;
 }
 
-/// @brief Check if player is safe when having collision
-/// @return True if player is safe, false otherwise
-bool hPlayerRender::IsCollisionSafe() const
-{
-	return cFrameManager::GetFrame6().GetAnimationID() <= ptrPlayer->Moment().GetSafeAnimationID();
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
