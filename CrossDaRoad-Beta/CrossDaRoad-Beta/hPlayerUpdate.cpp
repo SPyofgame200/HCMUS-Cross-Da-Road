@@ -111,6 +111,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpContinue() const
 /// @return True if player animation is updated, false otherwise
 bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 {
+	ptrPlayer->Physic().OnFixPlayerPosition();
 	ptrPlayer->Physic().SynchronizePosition();
 	if (ptrPlayer->Status().GetAnimation() == PlayerAnimation::JUMP) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::IDLE);
