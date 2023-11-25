@@ -19,6 +19,11 @@
 #include "hPlayer.h"
 #include "hMenu.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
 class cApp final : public app::GameEngine

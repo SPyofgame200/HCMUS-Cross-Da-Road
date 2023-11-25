@@ -8,8 +8,12 @@
 #ifndef C_ASSET_MANAGER_H
 #define C_ASSET_MANAGER_H
 
-#include <map>
 #include "gSprite.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 /// @brief Singleton class for asset management
 class cAssetManager

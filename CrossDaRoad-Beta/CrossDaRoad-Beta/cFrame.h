@@ -11,6 +11,11 @@
 #include "uAppUtils.h"
 #include <iostream>
 
+ //=================================================================================================
+ // Include new header files here
+
+ //=================================================================================================
+
 template<const size_t FRAME_LIMIT, const int ID_BASE = 1>
 class cFrame
 {
