@@ -11,7 +11,11 @@
 #pragma comment(lib, "winmm.lib")
 #include <Windows.h>
 #include <iostream>
-#include <thread>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 /// @brief Namespace for application sound
 namespace app_sound
