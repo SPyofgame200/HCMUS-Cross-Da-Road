@@ -10,14 +10,12 @@
 
 #include "cMapLane.h"
 #include "cMapObject.h"
-#include "uStringUtils.h"
-#include "uAppConst.h"
-
-
-#include <sstream>
-#include <fstream>
-
 #include <map>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 /// @brief Class for map loader and manipulation in game
 class cMapLoader
