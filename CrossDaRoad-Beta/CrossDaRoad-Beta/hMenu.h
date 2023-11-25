@@ -10,9 +10,13 @@
 #define C_MENU_H
 
 #include "uSound.h"
-//#include "uAppConst.h"
-#include "cAssetManager.h"
 #include <vector>
+#include "cAssetManager.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 // Forward declaration
 class cApp;
