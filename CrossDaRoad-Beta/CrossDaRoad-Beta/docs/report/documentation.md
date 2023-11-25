@@ -267,9 +267,9 @@ The game engine stores game data in the following structure:
   - **maps/** (contains game maps describing the game world)
     - ***.txt**
   - **music/** (contains game music)
-    - ***background*.wav**
+    - ***.wav**
   - **save/** (contains saved games)
-    - ***save5*.txt**
+    - ***.txt**
   - ***report/** (contains game logs)
     - ***.txt**
 
