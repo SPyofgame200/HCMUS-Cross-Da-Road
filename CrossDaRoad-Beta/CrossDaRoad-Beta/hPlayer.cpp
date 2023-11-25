@@ -161,17 +161,6 @@ bool hPlayer::SetupComponents()
 ///////////////////////////////////////////// CHECKERS /////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-bool hPlayer::IsPlayerStartingJump() const
-{
-	return (status.IsIdleAnimation()) && (status.IsMove());
-}
-/// @brief Check if player is idling
-/// @return True if player is idling, false otherwise
-bool hPlayer::IsPlayerIdling() const
-{
-	return (status.IsIdleAnimation()) && !(status.IsMove());
-}
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
 bool hPlayer::IsPlayerLanding() const

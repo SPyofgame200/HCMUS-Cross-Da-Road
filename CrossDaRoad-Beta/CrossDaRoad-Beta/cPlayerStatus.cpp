@@ -10,7 +10,12 @@ void cPlayerStatus::Reset()
 	eDirection = RIGHT;
 	eAnimation = IDLE;
 	eSituation = ALIVE;
-    nIntentionFlag = NONE;
+    eIntention = NONE;
+
+    nDirectionFlag = EMPTY_FLAG;
+    nAnimationFlag = EMPTY_FLAG;
+    nSituationFlag = EMPTY_FLAG;
+    nIntentionFlag = EMPTY_FLAG;
 }
 
 /// @brief Check if player is facing exact direction
@@ -34,7 +39,15 @@ bool cPlayerStatus::IsExactAnimation(Animation eCompare) const
 /// @return True if player is doing exact animation, false otherwise
 bool cPlayerStatus::IsExactSituation(Situation eCompare) const
 {
-	return eSituation == eCompare;
+    return eSituation == eCompare;
+}
+
+/// @brief Check if player is doing exact animation
+/// @param eCompare Animation to compare
+/// @return True if player is doing exact animation, false otherwise
+bool cPlayerStatus::IsExactIntention(Intention eCompare) const
+{
+    return eIntention == eCompare;
 }
 
 /// @brief Check if player is facing left direction
@@ -80,7 +93,13 @@ cPlayerStatus::Animation cPlayerStatus::GetAnimation() const
 /// @brief Getter for current animation of player
 cPlayerStatus::Situation cPlayerStatus::GetSituation() const
 {
-	return eSituation;
+    return eSituation;
+}
+
+/// @brief Getter for current animation of player
+cPlayerStatus::Intention cPlayerStatus::GetIntention() const
+{
+    return eIntention;
 }
 
 /// @brief Setter for current direction of player
@@ -101,52 +120,61 @@ void cPlayerStatus::SetSituation(Situation eNewSituation)
 {
 	eSituation = eNewSituation;
 }
-
-void cPlayerStatus::Modify(Intention status, bool bValue)
+void cPlayerStatus::SetIntention(Intention eNewIntention)
 {
-    return (bValue == true) ? Insert(status) : Remove(status);
+    eIntention = eNewIntention;
 }
 
-void cPlayerStatus::Insert(Intention status)
+int cPlayerStatus::Value(Intention eIntention) const
 {
-    nIntentionFlag |= static_cast<int>(status);
+    return 1 << static_cast<int>(eIntention);
 }
 
-void cPlayerStatus::Remove(Intention status)
+void cPlayerStatus::Modify(Intention eIntention, bool bValue)
 {
-    nIntentionFlag &= ~static_cast<int>(status);
+    return (bValue == true) ? Insert(eIntention) : Remove(eIntention);
 }
 
-void cPlayerStatus::Toggle(Intention status)
+void cPlayerStatus::Insert(Intention eIntention)
 {
-    nIntentionFlag ^= static_cast<int>(status);
+    nIntentionFlag |= Value(eIntention);
 }
 
-void cPlayerStatus::Modify(std::initializer_list<Intention> actions, bool bValue)
+void cPlayerStatus::Remove(Intention eIntention)
 {
-    for (Intention status : actions) {
-        Modify(status, bValue);
+    nIntentionFlag &= ~Value(eIntention);
+}
+
+void cPlayerStatus::Toggle(Intention eIntention)
+{
+    nIntentionFlag ^= Value(eIntention);
+}
+
+void cPlayerStatus::Modify(std::initializer_list<Intention> eIntentionList, bool bValue)
+{
+    for (Intention eIntention : eIntentionList) {
+        Modify(eIntention, bValue);
     }
 }
 
-void cPlayerStatus::Insert(std::initializer_list<Intention> actions)
+void cPlayerStatus::Insert(std::initializer_list<Intention> eIntentionList)
 {
-    for (Intention status : actions) {
-        Insert(status);
+    for (Intention eIntention : eIntentionList) {
+        Insert(eIntention);
     }
 }
 
-void cPlayerStatus::Remove(std::initializer_list<Intention> actions)
+void cPlayerStatus::Remove(std::initializer_list<Intention> eIntentionList)
 {
-    for (Intention status : actions) {
-        Remove(status);
+    for (Intention eIntention : eIntentionList) {
+        Remove(eIntention);
     }
 }
 
-void cPlayerStatus::Toggle(std::initializer_list<Intention> actions)
+void cPlayerStatus::Toggle(std::initializer_list<Intention> eIntentionList)
 {
-    for (Intention status : actions) {
-        Toggle(status);
+    for (Intention eIntention : eIntentionList) {
+        Toggle(eIntention);
     }
 }
 
@@ -155,15 +183,15 @@ bool cPlayerStatus::IsMove() const
     return nIntentionFlag != NONE;
 }
 
-bool cPlayerStatus::IsMove(Intention status) const
+bool cPlayerStatus::IsMove(Intention eIntention) const
 {
-    return (nIntentionFlag & static_cast<int>(status)) != 0;
+    return (nIntentionFlag & Value(eIntention)) != 0;
 }
 
-bool cPlayerStatus::IsMove(std::initializer_list<Intention> actions) const
+bool cPlayerStatus::IsMove(std::initializer_list<Intention> eIntentionList) const
 {
-    for (Intention status : actions) {
-        if (IsMove(status)) {
+    for (Intention eIntention : eIntentionList) {
+        if (IsMove(eIntention)) {
             return true;
         }
     }
@@ -185,4 +213,15 @@ bool cPlayerStatus::IsMoveUp() const
 bool cPlayerStatus::IsMoveDown() const
 {
     return IsMove(GO_DOWN);
+}
+
+bool cPlayerStatus::IsPlayerStartingJump() const
+{
+    return (IsIdleAnimation()) && (IsMove());
+}
+/// @brief Check if player is idling
+/// @return True if player is idling, false otherwise
+bool cPlayerStatus::IsPlayerIdling() const
+{
+    return (IsIdleAnimation()) && !(IsMove());
 }

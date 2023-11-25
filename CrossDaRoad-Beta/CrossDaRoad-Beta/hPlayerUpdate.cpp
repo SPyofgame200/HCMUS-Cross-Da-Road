@@ -123,10 +123,10 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 
 bool hPlayerUpdate::OnUpdate()
 {
-	if (ptrPlayer->IsPlayerIdling()) {
+	if (ptrPlayer->Status().IsPlayerIdling()) {
 		return OnUpdatePlayerIdle();
 	}
-	if (ptrPlayer->IsPlayerStartingJump()) {
+	if (ptrPlayer->Status().IsPlayerStartingJump()) {
 		return OnUpdatePlayerJumpStart();
 	}
 	if (!ptrPlayer->IsPlayerLanding()) {

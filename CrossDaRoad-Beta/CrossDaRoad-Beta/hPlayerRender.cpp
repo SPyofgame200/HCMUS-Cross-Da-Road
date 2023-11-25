@@ -93,10 +93,10 @@ bool hPlayerRender::OnRenderPlayerDeath()
 
 bool hPlayerRender::OnRender()
 {
-	if (ptrPlayer->IsPlayerIdling()) {
+	if (ptrPlayer->Status().IsPlayerIdling()) {
 		return OnRenderPlayerIdle();
 	}
-	if (ptrPlayer->IsPlayerStartingJump()) {
+	if (ptrPlayer->Status().IsPlayerStartingJump()) {
 		return OnRenderPlayerJumpStart();
 	}
 	if (!ptrPlayer->IsPlayerLanding()) {

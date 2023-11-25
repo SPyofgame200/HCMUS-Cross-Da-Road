@@ -1,3 +1,9 @@
+/**
+ * @file cApp.cpp
+ * @brief Contain player states and flags
+ *
+**/
+
 #ifndef C_PLAYER_STATUS_H
 #define C_PLAYER_STATUS_H
 
@@ -5,8 +11,8 @@
 
 class cPlayerStatus
 {
-public: // Special flag
-	static const int NONE = 0;
+public:
+	static const int EMPTY_FLAG = 0;
 
 public: /// @brief Direction enumeration for player movement
 	enum Direction
@@ -42,31 +48,37 @@ public: /// @brief Situation enumeration for player interaction
 public: /// @brief Intention flags for player actions
 	enum Intention
 	{
+		NONE = 0,
 		GO_LEFT = 1,
 		GO_RIGHT = 2,
-		GO_UP = 4,
-		GO_DOWN = 8,
+		GO_UP = 3,
+		GO_DOWN = 4,
 	};
 
-private: // Status
+private: /// Single Status
 	Direction eDirection;
 	Animation eAnimation;
 	Situation eSituation;
+	Intention eIntention; // [Unused]
 
-private:
+private: /// Chained Status
 	using flag_t = int;
+	flag_t nDirectionFlag; // [Unused]
+	flag_t nAnimationFlag; // [Unused]
+	flag_t nSituationFlag; // [Unused]
 	flag_t nIntentionFlag;
 	
-public: // Constructors & Destructor
+public: /// Constructors & Destructor
 	cPlayerStatus();
 
-public: // Initializer & Clean-up
+public: /// Initializer & Clean-up
 	void Reset();
 
 public: /// Checkers
 	bool IsExactDirection(Direction eCompare) const;
 	bool IsExactAnimation(Animation eCompare) const;
 	bool IsExactSituation(Situation eCompare) const;
+	bool IsExactIntention(Intention eCompare) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
 	bool IsJumpAnimation() const;
@@ -76,32 +88,41 @@ public: /// Getters
 	Direction GetDirection() const;
 	Animation GetAnimation() const;
 	Situation GetSituation() const;
+	Intention GetIntention() const;
 
-public: /// Setters
+public: // Setters
 	void SetDirection(Direction eNewDirection);
 	void SetAnimation(Animation eNewAnimation);
 	void SetSituation(Situation eNewSituation);
+	void SetIntention(Intention eNewIntention);
 
-public: // Single Intention
-	void Modify(Intention, bool bValue);
-	void Insert(Intention);
-	void Remove(Intention);
-	void Toggle(Intention);
+private: /// Utilities
+	int Value(Intention eIntention) const;
 
-public: // Chained Intentions
-	void Modify(std::initializer_list<Intention> actions, bool bValue);
-	void Insert(std::initializer_list<Intention> actions);
-	void Remove(std::initializer_list<Intention> actions);
-	void Toggle(std::initializer_list<Intention> actions);
+public: /// Single Intention
+	void Modify(Intention eIntention, bool bValue);
+	void Insert(Intention eIntention);
+	void Remove(Intention eIntention);
+	void Toggle(Intention eIntention);
+
+public: /// Chained Intentions
+	void Modify(std::initializer_list<Intention> eIntentionList, bool bValue);
+	void Insert(std::initializer_list<Intention> eIntentionList);
+	void Remove(std::initializer_list<Intention> eIntentionList);
+	void Toggle(std::initializer_list<Intention> eIntentionList);
 
 public: /// Checkers
 	bool IsMove() const;
 	bool IsMove(Intention) const;
-	bool IsMove(std::initializer_list<Intention> actions) const;
+	bool IsMove(std::initializer_list<Intention> eIntention) const;
 	bool IsMoveLeft() const;
 	bool IsMoveRight() const;
 	bool IsMoveUp() const;
 	bool IsMoveDown() const;
+
+public: /// Animation
+	bool IsPlayerStartingJump() const;
+	bool IsPlayerIdling() const;
 };
 
 using PlayerDirection = cPlayerStatus::Direction;
