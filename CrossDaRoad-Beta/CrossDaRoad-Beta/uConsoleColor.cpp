@@ -1,7 +1,10 @@
 #include "uConsoleColor.h"
 #include "gPixel.h"
-#include <cmath>
-#include <iomanip>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 namespace console
 {
