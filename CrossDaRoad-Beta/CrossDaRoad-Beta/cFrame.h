@@ -16,10 +16,11 @@
 
  //=================================================================================================
 
-template<const size_t FRAME_LIMIT, const int ID_BASE = 1>
+constexpr int ID_BASE = 1; /// using 1-based indexes
+template<const size_t FRAME_LIMIT>
 class cFrame
 {
-public:
+private:
     float fVal;
     float fStart;
     int nAnimationFrame;
