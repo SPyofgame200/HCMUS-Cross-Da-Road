@@ -21,13 +21,13 @@ template<const size_t FRAME_LIMIT>
 class cFrame
 {
 private:
-    float fVal;
+    static float fTime;
     float fStart;
     int nAnimationFrame;
 
 public: /// Constructors & Destructor
     cFrame(float val = 0)
-        : fVal(val), fStart(0), nAnimationFrame(0)
+        :  fStart(0), nAnimationFrame(0)
     {
         // ...
     }
@@ -35,14 +35,14 @@ public: /// Constructors & Destructor
     ~cFrame()
     {
         //std::cerr << "cFrame<size=" << FRAME_LIMIT << "> got destructed: ";
-        //std::cerr << "properties{ fVal=" << fVal << " }" << std::endl;
-        fVal = 0;
+        //std::cerr << "properties{ fTime=" << fTime << " }" << std::endl;
+        fTime = 0;
     }
 
 public: /// Initialization & Clean-up
     bool Reset()
     {
-        fVal = 0;
+        fTime = 0;
         return true;
     }
 
@@ -70,7 +70,7 @@ public: /// Properties Getters
 
     int GetTickID() const
     {
-        return static_cast<int>(fVal);
+        return static_cast<int>(fTime);
     }
 
     static int GetMinID()
@@ -89,9 +89,9 @@ public: /// Properties Getters
     }
 
 public: /// Properties Setters
-    void SetVal(float val)
+    static void SetVal(float fCurrentTime)
     {
-        fVal = val;
+        fTime = fCurrentTime;
     }
 
 private: /// Utilities
@@ -111,7 +111,7 @@ public: /// Updaters
 public: /// Animations
     int GetAnimationID() const
     {
-        return GetID(fVal - fStart);
+        return GetID(fTime - fStart);
     }
     bool IsStopAnimation() const
     {
@@ -119,7 +119,7 @@ public: /// Animations
     }
     bool StartAnimation()
     {
-        fStart = fVal;
+        fStart = fTime;
         nAnimationFrame = ID_BASE - 1;
         return true;
     }
@@ -141,9 +141,13 @@ public: /// Animations
     }
 };
 
+template <const size_t FRAME_LIMIT>
+float cFrame<FRAME_LIMIT>::fTime = 0.0f;
+
 using frame4_t = cFrame<4>;
 using frame6_t = cFrame<6>;
 using frame8_t = cFrame<8>;
 using frame12_t = cFrame<12>;
+using playerframe_t = cFrame<6>;
 
 #endif // C_FRAME_H
