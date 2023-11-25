@@ -3,9 +3,13 @@
  * @brief Implements window class for creating and managing windows using Win32 API
 **/
 
-#include "gUtils.h"
 #include "gWindow.h"
 #include "gGameEngine.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 namespace app
 {
