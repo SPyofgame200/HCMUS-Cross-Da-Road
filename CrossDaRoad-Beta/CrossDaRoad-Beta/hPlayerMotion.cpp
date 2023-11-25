@@ -1,9 +1,12 @@
 #include "hPlayerHitbox.h"
 #include "hPlayerMotion.h"
-#include "cPlayerAction.h"
-#include "uAppConst.h"
 #include "hPlayer.h"
 #include <iostream>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 hPlayerMotion::hPlayerMotion() : ptrPlayer(nullptr)
 {
