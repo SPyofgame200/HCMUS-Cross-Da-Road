@@ -1,9 +1,12 @@
 #include "hPlayerRender.h"
 #include "cAssetManager.h"
 #include "cFrameManager.h"
-#include "uAppConst.h"
 #include "hPlayer.h"
-#include <iostream>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 hPlayerRender::hPlayerRender() : ptrPlayer(nullptr)
 {
