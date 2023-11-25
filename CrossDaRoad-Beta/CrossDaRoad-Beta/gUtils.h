@@ -9,10 +9,13 @@
 #ifndef G_UTILS_H
 #define G_UTILS_H
 
-#include <Windows.h>
+#include <windows.h>
 #include <string>
-#include <memory>
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 namespace app
 {
 	std::wstring to_wstring(const std::string& utf8String);
