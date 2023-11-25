@@ -164,7 +164,7 @@ cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerIntention>(PlayerIntention ePla
 template<typename EnumType>
 void cPlayerStatus::Modify(EnumType eValue, bool bValue)
 {
-    Flag(eValue) ^= (-bValue ^ nIntentionFlag) & Value<EnumType>(eValue);
+    Flag(eValue) ^= (-static_cast<int>(bValue) ^ nIntentionFlag) & Value<EnumType>(eValue);
 }
 
 template<typename EnumType>

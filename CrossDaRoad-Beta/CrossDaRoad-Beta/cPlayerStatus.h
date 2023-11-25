@@ -148,60 +148,24 @@ using PlayerAnimation = cPlayerStatus::Animation;
 using PlayerSituation = cPlayerStatus::Situation;
 using PlayerIntention = cPlayerStatus::Intention;
 
-// Explicit instantiation
-template int cPlayerStatus::Value<PlayerDirection>(PlayerDirection eValue) const;
-template int cPlayerStatus::Value<PlayerAnimation>(PlayerAnimation eValue) const;
-template int cPlayerStatus::Value<PlayerSituation>(PlayerSituation eValue) const;
-template int cPlayerStatus::Value<PlayerIntention>(PlayerIntention eValue) const;
+#define EXPLICIT_INSTANTIATION(Type) \
+    template int cPlayerStatus::Value<Type>(Type eValue) const; \
+    template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
+    template void cPlayerStatus::Insert<Type>(Type eValue); \
+    template void cPlayerStatus::Remove<Type>(Type eValue); \
+    template void cPlayerStatus::Toggle<Type>(Type eValue); \
+    template bool cPlayerStatus::IsMove<Type>(Type eValue) const; \
+    template void cPlayerStatus::Modify<Type>(std::initializer_list<Type> eList, bool bValue); \
+    template void cPlayerStatus::Insert<Type>(std::initializer_list<Type> eList); \
+    template void cPlayerStatus::Remove<Type>(std::initializer_list<Type> eList); \
+    template void cPlayerStatus::Toggle<Type>(std::initializer_list<Type> eList); \
+    template bool cPlayerStatus::IsMove<Type>(std::initializer_list<Type> eList) const;
 
-template void cPlayerStatus::Modify<PlayerIntention>(PlayerIntention eValue, bool bValue);
-template void cPlayerStatus::Modify<PlayerDirection>(PlayerDirection eValue, bool bValue);
-template void cPlayerStatus::Modify<PlayerAnimation>(PlayerAnimation eValue, bool bValue);
-template void cPlayerStatus::Modify<PlayerSituation>(PlayerSituation eValue, bool bValue);
+EXPLICIT_INSTANTIATION(PlayerDirection)
+EXPLICIT_INSTANTIATION(PlayerAnimation)
+EXPLICIT_INSTANTIATION(PlayerSituation)
+EXPLICIT_INSTANTIATION(PlayerIntention)
 
-template void cPlayerStatus::Insert<PlayerIntention>(PlayerIntention eValue);
-template void cPlayerStatus::Insert<PlayerDirection>(PlayerDirection eValue);
-template void cPlayerStatus::Insert<PlayerAnimation>(PlayerAnimation eValue);
-template void cPlayerStatus::Insert<PlayerSituation>(PlayerSituation eValue);
-
-template void cPlayerStatus::Remove<PlayerIntention>(PlayerIntention eValue);
-template void cPlayerStatus::Remove<PlayerDirection>(PlayerDirection eValue);
-template void cPlayerStatus::Remove<PlayerAnimation>(PlayerAnimation eValue);
-template void cPlayerStatus::Remove<PlayerSituation>(PlayerSituation eValue);
-
-template void cPlayerStatus::Toggle<PlayerIntention>(PlayerIntention eValue);
-template void cPlayerStatus::Toggle<PlayerDirection>(PlayerDirection eValue);
-template void cPlayerStatus::Toggle<PlayerAnimation>(PlayerAnimation eValue);
-template void cPlayerStatus::Toggle<PlayerSituation>(PlayerSituation eValue);
-
-template bool cPlayerStatus::IsMove<PlayerDirection>(PlayerDirection eValue) const;
-template bool cPlayerStatus::IsMove<PlayerAnimation>(PlayerAnimation eValue) const;
-template bool cPlayerStatus::IsMove<PlayerSituation>(PlayerSituation eValue) const;
-template bool cPlayerStatus::IsMove<PlayerIntention>(PlayerIntention eValue) const;
-
-template void cPlayerStatus::Modify<PlayerDirection>(std::initializer_list<PlayerDirection> eList, bool bValue);
-template void cPlayerStatus::Modify<PlayerAnimation>(std::initializer_list<PlayerAnimation> eList, bool bValue);
-template void cPlayerStatus::Modify<PlayerSituation>(std::initializer_list<PlayerSituation> eList, bool bValue);
-template void cPlayerStatus::Modify<PlayerIntention>(std::initializer_list<PlayerIntention> eList, bool bValue);
-
-template void cPlayerStatus::Insert<PlayerDirection>(std::initializer_list<PlayerDirection> eList);
-template void cPlayerStatus::Insert<PlayerAnimation>(std::initializer_list<PlayerAnimation> eList);
-template void cPlayerStatus::Insert<PlayerSituation>(std::initializer_list<PlayerSituation> eList);
-template void cPlayerStatus::Insert<PlayerIntention>(std::initializer_list<PlayerIntention> eList);
-
-template void cPlayerStatus::Remove<PlayerDirection>(std::initializer_list<PlayerDirection> eList);
-template void cPlayerStatus::Remove<PlayerAnimation>(std::initializer_list<PlayerAnimation> eList);
-template void cPlayerStatus::Remove<PlayerSituation>(std::initializer_list<PlayerSituation> eList);
-template void cPlayerStatus::Remove<PlayerIntention>(std::initializer_list<PlayerIntention> eList);
-
-template void cPlayerStatus::Toggle<PlayerDirection>(std::initializer_list<PlayerDirection> eList);
-template void cPlayerStatus::Toggle<PlayerAnimation>(std::initializer_list<PlayerAnimation> eList);
-template void cPlayerStatus::Toggle<PlayerSituation>(std::initializer_list<PlayerSituation> eList);
-template void cPlayerStatus::Toggle<PlayerIntention>(std::initializer_list<PlayerIntention> eList);
-
-template bool cPlayerStatus::IsMove<PlayerDirection>(std::initializer_list<PlayerDirection> eList) const;
-template bool cPlayerStatus::IsMove<PlayerAnimation>(std::initializer_list<PlayerAnimation> eList) const;
-template bool cPlayerStatus::IsMove<PlayerSituation>(std::initializer_list<PlayerSituation> eList) const;
-template bool cPlayerStatus::IsMove<PlayerIntention>(std::initializer_list<PlayerIntention> eList) const;
+#undef EXPLICIT_INSTANTIATION
 
 #endif C_PLAYER_STATUS_H
