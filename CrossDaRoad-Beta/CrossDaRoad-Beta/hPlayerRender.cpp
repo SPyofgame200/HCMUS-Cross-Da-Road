@@ -1,6 +1,5 @@
 #include "hPlayerRender.h"
 #include "cAssetManager.h"
-#include "cFrameManager.h"
 #include "hPlayer.h"
 
 //=================================================================================================
@@ -65,8 +64,8 @@ bool hPlayerRender::OnRenderPlayerJumpStop() const
 /// @return Always true by default
 bool hPlayerRender::OnRenderPlayer() const
 {
-	const int nID = cFrameManager::GetFrame6().GetAnimationID();
-	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
+	const int nID = ptrPlayer->Moment().GetAnimationID();
+	const bool isValidID = ptrPlayer->Moment().IsValidID(nID);
 	const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
 	const bool isJump = (ptrPlayer->Status().IsJumpAnimation()) && (isValidID);
 	const std::string sPlayerState = std::string(isJump ? "_jump" : "");

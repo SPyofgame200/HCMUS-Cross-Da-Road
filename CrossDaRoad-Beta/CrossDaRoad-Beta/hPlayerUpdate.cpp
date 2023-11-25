@@ -1,6 +1,5 @@
 #include "hPlayerUpdate.h"
 #include "hPlayerMotion.h"
-#include "cFrameManager.h"
 #include "hPlayer.h"
 
 //=================================================================================================
@@ -72,7 +71,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStart()
 		}
 	}
 	ptrPlayer->Physic().SynchronizePosition();
-	return cFrameManager::GetFrame6().StartAnimation();
+	return ptrPlayer->Moment().StartAnimation();
 }
 /// @brief Update animation when player continue jumping
 /// @return True if player animation is updated, false otherwise
@@ -81,26 +80,26 @@ bool hPlayerUpdate::OnUpdatePlayerJumpContinue() const
 	if (ptrPlayer->Status().GetAnimation() == PlayerAnimation::IDLE) {
 		return false;
 	}
-	if (cFrameManager::GetFrame6().NextAnimation()) {
+	if (ptrPlayer->Moment().NextAnimation()) {
 		if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT) {
-			if (!ptrPlayer->Motion().MoveLeft(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!ptrPlayer->Motion().MoveLeft(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT) {
-			if (!ptrPlayer->Motion().MoveRight(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!ptrPlayer->Motion().MoveRight(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT_UP 
 			  || ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT_UP) {
-			if (!ptrPlayer->Motion().MoveUp(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!ptrPlayer->Motion().MoveUp(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
 				return false;
 			}
 		}
 		else if (ptrPlayer->Status().GetDirection() == PlayerDirection::LEFT_DOWN
 			  || ptrPlayer->Status().GetDirection() == PlayerDirection::RIGHT_DOWN) {
-			if (!ptrPlayer->Motion().MoveDown(1.0f / cFrameManager::GetFrame6().GetLimit(), true)) {
+			if (!ptrPlayer->Motion().MoveDown(1.0f / ptrPlayer->Moment().GetLimit(), true)) {
 				return false;
 			}
 		}

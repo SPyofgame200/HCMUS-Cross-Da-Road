@@ -15,16 +15,37 @@ int cPlayerMoment::GetSafeAnimationID() const
 {
 	return frame6_id_animation_safe;
 }
+bool cPlayerMoment::StartAnimation()
+{
+	return frame.StartAnimation();
+}
+bool cPlayerMoment::NextAnimation(bool bUpdate)
+{
+	return frame.NextAnimation(bUpdate);
+}
+
+int cPlayerMoment::GetLimit() const
+{
+	return frame.GetLimit();
+}
 
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
 bool cPlayerMoment::IsJumpingStop() const
 {
-	return cFrameManager::GetFrame6().IsStopAnimation();
+	return frame.IsStopAnimation();
 }
 /// @brief Check if player is safe when having collision
 /// @return True if player is safe, false otherwise
 bool cPlayerMoment::IsJumpingSafe() const
 {
-	return cFrameManager::GetFrame6().GetAnimationID() <= GetSafeAnimationID();
+	return frame.GetAnimationID() <= GetSafeAnimationID();
+}
+int cPlayerMoment::GetAnimationID() const
+{
+	return frame.GetAnimationID();
+}
+bool cPlayerMoment::IsValidID(int nID) const
+{
+	return frame.IsValidID(nID);
 }
