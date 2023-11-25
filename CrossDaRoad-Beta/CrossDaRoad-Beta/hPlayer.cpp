@@ -70,11 +70,6 @@ cPlayerRecord& hPlayer::Record()
 	return record;
 }
 
-cPlayerAction& hPlayer::Action()
-{
-	return action;
-}
-
 const cPlayerStatus& hPlayer::Status() const
 {
 	return status;
@@ -88,11 +83,6 @@ const cPlayerPhysic& hPlayer::Physic() const
 const cPlayerRecord& hPlayer::Record() const
 {
 	return record;
-}
-
-const cPlayerAction& hPlayer::Action() const
-{
-	return action;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +122,7 @@ void hPlayer::Reset()
 	status.Reset();
 	physic.Reset();
 	record.Reset();
-	action.Reset();
+	status.Reset();
 }
 
 /// @brief Setup ptrApp pointer
@@ -174,13 +164,13 @@ bool hPlayer::SetupComponents()
 
 bool hPlayer::IsPlayerStartingJump() const
 {
-	return (status.IsIdleAnimation()) && (action.IsMove());
+	return (status.IsIdleAnimation()) && (status.IsMove());
 }
 /// @brief Check if player is idling
 /// @return True if player is idling, false otherwise
 bool hPlayer::IsPlayerIdling() const
 {
-	return (status.IsIdleAnimation()) && !(action.IsMove());
+	return (status.IsIdleAnimation()) && !(status.IsMove());
 }
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
@@ -216,10 +206,10 @@ bool hPlayer::IsKilled() const
 
 bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 {
-	action.Modify(PlayerAction::LEFT, bLeft);
-	action.Modify(PlayerAction::RIGHT, bRight);
-	action.Modify(PlayerAction::UP, bUp);
-	action.Modify(PlayerAction::DOWN, bDown);
+	status.Modify(PlayerIntention::GO_LEFT, bLeft);
+	status.Modify(PlayerIntention::GO_RIGHT, bRight);
+	status.Modify(PlayerIntention::GO_UP, bUp);
+	status.Modify(PlayerIntention::GO_DOWN, bDown);
 	return true;
 }
 

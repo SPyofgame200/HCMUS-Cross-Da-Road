@@ -70,7 +70,7 @@ bool hPlayerMotion::Move(float fFactorX, float fFactorY, float fFactorScale, int
 
 bool hPlayerMotion::MoveLeft(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->Action().IsMoveLeft()) && ptrPlayer->Physic().CanMoveLeft()) {
+	if ((forced || ptrPlayer->Status().IsMoveLeft()) && ptrPlayer->Physic().CanMoveLeft()) {
 		Move(-1, 0, factor);
 	}
 	return true;
@@ -78,7 +78,7 @@ bool hPlayerMotion::MoveLeft(float factor, bool forced)
 
 bool hPlayerMotion::MoveRight(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->Action().IsMoveRight()) && ptrPlayer->Physic().CanMoveRight()) {
+	if ((forced || ptrPlayer->Status().IsMoveRight()) && ptrPlayer->Physic().CanMoveRight()) {
 		Move(+1, 0, factor);
 	}
 	return true;
@@ -86,7 +86,7 @@ bool hPlayerMotion::MoveRight(float factor, bool forced)
 
 bool hPlayerMotion::MoveUp(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->Action().IsMoveUp()) && ptrPlayer->Physic().CanMoveUp()) {
+	if ((forced || ptrPlayer->Status().IsMoveUp()) && ptrPlayer->Physic().CanMoveUp()) {
 		Move(0, -1, factor);
 	}
 	return true;
@@ -94,7 +94,7 @@ bool hPlayerMotion::MoveUp(float factor, bool forced)
 
 bool hPlayerMotion::MoveDown(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->Action().IsMoveDown()) && ptrPlayer->Physic().CanMoveDown()) {
+	if ((forced || ptrPlayer->Status().IsMoveDown()) && ptrPlayer->Physic().CanMoveDown()) {
 		Move(0, +1, factor);
 	}
 	return true;
@@ -148,7 +148,7 @@ bool hPlayerMotion::PlatformMoveY(float fFactorY, int nStep)
 
 bool hPlayerMotion::PlatformDetector(int nStep, float fFactor)
 {
-	if (ptrPlayer->Action().IsMoveRight() && ptrPlayer->IsKilled()) {
+	if (ptrPlayer->Status().IsMoveRight() && ptrPlayer->IsKilled()) {
 		for (int step = 1; step <= nStep; ++step) {
 			MoveRight(fFactor, true);
 			if (!ptrPlayer->IsKilled()) {
@@ -162,7 +162,7 @@ bool hPlayerMotion::PlatformDetector(int nStep, float fFactor)
 			}
 		}
 	}
-	if (!ptrPlayer->Action().IsMoveLeft() && ptrPlayer->IsKilled()) {
+	if (!ptrPlayer->Status().IsMoveLeft() && ptrPlayer->IsKilled()) {
 		for (int step = 1; step <= nStep; ++step) {
 			MoveLeft(fFactor, true);
 			if (!ptrPlayer->IsKilled()) {

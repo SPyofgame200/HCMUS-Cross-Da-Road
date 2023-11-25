@@ -135,7 +135,6 @@
     <ClCompile Include="cAssetManager.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="cFrameManager.cpp" />
-    <ClCompile Include="cPlayerAction.cpp" />
     <ClCompile Include="cPlayerPhysic.cpp" />
     <ClCompile Include="cPlayerRecord.cpp" />
     <ClCompile Include="cPlayerStatus.cpp" />
@@ -172,7 +171,6 @@
     <ClInclude Include="cAssetManager.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="cFrameManager.h" />
-    <ClInclude Include="cPlayerAction.h" />
     <ClInclude Include="cPlayerPhysic.h" />
     <ClInclude Include="cPlayerRecord.h" />
     <ClInclude Include="cPlayerStatus.h" />

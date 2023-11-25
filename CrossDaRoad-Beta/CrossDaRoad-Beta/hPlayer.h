@@ -15,7 +15,6 @@
 #include "cPlayerStatus.h"
 #include "cPlayerPhysic.h"
 #include "cPlayerRecord.h"
-#include "cPlayerAction.h"
 
 //=================================================================================================
 // Include new header files here
@@ -52,19 +51,16 @@ private: /// Data management
 	cPlayerStatus status;
 	cPlayerPhysic physic;
 	cPlayerRecord record;
-	cPlayerAction action;
 
 public: /// Data getters
 	cPlayerStatus& Status();
 	cPlayerPhysic& Physic();
 	cPlayerRecord& Record();
-	cPlayerAction& Action();
 
 public: /// Const data getters
 	const cPlayerStatus& Status() const;
 	const cPlayerPhysic& Physic() const;
 	const cPlayerRecord& Record() const;
-	const cPlayerAction& Action() const;
 
 public: // Constructors & Destructor
 	hPlayer();

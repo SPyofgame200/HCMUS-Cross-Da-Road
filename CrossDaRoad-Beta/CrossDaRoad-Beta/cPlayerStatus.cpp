@@ -10,6 +10,7 @@ void cPlayerStatus::Reset()
 	eDirection = RIGHT;
 	eAnimation = IDLE;
 	eSituation = ALIVE;
+    nIntentionFlag = NONE;
 }
 
 /// @brief Check if player is facing exact direction
@@ -99,4 +100,89 @@ void cPlayerStatus::SetAnimation(Animation eNewAnimation)
 void cPlayerStatus::SetSituation(Situation eNewSituation)
 {
 	eSituation = eNewSituation;
+}
+
+void cPlayerStatus::Modify(Intention status, bool bValue)
+{
+    return (bValue == true) ? Insert(status) : Remove(status);
+}
+
+void cPlayerStatus::Insert(Intention status)
+{
+    nIntentionFlag |= static_cast<int>(status);
+}
+
+void cPlayerStatus::Remove(Intention status)
+{
+    nIntentionFlag &= ~static_cast<int>(status);
+}
+
+void cPlayerStatus::Toggle(Intention status)
+{
+    nIntentionFlag ^= static_cast<int>(status);
+}
+
+void cPlayerStatus::Modify(std::initializer_list<Intention> actions, bool bValue)
+{
+    for (Intention status : actions) {
+        Modify(status, bValue);
+    }
+}
+
+void cPlayerStatus::Insert(std::initializer_list<Intention> actions)
+{
+    for (Intention status : actions) {
+        Insert(status);
+    }
+}
+
+void cPlayerStatus::Remove(std::initializer_list<Intention> actions)
+{
+    for (Intention status : actions) {
+        Remove(status);
+    }
+}
+
+void cPlayerStatus::Toggle(std::initializer_list<Intention> actions)
+{
+    for (Intention status : actions) {
+        Toggle(status);
+    }
+}
+
+bool cPlayerStatus::IsMove() const
+{
+    return nIntentionFlag != NONE;
+}
+
+bool cPlayerStatus::IsMove(Intention status) const
+{
+    return (nIntentionFlag & static_cast<int>(status)) != 0;
+}
+
+bool cPlayerStatus::IsMove(std::initializer_list<Intention> actions) const
+{
+    for (Intention status : actions) {
+        if (IsMove(status)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool cPlayerStatus::IsMoveLeft() const
+{
+    return IsMove(GO_LEFT);
+}
+bool cPlayerStatus::IsMoveRight() const
+{
+    return IsMove(GO_RIGHT);
+}
+bool cPlayerStatus::IsMoveUp() const
+{
+    return IsMove(GO_UP);
+}
+bool cPlayerStatus::IsMoveDown() const
+{
+    return IsMove(GO_DOWN);
 }
