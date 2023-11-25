@@ -118,3 +118,20 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStop()
 	}
 	return false;
 }
+
+bool hPlayerUpdate::OnUpdate()
+{
+	if (ptrPlayer->IsPlayerIdling()) {
+		return OnUpdatePlayerIdle();
+	}
+	if (ptrPlayer->IsPlayerStartingJump()) {
+		return OnUpdatePlayerJumpStart();
+	}
+	if (!ptrPlayer->IsPlayerLanding()) {
+		return OnUpdatePlayerJumpContinue();
+	}
+	else { /// Jump completed
+		return OnUpdatePlayerJumpStop();
+	}
+	return false;
+}

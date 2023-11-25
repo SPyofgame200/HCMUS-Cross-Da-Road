@@ -170,37 +170,21 @@ bool hPlayer::SetupComponents()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/// @brief Check if player is jumping
-/// @return True if player is jumping, false otherwise
-bool hPlayer::IsPlayerJumping() const
-{
-	return (status.GetAnimation() == cPlayerStatus::JUMP);
-}
-bool hPlayer::IsPlayerMoving() const
-{
-	return (action.IsMove());
-}
 bool hPlayer::IsPlayerStartingJump() const
 {
-	return (status.GetAnimation() == cPlayerStatus::IDLE) && IsPlayerMoving();
+	return (status.IsIdleAnimation()) && (action.IsMove());
 }
 /// @brief Check if player is idling
 /// @return True if player is idling, false otherwise
 bool hPlayer::IsPlayerIdling() const
 {
-	return (status.GetAnimation() == cPlayerStatus::IDLE) && !IsPlayerMoving();
+	return (status.IsIdleAnimation()) && !(action.IsMove());
 }
 /// @brief Check if player is landing
 /// @return True if player is landing, false otherwise
 bool hPlayer::IsPlayerLanding() const
 {
 	return cFrameManager::GetFrame6().IsStopAnimation();
-}
-/// @brief Check if player is safe when having collision
-/// @return True if player is safe, false otherwise
-bool hPlayer::IsPlayerCollisionSafe() const
-{
-	return cFrameManager::GetFrame6().GetAnimationID() <= Record().GetSafeAnimationID();
 }
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise
@@ -218,7 +202,7 @@ bool hPlayer::IsForceKilled() const
 }
 bool hPlayer::IsKilled() const
 {
-	if (IsPlayerCollisionSafe()) {
+	if (Render().IsCollisionSafe()) {
 		return false;
 	}
 	return Hitbox().IsHit();
@@ -230,19 +214,10 @@ bool hPlayer::IsKilled() const
 
 bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 {
-	action.Reset();
-	if (bLeft) {
-		action.Insert(PlayerAction::LEFT);
-	}
-	if (bRight) {
-		action.Insert(PlayerAction::RIGHT);
-	}
-	if (bUp) {
-		action.Insert(PlayerAction::UP);
-	}
-	if (bDown) {
-		action.Insert(PlayerAction::DOWN);
-	}
+	action.Modify(PlayerAction::LEFT, bLeft);
+	action.Modify(PlayerAction::RIGHT, bRight);
+	action.Modify(PlayerAction::UP, bUp);
+	action.Modify(PlayerAction::DOWN, bDown);
 	return true;
 }
 
@@ -254,38 +229,13 @@ bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 /// @return Always true by default
 bool hPlayer::OnUpdate()
 {
-	if (IsPlayerIdling()) {
-		return hUpdate.OnUpdatePlayerIdle();
-	}
-	if (IsPlayerStartingJump()) {
-		return hUpdate.OnUpdatePlayerJumpStart();
-	}
-	if (!IsPlayerLanding()) {
-		return hUpdate.OnUpdatePlayerJumpContinue();
-	}
-	else { /// Jump completed
-		return hUpdate.OnUpdatePlayerJumpStop();
-	}
-	return false;
+	return hUpdate.OnUpdate();
 }
 
 bool hPlayer::OnRender()
 {
-	if (IsPlayerIdling()) {
-		return hRender.OnRenderPlayerIdle();
-	}
-	if (IsPlayerStartingJump()) {
-		return hRender.OnRenderPlayerJumpStart();
-	}
-	if (!IsPlayerLanding()) {
-		return hRender.OnRenderPlayerJumpContinue();
-	}
-	else { /// Jump completed
-		return hRender.OnRenderPlayerJumpStop();
-	}
-	return false;
+	return hRender.OnRender();
 }
-
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
 {

@@ -65,7 +65,7 @@ bool hPlayerRender::OnRenderPlayer() const
 	const int nID = cFrameManager::GetFrame6().GetAnimationID();
 	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
 	const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
-	const bool isJump = (ptrPlayer->IsPlayerJumping()) && (isValidID);
+	const bool isJump = (ptrPlayer->Status().IsJumpAnimation()) && (isValidID);
 	const std::string sPlayerState = std::string(isJump ? "_jump" : "");
 	const std::string sPlayerDirection = std::string(isLeft ? "_left" : "");
 	const std::string sPlayerID = (isJump ? std::to_string(nID) : "");
@@ -88,6 +88,29 @@ bool hPlayerRender::OnRenderPlayerDeath()
 	return true;
 }
 
+bool hPlayerRender::OnRender()
+{
+	if (ptrPlayer->IsPlayerIdling()) {
+		return OnRenderPlayerIdle();
+	}
+	if (ptrPlayer->IsPlayerStartingJump()) {
+		return OnRenderPlayerJumpStart();
+	}
+	if (!ptrPlayer->IsPlayerLanding()) {
+		return OnRenderPlayerJumpContinue();
+	}
+	else { /// Jump completed
+		return OnRenderPlayerJumpStop();
+	}
+	return false;
+}
+
+/// @brief Check if player is safe when having collision
+/// @return True if player is safe, false otherwise
+bool hPlayerRender::IsCollisionSafe() const
+{
+	return cFrameManager::GetFrame6().GetAnimationID() <= ptrPlayer->Record().GetSafeAnimationID();
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// LOGIC-RENDER CONTROL /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

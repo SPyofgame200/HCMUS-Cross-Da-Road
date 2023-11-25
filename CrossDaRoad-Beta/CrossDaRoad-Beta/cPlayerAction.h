@@ -27,11 +27,13 @@ public: // Initializer & Clean-up
 	void Reset();
 
 public: // Single Action
+	void Modify(Action, bool bValue);
 	void Insert(Action);
 	void Remove(Action);
 	void Toggle(Action);
 
 public: // Chained Actions
+	void Modify(std::initializer_list<Action> actions, bool bValue);
 	void Insert(std::initializer_list<Action> actions);
 	void Remove(std::initializer_list<Action> actions);
 	void Toggle(std::initializer_list<Action> actions);

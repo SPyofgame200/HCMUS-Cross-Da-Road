@@ -53,6 +53,18 @@ bool cPlayerStatus::IsRightDirection() const
 		|| (eDirection == RIGHT_DOWN);
 }
 
+/// @brief Check if player is jumping
+/// @return True if player is jumping, false otherwise
+bool cPlayerStatus::IsJumpAnimation() const
+{
+	return (eAnimation == JUMP);
+}
+
+bool cPlayerStatus::IsIdleAnimation() const
+{
+	return (eAnimation == IDLE);
+}
+
 /// @brief Getter for current direction of player
 cPlayerStatus::Direction cPlayerStatus::GetDirection() const
 {

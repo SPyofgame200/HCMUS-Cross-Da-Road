@@ -22,6 +22,9 @@ public: // Logic Updater
 	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue() const;
 	bool OnUpdatePlayerJumpStop();
+
+public:
+	bool OnUpdate();
 };
 
 #endif // H_PLAYER_UPDATE_H

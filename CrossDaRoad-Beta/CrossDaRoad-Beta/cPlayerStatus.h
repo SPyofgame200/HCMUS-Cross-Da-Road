@@ -51,6 +51,8 @@ public: /// Checkers
 	bool IsExactSituation(Situation eCompare) const;
 	bool IsLeftDirection() const;
 	bool IsRightDirection() const;
+	bool IsJumpAnimation() const;
+	bool IsIdleAnimation() const;
 
 public: /// Getters
 	Direction GetDirection() const;

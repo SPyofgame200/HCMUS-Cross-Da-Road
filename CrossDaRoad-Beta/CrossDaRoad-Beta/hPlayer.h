@@ -55,6 +55,8 @@ public: /// Data getters
 	cPlayerPhysic& Physic();
 	cPlayerRecord& Record();
 	cPlayerAction& Action();
+
+public: /// Const data getters
 	const cPlayerStatus& Status() const;
 	const cPlayerPhysic& Physic() const;
 	const cPlayerRecord& Record() const;
@@ -74,13 +76,9 @@ public: // Reseters
 
 public: // Checkers
 	bool IsPlayerMoving() const;
-	bool IsPlayerJumping() const;
 	bool IsPlayerStartingJump() const;
 	bool IsPlayerIdling() const;
 	bool IsPlayerLanding() const;
-
-public: // Checkers
-	bool IsPlayerCollisionSafe() const;
 	bool IsPlayerWin() const;
 	bool IsForceKilled() const;
 	bool IsKilled() const;

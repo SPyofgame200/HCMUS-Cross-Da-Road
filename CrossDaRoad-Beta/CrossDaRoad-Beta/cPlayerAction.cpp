@@ -10,9 +10,31 @@ void cPlayerAction::Reset()
     nActionFlag = NONE;
 }
 
+void cPlayerAction::Modify(Action action, bool bValue)
+{
+    return (bValue == true) ? Insert(action) : Remove(action);
+}
+
 void cPlayerAction::Insert(Action action)
 {
     nActionFlag |= static_cast<int>(action);
+}
+
+void cPlayerAction::Remove(Action action)
+{
+    nActionFlag &= ~static_cast<int>(action);
+}
+
+void cPlayerAction::Toggle(Action action)
+{
+    nActionFlag ^= static_cast<int>(action);
+}
+
+void cPlayerAction::Modify(std::initializer_list<Action> actions, bool bValue)
+{
+    for (Action action : actions) {
+        Modify(action, bValue);
+    }
 }
 
 void cPlayerAction::Insert(std::initializer_list<Action> actions)
@@ -22,21 +44,11 @@ void cPlayerAction::Insert(std::initializer_list<Action> actions)
     }
 }
 
-void cPlayerAction::Remove(Action action)
-{
-    nActionFlag &= ~static_cast<int>(action);
-}
-
 void cPlayerAction::Remove(std::initializer_list<Action> actions)
 {
     for (Action action : actions) {
         Remove(action);
     }
-}
-
-void cPlayerAction::Toggle(Action action)
-{
-    nActionFlag ^= static_cast<int>(action);
 }
 
 void cPlayerAction::Toggle(std::initializer_list<Action> actions)
