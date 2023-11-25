@@ -75,7 +75,6 @@ public: // Reseters
 	void Reset();
 
 public: // Checkers
-	bool IsPlayerMoving() const;
 	bool IsPlayerStartingJump() const;
 	bool IsPlayerIdling() const;
 	bool IsPlayerLanding() const;
