@@ -103,7 +103,7 @@ private: /// Utilities
 	int Value(EnumType eValue) const;
 
 	template<typename EnumType>
-	flag_t& Flag(EnumType ePlaceHolder);
+	flag_t& Flag();
 
 public: /// Single Event
 	template<typename EnumType>

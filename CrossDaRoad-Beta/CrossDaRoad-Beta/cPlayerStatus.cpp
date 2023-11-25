@@ -132,31 +132,31 @@ int cPlayerStatus::Value(EnumType eValue) const
 }
 
 template<typename EnumType>
-typename cPlayerStatus::flag_t& cPlayerStatus::Flag(EnumType ePlaceHolder)
+typename cPlayerStatus::flag_t& cPlayerStatus::Flag()
 {
     static_assert(sizeof(EnumType) == 0, "Flag function not specialized for this enum type");
 }
 
 template<>
-cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerDirection>(PlayerDirection ePlaceHolder)
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerDirection>()
 {
     return nDirectionFlag;
 }
 
 template<>
-cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerAnimation>(PlayerAnimation ePlaceHolder)
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerAnimation>()
 {
     return nAnimationFlag;
 }
 
 template<>
-cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerSituation>(PlayerSituation ePlaceHolder)
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerSituation>()
 {
     return nSituationFlag;
 }
 
 template<>
-cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerIntention>(PlayerIntention ePlaceHolder)
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerIntention>()
 {
     return nIntentionFlag;
 }
@@ -164,25 +164,25 @@ cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerIntention>(PlayerIntention ePla
 template<typename EnumType>
 void cPlayerStatus::Modify(EnumType eValue, bool bValue)
 {
-    Flag(eValue) ^= (-static_cast<int>(bValue) ^ nIntentionFlag) & Value<EnumType>(eValue);
+    Flag<EnumType>() ^= (-static_cast<int>(bValue) ^ nIntentionFlag) & Value<EnumType>(eValue);
 }
 
 template<typename EnumType>
 void cPlayerStatus::Insert(EnumType eValue)
 {
-    Flag(eValue) |= Value(eValue);
+    Flag<EnumType>() |= Value(eValue);
 }
 
 template<typename EnumType>
 void cPlayerStatus::Remove(EnumType eValue)
 {
-    Flag(eValue) &= ~Value(eValue);
+    Flag<EnumType>() &= ~Value(eValue);
 }
 
 template<typename EnumType>
 void cPlayerStatus::Toggle(EnumType eValue)
 {
-    Flag(eValue) ^= Value(eValue);
+    Flag<EnumType>() ^= Value(eValue);
 }
 
 template<typename EnumType>
