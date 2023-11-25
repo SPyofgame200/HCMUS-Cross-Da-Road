@@ -9,15 +9,17 @@
 #include "hPlayer.h"
 // Dependencies
 #include "cFrameManager.h"
-#include "cZone.h"
 #include "cApp.h"
-// Utilities
-#include "uAppConst.h"
 // Component
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
 #include "hPlayerUpdate.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// COMPONENT HANDLER ////////////////////////////////////////////////////////
