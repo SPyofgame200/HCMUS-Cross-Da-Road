@@ -124,6 +124,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
+	Player.UpdateAction(IsMoveLeft(), IsMoveRight(), IsMoveUp(), IsMoveDown());
 	Player.OnUpdate();
 	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
 		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);

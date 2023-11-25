@@ -44,15 +44,15 @@ bool hPlayerUpdate::OnUpdatePlayerIdle()
 /// @return True if player animation is updated, false otherwise
 bool hPlayerUpdate::OnUpdatePlayerJumpStart()
 {
-	if (ptrPlayer->IsMoveLeft()) {
+	if (ptrPlayer->Action().IsMoveLeft()) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::JUMP);
 		ptrPlayer->Status().SetDirection(PlayerDirection::LEFT);
 	}
-	else if (ptrPlayer->IsMoveRight()) {
+	else if (ptrPlayer->Action().IsMoveRight()) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::JUMP);
 		ptrPlayer->Status().SetDirection(PlayerDirection::RIGHT);
 	}
-	else if (ptrPlayer->IsMoveUp()) {
+	else if (ptrPlayer->Action().IsMoveUp()) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::JUMP);
 		if (ptrPlayer->Status().IsLeftDirection()) {
 			ptrPlayer->Status().SetDirection(PlayerDirection::LEFT_UP);
@@ -61,7 +61,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpStart()
 			ptrPlayer->Status().SetDirection(PlayerDirection::RIGHT_UP);
 		}
 	}
-	else if (ptrPlayer->IsMoveDown()) {
+	else if (ptrPlayer->Action().IsMoveDown()) {
 		ptrPlayer->Status().SetAnimation(PlayerAnimation::JUMP);
 		if (ptrPlayer->Status().IsLeftDirection()) {
 			ptrPlayer->Status().SetDirection(PlayerDirection::LEFT_DOWN);

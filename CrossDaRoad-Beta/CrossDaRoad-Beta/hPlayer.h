@@ -16,7 +16,8 @@
 #include "cPlayerStatus.h"
 #include "cPlayerPhysic.h"
 #include "cPlayerRecord.h"
-
+#include "cPlayerAction.h"
+	
 class cApp;
 class cZone;
 class hPlayerHitbox;
@@ -47,14 +48,17 @@ private: /// Data management
 	cPlayerStatus status;
 	cPlayerPhysic physic;
 	cPlayerRecord record;
+	cPlayerAction action;
 
 public: /// Data getters
 	cPlayerStatus& Status();
 	cPlayerPhysic& Physic();
 	cPlayerRecord& Record();
+	cPlayerAction& Action();
 	const cPlayerStatus& Status() const;
 	const cPlayerPhysic& Physic() const;
 	const cPlayerRecord& Record() const;
+	const cPlayerAction& Action() const;
 
 public: // Constructors & Destructor
 	hPlayer();
@@ -81,13 +85,8 @@ public: // Checkers
 	bool IsForceKilled() const;
 	bool IsKilled() const;
 
-public: /// Hardware Interaction
-	bool IsMoveLeft() const;
-	bool IsMoveRight() const;
-	bool IsMoveUp() const;
-	bool IsMoveDown() const;
-
 public: // Logic-Render Control
+	bool UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown);
 	bool OnUpdate();
 	bool OnRender();
 	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);

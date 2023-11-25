@@ -68,6 +68,11 @@ cPlayerRecord& hPlayer::Record()
 	return record;
 }
 
+cPlayerAction& hPlayer::Action()
+{
+	return action;
+}
+
 const cPlayerStatus& hPlayer::Status() const
 {
 	return status;
@@ -81,6 +86,11 @@ const cPlayerPhysic& hPlayer::Physic() const
 const cPlayerRecord& hPlayer::Record() const
 {
 	return record;
+}
+
+const cPlayerAction& hPlayer::Action() const
+{
+	return action;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +129,8 @@ void hPlayer::Reset()
 {
 	status.Reset();
 	physic.Reset();
+	record.Reset();
+	action.Reset();
 }
 
 /// @brief Setup ptrApp pointer
@@ -166,10 +178,7 @@ bool hPlayer::IsPlayerJumping() const
 }
 bool hPlayer::IsPlayerMoving() const
 {
-	return (IsMoveUp())
-		|| (IsMoveDown())
-		|| (IsMoveLeft())
-		|| (IsMoveRight());
+	return (action.IsMove());
 }
 bool hPlayer::IsPlayerStartingJump() const
 {
@@ -219,21 +228,22 @@ bool hPlayer::IsKilled() const
 ///////////////////////////////////////////// HARDWARE INTERACTION /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool hPlayer::IsMoveLeft() const
+bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 {
-	return ptrApp->IsMoveLeft();
-}
-bool hPlayer::IsMoveRight() const
-{
-	return ptrApp->IsMoveRight();
-}
-bool hPlayer::IsMoveUp() const
-{
-	return ptrApp->IsMoveUp();
-}
-bool hPlayer::IsMoveDown() const
-{
-	return ptrApp->IsMoveDown();
+	action.Reset();
+	if (bLeft) {
+		action.Insert(PlayerAction::LEFT);
+	}
+	if (bRight) {
+		action.Insert(PlayerAction::RIGHT);
+	}
+	if (bUp) {
+		action.Insert(PlayerAction::UP);
+	}
+	if (bDown) {
+		action.Insert(PlayerAction::DOWN);
+	}
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
