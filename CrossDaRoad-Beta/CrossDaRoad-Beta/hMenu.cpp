@@ -112,10 +112,8 @@ bool hMenu::LoadAppOption()
 			eMenuOption = AppOption::NEW_GAME;
 			app->GameInit();
 			break;
-		case APP_GAME:
-			eMenuOption = AppOption::APP_GAME;
-			app->GameReset();
-			app->OnGameLoad();
+		case CONTINUE:
+			eMenuOption = AppOption::CONTINUE;
 			break;
 		case SETTINGS:
 			eMenuOption = AppOption::SETTINGS;
@@ -125,6 +123,10 @@ bool hMenu::LoadAppOption()
 			break;
 		case APP_EXIT:
 			eMenuOption = AppOption::APP_EXIT;
+			break;
+		case APP_GAME:
+			eMenuOption = AppOption::APP_GAME;
+			app->GameReset();
 			break;
 		default:
 			std::cerr << "hMenu::LoadAppOption(): ";
@@ -208,8 +210,8 @@ int hMenu::FixOption(int& value, int limit)
 
 bool hMenu::UpdateNewGame()
 {
-	const bool result = app->UpdateDrawNameBox();
-	if (app->nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
+	const bool result = UpdateNameBox();
+	if (nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{
 		eMenuOption = APP_GAME;
 		app->GameReset();
@@ -233,6 +235,21 @@ bool hMenu::UpdateAppMenu()
 	}
 	return true;
 }
+
+bool hMenu::UpdateProceed()
+{	
+	if (app->IsKeyReleased(app::Key::LEFT)) {
+		FixOption(--ContinueMenuOption, 5);
+	}
+	if (app->IsKeyReleased(app::Key::RIGHT)) {
+		FixOption(++ContinueMenuOption, 5);
+	}
+	if (app->IsKeyReleased(app::Key::ENTER)) {
+		eMenuOption = APP_GAME;
+	}
+	return true;
+}
+
 
 
 /// @brief Display settings on screen (sound on/off)
@@ -312,6 +329,73 @@ bool hMenu::UpdateAppExit()
 	return true;
 }
 
+bool hMenu::UpdateNameBox()
+{
+	if (app->IsKeyReleased(app::Key::DOWN)) {
+		nameBoxOption++;
+	}
+	if (app->IsKeyReleased(app::Key::UP)) {
+		nameBoxOption--;
+	}
+	if (app->IsKeyReleased(app::Key::BACK))
+	{
+		if (app->playerName.size() > 0)
+			app->playerName.pop_back();
+		return true;
+	}
+	if (nameBoxOption % 2 == 0)
+	{
+		if (app->playerName.size() < 9)
+		{
+			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+			char currentKeyA = 'A';
+			for (const auto& it : mapKeyAlphabet)
+			{
+				if (app->IsKeyReleased(it.second))
+				{
+					app->playerName += currentKeyA;
+					return true;
+				}
+				++currentKeyA;
+			}
+			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+			char currentKeyN = '0';
+			for (const auto& it : mapKeyNumeric)
+			{
+				if (app->IsKeyReleased(it.second))
+				{
+					app->playerName += currentKeyN;
+					return true;
+				}
+				++currentKeyN;
+			}
+		}
+	}
+
+	return true;
+}
+bool hMenu::RenderNameBox() const
+{
+	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
+	const app::Sprite* NameBoxChosen = cAssetManager::GetInstance().GetSprite("start_chosen");
+
+	app->Clear(app::BLACK);
+	if (nameBoxOption % 2 == 0)
+		app->DrawSprite(0, 0, NameBox);
+	else
+		app->DrawSprite(0, 0, NameBoxChosen);
+
+	app->SetPixelMode(app::Pixel::MASK);
+	if (app->playerName.empty()) {
+		app->DrawBigText("Input name", 157, 71);
+	}
+	else {
+		app->DrawBigText1(app->playerName, 157, 70);
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
+	return true;
+}
+
 /// @brief Update menu screen
 /// @return Always return true by default
 bool hMenu::UpdatePausing()
@@ -361,8 +445,8 @@ bool hMenu::Update(const float fElapsedTime)
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
 			return UpdateNewGame();
-		case AppOption::APP_GAME:
-			return app->OnGameUpdate(fElapsedTime);
+		case AppOption::CONTINUE:
+			return UpdateProceed();
 		case AppOption::SETTINGS:
 			return UpdateSetting();
 		case AppOption::ABOUT_US:
@@ -371,6 +455,8 @@ bool hMenu::Update(const float fElapsedTime)
 			return UpdateAppExit();
 		case AppOption::APP_MENU:
 			return UpdateAppMenu();
+		case AppOption::APP_GAME:
+			return app->OnGameUpdate(fElapsedTime);
 		default:
 			std::cerr << "hMenu::Update(fElapsedTime=" << fElapsedTime << "):";
 			std::cerr << "Menu went wrong" << std::endl;
@@ -401,9 +487,43 @@ bool hMenu::RenderAppMenu() const
 	return true;
 }
 
-bool hMenu::RenderProcced() const
-{
-	return false;
+bool hMenu::RenderProceed() const
+{	
+	const app::Sprite* Menu1 = cAssetManager::GetInstance().GetSprite("menu1");
+	const app::Sprite* Menu2 = cAssetManager::GetInstance().GetSprite("menu2");
+	const app::Sprite* Menu3 = cAssetManager::GetInstance().GetSprite("menu3");
+	const app::Sprite* Menu4 = cAssetManager::GetInstance().GetSprite("menu4");
+	const app::Sprite* Menu5 = cAssetManager::GetInstance().GetSprite("menu5");
+	app->Clear(app::BLACK);
+	if (start)
+	{
+		
+		return true;
+	}
+	app->SetPixelMode(app::Pixel::MASK);
+	if (ContinueMenuOption % 5 == 0)
+	{
+		app->DrawSprite(0, 0, Menu1);
+	}
+	else if (ContinueMenuOption % 5 == 1)
+	{
+		app->DrawSprite(0, 0, Menu2);
+	}
+	else if (ContinueMenuOption % 5 == 2)
+	{
+		app->DrawSprite(0, 0, Menu3);
+	}
+	else if (ContinueMenuOption % 5 == 3)
+	{
+		app->DrawSprite(0, 0, Menu4);
+	}
+	else if (ContinueMenuOption % 5 == 4)
+	{
+		app->DrawSprite(0, 0, Menu5);
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
+	
+	return true;
 }
 
 /// @brief Render about us on screen
@@ -481,9 +601,9 @@ bool hMenu::Render() const
 {
 	switch (eMenuOption) {
 		case AppOption::NEW_GAME:
-			return app->DrawNameBox();
-		case AppOption::APP_GAME:
-			return app->OnGameRender();
+			return RenderNameBox();
+		case AppOption::CONTINUE:
+			return RenderProceed();
 		case AppOption::SETTINGS:
 			return RenderSetting();
 		case AppOption::ABOUT_US:
@@ -492,6 +612,8 @@ bool hMenu::Render() const
 			return RenderAppExit();
 		case AppOption::APP_MENU:
 			return RenderAppMenu();
+		case AppOption::APP_GAME:
+			return app->OnGameRender();
 		default:
 			std::cerr << "hMenu::Render(*app):";
 			std::cerr << "Menu went wrong" << std::endl;

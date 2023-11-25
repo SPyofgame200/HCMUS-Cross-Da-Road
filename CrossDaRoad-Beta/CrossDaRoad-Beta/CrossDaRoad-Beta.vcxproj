@@ -135,6 +135,9 @@
     <ClCompile Include="cAssetManager.cpp" />
     <ClCompile Include="cFrame.cpp" />
     <ClCompile Include="cFrameManager.cpp" />
+    <ClCompile Include="cPlayerPhysic.cpp" />
+    <ClCompile Include="cPlayerRecord.cpp" />
+    <ClCompile Include="cPlayerStatus.cpp" />
     <ClCompile Include="hMapDrawer.cpp" />
     <ClCompile Include="hMapEditor.cpp" />
     <ClCompile Include="cMapLane.cpp" />
@@ -168,6 +171,9 @@
     <ClInclude Include="cAssetManager.h" />
     <ClInclude Include="cFrame.h" />
     <ClInclude Include="cFrameManager.h" />
+    <ClInclude Include="cPlayerPhysic.h" />
+    <ClInclude Include="cPlayerRecord.h" />
+    <ClInclude Include="cPlayerStatus.h" />
     <ClInclude Include="hMapDrawer.h" />
     <ClInclude Include="hMapEditor.h" />
     <ClInclude Include="cMapLane.h" />

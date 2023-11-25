@@ -19,6 +19,11 @@
 #include "hPlayer.h"
 #include "hMenu.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
 class cApp final : public app::GameEngine
@@ -30,7 +35,6 @@ class cApp final : public app::GameEngine
 private: // Interactive Properties (control the map)
 	hMenu Menu;
 	hPlayer Player;
-	int nameBoxOption = 0;
 	std::string playerName;
 
 private: // Reinitializable Properties (depended on each map)
@@ -74,9 +78,10 @@ protected: /// Game Updates
 	bool OnGameSave() const;
 	bool OnGameLoad();
 	bool OnCreateNewName();
-	bool DrawNameBox();
-	bool UpdateDrawNameBox();
+	
 	bool OnDisplaySaveBox();
+
+
 	bool OnRenderEvent() override;
 	bool OnPauseEvent() override;
 	bool OnForcePauseEvent() override;

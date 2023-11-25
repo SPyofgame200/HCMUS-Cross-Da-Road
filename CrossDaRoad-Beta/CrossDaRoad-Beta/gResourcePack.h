@@ -9,10 +9,15 @@
 #ifndef G_RESOURCE_PACK_H
 #define G_RESOURCE_PACK_H
 
-#include <fstream>
 #include <map>
 #include "gPixel.h"
 #include "gConst.h"
+#include <fstream>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 namespace app
 {

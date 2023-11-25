@@ -31,13 +31,13 @@ bool hPlayerMotion::SetupTarget(hPlayer* ptrPlayer)
 
 bool hPlayerMotion::MoveX(float fFactorX, int nStep) const
 {
-	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
-	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
+	const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+	const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
-		const float fOffsetPartialX = ptrPlayer->GetPlayerVelocityX() * fFactorX * fPartial;
-		ptrPlayer->SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
+		const float fOffsetPartialX = ptrPlayer->Physic().GetPlayerVelocityX() * fFactorX * fPartial;
+		ptrPlayer->Physic().SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
+		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->Physic().IsPlayerOutOfBounds()) {
 			break;
 		}
 	}
@@ -46,13 +46,13 @@ bool hPlayerMotion::MoveX(float fFactorX, int nStep) const
 
 bool hPlayerMotion::MoveY(float fFactorY, int nStep)
 {
-	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
-	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
+	const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+	const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fPartial = (nPos == nStep ? 1.0f : static_cast<float>(nPos) / nStep);
-		const float fOffsetPartialY = ptrPlayer->GetPlayerVelocityY() * fFactorY * fPartial;
-		ptrPlayer->SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->IsPlayerOutOfBounds()) {
+		const float fOffsetPartialY = ptrPlayer->Physic().GetPlayerVelocityY() * fFactorY * fPartial;
+		ptrPlayer->Physic().SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
+		if (!ptrPlayer->Hitbox().IsBlocked() && !ptrPlayer->Physic().IsPlayerOutOfBounds()) {
 			break;
 		}
 	}
@@ -66,7 +66,7 @@ bool hPlayerMotion::Move(float fFactorX, float fFactorY, float fFactorScale, int
 
 bool hPlayerMotion::MoveLeft(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->IsMoveLeft()) && ptrPlayer->CanMoveLeft()) {
+	if ((forced || ptrPlayer->IsMoveLeft()) && ptrPlayer->Physic().CanMoveLeft()) {
 		Move(-1, 0, factor);
 	}
 	return true;
@@ -74,7 +74,7 @@ bool hPlayerMotion::MoveLeft(float factor, bool forced)
 
 bool hPlayerMotion::MoveRight(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->IsMoveRight()) && ptrPlayer->CanMoveRight()) {
+	if ((forced || ptrPlayer->IsMoveRight()) && ptrPlayer->Physic().CanMoveRight()) {
 		Move(+1, 0, factor);
 	}
 	return true;
@@ -82,7 +82,7 @@ bool hPlayerMotion::MoveRight(float factor, bool forced)
 
 bool hPlayerMotion::MoveUp(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->IsMoveUp()) && ptrPlayer->CanMoveUp()) {
+	if ((forced || ptrPlayer->IsMoveUp()) && ptrPlayer->Physic().CanMoveUp()) {
 		Move(0, -1, factor);
 	}
 	return true;
@@ -90,7 +90,7 @@ bool hPlayerMotion::MoveUp(float factor, bool forced)
 
 bool hPlayerMotion::MoveDown(float factor, bool forced)
 {
-	if ((forced || ptrPlayer->IsMoveDown()) && ptrPlayer->CanMoveDown()) {
+	if ((forced || ptrPlayer->IsMoveDown()) && ptrPlayer->Physic().CanMoveDown()) {
 		Move(0, +1, factor);
 	}
 	return true;
@@ -108,15 +108,15 @@ bool hPlayerMotion::MoveTryAll(float factor, bool forced)
 
 bool hPlayerMotion::PlatformMoveX(float fFactorX, int nStep)
 {
-	const float fRealPosX = ptrPlayer->GetPlayerLogicPositionX();
-	const float fRealPosY = ptrPlayer->GetPlayerLogicPositionY();
-	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
-	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
-	const float fOffsetX = ptrPlayer->GetPlayerVelocityX() * fFactorX;
+	const float fRealPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
+	const float fRealPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
+	const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+	const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+	const float fOffsetX = ptrPlayer->Physic().GetPlayerVelocityX() * fFactorX;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fOffsetPartialX = fOffsetX * nPos / nStep;
-		ptrPlayer->SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
-		ptrPlayer->SetLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
+		ptrPlayer->Physic().SetAnimationPosition(fPosX + fOffsetPartialX, fPosY);
+		ptrPlayer->Physic().SetLogicPosition(fRealPosX + fOffsetPartialX, fRealPosY);
 		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}
@@ -126,15 +126,15 @@ bool hPlayerMotion::PlatformMoveX(float fFactorX, int nStep)
 
 bool hPlayerMotion::PlatformMoveY(float fFactorY, int nStep)
 {
-	const float fRealPosX = ptrPlayer->GetPlayerLogicPositionX();
-	const float fRealPosY = ptrPlayer->GetPlayerLogicPositionY();
-	const float fPosX = ptrPlayer->GetPlayerAnimationPositionX();
-	const float fPosY = ptrPlayer->GetPlayerAnimationPositionY();
-	const float fOffsetY = ptrPlayer->GetPlayerVelocityY() * fFactorY;
+	const float fRealPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
+	const float fRealPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
+	const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+	const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+	const float fOffsetY = ptrPlayer->Physic().GetPlayerVelocityY() * fFactorY;
 	for (int nPos = nStep; nPos >= 0; --nPos) {
 		const float fOffsetPartialY = fOffsetY * nPos / nStep;
-		ptrPlayer->SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
-		ptrPlayer->SetLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
+		ptrPlayer->Physic().SetAnimationPosition(fPosX, fPosY + fOffsetPartialY);
+		ptrPlayer->Physic().SetLogicPosition(fRealPosX, fRealPosY + fOffsetPartialY);
 		if (!ptrPlayer->Hitbox().IsBlocked()) {
 			break;
 		}

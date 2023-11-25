@@ -3,16 +3,14 @@
 #pragma once
 
 #pragma comment(lib, "user32.lib")
-#include <thread>
 
-#include "gConst.h"
-#include "gKey.h"
-#include "gPixel.h"
-#include "gResourcePack.h"
-#include "gSprite.h"
-#include "gState.h"
 #include "gTexture.h"
 #include "gWindow.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 #ifndef G_GAME_ENGINE_DEF
 #define G_GAME_ENGINE_DEF

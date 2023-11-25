@@ -25,11 +25,12 @@ public:
 	enum AppOption
 	{
 		NEW_GAME = 0, ///< New game window
-		APP_GAME = 1, ///< Continue game window
+		CONTINUE = 1,
 		SETTINGS = 2, ///< Settings window
 		ABOUT_US = 3, ///< About us window
 		APP_EXIT = 4, ///< Exit application window
 		APP_MENU = 5, ///< Menu window
+		APP_GAME = 6, ///< Continue game window
 	};
 	enum PauseOption
 	{
@@ -52,6 +53,11 @@ private: /// Menu HUD
 	std::vector<const char*> sAppOptionLabels;  ///< AppOption labels for menu window
 	int nAppOptionLimit;						 ///< Maximum number of options
 	int nAppOptionValue; 						 ///< Current option index
+private: 
+	int ContinueMenuOption = 0;
+	bool start = false;
+
+	int nameBoxOption = 0;
 
 private: /// Pause HUD
 	PauseOption ePauseOption; ///< Current option 
@@ -91,18 +97,19 @@ public: // Validators
 private: // Updater helpers
 	bool UpdateNewGame();
 	bool UpdateAppMenu();
-	bool UpdateProcced();
+	bool UpdateProceed();
 	bool UpdateSetting();
 	bool UpdateAboutUs();
 	bool UpdateAppExit();
+	bool UpdateNameBox();
 
-private: // Render helpers
+private: // Renderer helpers
 	bool RenderAppMenu() const;
-	bool RenderProcced() const;
+	bool RenderProceed() const;
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
-
+	bool RenderNameBox() const;
 public: // Updaters
 	bool UpdatePausing();
 	bool UpdateGameOver();

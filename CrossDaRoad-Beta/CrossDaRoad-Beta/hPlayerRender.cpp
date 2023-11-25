@@ -64,7 +64,7 @@ bool hPlayerRender::OnRenderPlayer() const
 {
 	const int nID = cFrameManager::GetFrame6().GetAnimationID();
 	const bool isValidID = cFrameManager::GetFrame6().IsValidID(nID);
-	const bool isLeft = (ptrPlayer->IsLeftDirection());
+	const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
 	const bool isJump = (ptrPlayer->IsPlayerJumping()) && (isValidID);
 	const std::string sPlayerState = std::string(isJump ? "_jump" : "");
 	const std::string sPlayerDirection = std::string(isLeft ? "_left" : "");

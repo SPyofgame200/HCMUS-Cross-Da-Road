@@ -6,15 +6,16 @@
 **/
 
 #include "cApp.h"
-#include "uStringUtils.h"
-#include <Windows.h>
-#include <iostream>
-#include <sstream>
-#include <thread>
 #include "cFrameManager.h"
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 
 constexpr float fConst = 2.0f;
 
@@ -109,7 +110,7 @@ bool cApp::GameReset()
 /// @return Velocity of platform
 float cApp::GetPlatformVelocity(const float fElapsedTime) const
 {
-	const float fPosY = Player.GetPlayerLogicPositionY();
+	const float fPosY = Player.Physic().GetPlayerLogicPositionY();
 	const float fVelocityX = MapLoader.GetLaneRound(fPosY).GetVelocity();
 	const float fMovedX = fVelocityX * fElapsedTime;
 	return fMovedX;
@@ -124,7 +125,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
 {
-	Player.OnPlayerMove();
+	Player.OnUpdate();
 	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
 		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
 		Player.Motion().PlatformDetector();
@@ -132,9 +133,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 	if (Player.IsPlayerWin()) {
 		return GameNext();
 	}
-	if (Player.IsPlayerOutOfBounds() || Player.IsKilled()) {
-		Player.Render().OnRenderPlayerDeath();
-		Player.Reset();
+	if (Player.IsForceKilled() || Player.IsKilled()) {
 		return OnPlayerDeath();
 	}
 	return true;
@@ -144,16 +143,20 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 bool cApp::OnPlayerDeath()
 {
 	bDeath = true;
+	Player.Render().OnRenderPlayerDeath();
+	Player.Reset();
 	if (--nLife <= 0) {
 		PauseEngine();
 	}
 	bDeath = false;
 	return true;
 }
+
 /// @brief Draw all lanes, render Player, draw status bar
 /// @return Always returns true by default
 bool cApp::OnGameRender()
 {
+	Player.OnRender();
 	DrawAllLanes();
 	Player.Render().OnRenderPlayer();
 	DrawStatusBar();
@@ -213,74 +216,10 @@ bool cApp::OnDisplaySaveBox()
 }
 /// @brief 
 /// @return 
-bool cApp::UpdateDrawNameBox()
-{
-	if (IsKeyReleased(app::Key::DOWN)) {
-		nameBoxOption++;
-	}
-	if (IsKeyReleased(app::Key::UP)) {
-		nameBoxOption--;
-	}
-	if (IsKeyReleased(app::Key::BACK))
-	{	
-		if(playerName.size() > 0)
-			playerName.pop_back();
-		return true;
-	}
-	if (nameBoxOption % 2 == 0)
-	{
-		if (playerName.size() < 9)
-		{
-			const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
-			char currentKeyA = 'A';
-			for (const auto &it : mapKeyAlphabet)
-			{	
-				if (IsKeyReleased(it.second))
-				{
-					playerName += currentKeyA;
-					return true;
-				}
-				++currentKeyA;
-			}
-			const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
-			char currentKeyN = '0';
-			for(const auto &it : mapKeyNumeric)
-			{
-				if (IsKeyReleased(it.second))
-				{
-					playerName += currentKeyN;
-					return true;
-				}
-				++currentKeyN;
-			}
-		}
-	}
-	
-	return true; 
-}
+
 /// @brief 
 /// @return 
-bool cApp::DrawNameBox()
-{
-	const app::Sprite* NameBox = cAssetManager::GetInstance().GetSprite("createNameBox");
-	const app::Sprite* NameBoxChosen = cAssetManager::GetInstance().GetSprite("start_chosen");
 
-	Clear(app::BLACK);
-	if (nameBoxOption % 2 == 0)
-		DrawSprite(0, 0, NameBox);
-	else
-		DrawSprite(0, 0, NameBoxChosen);
-
-	SetPixelMode(app::Pixel::MASK);
-	if (playerName.empty()) {
-		DrawBigText("Input name", 157, 70);
-	}
-	else {
-		DrawBigText1(playerName, 157, 70);
-	}
-	SetPixelMode(app::Pixel::NORMAL);
-	return true;
-}
 /// @brief Check if game is rendering or not
 /// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
@@ -294,18 +233,18 @@ bool cApp::OnRenderEvent()
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
-	const std::string FileName = Player.GetPlayerName();
+	const std::string FileName = Player.Record().GetPlayerName();
 	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
 	if (!sSaveFilePath.empty()) {
 		std::ofstream fout(sSaveFilePath);
 		if (fout.is_open()) {
 			fout << MapLoader.GetMapLevel() << std::endl;
-			fout << Player.GetPlayerVelocityX() << std::endl;
-			fout << Player.GetPlayerVelocityY() << std::endl;
-			fout << Player.GetPlayerAnimationPositionX() << std::endl;
-			fout << Player.GetPlayerAnimationPositionY() << std::endl;
-			fout << Player.GetPlayerLogicPositionX() << std::endl;
-			fout << Player.GetPlayerLogicPositionY();
+			fout << Player.Physic().GetPlayerVelocityX() << std::endl;
+			fout << Player.Physic().GetPlayerVelocityY() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionY() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionY();
 			fout.close();
 			return true;
 		}
@@ -338,9 +277,9 @@ bool cApp::OnGameLoad()
 
 			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
 				MapLoader.SetMapLevel(MapLevel);
-				Player.SetAnimationPosition(AnimationPositionX, AnimationPositionY);
-				Player.SetLogicPosition(LogicPositionX, LogicPositionY);
-				Player.SetVelocity(VelocityX, VelocityY);
+				Player.Physic().SetAnimationPosition(AnimationPositionX, AnimationPositionY);
+				Player.Physic().SetLogicPosition(LogicPositionX, LogicPositionY);
+				Player.Physic().SetVelocity(VelocityX, VelocityY);
 				fin.close();
 				return true;
 			}
