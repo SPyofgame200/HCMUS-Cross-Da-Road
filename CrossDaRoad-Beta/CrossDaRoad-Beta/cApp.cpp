@@ -6,15 +6,16 @@
 **/
 
 #include "cApp.h"
-#include "uStringUtils.h"
-#include <Windows.h>
-#include <iostream>
-#include <sstream>
-#include <thread>
 #include "cFrameManager.h"
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 
 constexpr float fConst = 2.0f;
 
