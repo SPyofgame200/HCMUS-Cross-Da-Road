@@ -2,14 +2,14 @@
 
 cPlayerStatus::cPlayerStatus()
 {
-	Reset();
+    Reset();
 }
 
 void cPlayerStatus::Reset()
 {
-	eDirection = RIGHT;
-	eAnimation = IDLE;
-	eSituation = ALIVE;
+    eDirection = RIGHT;
+    eAnimation = IDLE;
+    eSituation = ALIVE;
     eIntention = NONE;
 
     nDirectionFlag = EMPTY_FLAG;
@@ -23,7 +23,7 @@ void cPlayerStatus::Reset()
 /// @return True if player is facing exact direction, false otherwise
 bool cPlayerStatus::IsExactDirection(Direction eCompare) const
 {
-	return eDirection == eCompare;
+    return eDirection == eCompare;
 }
 
 /// @brief Check if player is doing exact animation
@@ -31,7 +31,7 @@ bool cPlayerStatus::IsExactDirection(Direction eCompare) const
 /// @return True if player is doing exact animation, false otherwise
 bool cPlayerStatus::IsExactAnimation(Animation eCompare) const
 {
-	return eAnimation == eCompare;
+    return eAnimation == eCompare;
 }
 
 /// @brief Check if player is doing exact animation
@@ -54,40 +54,40 @@ bool cPlayerStatus::IsExactIntention(Intention eCompare) const
 /// @return True if player is facing left direction, false otherwise
 bool cPlayerStatus::IsLeftDirection() const
 {
-	return (eDirection == LEFT)
-		|| (eDirection == LEFT_UP)
-		|| (eDirection == LEFT_DOWN);
+    return (eDirection == LEFT)
+        || (eDirection == LEFT_UP)
+        || (eDirection == LEFT_DOWN);
 }
 /// @brief Check if player is facing right direction
 /// @return True if player is facing right direction, false otherwise
 bool cPlayerStatus::IsRightDirection() const
 {
-	return (eDirection == RIGHT)
-		|| (eDirection == RIGHT_UP)
-		|| (eDirection == RIGHT_DOWN);
+    return (eDirection == RIGHT)
+        || (eDirection == RIGHT_UP)
+        || (eDirection == RIGHT_DOWN);
 }
 
 /// @brief Check if player is jumping
 /// @return True if player is jumping, false otherwise
 bool cPlayerStatus::IsJumpAnimation() const
 {
-	return (eAnimation == JUMP);
+    return (eAnimation == JUMP);
 }
 
 bool cPlayerStatus::IsIdleAnimation() const
 {
-	return (eAnimation == IDLE);
+    return (eAnimation == IDLE);
 }
 
 /// @brief Getter for current direction of player
 cPlayerStatus::Direction cPlayerStatus::GetDirection() const
 {
-	return eDirection;
+    return eDirection;
 }
 /// @brief Getter for current animation of player
 cPlayerStatus::Animation cPlayerStatus::GetAnimation() const
 {
-	return eAnimation;
+    return eAnimation;
 }
 
 /// @brief Getter for current animation of player
@@ -106,75 +106,114 @@ cPlayerStatus::Intention cPlayerStatus::GetIntention() const
 /// @param eNewDirection New direction of player
 void cPlayerStatus::SetDirection(Direction eNewDirection)
 {
-	eDirection = eNewDirection;
+    eDirection = eNewDirection;
 }
 /// @brief Setter for current direction of player
 /// @param eNewDirection New direction of player
 void cPlayerStatus::SetAnimation(Animation eNewAnimation)
 {
-	eAnimation = eNewAnimation;
+    eAnimation = eNewAnimation;
 }
 /// @brief Setter for current animation of player
 /// @param eNewAnimation New animation of player
 void cPlayerStatus::SetSituation(Situation eNewSituation)
 {
-	eSituation = eNewSituation;
+    eSituation = eNewSituation;
 }
 void cPlayerStatus::SetIntention(Intention eNewIntention)
 {
     eIntention = eNewIntention;
 }
 
-int cPlayerStatus::Value(Intention eIntention) const
+template<typename EnumType>
+int cPlayerStatus::Value(EnumType eValue) const
 {
-    return 1 << static_cast<int>(eIntention);
+    return 1 << static_cast<int>(eValue);
 }
 
-void cPlayerStatus::Modify(Intention eIntention, bool bValue)
+template<typename EnumType>
+typename cPlayerStatus::flag_t& cPlayerStatus::Flag(EnumType ePlaceHolder)
 {
-    return (bValue == true) ? Insert(eIntention) : Remove(eIntention);
+    static_assert(sizeof(EnumType) == 0, "Flag function not specialized for this enum type");
 }
 
-void cPlayerStatus::Insert(Intention eIntention)
+template<>
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerDirection>(PlayerDirection ePlaceHolder)
 {
-    nIntentionFlag |= Value(eIntention);
+    return nDirectionFlag;
 }
 
-void cPlayerStatus::Remove(Intention eIntention)
+template<>
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerAnimation>(PlayerAnimation ePlaceHolder)
 {
-    nIntentionFlag &= ~Value(eIntention);
+    return nAnimationFlag;
 }
 
-void cPlayerStatus::Toggle(Intention eIntention)
+template<>
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerSituation>(PlayerSituation ePlaceHolder)
 {
-    nIntentionFlag ^= Value(eIntention);
+    return nSituationFlag;
 }
 
-void cPlayerStatus::Modify(std::initializer_list<Intention> eIntentionList, bool bValue)
+template<>
+cPlayerStatus::flag_t& cPlayerStatus::Flag<PlayerIntention>(PlayerIntention ePlaceHolder)
 {
-    for (Intention eIntention : eIntentionList) {
-        Modify(eIntention, bValue);
+    return nIntentionFlag;
+}
+
+template<typename EnumType>
+void cPlayerStatus::Modify(EnumType eValue, bool bValue)
+{
+    Flag(eValue) ^= (-bValue ^ nIntentionFlag) & Value<EnumType>(eValue);
+}
+
+template<typename EnumType>
+void cPlayerStatus::Insert(EnumType eValue)
+{
+    Flag(eValue) |= Value(eValue);
+}
+
+template<typename EnumType>
+void cPlayerStatus::Remove(EnumType eValue)
+{
+    Flag(eValue) &= ~Value(eValue);
+}
+
+template<typename EnumType>
+void cPlayerStatus::Toggle(EnumType eValue)
+{
+    Flag(eValue) ^= Value(eValue);
+}
+
+template<typename EnumType>
+void cPlayerStatus::Modify(std::initializer_list<EnumType> eList, bool bValue)
+{
+    for (EnumType eValue : eList) {
+        Modify(eValue, bValue);
     }
 }
 
-void cPlayerStatus::Insert(std::initializer_list<Intention> eIntentionList)
+template<typename EnumType>
+void cPlayerStatus::Insert(std::initializer_list<EnumType> eList)
 {
-    for (Intention eIntention : eIntentionList) {
-        Insert(eIntention);
+    for (EnumType eValue : eList) {
+        Insert(eValue);
     }
 }
 
-void cPlayerStatus::Remove(std::initializer_list<Intention> eIntentionList)
+template<typename EnumType>
+void cPlayerStatus::Remove(std::initializer_list<EnumType> eList)
 {
-    for (Intention eIntention : eIntentionList) {
-        Remove(eIntention);
+    for (EnumType eValue : eList) {
+        Remove(eValue);
     }
 }
 
-void cPlayerStatus::Toggle(std::initializer_list<Intention> eIntentionList)
+template<typename EnumType>
+void cPlayerStatus::Toggle(std::initializer_list<EnumType> eList)
 {
-    for (Intention eIntention : eIntentionList) {
-        Toggle(eIntention);
+    for (EnumType eValue : eList) {
+        Toggle(eValue);
     }
 }
 
@@ -183,15 +222,17 @@ bool cPlayerStatus::IsMove() const
     return nIntentionFlag != NONE;
 }
 
-bool cPlayerStatus::IsMove(Intention eIntention) const
+template<typename EnumType>
+bool cPlayerStatus::IsMove(EnumType eValue) const
 {
-    return (nIntentionFlag & Value(eIntention)) != 0;
+    return (nIntentionFlag & Value(eValue)) != 0;
 }
 
-bool cPlayerStatus::IsMove(std::initializer_list<Intention> eIntentionList) const
+template<typename EnumType>
+bool cPlayerStatus::IsMove(std::initializer_list<EnumType> eList) const
 {
-    for (Intention eIntention : eIntentionList) {
-        if (IsMove(eIntention)) {
+    for (EnumType eValue : eList) {
+        if (IsMove(eValue)) {
             return true;
         }
     }
