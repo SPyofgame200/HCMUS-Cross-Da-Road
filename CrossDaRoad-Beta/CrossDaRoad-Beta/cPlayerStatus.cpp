@@ -217,28 +217,6 @@ void cPlayerStatus::Toggle(std::initializer_list<EnumType> eList)
     }
 }
 
-bool cPlayerStatus::IsMove() const
-{
-    return nIntentionFlag != NONE;
-}
-
-template<typename EnumType>
-bool cPlayerStatus::IsMove(EnumType eValue) const
-{
-    return (nIntentionFlag & Value(eValue)) != 0;
-}
-
-template<typename EnumType>
-bool cPlayerStatus::IsMove(std::initializer_list<EnumType> eList) const
-{
-    for (EnumType eValue : eList) {
-        if (IsMove(eValue)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 bool cPlayerStatus::IsMoveLeft() const
 {
     return IsMove(GO_LEFT);
@@ -254,6 +232,26 @@ bool cPlayerStatus::IsMoveUp() const
 bool cPlayerStatus::IsMoveDown() const
 {
     return IsMove(GO_DOWN);
+}
+
+bool cPlayerStatus::IsMove() const
+{
+    return nIntentionFlag != NONE;
+}
+
+bool cPlayerStatus::IsMove(Intention eValue) const
+{
+    return (nIntentionFlag & Value(eValue)) != 0;
+}
+
+bool cPlayerStatus::IsMove(std::initializer_list<Intention> eList) const
+{
+    for (Intention eValue : eList) {
+        if (IsMove(eValue)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool cPlayerStatus::IsPlayerStartingJump() const

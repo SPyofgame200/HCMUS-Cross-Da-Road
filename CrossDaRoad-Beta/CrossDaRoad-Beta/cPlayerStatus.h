@@ -105,7 +105,7 @@ private: /// Utilities
 	template<typename EnumType>
 	flag_t& Flag(EnumType ePlaceHolder);
 
-public: /// Single Intention
+public: /// Single Event
 	template<typename EnumType>
 	void Modify(EnumType eValue, bool bValue);
 	template<typename EnumType>
@@ -115,7 +115,7 @@ public: /// Single Intention
 	template<typename EnumType>
 	void Toggle(EnumType eValue);
 
-public: /// Chained Intentions
+public: /// Chained Events
 	template<typename EnumType>
 	void Modify(std::initializer_list<EnumType> eList, bool bValue);
 	template<typename EnumType>
@@ -126,17 +126,13 @@ public: /// Chained Intentions
 	void Toggle(std::initializer_list<EnumType> eList);
 
 public: /// Checkers
-	bool IsMove() const;
-	template<typename EnumType>
-	bool IsMove(EnumType) const;
-	template<typename EnumType>
-	bool IsMove(std::initializer_list<EnumType> eList) const;
-
-public: /// Motion
 	bool IsMoveLeft() const;
 	bool IsMoveRight() const;
 	bool IsMoveUp() const;
 	bool IsMoveDown() const;
+	bool IsMove() const;
+	bool IsMove(Intention eValue) const;
+	bool IsMove(std::initializer_list<Intention> eList) const;
 
 public: /// Animation
 	bool IsPlayerStartingJump() const;
@@ -154,12 +150,10 @@ using PlayerIntention = cPlayerStatus::Intention;
     template void cPlayerStatus::Insert<Type>(Type eValue); \
     template void cPlayerStatus::Remove<Type>(Type eValue); \
     template void cPlayerStatus::Toggle<Type>(Type eValue); \
-    template bool cPlayerStatus::IsMove<Type>(Type eValue) const; \
     template void cPlayerStatus::Modify<Type>(std::initializer_list<Type> eList, bool bValue); \
     template void cPlayerStatus::Insert<Type>(std::initializer_list<Type> eList); \
     template void cPlayerStatus::Remove<Type>(std::initializer_list<Type> eList); \
     template void cPlayerStatus::Toggle<Type>(std::initializer_list<Type> eList); \
-    template bool cPlayerStatus::IsMove<Type>(std::initializer_list<Type> eList) const;
 
 EXPLICIT_INSTANTIATION(PlayerDirection)
 EXPLICIT_INSTANTIATION(PlayerAnimation)
