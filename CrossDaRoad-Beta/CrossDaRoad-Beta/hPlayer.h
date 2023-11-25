@@ -9,7 +9,6 @@
 #ifndef H_PLAYER_H
 #define H_PLAYER_H
 
-#include <string>
 // Utilities
 #include "uAppConst.h"
 // Data managements
@@ -17,6 +16,11 @@
 #include "cPlayerPhysic.h"
 #include "cPlayerRecord.h"
 #include "cPlayerAction.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 	
 class cApp;
 class cZone;
