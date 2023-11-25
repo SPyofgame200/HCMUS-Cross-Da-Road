@@ -7,15 +7,21 @@
 **/
 
 #include "hPlayer.h"
+// Dependencies
+#include "cFrameManager.h"
 #include "cZone.h"
 #include "cApp.h"
+// Utilities
 #include "uAppConst.h"
-#include "cFrameManager.h"
+// Component
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
 #include "hPlayerUpdate.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// COMPONENT HANDLER ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 hPlayerMotion hPlayer::hMotion;
 hPlayerRender hPlayer::hRender;
@@ -42,6 +48,11 @@ hPlayerUpdate& hPlayer::Update()
 	return hUpdate;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// DATA MANAGEMENT ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 cPlayerStatus& hPlayer::Status()
 {
 	return status;
@@ -50,6 +61,11 @@ cPlayerStatus& hPlayer::Status()
 cPlayerPhysic& hPlayer::Physic()
 {
 	return physic;
+}
+
+cPlayerRecord& hPlayer::Record()
+{
+	return record;
 }
 
 const cPlayerStatus& hPlayer::Status() const
@@ -62,6 +78,10 @@ const cPlayerPhysic& hPlayer::Physic() const
 	return physic;
 }
 
+const cPlayerRecord& hPlayer::Record() const
+{
+	return record;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ////////////////////////////////////////////////////////
@@ -99,7 +119,6 @@ void hPlayer::Reset()
 {
 	status.Reset();
 	physic.Reset();
-	frame6_id_animation_safe = 5;
 }
 
 /// @brief Setup ptrApp pointer
@@ -172,7 +191,7 @@ bool hPlayer::IsPlayerLanding() const
 /// @return True if player is safe, false otherwise
 bool hPlayer::IsPlayerCollisionSafe() const
 {
-	return cFrameManager::GetFrame6().GetAnimationID() <= frame6_id_animation_safe;
+	return cFrameManager::GetFrame6().GetAnimationID() <= Record().GetSafeAnimationID();
 }
 /// @brief Check if player is win (go to next level)
 /// @return True if player is win, false otherwise
@@ -196,6 +215,10 @@ bool hPlayer::IsKilled() const
 	return Hitbox().IsHit();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////// HARDWARE INTERACTION /////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool hPlayer::IsMoveLeft() const
 {
 	return ptrApp->IsMoveLeft();
@@ -213,21 +236,8 @@ bool hPlayer::IsMoveDown() const
 	return ptrApp->IsMoveDown();
 }
 
-/// @brief Getter for player name
-std::string hPlayer::GetPlayerName() const
-{
-	return Name;
-}
-
-/// @brief Setter for player name
-/// @param Name Name of player
-void hPlayer::SetPlayerName(const std::string& Name)
-{
-	this->Name = Name;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////// LOGIC UPDATES ////////////////////////////////////////////////////////////
+/////////////////////////////////////////////// LOGIC UPDATES //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Update player animation and render to screen
@@ -279,8 +289,10 @@ bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceR
 	}
 	ptrApp->SetPixelMode(app::Pixel::MASK);
 	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-	const int32_t frogXPosition = static_cast<int32_t>(Physic().GetPlayerAnimationPositionX() * nCellSize);
-	const int32_t frogYPosition = static_cast<int32_t>(Physic().GetPlayerAnimationPositionY() * nCellSize);
+	const float fPosX = Physic().GetPlayerAnimationPositionX();
+	const float fPosY = Physic().GetPlayerAnimationPositionY();
+	const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
+	const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
 	ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
 	ptrApp->SetPixelMode(app::Pixel::NORMAL);
 	if (bForceRender) {

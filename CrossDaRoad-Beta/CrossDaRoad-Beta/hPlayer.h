@@ -10,9 +10,12 @@
 #define H_PLAYER_H
 
 #include <string>
+// Utilities
 #include "uAppConst.h"
+// Data managements
 #include "cPlayerStatus.h"
 #include "cPlayerPhysic.h"
+#include "cPlayerRecord.h"
 
 class cApp;
 class cZone;
@@ -25,6 +28,9 @@ class hPlayerRender;
 
 class hPlayer
 {
+private: /// Dependency
+	cApp* ptrApp;
+
 private: /// Componnets handlers
 	static hPlayerHitbox hHitbox;
 	static hPlayerMotion hMotion;
@@ -40,19 +46,15 @@ public: /// Components getters
 private: /// Data management
 	cPlayerStatus status;
 	cPlayerPhysic physic;
+	cPlayerRecord record;
 
 public: /// Data getters
 	cPlayerStatus& Status();
 	cPlayerPhysic& Physic();
+	cPlayerRecord& Record();
 	const cPlayerStatus& Status() const;
 	const cPlayerPhysic& Physic() const;
-
-private:
-	int frame6_id_animation_safe;
-
-private:
-	cApp* ptrApp;
-	std::string Name;
+	const cPlayerRecord& Record() const;
 
 public: // Constructors & Destructor
 	hPlayer();
@@ -66,7 +68,7 @@ public: // Initializer & Clean-up
 public: // Reseters
 	void Reset();
 
-public: // Checkers helpers
+public: // Checkers
 	bool IsPlayerMoving() const;
 	bool IsPlayerJumping() const;
 	bool IsPlayerStartingJump() const;
@@ -79,17 +81,11 @@ public: // Checkers
 	bool IsForceKilled() const;
 	bool IsKilled() const;
 
-public: /// Motion Checkers
+public: /// Hardware Interaction
 	bool IsMoveLeft() const;
 	bool IsMoveRight() const;
 	bool IsMoveUp() const;
 	bool IsMoveDown() const;
-
-public: // Getters
-	std::string GetPlayerName() const;
-
-public: // Setters
-	void SetPlayerName(const std::string& Name);
 
 public: // Logic-Render Control
 	bool OnUpdate();
