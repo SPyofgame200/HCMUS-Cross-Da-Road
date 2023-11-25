@@ -198,7 +198,6 @@ bool hPlayer::IsPlayerWin() const
 }
 bool hPlayer::IsForceKilled() const
 {
-	std::cout << Physic().GetPlayerLogicPositionX() << " " << Physic().GetPlayerLogicPositionY() << std::endl;
 	return Physic().IsPlayerOutOfBounds();
 }
 bool hPlayer::IsKilled() const
