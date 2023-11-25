@@ -12,6 +12,11 @@
 #include "gResourcePack.h"
 #include "gUtils.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 namespace app
 {
 	/// @brief  Class for storing and manipulating sprites
