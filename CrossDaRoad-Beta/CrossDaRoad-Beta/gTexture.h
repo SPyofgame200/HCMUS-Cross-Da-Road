@@ -12,9 +12,13 @@
 #pragma comment(lib, "opengl32.lib")
 #include <Windows.h>
 #include <GL/gl.h>
-#include "gPixel.h"
 #include "gState.h"
 #include "gSprite.h"
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 namespace app
 {
