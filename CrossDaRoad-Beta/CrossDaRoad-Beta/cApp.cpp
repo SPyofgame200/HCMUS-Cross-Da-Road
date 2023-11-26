@@ -56,6 +56,8 @@ bool cApp::GameInit()
 	nScore = 0;
 	nLife = 3;
 	MapLoader.Init();
+	bDeath = false;
+	ResumeEngine();
 	return true;
 }
 /// @brief Exit game, clear data
@@ -154,10 +156,12 @@ bool cApp::OnPlayerDeath()
 
 /// @brief Draw all lanes, render Player, draw status bar
 /// @return Always returns true by default
-bool cApp::OnGameRender()
+bool cApp::OnGameRender(bool bRenderPlayer)
 {
 	DrawAllLanes();
-	Player.Render().OnRenderPlayer();
+	if (bRenderPlayer) {
+		Player.OnRender();
+	}
 	DrawStatusBar();
 	return true;
 }
@@ -314,25 +318,25 @@ bool cApp::OnPauseEvent(float fTickTime)
 			return false;
 		}
 		if (Player.Moment().IsStopAnimation()) {
+			Player.Status().SetSituation(PlayerSituation::ALIVE);
 			bDeath = false;
 			ResumeEngine();
 			GameReset();
+			Player.Reset();
 			return true;
 		}
 		if (Player.Status().IsDeath()) {
 			cFrameManager::GetFrame6().UpdateFrame(fTickTime, GetFrameDelay());
 			Player.OnUpdate();
-			Player.OnRender();
-			OnGameRender();
+			OnGameRender(true);
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	if (IsEnginePause()) { // continue the pause event
 		Menu.UpdatePausing();
-		Player.OnRender();
-		OnGameRender();
+		OnGameRender(true);
 		Menu.RenderPausing();
 		return false;
 	}

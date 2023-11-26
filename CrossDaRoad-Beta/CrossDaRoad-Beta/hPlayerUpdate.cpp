@@ -34,9 +34,6 @@ bool hPlayerUpdate::SetupTarget(hPlayer* ptrPlayer)
 
 bool hPlayerUpdate::OnUpdatePlayerDeath()
 {
-	if (ptrPlayer->Moment().NextAnimation()) {
-		// ...
-	}
 	return true;
 }
 

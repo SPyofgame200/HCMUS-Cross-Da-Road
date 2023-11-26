@@ -69,7 +69,7 @@ protected: // Collision Detection
 protected: /// Game Updates
 	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
-	bool OnGameRender();
+	bool OnGameRender(bool bRenderPlayer = false);
 	bool OnCreateEvent() override;
 	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
 	bool OnUpdateEvent(float fElapsedTime) override;

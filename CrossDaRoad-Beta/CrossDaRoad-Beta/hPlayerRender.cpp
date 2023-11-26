@@ -84,7 +84,9 @@ bool hPlayerRender::OnRenderPlayerDeath()
 	const std::string sPlayerName = "froggy_death" + std::to_string(nID);
 	const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
 	ptrPlayer->Draw(sPlayerName, true, true);
-	std::cout << sPlayerName << std::endl;
+	if (ptrPlayer->Moment().NextAnimation()) {
+		return true;
+	}
 	return true;
 }
 

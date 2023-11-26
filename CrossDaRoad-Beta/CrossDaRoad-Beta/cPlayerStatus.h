@@ -39,8 +39,8 @@ public: /// @brief Animation enumeration for player animation
 public: /// @brief Situation enumeration for player interaction
 	enum Situation
 	{
-		ALIVE = 1,	/// [TODO] When the player is fine
-		DEATH = 2,	/// [TODO] When the player is killed
+		ALIVE = 1,	/// When the player is fine
+		DEATH = 2,	/// When the player is killed
 		WIN = 3,	/// [Unused] When the player passed a level
 		LOSE = 4,	/// [Unused] When the player died all its life
 	};

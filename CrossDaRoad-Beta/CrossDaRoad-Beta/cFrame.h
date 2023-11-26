@@ -115,7 +115,6 @@ public: /// Animations
     }
     bool IsStopAnimation() const
     {
-        std::cout << nAnimationFrame << " " << GetMaxID() << std::endl;
         return nAnimationFrame >= GetMaxID();
     }
     bool StartAnimation()
@@ -126,6 +125,10 @@ public: /// Animations
     }
     bool NextAnimation(bool bUpdate = true)
     {
+        if (nAnimationFrame < GetMinID()) {
+            nAnimationFrame = GetMinID();
+            return true;
+        }
         const int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
         if (nAnimationFrame >= nCurrentFrame) {
             return false;

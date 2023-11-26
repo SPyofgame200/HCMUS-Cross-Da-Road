@@ -21,7 +21,8 @@ bool cPlayerMoment::StartAnimation()
 }
 bool cPlayerMoment::NextAnimation(bool bUpdate)
 {
-	return frame.NextAnimation(bUpdate);
+	bool result = frame.NextAnimation(bUpdate);
+	return result;
 }
 bool cPlayerMoment::IsStopAnimation() const
 {
