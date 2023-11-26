@@ -24,9 +24,9 @@ public: /// Getters
 	int GetLimit() const;
 	int GetSafeAnimationID() const;
 	int GetAnimationID() const;
-	bool IsValidID(int nID) const;
 
 public: /// Checkers
+	bool IsValidID(int nID) const;
 	bool IsJumpingStop() const;
 	bool IsJumpingSafe() const;
 };

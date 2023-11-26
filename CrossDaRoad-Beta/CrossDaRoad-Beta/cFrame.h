@@ -123,7 +123,7 @@ public: /// Animations
         nAnimationFrame = ID_BASE - 1;
         return true;
     }
-    bool NextAnimation(bool bUpdate = true)
+    bool NextAnimation(bool bSlowUpdate = true)
     {
         if (nAnimationFrame < GetMinID()) {
             nAnimationFrame = GetMinID();
@@ -133,8 +133,12 @@ public: /// Animations
         if (nAnimationFrame >= nCurrentFrame) {
             return false;
         }
-        if (bUpdate) {
+        if (bSlowUpdate) {
+            nAnimationFrame++;
+        }
+        else {
             nAnimationFrame = nCurrentFrame;
+
         }
         return true;
     }

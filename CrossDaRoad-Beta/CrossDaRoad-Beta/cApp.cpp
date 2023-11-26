@@ -89,6 +89,7 @@ bool cApp::GameReset()
 {
 	fTimeSinceStart = 0.0f;
 
+	Player.Status().SetSituation(PlayerSituation::ALIVE);
 	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
 	Zone.CreateZone(ScreenWidth(), ScreenHeight());
 	Player.Reset();
@@ -311,14 +312,13 @@ bool cApp::OnPauseEvent(float fTickTime)
 		PauseEngine();
 	}
 	if (IsEnginePause() && bDeath) { /// handle death pausing event
-		if (nLife <= 0) {
-			Menu.UpdateGameOver();
-			OnGameRender();
-			Menu.RenderGameOver();
-			return false;
-		}
 		if (Player.Moment().IsStopAnimation()) {
-			Player.Status().SetSituation(PlayerSituation::ALIVE);
+			if (nLife <= 0) {
+				Menu.UpdateGameOver();
+				OnGameRender();
+				Menu.RenderGameOver();
+				return false;
+			}
 			bDeath = false;
 			ResumeEngine();
 			GameReset();

@@ -65,9 +65,8 @@ bool hPlayerRender::OnRenderPlayerJumpStop() const
 bool hPlayerRender::OnRenderPlayer() const
 {
 	const int nID = ptrPlayer->Moment().GetAnimationID();
-	const bool isValidID = ptrPlayer->Moment().IsValidID(nID);
 	const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
-	const bool isJump = (ptrPlayer->Status().IsJumpAnimation()) && (isValidID);
+	const bool isJump = (ptrPlayer->Status().IsJumpAnimation());
 	const std::string sPlayerState = std::string(isJump ? "_jump" : "");
 	const std::string sPlayerDirection = std::string(isLeft ? "_left" : "");
 	const std::string sPlayerID = (isJump ? std::to_string(nID) : "");
