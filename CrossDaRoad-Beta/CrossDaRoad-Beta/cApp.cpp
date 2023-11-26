@@ -21,7 +21,7 @@
 constexpr float fConst = 2.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////
+///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ///////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor init menu and game
@@ -43,7 +43,7 @@ cApp::~cApp()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// CONSTRUCTOR & DESTRUCTOR PROCEDURE /////////////////////////////////
+///////////////////////////// INITIALIZERS & CLEAN-UP /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Initialize game, load map
@@ -106,7 +106,7 @@ bool cApp::GameReset()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
+//////////////////////////////////////////// UTILITIES ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Get platform velocity
@@ -121,7 +121,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// GAME UPDATES //////////////////////////////////////////////
+//////////////////////////////////////// GAME EVENTS //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Update all game objects
@@ -166,73 +166,7 @@ bool cApp::OnGameRender(bool bRenderPlayer)
 	DrawStatusBar();
 	return true;
 }
-/// @brief Set frame delay, load all sprites, open menu
-/// @return Always returns true by default
-bool cApp::OnCreateEvent()
-{
-	Menu.SetupTarget(this);
-	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
-	cAssetManager::GetInstance().LoadAllSprites();
-	Menu.OpenMenu();
-	return true;
-}
-/// @brief
-///	@param fTickTime - Time elapsed since last update
-///	@param eTickMessage - Tick message that contains information about tick
-bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
-{
-	if (!IsEnginePause() && !bDeath) {
-		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
-		fTimeSinceStart = fTickTime;
-	}
-	return true;
-}
-/// @brief Update event that called when application is updated
-///	@param fElapsedTime - Time elapsed since last update
-bool cApp::OnUpdateEvent(const float fElapsedTime)
-{
-	if (!Menu.Update(fElapsedTime)) {
-		return false;
-	}
-	return true;
-}
-/// @brief Update event that called when application is updated
-///	@param fElapsedTime Time elapsed since last update
-///	@param fLateElapsedTime Time elapsed since last late update
-/// @return Always returns true by default
-bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
-{
-	return true;
-}
-/// @brief 
-/// @return 
-bool cApp::OnCreateNewName()
-{
 
-	return true;
-}
-/// @brief 
-/// @return 
-bool cApp::OnDisplaySaveBox()
-{
-
-	return false;
-}
-/// @brief 
-/// @return 
-
-/// @brief 
-/// @return 
-
-/// @brief Check if game is rendering or not
-/// @return True if game is rendering, false otherwise
-bool cApp::OnRenderEvent()
-{
-	if (!Menu.Render()) {
-		return false;
-	}
-	return true;
-}
 /// @brief Save current game state to file
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
@@ -300,6 +234,62 @@ bool cApp::OnGameLoad()
 	}
 
 	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////// CORE EVENTS //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Set frame delay, load all sprites, open menu
+/// @return Always returns true by default
+bool cApp::OnCreateEvent()
+{
+	Menu.SetupTarget(this);
+	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
+	cAssetManager::GetInstance().LoadAllSprites();
+	Menu.OpenMenu();
+	return true;
+}
+/// @brief
+///	@param fTickTime - Time elapsed since last update
+///	@param eTriggerer - Triggerer message that contains information about tick
+bool cApp::OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer)
+{
+	if (!IsEnginePause() && !bDeath) {
+		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
+		fTimeSinceStart = fTickTime;
+	}
+	return true;
+}
+bool cApp::OnFixedUpdateEvent(float fTickTime)
+{
+	return true;
+}
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime - Time elapsed since last update
+bool cApp::OnUpdateEvent(const float fElapsedTime)
+{
+	if (!Menu.Update(fElapsedTime)) {
+		return false;
+	}
+	return true;
+}
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime Time elapsed since last update
+///	@param fLateElapsedTime Time elapsed since last late update
+/// @return Always returns true by default
+bool cApp::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime)
+{
+	return true;
+}
+/// @brief Check if game is rendering or not
+/// @return True if game is rendering, false otherwise
+bool cApp::OnRenderEvent()
+{
+	if (!Menu.Render()) {
+		return false;
+	}
+	return true;
 }
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent(float fTickTime)

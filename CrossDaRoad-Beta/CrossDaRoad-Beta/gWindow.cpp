@@ -290,7 +290,7 @@ namespace app
 		if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
 			const LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
-			sge->OnFixedUpdateEvent(engine::CREATE_WINDOW_EVENT);
+			sge->OnTriggerEvent(engine::CREATE_WINDOW_EVENT);
 			return 0;
 		}
 
@@ -301,13 +301,13 @@ namespace app
 		}
 
 		// Handle Window Event
-		sge->OnFixedUpdateEvent(engine::PRE_WINDOW_UPDATE_EVENT);
+		sge->OnTriggerEvent(engine::PRE_WINDOW_UPDATE_EVENT);
 		const bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
-		sge->OnFixedUpdateEvent(engine::POST_WINDOW_UPDATE_EVENT);
+		sge->OnTriggerEvent(engine::POST_WINDOW_UPDATE_EVENT);
 
 		// Calling handling function on default
 		if (bNoEvent) {
-			sge->OnFixedUpdateEvent(engine::NO_WINDOW_UPDATE_EVENT);
+			sge->OnTriggerEvent(engine::NO_WINDOW_UPDATE_EVENT);
 			return DefWindowProc(windowHandler, uMsg, wParam, lParam);
 		}
 		return 0;
@@ -357,7 +357,7 @@ namespace app
 				sge->bEngineRunning = false;
 				return true;
 			case WM_DESTROY:
-				sge->OnFixedUpdateEvent(engine::DESTROY_WINDOW_EVENT);
+				sge->OnTriggerEvent(engine::DESTROY_WINDOW_EVENT);
 				sge->OnForceDestroyEvent();
 				PostQuitMessage(0);
 				return true;
@@ -409,7 +409,7 @@ namespace app
 				std::cerr << "The window is reopened (width=" << width << ", height=" << height << ")" << std::endl;
 				break;
 		}
-		sge->OnFixedUpdateEvent(engine::RESIZE_WINDOW_EVENT);
+		sge->OnTriggerEvent(engine::RESIZE_WINDOW_EVENT);
 		return true;
 	}
 

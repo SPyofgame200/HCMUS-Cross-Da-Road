@@ -38,9 +38,10 @@ namespace app
 
 	public: // Override Interfaces
 		virtual bool OnCreateEvent();
-		virtual bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage);
+		virtual bool OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer);
+		virtual bool OnFixedUpdateEvent(float fTickTime);
 		virtual bool OnUpdateEvent(float fElapsedTime);
-		virtual bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime);
+		virtual bool OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime);
 		virtual bool OnRenderEvent();
 		virtual bool OnPauseEvent(float fTickTime);
 		virtual bool OnDestroyEvent();
@@ -99,7 +100,7 @@ namespace app
 		Window window;
 		// MouseState mouse; [unused]
 
-		bool OnFixedUpdateEvent(const engine::Tick& eTickMessage);
+		bool OnTriggerEvent(const engine::Triggerer& eTriggerer);
 		bool UpdateKeyboardInput();
 		bool UpdateWindowTitleSuffix(const std::string& sTitleSuffix);
 		bool CreateWindowIcon();

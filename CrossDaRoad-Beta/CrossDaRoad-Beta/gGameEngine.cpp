@@ -140,18 +140,28 @@ namespace app
 		return false;
 	}
 
-	/// @brief Real time fixed updates, called bewteen frames and between window messages
+	/// @brief Real time trigger updates, called bewteen frames and between window messages
 	/// @param fTickTime The current time since the engine creation.
-	/// @param eTickMessage The message being broadcast indicating changes
+	/// @param eTriggerer The message being broadcast indicating changes
 	/// @return Always returns false by default.
-	bool GameEngine::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
+	bool GameEngine::OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer)
 	{
 		// TODO: Update the game side effects
 		// If the game should continue, return true; otherwise, return false.
 		return false;
 	}
 
-	/// @brief Called every frame, providing you with a time per frame value.
+	/// @brief Called in each game loop, for initializations, physic updates and hardware interactions
+	/// @param fTickTime The current time since the engine creation.
+	/// @return Always returns false by default.
+	bool GameEngine::OnFixedUpdateEvent(float fTickTime)
+	{
+		// TODO: Initialize values, update the physics and hardware interactions
+		// If the game should continue, return true; otherwise, return false.
+		return false;
+	}
+
+	/// @brief Called in each game loop, for controlling main update events
 	/// @param fElapsedTime The elapsed time since the last frame.
 	/// @return Always returns false by default.
 	bool GameEngine::OnUpdateEvent(float fElapsedTime)
@@ -162,10 +172,11 @@ namespace app
 	}
 
 	/// @brief Called after all other updates, allowing for additional processing and bug fixing.
+	/// @param fTickTime The current time since the engine creation.
 	/// @param fElapsedTime The same elapsed time since the last frame called
 	/// @param fLateElapsedTime The current elapsed time since the last frame.
 	/// @return Always returns true by default.
-	bool GameEngine::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
+	bool GameEngine::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime)
 	{
 		// TODO: Update camera following, resolve drawing conflicts, post-processing
 		// effects, ... If update is important, and failed to handle the bugs, return
@@ -467,11 +478,11 @@ namespace app
 
 namespace app
 {
-	/// @brief Broadcast Tick messages with additional informations
+	/// @brief Broadcast Triggerer messages with additional informations
 	/// @return Always return true on default
-	bool GameEngine::OnFixedUpdateEvent(const engine::Tick& eTickMessage)
+	bool GameEngine::OnTriggerEvent(const engine::Triggerer& eTriggerer)
 	{
-		OnFixedUpdateEvent(frame.GetTickTime(), eTickMessage);
+		OnTriggerEvent(frame.GetTickTime(), eTriggerer);
 		return true;
 	}
 
@@ -532,49 +543,56 @@ namespace app
 	{
 		frame.ResetTimer();
 
-		OnFixedUpdateEvent(engine::BEFORE_CREATE_EVENT);
+		OnTriggerEvent(engine::BEFORE_CREATE_EVENT);
 		bEngineRunning = OnCreateEvent(); // Start the event if the user creates it
-		OnFixedUpdateEvent(engine::AFTER_CREATE_EVENT);
+		OnTriggerEvent(engine::AFTER_CREATE_EVENT);
 
 		float fLastRunTime = 0;
 		while (bEngineRunning) {
-			OnFixedUpdateEvent(engine::PRE_RUNNING_EVENT);
+			OnTriggerEvent(engine::PRE_RUNNING_EVENT);
 
-			/// Scope: Load data
+			/// Scope: Initialization
 			{
+				if (!OnFixedUpdateEvent(frame.GetTickTime())) { // Stop <=> no more updates
+					bEngineRunning = false; // Do not return, using break instead
+					break;                  // so we can use OnDestroyEvent()
+				}
 				UpdateKeyboardInput();
-				OnFixedUpdateEvent(engine::AFTER_LOAD_KEYBOARD_EVENT);
+				OnTriggerEvent(engine::AFTER_LOAD_KEYBOARD_EVENT);
 			}
 			// Scope: Update game
 			{
-				OnFixedUpdateEvent(engine::BEFORE_UPDATE_EVENT);
+				OnTriggerEvent(engine::BEFORE_UPDATE_EVENT);
 				const float fElapsedTime = frame.GetElapsedTime(true);
 				if (!OnUpdateEvent(fElapsedTime)) { // Stop <=> no more updates
-					bEngineRunning = false;           // Do not return, using break instead
-					break;                            // so we can use OnDestroyEvent()
+					bEngineRunning = false; // Do not return, using break instead
+					break;                  // so we can use OnDestroyEvent()
 				}
 				UpdateWindowTitleSuffix(frame.ShowFPS());
-				OnFixedUpdateEvent(engine::AFTER_UPDATE_TITLE_EVENT);
-				OnLateUpdateEvent(fElapsedTime, fElapsedTime + frame.GetElapsedTime(false));
-				OnFixedUpdateEvent(engine::AFTER_UPDATE_EVENT);
+				OnTriggerEvent(engine::AFTER_UPDATE_TITLE_EVENT);
+				if (!OnLateUpdateEvent(frame.GetTickTime(), fElapsedTime, fElapsedTime + frame.GetElapsedTime(false))) {
+					bEngineRunning = false; // Do not return, using break instead
+					break;                  // so we can use OnDestroyEvent()
+				}
+				OnTriggerEvent(engine::AFTER_UPDATE_EVENT);
 			}
 			// Scope: Rendering scence
 			{
-				OnFixedUpdateEvent(engine::BEFORE_SCENE_RENDER_EVENT);
+				OnTriggerEvent(engine::BEFORE_SCENE_RENDER_EVENT);
 				if (!OnRenderEvent()) {
 					bEngineRunning = false; // Do not return, using break instead
 					break;                  // so we can use OnDestroyEvent()
 				}
-				OnFixedUpdateEvent(engine::AFTER_SCENE_RENDER_EVENT);
+				OnTriggerEvent(engine::AFTER_SCENE_RENDER_EVENT);
 				RenderTexture();
-				OnFixedUpdateEvent(engine::AFTER_RENDER_EVENT);
+				OnTriggerEvent(engine::AFTER_RENDER_EVENT);
 			}
 			// Scope: Post proccessing
 			{
-				OnFixedUpdateEvent(engine::BEFORE_POST_PROCCESSING_EVENT);
+				OnTriggerEvent(engine::BEFORE_POST_PROCCESSING_EVENT);
 				frame.WaitMicroseconds(frame.GetDelay(), (frame.GetTickTime() - fLastRunTime) * 1000000);
 				fLastRunTime = frame.GetTickTime();
-				OnFixedUpdateEvent(engine::AFTER_POST_PROCCESSING_EVENT);
+				OnTriggerEvent(engine::AFTER_POST_PROCCESSING_EVENT);
 				const float fStartPauseTime = frame.GetTickTime();
 				while (bEngineRunning && !OnPauseEvent(frame.GetTickTime())) {
 					frame.WaitMicroseconds(frame.GetDelay());
@@ -583,14 +601,14 @@ namespace app
 				}
 				const float fEndPauseTime = frame.GetTickTime();
 				frame.Rewind(fEndPauseTime - fStartPauseTime);
-				OnFixedUpdateEvent(engine::ON_UNPAUSE_EVENT);
+				OnTriggerEvent(engine::ON_UNPAUSE_EVENT);
 			}
-			OnFixedUpdateEvent(engine::POST_RUNNING_EVENT);
+			OnTriggerEvent(engine::POST_RUNNING_EVENT);
 		}
 
-		OnFixedUpdateEvent(engine::BEFORE_DESTROY_EVENT);
+		OnTriggerEvent(engine::BEFORE_DESTROY_EVENT);
 		const bool result = !OnDestroyEvent(); // Continue the thread until it gets destroyed
-		OnFixedUpdateEvent(engine::AFTER_DESTROY_EVENT);
+		OnTriggerEvent(engine::AFTER_DESTROY_EVENT);
 
 		return result;
 	}
