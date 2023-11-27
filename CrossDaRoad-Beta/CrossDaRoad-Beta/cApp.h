@@ -49,9 +49,6 @@ private: // Customizable Properties (applied to all maps)
 private: // Event timers
 	float fTimeSinceStart;
 
-private: // Special variables
-	std::atomic<bool> bDeath;
-
 public: // Constructor & Destructor
 	cApp();
 	~cApp() override;

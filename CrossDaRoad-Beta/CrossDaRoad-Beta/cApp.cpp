@@ -56,7 +56,6 @@ bool cApp::GameInit()
 	nScore = 0;
 	nLife = 3;
 	MapLoader.Init();
-	bDeath = false;
 	ResumeEngine();
 	return true;
 }
@@ -139,7 +138,6 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 		return GameNext();
 	}
 	if (Player.IsForceKilled() || Player.IsKilled()) {
-		bDeath = true;
 		--nLife;
 		Player.Status().SetSituation(PlayerSituation::DEATH);
 		Player.Moment().StartAnimation();
@@ -160,7 +158,6 @@ bool cApp::OnPlayerDeath(float fTickTime)
 			Menu.RenderGameOver();
 			return false;
 		}
-		bDeath = false;
 		ResumeEngine();
 		GameReset();
 		Player.Reset();
@@ -275,7 +272,7 @@ bool cApp::OnCreateEvent()
 ///	@param eTriggerer - Triggerer message that contains information about tick
 bool cApp::OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer)
 {
-	if (!IsEnginePause() && !bDeath) {
+	if (!IsEnginePause() && !Player.Status().IsDeath()) {
 		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
 		fTimeSinceStart = fTickTime;
 	}
