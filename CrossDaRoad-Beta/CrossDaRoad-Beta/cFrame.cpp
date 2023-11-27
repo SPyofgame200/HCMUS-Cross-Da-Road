@@ -24,12 +24,12 @@
    template bool cFrame<n>::NextAnimation(bool bSlowUpdate, bool bUpdate); \
    template bool cFrame<n>::StopAnimation();
 
-EXPLICIT_INSTANTIATION(4)
-EXPLICIT_INSTANTIATION(6)
-EXPLICIT_INSTANTIATION(8)
-EXPLICIT_INSTANTIATION(12)
+EXPLICIT_INSTANTIATION(4);
+EXPLICIT_INSTANTIATION(6);
+EXPLICIT_INSTANTIATION(8);
+EXPLICIT_INSTANTIATION(12);
 
-#undef EXPLICIT_INSTANTIATION(n)
+#undef EXPLICIT_INSTANTIATION
 
 template<const size_t FRAME_LIMIT>
 template<typename... Args>
