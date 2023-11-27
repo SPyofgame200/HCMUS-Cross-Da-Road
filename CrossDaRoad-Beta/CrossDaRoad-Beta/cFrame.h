@@ -20,12 +20,12 @@ constexpr int ID_BASE = 1; /// using 1-based indexes
 template<const size_t FRAME_LIMIT>
 class cFrame
 {
-private:
+private: /// Local properties
     float fTime;
     float fStart;
     int nAnimationFrame;
 
-public:
+public: /// Shared properties among the same FRAME_LIMIT
     template<typename... Args>
     static cFrame& GetSharedInstance(Args&&... args)
     {
@@ -34,8 +34,8 @@ public:
     }
 
 public: /// Constructors & Destructor
-    cFrame()
-        : fTime(0), fStart(0), nAnimationFrame(0)
+    cFrame(float fInitTime = 0)
+    : fTime(fInitTime), fStart(0), nAnimationFrame(0)
     {
         // ...
     }
@@ -44,7 +44,6 @@ public: /// Constructors & Destructor
     {
         //std::cerr << "cFrame<size=" << FRAME_LIMIT << "> got destructed: ";
         //std::cerr << "properties{ fTime=" << fTime << " }" << std::endl;
-        fTime = 0;
     }
 
 public: /// Initialization & Clean-up
@@ -60,17 +59,61 @@ public: /// Checkers & Validators
         return (GetMinID() <= nID) && (nID <= GetMaxID());
     }
 
-public: /// Properties Getters
-    int GetID(int nTickID) const
+public: /// Interface Getters
+    static int GetID(int nTickID)
     {
         return nTickID % FRAME_LIMIT + ID_BASE;
     }
 
-    int GetID(float fTickID) const
+    static int GetID(float fTickID)
     {
         return GetID(static_cast<int>(std::floor(fTickID)));
     }
 
+    static int GetMinID()
+    {
+        return ID_BASE;
+    }
+
+    static int GetMaxID()
+    {
+        return ID_BASE + FRAME_LIMIT - 1;
+    }
+
+    static float GetFrameTick(const int nFrameDelay, const float fTickRate)
+    {
+        return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
+    }
+
+    static int GetDefaultID()
+    {
+        return ID_BASE - 1;
+    }
+
+    static int GetLimit()
+    {
+        return static_cast<int>(FRAME_LIMIT);
+    }
+
+public: /// Animation updaters
+    void UpdateTime(float fCurrentTime)
+    {
+        fTime = fCurrentTime;
+    }
+
+    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f)
+    {
+        const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
+        UpdateTime(fTickTime / fFrameTick);
+        return true;
+    }
+
+public: /// Animation getters
+    int GetAnimationID() const
+    {
+        return GetID(fTime - fStart);
+    }
+    
     int GetID() const
     {
         return GetID(GetTickID());
@@ -81,72 +124,44 @@ public: /// Properties Getters
         return static_cast<int>(fTime);
     }
 
-    int GetMinID() const
+public: /// Animation checker
+    bool IsStartAnimation()
     {
-        return ID_BASE;
+        return nAnimationFrame == GetDefaultID();
     }
 
-    int GetMaxID() const
-    {
-        return ID_BASE + FRAME_LIMIT - 1;
-    }
-
-    int GetLimit() const
-    {
-        return static_cast<int>(FRAME_LIMIT);
-    }
-
-public: /// Properties Setters
-    void SetVal(float fCurrentTime)
-    {
-        fTime = fCurrentTime;
-    }
-
-private: /// Utilities
-    float GetFrameTick(const int nFrameDelay, const float fTickRate) const
-    {
-        return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
-    }
-
-public: /// Updaters
-    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f)
-    {
-        const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
-        SetVal(fTickTime / fFrameTick);
-        return true;
-    }
-
-public: /// Animations
-    int GetAnimationID() const
-    {
-        return GetID(fTime - fStart);
-    }
-    bool IsStopAnimation() const
+    bool IsStopAnimation()
     {
         return nAnimationFrame >= GetMaxID();
     }
+
+public: /// Animation Control
     bool StartAnimation()
     {
         fStart = fTime;
-        nAnimationFrame = ID_BASE - 1;
+        nAnimationFrame = GetDefaultID();
         return true;
     }
-    bool NextAnimation(bool bSlowUpdate = true)
+    bool NextAnimation(bool bSlowUpdate = true, bool bUpdate = true)
     {
         if (nAnimationFrame < GetMinID()) {
-            nAnimationFrame = GetMinID();
+            if (bUpdate) {
+                nAnimationFrame = GetMinID();
+            }
             return true;
         }
+
         const int nCurrentFrame = utils::Min(GetAnimationID(), GetMaxID());
         if (nAnimationFrame >= nCurrentFrame) {
             return false;
         }
-        if (bSlowUpdate) {
-            nAnimationFrame++;
-        }
-        else {
-            nAnimationFrame = nCurrentFrame;
-
+        if (bUpdate) {
+            if (bSlowUpdate) {
+                nAnimationFrame++;
+            }
+            else {
+                nAnimationFrame = nCurrentFrame;
+            }
         }
         return true;
     }
