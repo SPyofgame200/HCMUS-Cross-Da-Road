@@ -316,7 +316,7 @@ bool cApp::OnPauseEvent(float fTickTime)
 			return true;
 		}
 		if (Player.Status().IsDeath()) {
-			cFrameManager::GetFrame6().UpdateFrame(fTickTime, GetFrameDelay());
+			Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
 			Player.OnUpdate();
 			OnGameRender(true);
 			return false;

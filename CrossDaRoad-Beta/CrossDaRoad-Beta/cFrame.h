@@ -21,13 +21,21 @@ template<const size_t FRAME_LIMIT>
 class cFrame
 {
 private:
-    static float fTime;
+    float fTime;
     float fStart;
     int nAnimationFrame;
 
+public:
+    template<typename... Args>
+    static cFrame& GetSharedInstance(Args&&... args)
+    {
+        static cFrame instance(std::forward<Args>(args)...); // Create a static instance
+        return instance;
+    }
+
 public: /// Constructors & Destructor
-    cFrame(float val = 0)
-        :  fStart(0), nAnimationFrame(0)
+    cFrame()
+        : fTime(0), fStart(0), nAnimationFrame(0)
     {
         // ...
     }
@@ -47,18 +55,18 @@ public: /// Initialization & Clean-up
     }
 
 public: /// Checkers & Validators
-    static bool IsValidID(int nID)
+    bool IsValidID(int nID) const
     {
         return (GetMinID() <= nID) && (nID <= GetMaxID());
     }
 
 public: /// Properties Getters
-    static int GetID(int nTickID)
+    int GetID(int nTickID) const
     {
         return nTickID % FRAME_LIMIT + ID_BASE;
     }
 
-    static int GetID(float fTickID)
+    int GetID(float fTickID) const
     {
         return GetID(static_cast<int>(std::floor(fTickID)));
     }
@@ -73,29 +81,29 @@ public: /// Properties Getters
         return static_cast<int>(fTime);
     }
 
-    static int GetMinID()
+    int GetMinID() const
     {
         return ID_BASE;
     }
 
-    static int GetMaxID()
+    int GetMaxID() const
     {
         return ID_BASE + FRAME_LIMIT - 1;
     }
 
-    static int GetLimit()
+    int GetLimit() const
     {
         return static_cast<int>(FRAME_LIMIT);
     }
 
 public: /// Properties Setters
-    static void SetVal(float fCurrentTime)
+    void SetVal(float fCurrentTime)
     {
         fTime = fCurrentTime;
     }
 
 private: /// Utilities
-    static float GetFrameTick(const int nFrameDelay, const float fTickRate)
+    float GetFrameTick(const int nFrameDelay, const float fTickRate) const
     {
         return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
     }
@@ -148,9 +156,6 @@ public: /// Animations
         return true;
     }
 };
-
-template <const size_t FRAME_LIMIT>
-float cFrame<FRAME_LIMIT>::fTime = 0.0f;
 
 using frame4_t = cFrame<4>;
 using frame6_t = cFrame<6>;
