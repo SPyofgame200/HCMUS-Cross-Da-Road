@@ -132,7 +132,7 @@ void hPlayer::Reset()
 	status.Reset();
 	physic.Reset();
 	record.Reset();
-	status.Reset();
+	moment.Reset();
 }
 
 /// @brief Setup ptrApp pointer

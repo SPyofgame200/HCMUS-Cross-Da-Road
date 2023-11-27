@@ -1,5 +1,23 @@
 #include "cPlayerStatus.h"
 
+#define EXPLICIT_INSTANTIATION(Type) \
+    template int cPlayerStatus::Value<Type>(Type eValue) const; \
+    template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
+    template void cPlayerStatus::Insert<Type>(Type eValue); \
+    template void cPlayerStatus::Remove<Type>(Type eValue); \
+    template void cPlayerStatus::Toggle<Type>(Type eValue); \
+    template void cPlayerStatus::Modify<Type>(std::initializer_list<Type> eList, bool bValue); \
+    template void cPlayerStatus::Insert<Type>(std::initializer_list<Type> eList); \
+    template void cPlayerStatus::Remove<Type>(std::initializer_list<Type> eList); \
+    template void cPlayerStatus::Toggle<Type>(std::initializer_list<Type> eList); \
+
+EXPLICIT_INSTANTIATION(PlayerDirection)
+EXPLICIT_INSTANTIATION(PlayerAnimation)
+EXPLICIT_INSTANTIATION(PlayerSituation)
+EXPLICIT_INSTANTIATION(PlayerIntention)
+
+#undef EXPLICIT_INSTANTIATION
+
 cPlayerStatus::cPlayerStatus()
 {
     Reset();
@@ -303,4 +321,9 @@ bool cPlayerStatus::IsStartJumping() const
 bool cPlayerStatus::IsIdling() const
 {
     return (IsIdleAnimation()) && !(IsMove());
+}
+
+bool cPlayerStatus::IsDeath() const
+{
+    return (eSituation == DEATH);
 }

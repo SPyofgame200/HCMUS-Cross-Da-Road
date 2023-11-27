@@ -65,9 +65,8 @@ bool hPlayerRender::OnRenderPlayerJumpStop() const
 bool hPlayerRender::OnRenderPlayer() const
 {
 	const int nID = ptrPlayer->Moment().GetAnimationID();
-	const bool isValidID = ptrPlayer->Moment().IsValidID(nID);
 	const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
-	const bool isJump = (ptrPlayer->Status().IsJumpAnimation()) && (isValidID);
+	const bool isJump = (ptrPlayer->Status().IsJumpAnimation());
 	const std::string sPlayerState = std::string(isJump ? "_jump" : "");
 	const std::string sPlayerDirection = std::string(isLeft ? "_left" : "");
 	const std::string sPlayerID = (isJump ? std::to_string(nID) : "");
@@ -80,18 +79,21 @@ bool hPlayerRender::OnRenderPlayer() const
 /// @return Always true by default
 bool hPlayerRender::OnRenderPlayerDeath()
 {
-	for (int id = 1; id <= 6; ++id) {
-		const std::string sPlayerName = "froggy_death" + std::to_string(id);;
-		const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
-		ptrPlayer->Draw(sPlayerName, true, true);
-		ptrPlayer->Sleep(100);
+	const int nID = ptrPlayer->Moment().GetAnimationID();
+	const std::string sPlayerName = "froggy_death" + std::to_string(nID);
+	const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
+	ptrPlayer->Draw(sPlayerName, true, true);
+	if (ptrPlayer->Moment().NextAnimation()) {
+		return true;
 	}
-	ptrPlayer->Reset();
 	return true;
 }
 
 bool hPlayerRender::OnRender()
 {
+	if (ptrPlayer->Status().IsDeath()) {
+		return OnRenderPlayerDeath();
+	}
 	if (ptrPlayer->Status().IsIdling()) {
 		return OnRenderPlayerIdle();
 	}

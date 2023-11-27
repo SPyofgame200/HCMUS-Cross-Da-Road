@@ -18,6 +18,7 @@ public: // Initializer & Clean-up
 	bool SetupTarget(hPlayer* ptrPlayer);
 
 public: // Logic Updater
+	bool OnUpdatePlayerDeath();
 	bool OnUpdatePlayerIdle();
 	bool OnUpdatePlayerJumpStart();
 	bool OnUpdatePlayerJumpContinue() const;

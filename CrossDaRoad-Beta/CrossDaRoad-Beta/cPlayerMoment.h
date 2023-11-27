@@ -18,14 +18,16 @@ public: /// Initializer & Clean-up
 public:
 	bool StartAnimation();
 	bool NextAnimation(bool bUpdate = true);
+	bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f);
+	bool IsStopAnimation() const;
 
 public: /// Getters
 	int GetLimit() const;
 	int GetSafeAnimationID() const;
 	int GetAnimationID() const;
-	bool IsValidID(int nID) const;
 
 public: /// Checkers
+	bool IsValidID(int nID) const;
 	bool IsJumpingStop() const;
 	bool IsJumpingSafe() const;
 };

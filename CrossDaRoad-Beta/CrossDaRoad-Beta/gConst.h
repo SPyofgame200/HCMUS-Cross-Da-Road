@@ -61,7 +61,7 @@ namespace engine
 	constexpr const char* FAVICON_FILE_PATH = "data/icons/favicon.ico";
 
 	/// @brief Enumeration of ticks in the game engine (for event handling)
-	enum Tick
+	enum Triggerer
 	{
 		// Engine Main Events
 		BEFORE_CREATE_EVENT,

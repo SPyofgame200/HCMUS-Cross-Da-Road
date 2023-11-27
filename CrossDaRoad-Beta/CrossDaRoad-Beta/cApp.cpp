@@ -10,6 +10,7 @@
 #include "hPlayerMotion.h"
 #include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
+#include "hPlayerUpdate.h"
 
 //=================================================================================================
 // Include new header files here
@@ -20,7 +21,7 @@
 constexpr float fConst = 2.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////
+///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ///////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor init menu and game
@@ -42,7 +43,7 @@ cApp::~cApp()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// CONSTRUCTOR & DESTRUCTOR PROCEDURE /////////////////////////////////
+///////////////////////////// INITIALIZERS & CLEAN-UP /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Initialize game, load map
@@ -55,6 +56,8 @@ bool cApp::GameInit()
 	nScore = 0;
 	nLife = 3;
 	MapLoader.Init();
+	bDeath = false;
+	ResumeEngine();
 	return true;
 }
 /// @brief Exit game, clear data
@@ -86,6 +89,7 @@ bool cApp::GameReset()
 {
 	fTimeSinceStart = 0.0f;
 
+	Player.Status().SetSituation(PlayerSituation::ALIVE);
 	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
 	Zone.CreateZone(ScreenWidth(), ScreenHeight());
 	Player.Reset();
@@ -102,7 +106,7 @@ bool cApp::GameReset()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// COLLISION DETECTION ////////////////////////////////////////////
+//////////////////////////////////////////// UTILITIES ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Get platform velocity
@@ -117,7 +121,7 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// GAME UPDATES //////////////////////////////////////////////
+//////////////////////////////////////// GAME EVENTS //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Update all game objects
@@ -144,92 +148,25 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 bool cApp::OnPlayerDeath()
 {
 	bDeath = true;
-	Player.Render().OnRenderPlayerDeath();
-	Player.Reset();
-	if (--nLife <= 0) {
-		PauseEngine();
-	}
-	bDeath = false;
+	--nLife;
+	Player.Status().SetSituation(PlayerSituation::DEATH);
+	Player.Moment().StartAnimation();
+	PauseEngine();
 	return true;
 }
 
 /// @brief Draw all lanes, render Player, draw status bar
 /// @return Always returns true by default
-bool cApp::OnGameRender()
+bool cApp::OnGameRender(bool bRenderPlayer)
 {
-	Player.OnRender();
 	DrawAllLanes();
-	Player.Render().OnRenderPlayer();
+	if (bRenderPlayer) {
+		Player.OnRender();
+	}
 	DrawStatusBar();
 	return true;
 }
-/// @brief Set frame delay, load all sprites, open menu
-/// @return Always returns true by default
-bool cApp::OnCreateEvent()
-{
-	Menu.SetupTarget(this);
-	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
-	cAssetManager::GetInstance().LoadAllSprites();
-	Menu.OpenMenu();
-	return true;
-}
-/// @brief
-///	@param fTickTime - Time elapsed since last update
-///	@param eTickMessage - Tick message that contains information about tick
-bool cApp::OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage)
-{
-	if (!IsEnginePause() && !bDeath) {
-		fTimeSinceStart = fTickTime;
-		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
-	}
-	return true;
-}
-/// @brief Update event that called when application is updated
-///	@param fElapsedTime - Time elapsed since last update
-bool cApp::OnUpdateEvent(const float fElapsedTime)
-{
-	if (!Menu.Update(fElapsedTime)) {
-		return false;
-	}
-	return true;
-}
-/// @brief Update event that called when application is updated
-///	@param fElapsedTime Time elapsed since last update
-///	@param fLateElapsedTime Time elapsed since last late update
-/// @return Always returns true by default
-bool cApp::OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime)
-{
-	return true;
-}
-/// @brief 
-/// @return 
-bool cApp::OnCreateNewName()
-{
 
-	return true;
-}
-/// @brief 
-/// @return 
-bool cApp::OnDisplaySaveBox()
-{
-
-	return false;
-}
-/// @brief 
-/// @return 
-
-/// @brief 
-/// @return 
-
-/// @brief Check if game is rendering or not
-/// @return True if game is rendering, false otherwise
-bool cApp::OnRenderEvent()
-{
-	if (!Menu.Render()) {
-		return false;
-	}
-	return true;
-}
 /// @brief Save current game state to file
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
@@ -298,8 +235,64 @@ bool cApp::OnGameLoad()
 
 	return false;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////// CORE EVENTS //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Set frame delay, load all sprites, open menu
+/// @return Always returns true by default
+bool cApp::OnCreateEvent()
+{
+	Menu.SetupTarget(this);
+	SetFrameDelay(FrameDelay::STABLE_FPS_DELAY);
+	cAssetManager::GetInstance().LoadAllSprites();
+	Menu.OpenMenu();
+	return true;
+}
+/// @brief
+///	@param fTickTime - Time elapsed since last update
+///	@param eTriggerer - Triggerer message that contains information about tick
+bool cApp::OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer)
+{
+	if (!IsEnginePause() && !bDeath) {
+		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
+		fTimeSinceStart = fTickTime;
+	}
+	return true;
+}
+bool cApp::OnFixedUpdateEvent(float fTickTime)
+{
+	return true;
+}
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime - Time elapsed since last update
+bool cApp::OnUpdateEvent(const float fElapsedTime)
+{
+	if (!Menu.Update(fElapsedTime)) {
+		return false;
+	}
+	return true;
+}
+/// @brief Update event that called when application is updated
+///	@param fElapsedTime Time elapsed since last update
+///	@param fLateElapsedTime Time elapsed since last late update
+/// @return Always returns true by default
+bool cApp::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime)
+{
+	return true;
+}
+/// @brief Check if game is rendering or not
+/// @return True if game is rendering, false otherwise
+bool cApp::OnRenderEvent()
+{
+	if (!Menu.Render()) {
+		return false;
+	}
+	return true;
+}
 /// @brief Event that called when application is paused
-bool cApp::OnPauseEvent()
+bool cApp::OnPauseEvent(float fTickTime)
 {
 	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
 		Menu.ResetMenu();
@@ -308,17 +301,33 @@ bool cApp::OnPauseEvent()
 	else if (Menu.IsOnGame() && IsKeyReleased(app::Key::ESCAPE)) {
 		PauseEngine();
 	}
+	if (IsEnginePause() && bDeath) { /// handle death pausing event
+		if (Player.Moment().IsStopAnimation()) {
+			if (nLife <= 0) {
+				Menu.UpdateGameOver();
+				OnGameRender();
+				Menu.RenderGameOver();
+				return false;
+			}
+			bDeath = false;
+			ResumeEngine();
+			GameReset();
+			Player.Reset();
+			return true;
+		}
+		if (Player.Status().IsDeath()) {
+			Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
+			Player.OnUpdate();
+			OnGameRender(true);
+			return false;
+		}
+		return true;
+	}
+
 	if (IsEnginePause()) { // continue the pause event
-		if (nLife == 0) {
-			Menu.UpdateGameOver();
-			OnGameRender();
-			Menu.RenderGameOver();
-		}
-		else {
-			Menu.UpdatePausing();
-			OnGameRender();
-			Menu.RenderPausing();
-		}
+		Menu.UpdatePausing();
+		OnGameRender(true);
+		Menu.RenderPausing();
 		return false;
 	}
 	return true; // succesfully handle the pause event

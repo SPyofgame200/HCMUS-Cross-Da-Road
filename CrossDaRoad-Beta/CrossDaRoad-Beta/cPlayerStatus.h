@@ -39,8 +39,8 @@ public: /// @brief Animation enumeration for player animation
 public: /// @brief Situation enumeration for player interaction
 	enum Situation
 	{
-		ALIVE = 1,	/// [TODO] When the player is fine
-		DEATH = 2,	/// [TODO] When the player is killed
+		ALIVE = 1,	/// When the player is fine
+		DEATH = 2,	/// When the player is killed
 		WIN = 3,	/// [Unused] When the player passed a level
 		LOSE = 4,	/// [Unused] When the player died all its life
 	};
@@ -141,29 +141,12 @@ public: /// Checkers
 public: /// Animation
 	bool IsIdling() const;
 	bool IsStartJumping() const;
+	bool IsDeath() const;
 };
 
 using PlayerDirection = cPlayerStatus::Direction;
 using PlayerAnimation = cPlayerStatus::Animation;
 using PlayerSituation = cPlayerStatus::Situation;
 using PlayerIntention = cPlayerStatus::Intention;
-
-#define EXPLICIT_INSTANTIATION(Type) \
-    template int cPlayerStatus::Value<Type>(Type eValue) const; \
-    template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
-    template void cPlayerStatus::Insert<Type>(Type eValue); \
-    template void cPlayerStatus::Remove<Type>(Type eValue); \
-    template void cPlayerStatus::Toggle<Type>(Type eValue); \
-    template void cPlayerStatus::Modify<Type>(std::initializer_list<Type> eList, bool bValue); \
-    template void cPlayerStatus::Insert<Type>(std::initializer_list<Type> eList); \
-    template void cPlayerStatus::Remove<Type>(std::initializer_list<Type> eList); \
-    template void cPlayerStatus::Toggle<Type>(std::initializer_list<Type> eList); \
-
-EXPLICIT_INSTANTIATION(PlayerDirection)
-EXPLICIT_INSTANTIATION(PlayerAnimation)
-EXPLICIT_INSTANTIATION(PlayerSituation)
-EXPLICIT_INSTANTIATION(PlayerIntention)
-
-#undef EXPLICIT_INSTANTIATION
 
 #endif C_PLAYER_STATUS_H

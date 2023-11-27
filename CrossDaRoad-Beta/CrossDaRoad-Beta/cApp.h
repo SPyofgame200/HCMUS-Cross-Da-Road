@@ -56,34 +56,31 @@ public: // Constructor & Destructor
 	cApp();
 	~cApp() override;
 
-protected: // Constructor & Destructor Procedure
+protected: // Initializers & Clean-up
 	bool GameInit();
 	bool GameExit();
 	bool GameNext();
 	bool GamePrev();
 	bool GameReset();
 
-protected: // Collision Detection
+protected: // Utilities
 	float GetPlatformVelocity(float fElapsedTime) const;
 
-protected: /// Game Updates
+protected: /// Game Events
 	bool OnGameUpdate(float fElapsedTime);
 	bool OnPlayerDeath();
-	bool OnGameRender();
-	bool OnCreateEvent() override;
-	bool OnFixedUpdateEvent(float fTickTime, const engine::Tick& eTickMessage) override;
-	bool OnUpdateEvent(float fElapsedTime) override;
-	bool OnLateUpdateEvent(float fElapsedTime, float fLateElapsedTime) override;
-
+	bool OnGameRender(bool bRenderPlayer = false);
 	bool OnGameSave() const;
 	bool OnGameLoad();
-	bool OnCreateNewName();
-	
-	bool OnDisplaySaveBox();
 
-
+protected: /// Core Events
+	bool OnCreateEvent() override;
+	bool OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer) override;
+	bool OnFixedUpdateEvent(float fTickTime) override;
+	bool OnUpdateEvent(float fElapsedTime) override;
+	bool OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime) override;
 	bool OnRenderEvent() override;
-	bool OnPauseEvent() override;
+	bool OnPauseEvent(float fTickTime) override;
 	bool OnForcePauseEvent() override;
 	bool OnDestroyEvent() override;
 	bool OnForceDestroyEvent() override;

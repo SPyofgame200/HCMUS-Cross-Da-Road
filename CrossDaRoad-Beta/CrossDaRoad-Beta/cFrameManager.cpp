@@ -1,10 +1,5 @@
 #include "cFrameManager.h"
 
-frame4_t cFrameManager::frame4;
-frame6_t cFrameManager::frame6;
-frame8_t cFrameManager::frame8;
-frame12_t cFrameManager::frame12;
-
 cFrameManager cFrameManager::frameManager;
 
 cFrameManager::cFrameManager() : fTimeSinceStart(0.0f), nFrameDelay(0)
@@ -23,60 +18,60 @@ cFrameManager& cFrameManager::GetInstance()
 
 frame4_t& cFrameManager::GetFrame4()
 {
-    return frame4;
+    return frame4_t::GetSharedInstance();
 }
 
 frame6_t& cFrameManager::GetFrame6()
 {
-    return frame6;
+    return frame6_t::GetSharedInstance();
 }
 
 frame8_t& cFrameManager::GetFrame8()
 {
-    return frame8;
+    return frame8_t::GetSharedInstance();
 }
 
 frame12_t& cFrameManager::GetFrame12()
 {
-    return frame12;
+    return frame12_t::GetSharedInstance();
 }
 
 void cFrameManager::Reset()
 {
-    frame4.Reset();
-    frame6.Reset();
-    frame8.Reset();
-    frame12.Reset();
+    GetFrame4().Reset();
+    GetFrame6().Reset();
+    GetFrame8().Reset();
+    GetFrame12().Reset();
 }
 
 int cFrameManager::GetFrameID(const int frame) const
 {
-    if (frame == frame4.GetLimit()) return frame4.GetID();
-    else if (frame == frame6.GetLimit()) return frame6.GetID();
-    else if (frame == frame8.GetLimit()) return frame8.GetID();
-    else if (frame == frame12.GetLimit()) return frame12.GetID();
+    if (frame == GetFrame4().GetLimit()) return GetFrame4().GetID();
+    if (frame == GetFrame6().GetLimit()) return GetFrame6().GetID();
+    if (frame == GetFrame8().GetLimit()) return GetFrame8().GetID();
+    if (frame == GetFrame12().GetLimit()) return GetFrame12().GetID();
     return 0;
 }
 
 int cFrameManager::GetFrameID(const int frame, float fTickRate) const
 {
-    if (frame == frame4.GetLimit()) {
-        frame4_t current = frame4;
+    if (frame == GetFrame4().GetLimit()) {
+        frame4_t current = GetFrame4();
         current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
         return current.GetID();
     }
-    else if (frame == frame6.GetLimit()) {
-        frame6_t current = frame6;
+    if (frame == GetFrame6().GetLimit()) {
+        frame6_t current = GetFrame6();
         current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
         return current.GetID();
     }
-    else if (frame == frame8.GetLimit()) {
-        frame8_t current = frame8;
+    if (frame == GetFrame8().GetLimit()) {
+        frame8_t current = GetFrame8();
         current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
         return current.GetID();
     }
-    else if (frame == frame12.GetLimit()) {
-        frame12_t current = frame12;
+    if (frame == GetFrame12().GetLimit()) {
+        frame12_t current = GetFrame12();
         current.UpdateFrame(fTimeSinceStart, nFrameDelay, fTickRate);
         return current.GetID();
     }
@@ -99,9 +94,9 @@ bool cFrameManager::UpdateFrame(float fTickTime, int nFrameDelay, float fTickRat
 {
     this->fTimeSinceStart = fTickTime;
     this->nFrameDelay = nFrameDelay;
-    frame4.UpdateFrame(fTickTime, nFrameDelay, fTickRate);
-    frame6.UpdateFrame(fTickTime, nFrameDelay, fTickRate);
-    frame8.UpdateFrame(fTickTime, nFrameDelay, fTickRate);
-    frame12.UpdateFrame(fTickTime, nFrameDelay, fTickRate);
+    GetFrame4().UpdateFrame(fTickTime, nFrameDelay, fTickRate);
+    GetFrame6().UpdateFrame(fTickTime, nFrameDelay, fTickRate);
+    GetFrame8().UpdateFrame(fTickTime, nFrameDelay, fTickRate);
+    GetFrame12().UpdateFrame(fTickTime, nFrameDelay, fTickRate);
     return true;
 }

@@ -8,14 +8,17 @@
 
 class cFrameManager
 {
-private: // Animator
-    static frame4_t frame4;
-    static frame6_t frame6;
-    static frame8_t frame8;
-    static frame12_t frame12;
+public: /// Properties
+    static frame4_t& GetFrame4();
+    static frame6_t& GetFrame6();
+    static frame8_t& GetFrame8();
+    static frame12_t& GetFrame12();
 
 private: /// Instance
     static cFrameManager frameManager;
+
+public:
+    static cFrameManager& GetInstance();
 
 private: // Timer
     float fTimeSinceStart;
@@ -24,14 +27,6 @@ private: // Timer
 private:
     cFrameManager();
     ~cFrameManager();
-
-public:
-    static cFrameManager& GetInstance();
-
-    static frame4_t& GetFrame4();
-    static frame6_t& GetFrame6();
-    static frame8_t& GetFrame8();
-    static frame12_t& GetFrame12();
 
 public: /// Setters & Reseters
     void Reset();

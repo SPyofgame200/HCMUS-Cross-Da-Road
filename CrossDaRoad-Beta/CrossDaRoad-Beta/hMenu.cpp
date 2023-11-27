@@ -618,7 +618,8 @@ bool hMenu::Render() const
 		case AppOption::APP_MENU:
 			return RenderAppMenu();
 		case AppOption::APP_GAME:
-			return app->OnGameRender();
+			app->Player.OnRender();
+			return app->OnGameRender(true);
 		default:
 			std::cerr << "hMenu::Render(*app):";
 			std::cerr << "Menu went wrong" << std::endl;
