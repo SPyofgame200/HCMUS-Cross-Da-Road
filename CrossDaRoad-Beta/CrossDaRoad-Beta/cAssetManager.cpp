@@ -231,6 +231,16 @@ bool cAssetManager::LoadScoreBarSprites()
     return ReportLoadingResult(bSuccess, "score bar");
 }
 
+bool cAssetManager::LoadSaveSprites()
+{   
+    bool bSuccess = true;
+    bSuccess &= LoadSprite("saving", "saving");
+    bSuccess &= LoadSprite("saving_cancel", "saving_cancel");
+    bSuccess &= LoadSprite("saving_ok", "saving_ok");
+
+    return ReportLoadingResult(bSuccess, "Save box");
+}
+
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////// PLAYER LOADERS ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -426,7 +436,7 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadGameOverSprites();
     bSuccess &= LoadFontSprites();
     bSuccess &= LoadFont1Sprites();
-
+    bSuccess &= LoadSaveSprites();
     bSuccess &= LoadScoreBarSprites();
     bSuccess &= LoadPlayerIdleSprites();
     bSuccess &= LoadPlayerJumpSprites();

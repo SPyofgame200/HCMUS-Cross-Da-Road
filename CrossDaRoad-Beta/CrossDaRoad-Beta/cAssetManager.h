@@ -55,7 +55,9 @@ public: // Game Loaders
 	bool LoadFontSprites();
 	bool LoadFont1Sprites();
 	bool LoadScoreBarSprites();
-
+public: 
+	bool LoadSaveSprites();
+	
 private: // Player Loaders
 	bool LoadPlayerIdleSprites();
 	bool LoadPlayerJumpSprites();
