@@ -139,6 +139,11 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 		return GameNext();
 	}
 	if (Player.IsForceKilled() || Player.IsKilled()) {
+		bDeath = true;
+		--nLife;
+		Player.Status().SetSituation(PlayerSituation::DEATH);
+		Player.Moment().StartAnimation();
+		PauseEngine();
 		return OnPlayerDeath();
 	}
 	return true;
@@ -147,11 +152,6 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 /// @return Always returns true by default
 bool cApp::OnPlayerDeath()
 {
-	bDeath = true;
-	--nLife;
-	Player.Status().SetSituation(PlayerSituation::DEATH);
-	Player.Moment().StartAnimation();
-	PauseEngine();
 	return true;
 }
 
