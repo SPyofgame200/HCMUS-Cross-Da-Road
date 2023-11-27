@@ -92,11 +92,16 @@ public: // Initialization & Clean-up
 
 public: // Managements
 	bool OpenMenu();
+	bool CloseMenu() const;
+	bool HandlePause(bool bAppPaused);
+	bool HandleResume(bool bAppPaused);
 
-private: // Management helpers
+private: // Loaders
 	bool LoadAppOption();
 	bool LoadPauseOption();
-	bool CloseMenu() const;
+
+private: // Validators
+	static int FixOption(int& value, int limit);
 
 public: // Checkers
 	bool IsOnMenu() const;
@@ -114,13 +119,14 @@ private: // Updater helpers
 	bool UpdateAppExit();
 	bool UpdateNameBox();
 
-private: // Renderer helpers
+private: // Renderer handlers
 	bool RenderAppMenu() const;
 	bool RenderProceed() const;
 	bool RenderSetting() const;
 	bool RenderAboutUs() const;
 	bool RenderAppExit() const;
 	bool RenderNameBox() const;
+
 public: // Updaters
 	bool UpdatePausing();
 	bool UpdateSaveBox();

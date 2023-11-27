@@ -5,14 +5,14 @@
     template cFrame<n>::cFrame(float fInitTime); \
     template cFrame<n>::~cFrame(); \
     template bool cFrame<n>::Reset(); \
-    template bool cFrame<n>::IsValidID(int nID) const; \
+    template float cFrame<n>::GetFrameTick(const int nFrameDelay, const float fTickRate); \
     template int cFrame<n>::GetID(int nTickID); \
     template int cFrame<n>::GetID(float fTickID); \
     template int cFrame<n>::GetMinID(); \
     template int cFrame<n>::GetMaxID(); \
-    template float cFrame<n>::GetFrameTick(const int nFrameDelay, const float fTickRate); \
     template int cFrame<n>::GetDefaultID(); \
     template int cFrame<n>::GetLimit(); \
+    template bool cFrame<n>::IsValidID(int nID) const; \
     template bool cFrame<n>::UpdateTime(float fCurrentTime); \
     template bool cFrame<n>::UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate); \
     template bool cFrame<n>::UpdateLocal(); \
@@ -62,9 +62,9 @@ bool cFrame<FRAME_LIMIT>::Reset()
 }
 
 template<const size_t FRAME_LIMIT>
-bool cFrame<FRAME_LIMIT>::IsValidID(int nID) const
+float cFrame<FRAME_LIMIT>::GetFrameTick(const int nFrameDelay, const float fTickRate)
 {
-    return (GetMinID() <= nID) && (nID <= GetMaxID());
+    return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
 }
 
 template<const size_t FRAME_LIMIT>
@@ -92,12 +92,6 @@ int cFrame<FRAME_LIMIT>::GetMaxID()
 }
 
 template<const size_t FRAME_LIMIT>
-float cFrame<FRAME_LIMIT>::GetFrameTick(const int nFrameDelay, const float fTickRate)
-{
-    return (24.0f / FRAME_LIMIT) / (nFrameDelay * fTickRate);
-}
-
-template<const size_t FRAME_LIMIT>
 int cFrame<FRAME_LIMIT>::GetDefaultID()
 {
     return ID_BASE - 1;
@@ -107,6 +101,12 @@ template<const size_t FRAME_LIMIT>
 int cFrame<FRAME_LIMIT>::GetLimit()
 {
     return static_cast<int>(FRAME_LIMIT);
+}
+
+template<const size_t FRAME_LIMIT>
+bool cFrame<FRAME_LIMIT>::IsValidID(int nID) const
+{
+    return (GetMinID() <= nID) && (nID <= GetMaxID());
 }
 
 template<const size_t FRAME_LIMIT>

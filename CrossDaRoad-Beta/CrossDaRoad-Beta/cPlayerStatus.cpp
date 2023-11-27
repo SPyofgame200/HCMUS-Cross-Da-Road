@@ -1,7 +1,7 @@
 #include "cPlayerStatus.h"
 
 #define EXPLICIT_INSTANTIATION(Type) \
-    template int cPlayerStatus::Value<Type>(Type eValue) const; \
+    template cPlayerStatus::flag_t cPlayerStatus::Value<Type>(Type eValue) const; \
     template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
     template void cPlayerStatus::Insert<Type>(Type eValue); \
     template void cPlayerStatus::Remove<Type>(Type eValue); \
@@ -184,7 +184,7 @@ void cPlayerStatus::SetIntention(Intention eNewIntention)
 }
 
 template<typename EnumType>
-int cPlayerStatus::Value(EnumType eValue) const
+cPlayerStatus::flag_t cPlayerStatus::Value(EnumType eValue) const
 {
     return 1 << static_cast<int>(eValue);
 }

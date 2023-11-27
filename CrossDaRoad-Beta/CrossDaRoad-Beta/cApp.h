@@ -49,9 +49,6 @@ private: // Customizable Properties (applied to all maps)
 private: // Event timers
 	float fTimeSinceStart;
 
-private: // Special variables
-	std::atomic<bool> bDeath;
-
 public: // Constructor & Destructor
 	cApp();
 	~cApp() override;
@@ -68,7 +65,7 @@ protected: // Utilities
 
 protected: /// Game Events
 	bool OnGameUpdate(float fElapsedTime);
-	bool OnPlayerDeath();
+	bool OnPlayerDeath(float fTickTime);
 	bool OnGameRender(bool bRenderPlayer = false);
 	bool OnGameSave() const;
 	bool OnGameLoad();

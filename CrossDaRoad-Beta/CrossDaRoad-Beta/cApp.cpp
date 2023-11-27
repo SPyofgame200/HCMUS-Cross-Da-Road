@@ -56,7 +56,6 @@ bool cApp::GameInit()
 	nScore = 0;
 	nLife = 3;
 	MapLoader.Init();
-	bDeath = false;
 	ResumeEngine();
 	return true;
 }
@@ -139,20 +138,38 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
 		return GameNext();
 	}
 	if (Player.IsForceKilled() || Player.IsKilled()) {
-		bDeath = true;
 		--nLife;
 		Player.Status().SetSituation(PlayerSituation::DEATH);
 		Player.Moment().StartAnimation();
 		PauseEngine();
-		return OnPlayerDeath();
+		OnPlayerDeath(fTimeSinceStart);
+		return true;
 	}
 	return true;
 }
 /// @brief Update Player when Player is killed
 /// @return Always returns true by default
-bool cApp::OnPlayerDeath()
+bool cApp::OnPlayerDeath(float fTickTime)
 {
-	return true;
+	if (Player.Moment().IsStopAnimation()) {
+		if (nLife <= 0) {
+			Menu.UpdateGameOver();
+			OnGameRender();
+			Menu.RenderGameOver();
+			return false;
+		}
+		ResumeEngine();
+		GameReset();
+		Player.Reset();
+		return true;
+	}
+	if (Player.Status().IsDeath()) {
+		Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
+		Player.OnUpdate();
+		OnGameRender(true);
+		return false;
+	}
+	return false;
 }
 
 /// @brief Draw all lanes, render Player, draw status bar
@@ -255,7 +272,7 @@ bool cApp::OnCreateEvent()
 ///	@param eTriggerer - Triggerer message that contains information about tick
 bool cApp::OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer)
 {
-	if (!IsEnginePause() && !bDeath) {
+	if (!IsEnginePause() && !Player.Status().IsDeath()) {
 		cFrameManager::GetInstance().UpdateFrame(fTimeSinceStart, GetFrameDelay());
 		fTimeSinceStart = fTickTime;
 	}
@@ -294,34 +311,17 @@ bool cApp::OnRenderEvent()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent(float fTickTime)
 {
-	if (IsEnginePause() && IsKeyReleased(app::Key::ESCAPE)) {
-		Menu.ResetMenu();
-		ResumeEngine();
+	if (IsEnginePause() && Player.Status().IsDeath()) { /// handle death pausing event
+		return OnPlayerDeath(fTickTime);
 	}
-	else if (Menu.IsOnGame() && IsKeyReleased(app::Key::ESCAPE)) {
-		PauseEngine();
-	}
-	if (IsEnginePause() && bDeath) { /// handle death pausing event
-		if (Player.Moment().IsStopAnimation()) {
-			if (nLife <= 0) {
-				Menu.UpdateEndGame();
-				OnGameRender();
-				Menu.RenderEndGame();
-				return false;
-			}
-			bDeath = false;
+
+	if (IsKeyReleased(app::Key::ESCAPE)) {
+		if (Menu.HandlePause(IsEnginePause())) {
+			PauseEngine();
+		}
+		else if (Menu.HandleResume(IsEnginePause())) {
 			ResumeEngine();
-			GameReset();
-			Player.Reset();
-			return true;
 		}
-		if (Player.Status().IsDeath()) {
-			Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
-			Player.OnUpdate();
-			OnGameRender(true);
-			return false;
-		}
-		return true;
 	}
 	
 	if (IsEnginePause()) { // continue the pause event

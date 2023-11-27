@@ -35,17 +35,17 @@ public: /// Constructors & Destructor
 public: /// Initialization & Clean-up
     bool Reset();
 
-public: /// Checkers & Validators
-    bool IsValidID(int nID) const;
-
 public: /// Interface Getters
+    static float GetFrameTick(const int nFrameDelay, const float fTickRate);
     static int GetID(int nTickID);
     static int GetID(float fTickID);
     static int GetMinID();
     static int GetMaxID();
-    static float GetFrameTick(const int nFrameDelay, const float fTickRate);
     static int GetDefaultID();
     static int GetLimit();
+    
+public: /// Checkers & Validators
+    bool IsValidID(int nID) const;
 
 public: /// Animation updaters
     bool UpdateTime(float fCurrentTime);

@@ -104,7 +104,7 @@ public: // Setters
 
 private: /// Utilities
 	template<typename EnumType>
-	int Value(EnumType eValue) const;
+	flag_t Value(EnumType eValue) const;
 
 	template<typename EnumType>
 	flag_t& Flag();
