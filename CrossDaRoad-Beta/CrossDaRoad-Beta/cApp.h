@@ -68,7 +68,7 @@ protected: // Utilities
 
 protected: /// Game Events
 	bool OnGameUpdate(float fElapsedTime);
-	bool OnPlayerDeath();
+	bool OnPlayerDeath(float fTickTime);
 	bool OnGameRender(bool bRenderPlayer = false);
 	bool OnGameSave() const;
 	bool OnGameLoad();
