@@ -151,7 +151,6 @@ bool hMenu::LoadPauseOption()
 			app->ResumeEngine();
 			break;
 		case APP_SAVE:
-			app->OnGameSave();
 			break;
 		case APP_BACK:
 			app->ResumeEngine();
@@ -207,6 +206,11 @@ int hMenu::FixOption(int& value, int limit)
 		value += limit; /// [0, +limit)
 	}
 	return value;
+}
+
+void hMenu::setSaving()
+{
+	ePauseOption = b_SAVING;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -417,7 +421,28 @@ bool hMenu::UpdatePausing()
 	return true; // succesfully handle the pause event
 }
 
-bool hMenu::UpdateGameOver()
+bool hMenu::UpdateSaveBox()
+{	
+	if (app->IsKeyReleased(app::Key::DOWN) && SaveBoxOption == LOCATION)
+	{
+		SaveBoxOption = OK;
+	}
+	else if (app->IsKeyReleased(app::Key::UP) && SaveBoxOption != LOCATION)
+	{
+		SaveBoxOption = LOCATION;
+	}
+	else if (app->IsKeyReleased(app::Key::RIGHT) && SaveBoxOption != LOCATION)
+	{
+		SaveBoxOption = CANCLE;
+	}
+	else if (app->IsKeyReleased(app::Key::LEFT) && SaveBoxOption != LOCATION)
+	{
+		SaveBoxOption = OK;
+	}
+	return true;
+}
+
+bool hMenu::UpdateEndGame()
 {
 	if (app->IsKeyReleased(app::Key::RIGHT)) {
 		bPlayAgain = false;
@@ -574,9 +599,43 @@ bool hMenu::RenderPausing() const
 	app->SetPixelMode(app::Pixel::NORMAL);
 	return true;
 }
+bool hMenu::RenderSaveBox() const
+{	
+
+	const app::Sprite* Location = cAssetManager::GetInstance().GetSprite("saving");
+	const app::Sprite* Ok = cAssetManager::GetInstance().GetSprite("saving_ok");
+	const app::Sprite* Cancle = cAssetManager::GetInstance().GetSprite("saving_cancel");
+
+
+	app->SetPixelMode(app::Pixel::ALPHA);
+	app->SetBlendFactor(190.0f / 255.0f);
+	app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+	app->SetBlendFactor(255.0f / 255.0f);
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+
+
+	app->SetPixelMode(app::Pixel::MASK);
+	if (SaveBoxOption == LOCATION)
+	{
+		app->DrawSprite(40, 55, Location);
+
+	}
+	else if (SaveBoxOption == OK)
+	{
+		app->DrawSprite(40, 55, Ok);
+	}
+	else if (SaveBoxOption == CANCLE)
+	{
+		app->DrawSprite(40, 55, Cancle);
+	}
+	app->SetPixelMode(app::Pixel::NORMAL);
+
+	return true;
+}
 /// @brief Game over and display game over window on screen
 /// @return Always return true by default
-bool hMenu::RenderGameOver() const
+bool hMenu::RenderEndGame() const
 {
 	/// Overlay
 	app->SetPixelMode(app::Pixel::ALPHA);

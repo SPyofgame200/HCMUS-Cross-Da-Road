@@ -41,8 +41,15 @@ public:
 		RESUMING = 0, ///< Resume game 
 		APP_SAVE = 1, ///< Save game
 		APP_BACK = 2, ///< Back to menu
+		b_SAVING,
 	};
-
+	enum SaveBox
+	{
+		LOCATION = 0,
+		OK = 1,
+		CANCLE = 2,
+		SAVING,
+	};
 private: /// Target
 	cApp* app;
 
@@ -60,9 +67,9 @@ private: /// Menu HUD
 private: 
 	int ContinueMenuOption = 0;
 	bool start = false;
-
 	int nameBoxOption = 0;
-
+private:
+	SaveBox SaveBoxOption = LOCATION;
 private: /// Pause HUD
 	PauseOption ePauseOption; ///< Current option 
 	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
@@ -97,7 +104,7 @@ public: // Checkers
 
 public: // Validators
 	static int FixOption(int& value, int limit);
-
+	void setSaving();
 private: // Updater helpers
 	bool UpdateNewGame();
 	bool UpdateAppMenu();
@@ -116,12 +123,16 @@ private: // Renderer helpers
 	bool RenderNameBox() const;
 public: // Updaters
 	bool UpdatePausing();
-	bool UpdateGameOver();
-	bool Update(float fElapsedTime);
+	bool UpdateSaveBox();
+	bool UpdateEndGame();
 
 public: // Renderers
 	bool RenderPausing() const;
-	bool RenderGameOver() const;
+	bool RenderSaveBox() const;
+	bool RenderEndGame() const;
+
+public:
+	bool Update(float fElapsedTime);
 	bool Render() const;
 };
 

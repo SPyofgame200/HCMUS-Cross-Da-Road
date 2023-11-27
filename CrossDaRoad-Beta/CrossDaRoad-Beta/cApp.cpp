@@ -304,9 +304,9 @@ bool cApp::OnPauseEvent(float fTickTime)
 	if (IsEnginePause() && bDeath) { /// handle death pausing event
 		if (Player.Moment().IsStopAnimation()) {
 			if (nLife <= 0) {
-				Menu.UpdateGameOver();
+				Menu.UpdateEndGame();
 				OnGameRender();
-				Menu.RenderGameOver();
+				Menu.RenderEndGame();
 				return false;
 			}
 			bDeath = false;
@@ -323,7 +323,7 @@ bool cApp::OnPauseEvent(float fTickTime)
 		}
 		return true;
 	}
-
+	
 	if (IsEnginePause()) { // continue the pause event
 		Menu.UpdatePausing();
 		OnGameRender(true);
