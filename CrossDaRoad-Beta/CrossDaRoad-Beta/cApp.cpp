@@ -319,17 +319,11 @@ bool cApp::OnPauseEvent(float fTickTime)
 	}
 
 	if (IsKeyReleased(app::Key::ESCAPE)) {
-		std::cout << "HERE" << std::endl;
 		if (Menu.HandlePause(IsEnginePause())) {
-			std::cout << "PAUSE" << std::endl;
 			PauseEngine();
 		}
 		else if (Menu.HandleResume(IsEnginePause())) {
-			std::cout << "RESUME" << std::endl;
 			ResumeEngine();
-		}
-		else {
-			std::cout << "IGNORE" << std::endl;
 		}
 	}
 
