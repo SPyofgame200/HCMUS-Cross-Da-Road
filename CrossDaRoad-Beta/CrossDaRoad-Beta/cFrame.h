@@ -48,8 +48,9 @@ public: /// Interface Getters
     static int GetLimit();
 
 public: /// Animation updaters
-    void UpdateTime(float fCurrentTime);
+    bool UpdateTime(float fCurrentTime);
     bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f);
+    bool UpdateLocal();
 
 public: /// Animation getters
     int GetAnimationID() const;
@@ -65,7 +66,6 @@ public: /// Animation Control
     bool NextAnimation(bool bSlowUpdate = true, bool bUpdate = true);
     bool StopAnimation();
 };
-
 
 using frame4_t = cFrame<4>;
 using frame6_t = cFrame<6>;

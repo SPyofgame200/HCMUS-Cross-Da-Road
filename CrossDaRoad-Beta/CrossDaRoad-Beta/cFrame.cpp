@@ -1,28 +1,29 @@
 #include "cFrame.h"
 
 #define EXPLICIT_INSTANTIATION(n) \
-   template cFrame<n>& cFrame<n>::GetSharedInstance(); \
-   template cFrame<n>::cFrame(float fInitTime); \
-   template cFrame<n>::~cFrame(); \
-   template bool cFrame<n>::Reset(); \
-   template bool cFrame<n>::IsValidID(int nID) const; \
-   template int cFrame<n>::GetID(int nTickID); \
-   template int cFrame<n>::GetID(float fTickID); \
-   template int cFrame<n>::GetMinID(); \
-   template int cFrame<n>::GetMaxID(); \
-   template float cFrame<n>::GetFrameTick(const int nFrameDelay, const float fTickRate); \
-   template int cFrame<n>::GetDefaultID(); \
-   template int cFrame<n>::GetLimit(); \
-   template void cFrame<n>::UpdateTime(float fCurrentTime); \
-   template bool cFrame<n>::UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate); \
-   template int cFrame<n>::GetAnimationID() const; \
-   template int cFrame<n>::GetID() const; \
-   template int cFrame<n>::GetTickID() const; \
-   template bool cFrame<n>::IsStartAnimation(); \
-   template bool cFrame<n>::IsStopAnimation(); \
-   template bool cFrame<n>::StartAnimation(); \
-   template bool cFrame<n>::NextAnimation(bool bSlowUpdate, bool bUpdate); \
-   template bool cFrame<n>::StopAnimation();
+    template cFrame<n>& cFrame<n>::GetSharedInstance(); \
+    template cFrame<n>::cFrame(float fInitTime); \
+    template cFrame<n>::~cFrame(); \
+    template bool cFrame<n>::Reset(); \
+    template bool cFrame<n>::IsValidID(int nID) const; \
+    template int cFrame<n>::GetID(int nTickID); \
+    template int cFrame<n>::GetID(float fTickID); \
+    template int cFrame<n>::GetMinID(); \
+    template int cFrame<n>::GetMaxID(); \
+    template float cFrame<n>::GetFrameTick(const int nFrameDelay, const float fTickRate); \
+    template int cFrame<n>::GetDefaultID(); \
+    template int cFrame<n>::GetLimit(); \
+    template bool cFrame<n>::UpdateTime(float fCurrentTime); \
+    template bool cFrame<n>::UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate); \
+    template bool cFrame<n>::UpdateLocal(); \
+    template int cFrame<n>::GetAnimationID() const; \
+    template int cFrame<n>::GetID() const; \
+    template int cFrame<n>::GetTickID() const; \
+    template bool cFrame<n>::IsStartAnimation(); \
+    template bool cFrame<n>::IsStopAnimation(); \
+    template bool cFrame<n>::StartAnimation(); \
+    template bool cFrame<n>::NextAnimation(bool bSlowUpdate, bool bUpdate); \
+    template bool cFrame<n>::StopAnimation(); \
 
 EXPLICIT_INSTANTIATION(4);
 EXPLICIT_INSTANTIATION(6);
@@ -109,16 +110,23 @@ int cFrame<FRAME_LIMIT>::GetLimit()
 }
 
 template<const size_t FRAME_LIMIT>
-void cFrame<FRAME_LIMIT>::UpdateTime(float fCurrentTime)
+bool cFrame<FRAME_LIMIT>::UpdateTime(float fCurrentTime)
 {
     fTime = fCurrentTime;
+    return true;
 }
 
 template<const size_t FRAME_LIMIT>
 bool cFrame<FRAME_LIMIT>::UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate)
 {
     const float fFrameTick = GetFrameTick(nFrameDelay, fTickRate);
-    UpdateTime(fTickTime / fFrameTick);
+    return UpdateTime(fTickTime / fFrameTick);
+}
+
+template<const size_t FRAME_LIMIT>
+bool cFrame<FRAME_LIMIT>::UpdateLocal()
+{
+    fTime = GetSharedInstance().fTime;
     return true;
 }
 
