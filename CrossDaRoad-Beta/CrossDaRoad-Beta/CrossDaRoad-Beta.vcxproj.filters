@@ -268,7 +268,7 @@
     <None Include="docs\standard\documentation.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="docs\standard\functionStandard.md">
+    <None Include="docs\standard\classStandard.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="docs\standard\mapStandard.md">
