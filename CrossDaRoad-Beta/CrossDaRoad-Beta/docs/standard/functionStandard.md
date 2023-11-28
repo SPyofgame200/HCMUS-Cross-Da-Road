@@ -14,6 +14,7 @@
   - `[Constructor]` initialize object's variables upon creation.
   - `[Destructor]` cleaning and release resources upon destruction.
   - `[Initializer]` boolean functions that being used in the `constructors`.
+  - `[Loader]` boolean functions that are used to load and extract data.
   - `[Clean-up]` boolean functions that being used in the `destructors`.
   - `[Release]` helper functions for the clean-up for releasing pointer resources
   - `[Validator]` boolean functions that validates certain actions.
@@ -31,6 +32,7 @@
 - Functions without those same patterns should use these special tag:
   - `[Custom]` customized on their own, unless specified needed
   - `[Deprecated]` the function is no longer being used or supported
+  - `[Prototype]` the function is just a sketch of design pattern
   - `[Todo]` the function that is intended to be implemented
 
 ---
@@ -83,86 +85,6 @@ Foo::Foo()
 }
 ```
 
-### Bar.h
-
-```cpp
-#ifndef BAR_H
-#define BAR_H
-
-#include <iostream>
-
-class Bar
-{
-public:
-    // Constructor declaration
-    Bar(int initialValue);
-
-    // Function to demonstrate initialization with boolean return
-    bool initializeWithFunction();
-
-    // Function to provide details for pointer variables
-    void provideDetailsForPointer();
-
-    // Static variable for demonstration
-    static int staticVariable;
-
-private:
-    // Non-static non-pointer variable
-    int nonStaticVariable;
-
-    // Pointer variable
-    int* pointerVariable;
-
-    // Function to demonstrate logging a warning or error message
-    void logMessage(const std::string& message);
-};
-
-#endif // BAR_H
-```
-
-### Bar.cpp
-
-```cpp
-#include "Bar.h"
-
-// Static variable initialization in the source file
-int Bar::staticVariable = 0;
-
-Bar::Bar(int initialValue) : nonStaticVariable(initialValue), pointerVariable(nullptr)
-{
-    // Constructor definition
-    // Initialization code goes here
-    bool initializationResult = initializeWithFunction();
-
-    if (!initializationResult) {
-        logMessage("Initialization failed. Consider checking the parameters.");
-    }
-
-    provideDetailsForPointer();
-}
-
-bool Bar::initializeWithFunction()
-{
-    // Function for initialization logic
-    // Return true if initialization is successful, false otherwise
-    return true; // Example: Always return true for simplicity
-}
-
-void Bar::provideDetailsForPointer()
-{
-    // Function to provide details for pointer variable
-    if (pointerVariable == nullptr) {
-        pointerVariable = new int(42); // Example: Initializing the pointer variable
-    }
-}
-
-void Bar::logMessage(const std::string& message)
-{
-    // Function to log a warning or error message
-    std::cerr << "Warning/Error: " << message << std::endl;
-}
-```
-
 ---
 
 ## B. `[Destructor]`
@@ -171,7 +93,15 @@ Destructors handle the cleanup of resources when an object is about to be destro
 
 You should output to the console indicating the destruction of classes if they are handled successfully.
 
-**Note:** If a class is destructed excessively, the messages (`std::cerr`) should be rate-limited.
+Requirement
+
+- Always log the message for destruction, you might want to output certain useful information like the container size before its destruction
+
+Notice:
+
+- Do not always delete pointers. sometimes certain dependencies pointers needed to be assign to `nullptr` and other function will destruct pointers later.
+
+- If a class is destructed excessively, the messages (`std::cerr`) should be rate-limited.
 
 **Foo.h:**
 
@@ -204,21 +134,46 @@ Foo::~Foo()
 
 Initializers are functions responsible for initializing the object's state.
 
+Function names:
+- `[Create-*]`: Loading and preparing data for the use of other functions  
+- `[*-Init]`: Initialize certain components of the class
+
+Requirement:
+- Always have boolean return type, return true indicating success initialization
+- Return false should come with logigng warning or error messages
+- Should be called from the constructor, but should always used on their own without side-effects
+
 **Foo.cpp:**
 
 ```cpp
-void Foo::Create()
+bool Foo::Init()
 {
     // Initialization code goes here
+    return true; // indicating success init
+}
+
+bool Foo::Create()
+{
+    // Construct the class in a special way
 }
 
 Foo::Foo()
 {
-    Create();  // Call the initializer in the constructor
+    if (!Init()) { // if the component initialization is failed
+        // logging warning or error messages
+    }
+}
+
+int main()
+{
+    if (Foo.Create()) {
+        ...
+    }
+    return 0;
 }
 ```
 
-## Category: Cleaner
+## D. `[Clean-up]`
 
 Cleaners handle the cleanup of resources before an object is destroyed.
 
