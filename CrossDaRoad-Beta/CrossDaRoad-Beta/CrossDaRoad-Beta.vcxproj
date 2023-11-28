@@ -242,6 +242,11 @@
     <None Include="docs\projectStandard.md" />
     <None Include="docs\mapStandard.md" />
     <None Include="docs\README.md" />
+    <None Include="docs\standard\codingStandard.md" />
+    <None Include="docs\standard\documentation.md" />
+    <None Include="docs\standard\functionStandard.md" />
+    <None Include="docs\standard\mapStandard.md" />
+    <None Include="docs\standard\projectStandard.md" />
     <None Include="docs\todo.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

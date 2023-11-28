@@ -262,5 +262,20 @@
     <None Include="docs\mapStandard.md" />
     <None Include="docs\README.md" />
     <None Include="docs\todo.md" />
+    <None Include="docs\standard\codingStandard.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="docs\standard\documentation.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="docs\standard\functionStandard.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="docs\standard\mapStandard.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="docs\standard\projectStandard.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
