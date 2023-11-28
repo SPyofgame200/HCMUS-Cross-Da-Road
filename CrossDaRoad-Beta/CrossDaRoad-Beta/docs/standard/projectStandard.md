@@ -54,3 +54,48 @@
 ## data/maps Structure
 
 Refer to [Map Standard](mapStandard.md) for more information.
+
+## Editor
+
+- **Indentation:** `4 spaces`
+
+- **Character Limit: `120`** - Allows a broad view of expressive code.
+
+> **FAQ:** Why use such a high limit?
+>
+> - Facilitates readable variables, fostering expressiveness.
+> - Averts deeply nested structures with longer lines.
+> - Minimizes vertical scrolling, enhancing code visibility.
+
+> **FAQ:** Why not use an unlimited character limit?
+>
+> - Restricts to 120 to avoid eye strain from smaller text or excessively wide code.
+
+- **Variable Naming Max Limit: `18`** - Enhances readability with contextual variables.
+
+> **FAQ:** Why use such a high limit?
+>
+> - Enables variables to provide meaningful context.
+> - Reduces abbreviations and misuse of variables.
+> - Allows functions or code structures to be self-explanatory.
+
+> **FAQ:** Why not use a higher limit?
+>
+> - Eases code review and collaboration by reducing time spent on variable names.
+> - While readability is desirable, it shouldn't be overly verbose to improve conciseness.
+> - Typing might be an issue as longer names increase development cost.
+
+- **Function Max Line Limit:**
+  - Simple functions: `3 lines`
+  - Calculation functions: `8 lines`
+  - Core module functions: `13 lines`
+
+> **FAQ:** Why use such a small limit?
+>
+> - Promotes modularity and single responsibility.
+> - Shorter lines of code enhance readability.
+
+> **FAQ:** Why to have different line limits?
+>
+> - Avoids overly fragmented code by not using functions that are too small.
+> - Prevents an increase in maintenance costs from numerous functions with simple lines.

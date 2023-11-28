@@ -23,7 +23,7 @@ public:
 	bool IsStopAnimation() const;
 
 public: /// Getters
-	int GetLimit() const;
+	int FrameLimit() const;
 	int GetSafeAnimationID() const;
 	int GetAnimationID() const;
 

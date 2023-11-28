@@ -30,7 +30,7 @@
     - `[Static Property]`: - - -
     - `[Data Component]`: Manages the main information of the class.
     - `[Handler Component]`: Deals with the handlers of the class.
-    - `[Instance]`: Manages instance-related operations.
+    - `[Instance]`: Get the current object or its component uniquely.
   - II. Core Group:
     - `[Friend Property]`: - - -
     - `[Member Property]`: - - -

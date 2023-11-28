@@ -30,9 +30,9 @@ bool cPlayerMoment::UpdateFrame(const float fTickTime, const int nFrameDelay, co
 	return frame.GetSharedInstance().UpdateFrame(fTickTime, nFrameDelay, fTickRate);
 }
 
-int cPlayerMoment::GetLimit() const
+int cPlayerMoment::FrameLimit() const
 {
-	return frame.GetLimit();
+	return frame.FrameLimit();
 }
 
 bool cPlayerMoment::IsStopAnimation() const
