@@ -233,7 +233,7 @@ bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceR
         ptrApp->DrawAllLanes();
     }
     ptrApp->SetPixelMode(app::Pixel::MASK);
-    const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+    constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
     const float fPosX = Physic().GetPlayerAnimationPositionX();
     const float fPosY = Physic().GetPlayerAnimationPositionY();
     const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
