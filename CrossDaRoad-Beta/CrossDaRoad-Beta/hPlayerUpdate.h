@@ -7,25 +7,25 @@ class hPlayer;
 class hPlayerUpdate
 {
 private: // Dependency
-	hPlayer* ptrPlayer;
+    hPlayer* ptrPlayer;
 
 public: // Constructors & Destructor
-	hPlayerUpdate();
-	hPlayerUpdate(hPlayer* ptrPlayer);
-	~hPlayerUpdate();
+    hPlayerUpdate();
+    hPlayerUpdate(hPlayer* ptrPlayer);
+    ~hPlayerUpdate();
 
 public: // Initializer & Clean-up
-	bool SetupTarget(hPlayer* ptrPlayer);
+    bool SetupTarget(hPlayer* ptrPlayer);
 
 public: // Logic Updater
-	bool OnUpdatePlayerDeath();
-	bool OnUpdatePlayerIdle();
-	bool OnUpdatePlayerJumpStart();
-	bool OnUpdatePlayerJumpContinue() const;
-	bool OnUpdatePlayerJumpStop();
+    bool OnUpdatePlayerDeath();
+    bool OnUpdatePlayerIdle();
+    bool OnUpdatePlayerJumpStart();
+    bool OnUpdatePlayerJumpContinue() const;
+    bool OnUpdatePlayerJumpStop();
 
 public:
-	bool OnUpdate();
+    bool OnUpdate();
 };
 
 #endif // H_PLAYER_UPDATE_H

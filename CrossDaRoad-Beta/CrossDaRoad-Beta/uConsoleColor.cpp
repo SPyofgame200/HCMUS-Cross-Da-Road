@@ -9,33 +9,33 @@
 namespace console
 {
     int ClosestColor(int r, int g, int b) {
-	    const int gray = static_cast<int>(std::round(0.299 * r + 0.587 * g + 0.114 * b));
+        const int gray = static_cast<int>(std::round(0.299 * r + 0.587 * g + 0.114 * b));
 
         constexpr int ANSI_BLACK = 30;
         constexpr int ANSI_WHITE = 97;
 
-	    const int closestCode = ANSI_BLACK + static_cast<int>((static_cast<double>(gray) / 255) * (ANSI_WHITE - ANSI_BLACK));
+        const int closestCode = ANSI_BLACK + static_cast<int>((static_cast<double>(gray) / 255) * (ANSI_WHITE - ANSI_BLACK));
 
         return closestCode;
     }
 
     std::string TextColor(const app::Pixel& pixel) {
-	    const int colorCode = ClosestColor(pixel.r, pixel.g, pixel.b);
+        const int colorCode = ClosestColor(pixel.r, pixel.g, pixel.b);
         return "\033[38;5;" + std::to_string(colorCode) + "m";
     }
 
     std::string TextColor(int r, int g, int b) {
-	    const int colorCode = ClosestColor(r, g, b);
+        const int colorCode = ClosestColor(r, g, b);
         return "\033[38;5;" + std::to_string(colorCode) + "m";
     }
 
     std::string BackgroundColor(const app::Pixel& pixel) {
-	    const int colorCode = ClosestColor(pixel.r, pixel.g, pixel.b);
+        const int colorCode = ClosestColor(pixel.r, pixel.g, pixel.b);
         return "\033[48;5;" + std::to_string(colorCode) + "m";
     }
 
     std::string BackgroundColor(int r, int g, int b) {
-	    const int colorCode = ClosestColor(r, g, b);
+        const int colorCode = ClosestColor(r, g, b);
         return "\033[48;5;" + std::to_string(colorCode) + "m";
     }
 

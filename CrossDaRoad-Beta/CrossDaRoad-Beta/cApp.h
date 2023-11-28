@@ -24,76 +24,75 @@
 
 //=================================================================================================
 
-
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
 class cApp final : public app::GameEngine
 {
-	friend class hMenu;
-	friend class hPlayer;
-	friend class hMapDrawer;
+private: // [Data Component]
+    cZone Zone;
+    cMapLoader MapLoader;
 
-private: // Interactive Properties (control the map)
-	hMenu Menu;
-	hPlayer Player;
-	std::string playerName;
+private: // [Handle Component]
+    hMenu Menu;
+    hPlayer Player;
+    hMapDrawer MapDrawer;
 
-private: // Reinitializable Properties (depended on each map)
-	cZone Zone;
-	cMapLoader MapLoader;
-	hMapDrawer MapDrawer;
+private: // [Friend Property]
+    friend class hMenu;
+    friend class hPlayer;
+    friend class hMapDrawer;
 
-private: // Customizable Properties (applied to all maps)
-	int nScore = 0;
-	int nLife;
+private: // [Member Property]
+    std::string playerName;
+    int nScore = 0;
+    int nLife;
+    float fTimeSinceStart;
 
-private: // Event timers
-	float fTimeSinceStart;
+public: // [Constructor] & [Destructor]
+    cApp();
+    ~cApp() override;
 
-private: // Special variables
-	std::atomic<bool> bDeath;
+protected: // [Initializer] & [Disposer]
+    bool GameInit();
+    bool GameExit();
 
-public: // Constructor & Destructor
-	cApp();
-	~cApp() override;
+protected: // [Reseter]
+    bool GameReset();
+    bool GameNext();
+    bool GamePrev();
 
-protected: // Initializers & Clean-up
-	bool GameInit();
-	bool GameExit();
-	bool GameNext();
-	bool GamePrev();
-	bool GameReset();
+protected: // [Core] App events
+    bool OnCreateEvent() override;
+    bool OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer) override;
+    bool OnFixedUpdateEvent(float fTickTime) override;
+    bool OnUpdateEvent(float fElapsedTime) override;
+    bool OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime) override;
+    bool OnRenderEvent() override;
+    bool OnPauseEvent(float fTickTime) override;
+    bool OnForcePauseEvent() override;
+    bool OnDestroyEvent() override;
+    bool OnForceDestroyEvent() override;
 
-protected: // Utilities
-	float GetPlatformVelocity(float fElapsedTime) const;
+protected: // [Evaluation]
+    float GetPlatformVelocity(float fElapsedTime) const;
 
-protected: /// Game Events
-	bool OnGameUpdate(float fElapsedTime);
-	bool OnPlayerDeath();
-	bool OnGameRender(bool bRenderPlayer = false);
-	bool OnGameSave() const;
-	bool OnGameLoad();
+protected: // [Event]
+    bool OnGameUpdate(float fElapsedTime);
+    bool OnPlayerDeath(float fTickTime);
+    bool OnGameRender(bool bRenderPlayer = false);
 
-protected: /// Core Events
-	bool OnCreateEvent() override;
-	bool OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer) override;
-	bool OnFixedUpdateEvent(float fTickTime) override;
-	bool OnUpdateEvent(float fElapsedTime) override;
-	bool OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateElapsedTime) override;
-	bool OnRenderEvent() override;
-	bool OnPauseEvent(float fTickTime) override;
-	bool OnForcePauseEvent() override;
-	bool OnDestroyEvent() override;
-	bool OnForceDestroyEvent() override;
+private: // [Handler]
+    bool DrawAllLanes() const;
+    bool DrawBigText(const std::string& sText, int x, int y);
+    bool DrawBigText1(const std::string& sText, int x, int y);
+    bool DrawStatusBar();
 
-protected: // File Management
-	static std::string GetFilePathLocation(bool isSaven, std::string fileName);
+protected: // [File]
+    static std::string GetFilePathLocation(bool isSaven, std::string fileName);
+    bool OnGameSave() const;
+    bool OnGameLoad();
 
-private: // Game Rendering
-	bool DrawAllLanes() const;
-	bool DrawBigText(const std::string& sText, int x, int y);
-	bool DrawBigText1(const std::string& sText, int x, int y);
-	bool DrawStatusBar();
-	void ForceSleep(float fTime) { Sleep(static_cast<DWORD>(fTime)); }
+private: // [Utility]
+    void ForceSleep(float fTime);
 };
 
 #endif // C_APP_H

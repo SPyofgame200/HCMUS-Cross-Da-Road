@@ -1,7 +1,12 @@
 #include "cPlayerStatus.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 #define EXPLICIT_INSTANTIATION(Type) \
-    template int cPlayerStatus::Value<Type>(Type eValue) const; \
+    template cPlayerStatus::flag_t cPlayerStatus::Value<Type>(Type eValue) const; \
     template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
     template void cPlayerStatus::Insert<Type>(Type eValue); \
     template void cPlayerStatus::Remove<Type>(Type eValue); \
@@ -70,7 +75,7 @@ bool cPlayerStatus::IsIntention(Intention eCompare) const
 
 bool cPlayerStatus::IsDirection(std::initializer_list<Direction> eCompareList) const
 {
-    for (Direction eCompare : eCompareList) {
+    for (const Direction eCompare : eCompareList) {
         if (IsDirection(eCompare)) {
             return true;
         }
@@ -80,7 +85,7 @@ bool cPlayerStatus::IsDirection(std::initializer_list<Direction> eCompareList) c
 
 bool cPlayerStatus::IsAnimation(std::initializer_list<Animation> eCompareList) const
 {
-    for (Animation eCompare : eCompareList) {
+    for (const Animation eCompare : eCompareList) {
         if (IsAnimation(eCompare)) {
             return true;
         }
@@ -90,7 +95,7 @@ bool cPlayerStatus::IsAnimation(std::initializer_list<Animation> eCompareList) c
 
 bool cPlayerStatus::IsSituation(std::initializer_list<Situation> eCompareList) const
 {
-    for (Situation eCompare : eCompareList) {
+    for (const Situation eCompare : eCompareList) {
         if (IsSituation(eCompare)) {
             return true;
         }
@@ -100,7 +105,7 @@ bool cPlayerStatus::IsSituation(std::initializer_list<Situation> eCompareList) c
 
 bool cPlayerStatus::IsIntention(std::initializer_list<Intention> eCompareList) const
 {
-    for (Intention eCompare : eCompareList) {
+    for (const Intention eCompare : eCompareList) {
         if (IsIntention(eCompare)) {
             return true;
         }
@@ -184,13 +189,13 @@ void cPlayerStatus::SetIntention(Intention eNewIntention)
 }
 
 template<typename EnumType>
-int cPlayerStatus::Value(EnumType eValue) const
+cPlayerStatus::flag_t cPlayerStatus::Value(EnumType eValue) const
 {
     return 1 << static_cast<int>(eValue);
 }
 
 template<typename EnumType>
-typename cPlayerStatus::flag_t& cPlayerStatus::Flag()
+cPlayerStatus::flag_t& cPlayerStatus::Flag()
 {
     static_assert(sizeof(EnumType) == 0, "Flag function not specialized for this enum type");
 }
@@ -304,7 +309,7 @@ bool cPlayerStatus::IsMove(Intention eValue) const
 
 bool cPlayerStatus::IsMove(std::initializer_list<Intention> eList) const
 {
-    for (Intention eValue : eList) {
+    for (const Intention eValue : eList) {
         if (IsMove(eValue)) {
             return true;
         }
@@ -326,4 +331,34 @@ bool cPlayerStatus::IsIdling() const
 bool cPlayerStatus::IsDeath() const
 {
     return (eSituation == DEATH);
+}
+
+void cPlayerStatus::Read(std::istream& is) {
+    // Read each property from the input stream
+    int direction, animation, situation, intention;
+    is >> direction >> animation >> situation >> intention;
+
+    // Set the values read from the stream
+    eDirection = static_cast<Direction>(direction);
+    eAnimation = static_cast<Animation>(animation);
+    eSituation = static_cast<Situation>(situation);
+    eIntention = static_cast<Intention>(intention);
+}
+
+void cPlayerStatus::Write(std::ostream& os) const {
+    // Write each property to the output stream
+    os  << static_cast<int>(eDirection) << " "
+        << static_cast<int>(eAnimation) << " "
+        << static_cast<int>(eSituation) << " "
+        << static_cast<int>(eIntention);
+}
+
+std::istream& operator>>(std::istream& is, cPlayerStatus& playerStatus) {
+    playerStatus.Read(is);
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const cPlayerStatus& playerStatus) {
+    playerStatus.Write(os);
+    return os;
 }

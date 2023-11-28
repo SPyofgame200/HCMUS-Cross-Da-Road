@@ -8,27 +8,25 @@
 
 class cFrameManager
 {
-public: /// Properties
+private: /// [Static Properties]
+    static cFrameManager frameManager;
+
+public: /// [Instance]
     static frame4_t& GetFrame4();
     static frame6_t& GetFrame6();
     static frame8_t& GetFrame8();
     static frame12_t& GetFrame12();
-
-private: /// Instance
-    static cFrameManager frameManager;
-
-public:
     static cFrameManager& GetInstance();
 
-private: // Timer
+private: // [Properties]: Timer
     float fTimeSinceStart;
     int nFrameDelay;
 
-private:
+private: /// [Constructor] - [Destructor]
     cFrameManager();
     ~cFrameManager();
 
-public: /// Setters & Reseters
+public: /// [Reseter]
     void Reset();
 
 public: /// Getters

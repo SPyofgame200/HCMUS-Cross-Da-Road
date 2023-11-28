@@ -72,8 +72,8 @@ public: /// Singleton
 public: /// Validator
     bool TryAcquireToken(MessageSeverity eSeverity) const
     {
-	    const auto now = std::chrono::steady_clock::now();
-	    const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
+        const auto now = std::chrono::steady_clock::now();
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMessageTimer[static_cast<int>(eSeverity)]);
 
         if (elapsed.count() >= static_cast<int64_t>(nIntervalMilisecond) * nIntervalMultiplier[static_cast<int>(eSeverity)]) {
             lastMessageTimer[static_cast<int>(eSeverity)] = now;
