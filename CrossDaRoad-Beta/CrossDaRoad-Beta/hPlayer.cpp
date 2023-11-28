@@ -261,6 +261,37 @@ cZone* hPlayer::GetZone()
 		return nullptr; // or handle the case where ptrApp is null
 	}
 }
+
+void hPlayer::Read(std::istream& input) {
+	input >> status;
+	input >> physic;
+	input >> record;
+	input >> moment;
+}
+
+void hPlayer::Write(std::ostream& output) const {
+	output << status;
+	output << physic;
+	output << record;
+	output << moment;
+}
+
+std::istream& operator>>(std::istream& input, hPlayer& player) {
+	input >> player.status;
+	input >> player.physic;
+	input >> player.record;
+	input >> player.moment;
+	return input;
+}
+
+std::ostream& operator<<(std::ostream& output, const hPlayer& player) {
+	output << player.status;
+	output << player.physic;
+	output << player.record;
+	output << player.moment;
+	return output;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// END OF FILE ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

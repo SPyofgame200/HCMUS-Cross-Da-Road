@@ -24,53 +24,43 @@
 
 //=================================================================================================
 
-
 /// @brief Class for application management (init, exit, update, render) inherited from app::GameEngine
 class cApp final : public app::GameEngine
 {
+private: // [Data Component]
+	cZone Zone;
+	cMapLoader MapLoader;
+
+private: // [Handle Component]
+	hMenu Menu;
+	hPlayer Player;
+	hMapDrawer MapDrawer;
+
+private: // [Friend Property]
 	friend class hMenu;
 	friend class hPlayer;
 	friend class hMapDrawer;
 
-private: // Interactive Properties (control the map)
-	hMenu Menu;
-	hPlayer Player;
+private: // [Member Property]
 	std::string playerName;
-
-private: // Reinitializable Properties (depended on each map)
-	cZone Zone;
-	cMapLoader MapLoader;
-	hMapDrawer MapDrawer;
-
-private: // Customizable Properties (applied to all maps)
 	int nScore = 0;
 	int nLife;
-
-private: // Event timers
 	float fTimeSinceStart;
 
-public: // Constructor & Destructor
+public: // [Constructor] & [Destructor]
 	cApp();
 	~cApp() override;
 
-protected: // Initializers & Clean-up
+protected: // [Initializer] & [Disposer]
 	bool GameInit();
 	bool GameExit();
+
+protected: // [Reseter]
+	bool GameReset();
 	bool GameNext();
 	bool GamePrev();
-	bool GameReset();
 
-protected: // Utilities
-	float GetPlatformVelocity(float fElapsedTime) const;
-
-protected: /// Game Events
-	bool OnGameUpdate(float fElapsedTime);
-	bool OnPlayerDeath(float fTickTime);
-	bool OnGameRender(bool bRenderPlayer = false);
-	bool OnGameSave() const;
-	bool OnGameLoad();
-
-protected: /// Core Events
+protected: // [Core] App events
 	bool OnCreateEvent() override;
 	bool OnTriggerEvent(float fTickTime, const engine::Triggerer& eTriggerer) override;
 	bool OnFixedUpdateEvent(float fTickTime) override;
@@ -82,15 +72,27 @@ protected: /// Core Events
 	bool OnDestroyEvent() override;
 	bool OnForceDestroyEvent() override;
 
-protected: // File Management
-	static std::string GetFilePathLocation(bool isSaven, std::string fileName);
+protected: // [Evaluation]
+	float GetPlatformVelocity(float fElapsedTime) const;
 
-private: // Game Rendering
+protected: // [Event]
+	bool OnGameUpdate(float fElapsedTime);
+	bool OnPlayerDeath(float fTickTime);
+	bool OnGameRender(bool bRenderPlayer = false);
+
+private: // [Handler]
 	bool DrawAllLanes() const;
 	bool DrawBigText(const std::string& sText, int x, int y);
 	bool DrawBigText1(const std::string& sText, int x, int y);
 	bool DrawStatusBar();
-	void ForceSleep(float fTime) { Sleep(static_cast<DWORD>(fTime)); }
+
+protected: // [File]
+	static std::string GetFilePathLocation(bool isSaven, std::string fileName);
+	bool OnGameSave() const;
+	bool OnGameLoad();
+
+private: // [Utility]
+	void ForceSleep(float fTime);
 };
 
 #endif // C_APP_H

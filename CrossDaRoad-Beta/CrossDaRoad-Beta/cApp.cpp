@@ -17,12 +17,11 @@
 
 //=================================================================================================
 
-
 constexpr float fConst = 2.0f;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////// CONSTRUCTORS & DESTRUCTOR ///////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor init menu and game
 cApp::cApp()
@@ -42,9 +41,9 @@ cApp::~cApp()
 	std::cerr << "cApp::~cApp(): Successfully destructed" << std::endl;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////// INITIALIZERS & CLEAN-UP /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// INITIALIZER & CLEAN-UP //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Initialize game, load map
 /// @return True if success, false otherwise
@@ -66,6 +65,32 @@ bool cApp::GameExit()
 	MapLoader.Destruct();
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////// RESETER //////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Reset game, clear data, load map, reset Player position, danger area, score
+/// @return Always returns true by default
+bool cApp::GameReset()
+{
+	fTimeSinceStart = 0.0f;
+
+	Player.Status().SetSituation(PlayerSituation::ALIVE);
+	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
+	Zone.CreateZone(ScreenWidth(), ScreenHeight());
+	Player.Reset();
+	cFrameManager::GetInstance().Reset();
+
+	Clear(app::BLACK);
+	MapLoader.LoadMapLevel();
+	Zone.SetPattern(
+		MapLoader.GetPlatformPattern().c_str(),
+		MapLoader.GetDangerPattern().c_str(),
+		MapLoader.GetBlockPattern().c_str()
+	);
+	return true;
+}
 /// @brief Go to next map level
 /// @return Always returns true by default
 bool cApp::GameNext()
@@ -82,180 +107,11 @@ bool cApp::GamePrev()
 	GameReset();
 	return true;
 }
-/// @brief Reset game, clear data, load map, reset Player position, danger area, score
-/// @return Always returns true by default
-bool cApp::GameReset()
-{
-	fTimeSinceStart = 0.0f;
 
-	Player.Status().SetSituation(PlayerSituation::ALIVE);
-	sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
-	Zone.CreateZone(ScreenWidth(), ScreenHeight());
-	Player.Reset();
-	cFrameManager::GetInstance().Reset();
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// CORE //////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Clear(app::BLACK);
-	MapLoader.LoadMapLevel();
-	Zone.SetPattern(
-		MapLoader.GetPlatformPattern().c_str(), 
-		MapLoader.GetDangerPattern().c_str(),
-		MapLoader.GetBlockPattern().c_str()
-	);
-	return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////// UTILITIES ////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Get platform velocity
-/// @param fElapsedTime Time elapsed since last update
-/// @return Velocity of platform
-float cApp::GetPlatformVelocity(const float fElapsedTime) const
-{
-	const float fPosY = Player.Physic().GetPlayerLogicPositionY();
-	const float fVelocityX = MapLoader.GetLaneRound(fPosY).GetVelocity();
-	const float fMovedX = fVelocityX * fElapsedTime;
-	return fMovedX;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////// GAME EVENTS //////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-/// @brief Update all game objects
-/// @param fElapsedTime Time elapsed since last update
-/// @return Always returns true by default
-bool cApp::OnGameUpdate(const float fElapsedTime)
-{
-	Player.UpdateAction(IsMoveLeft(), IsMoveRight(), IsMoveUp(), IsMoveDown());
-	Player.OnUpdate();
-	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
-		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
-		Player.Motion().PlatformDetector();
-	}
-	if (Player.IsPlayerWin()) {
-		return GameNext();
-	}
-	if (Player.IsForceKilled() || Player.IsKilled()) {
-		--nLife;
-		Player.Status().SetSituation(PlayerSituation::DEATH);
-		Player.Moment().StartAnimation();
-		PauseEngine();
-		OnPlayerDeath(fTimeSinceStart);
-		return true;
-	}
-	return true;
-}
-/// @brief Update Player when Player is killed
-/// @return Always returns true by default
-bool cApp::OnPlayerDeath(float fTickTime)
-{
-	if (Player.Moment().IsStopAnimation()) {
-		if (nLife <= 0) {
-			Menu.UpdateEndGame();
-			OnGameRender();
-			Menu.RenderEndGame();
-			return false;
-		}
-		ResumeEngine();
-		GameReset();
-		Player.Reset();
-		return true;
-	}
-	if (Player.Status().IsDeath()) {
-		Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
-		Player.OnUpdate();
-		OnGameRender(true);
-		return false;
-	}
-	return false;
-}
-
-/// @brief Draw all lanes, render Player, draw status bar
-/// @return Always returns true by default
-bool cApp::OnGameRender(bool bRenderPlayer)
-{
-	DrawAllLanes();
-	if (bRenderPlayer) {
-		Player.OnRender();
-	}
-	DrawStatusBar();
-	return true;
-}
-
-/// @brief Save current game state to file
-/// @return True if game is saved successfully, false otherwise
-bool cApp::OnGameSave() const
-{
-	const std::string FileName = Player.Record().GetName();
-	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
-	if (!sSaveFilePath.empty()) {
-		std::ofstream fout(sSaveFilePath);
-		if (fout.is_open()) {
-			fout << MapLoader.GetMapLevel() << std::endl;
-			fout << Player.Physic().GetPlayerVelocityX() << std::endl;
-			fout << Player.Physic().GetPlayerVelocityY() << std::endl;
-			fout << Player.Physic().GetPlayerAnimationPositionX() << std::endl;
-			fout << Player.Physic().GetPlayerAnimationPositionY() << std::endl;
-			fout << Player.Physic().GetPlayerLogicPositionX() << std::endl;
-			fout << Player.Physic().GetPlayerLogicPositionY();
-			fout.close();
-			return true;
-		}
-		else {
-			std::cerr << "Can't open the selected file for writing." << std::endl;
-			return false;
-		}
-	}
-	else {
-		std::cerr << "User canceled the save operation." << std::endl;
-		return false;
-	}
-}
-/// @brief Load game state from file
-/// @return True if game is loaded successfully, false otherwise
-bool cApp::OnGameLoad()
-{
-	const std::string sLoadFilePath = GetFilePathLocation(false, "");
-
-	if (!sLoadFilePath.empty()) {
-		std::ifstream fin(sLoadFilePath);
-		if (fin.is_open()) {
-			float VelocityX;
-			float VelocityY;
-			float AnimationPositionX;
-			float AnimationPositionY;
-			float LogicPositionX;
-			float LogicPositionY;
-			int MapLevel;
-
-			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
-				MapLoader.SetMapLevel(MapLevel);
-				Player.Physic().SetAnimationPosition(AnimationPositionX, AnimationPositionY);
-				Player.Physic().SetLogicPosition(LogicPositionX, LogicPositionY);
-				Player.Physic().SetVelocity(VelocityX, VelocityY);
-				fin.close();
-				return true;
-			}
-			else {
-				std::cerr << "Failed to read data from the file." << std::endl;
-			}
-		}
-		else {
-			std::cerr << "Failed to open the selected file for reading." << std::endl;
-		}
-	}
-	else {
-		std::cerr << "User canceled the load operation." << std::endl;
-	}
-
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////// CORE EVENTS //////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Set frame delay, load all sprites, open menu
 /// @return Always returns true by default
@@ -364,51 +220,89 @@ bool cApp::OnForceDestroyEvent()
 	return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////// FILE MANAGEMENT ///////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////// EVALUATION ///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/// @brief Get file path location from user 
-/// @param isSave True if user want to save file, false otherwise
-/// @return File path location
-std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
+/// @brief Get platform velocity
+/// @param fElapsedTime Time elapsed since last update
+/// @return Velocity of platform
+float cApp::GetPlatformVelocity(const float fElapsedTime) const
 {
-	OPENFILENAME ofn;
-	wchar_t szFileNameW[MAX_PATH] = L"";
-	char szFileName[MAX_PATH] = "";
-
-	ZeroMemory(&ofn, sizeof(OPENFILENAME));
-
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = nullptr;
-	ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-	ofn.lpstrFile = szFileNameW;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrInitialDir = L"./data/save";
-	ofn.lpstrDefExt = L"txt";
-
-
-	size_t count;
-
-	if (isSave) {
-		ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-		GetSaveFileName(&ofn);
-		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
-		std::cout << "Selected File: " << szFileName << std::endl;
-		return szFileName;
-	}
-	else {
-		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-		GetOpenFileName(&ofn);
-		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
-		std::cout << "Selected File: " << szFileName << std::endl;
-		return szFileName;
-	}
+	const float fPosY = Player.Physic().GetPlayerLogicPositionY();
+	const float fVelocityX = MapLoader.GetLaneRound(fPosY).GetVelocity();
+	const float fMovedX = fVelocityX * fElapsedTime;
+	return fMovedX;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// GAME RENDERING /////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// EVENT //////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Update all game objects
+/// @param fElapsedTime Time elapsed since last update
+/// @return Always returns true by default
+bool cApp::OnGameUpdate(const float fElapsedTime)
+{
+	Player.UpdateAction(IsMoveLeft(), IsMoveRight(), IsMoveUp(), IsMoveDown());
+	Player.OnUpdate();
+	if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
+		Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
+		Player.Motion().PlatformDetector();
+	}
+	if (Player.IsPlayerWin()) {
+		return GameNext();
+	}
+	if (Player.IsForceKilled() || Player.IsKilled()) {
+		--nLife;
+		Player.Status().SetSituation(PlayerSituation::DEATH);
+		Player.Moment().StartAnimation();
+		PauseEngine();
+		OnPlayerDeath(fTimeSinceStart);
+		return true;
+	}
+	return true;
+}
+/// @brief Update Player when Player is killed
+/// @return Always returns true by default
+bool cApp::OnPlayerDeath(float fTickTime)
+{
+	if (Player.Moment().IsStopAnimation()) {
+		if (nLife <= 0) {
+			Menu.UpdateEndGame();
+			OnGameRender();
+			Menu.RenderEndGame();
+			return false;
+		}
+		ResumeEngine();
+		GameReset();
+		Player.Reset();
+		return true;
+	}
+	if (Player.Status().IsDeath()) {
+		Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
+		Player.OnUpdate();
+		OnGameRender(true);
+		return false;
+	}
+	return false;
+}
+
+/// @brief Draw all lanes, render Player, draw status bar
+/// @return Always returns true by default
+bool cApp::OnGameRender(bool bRenderPlayer)
+{
+	DrawAllLanes();
+	if (bRenderPlayer) {
+		Player.OnRender();
+	}
+	DrawStatusBar();
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// HANDLER /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Draw all lanes on screen
 /// @return Always returns true by default
@@ -480,6 +374,127 @@ bool cApp::DrawStatusBar()
 	return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// END OF FILE ////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////// FILE //////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/// @brief Get file path location from user 
+/// @param isSave True if user want to save file, false otherwise
+/// @return File path location
+std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
+{
+	OPENFILENAME ofn;
+	wchar_t szFileNameW[MAX_PATH] = L"";
+	char szFileName[MAX_PATH] = "";
+
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFileNameW;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrInitialDir = L"./data/save";
+	ofn.lpstrDefExt = L"txt";
+
+
+	size_t count;
+
+	if (isSave) {
+		ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+		GetSaveFileName(&ofn);
+		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+		std::cout << "Selected File: " << szFileName << std::endl;
+		return szFileName;
+	}
+	else {
+		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+		GetOpenFileName(&ofn);
+		wcstombs_s(&count, szFileName, szFileNameW, MAX_PATH);
+		std::cout << "Selected File: " << szFileName << std::endl;
+		return szFileName;
+	}
+}
+
+
+/// @brief Save current game state to file
+/// @return True if game is saved successfully, false otherwise
+bool cApp::OnGameSave() const
+{
+	const std::string FileName = Player.Record().GetName();
+	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
+	if (!sSaveFilePath.empty()) {
+		std::ofstream fout(sSaveFilePath);
+		if (fout.is_open()) {
+			fout << MapLoader.GetMapLevel() << std::endl;
+			fout << Player.Physic().GetPlayerVelocityX() << std::endl;
+			fout << Player.Physic().GetPlayerVelocityY() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerAnimationPositionY() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionX() << std::endl;
+			fout << Player.Physic().GetPlayerLogicPositionY();
+			fout.close();
+			return true;
+		}
+		else {
+			std::cerr << "Can't open the selected file for writing." << std::endl;
+			return false;
+		}
+	}
+	else {
+		std::cerr << "User canceled the save operation." << std::endl;
+		return false;
+	}
+}
+/// @brief Load game state from file
+/// @return True if game is loaded successfully, false otherwise
+bool cApp::OnGameLoad()
+{
+	const std::string sLoadFilePath = GetFilePathLocation(false, "");
+
+	if (!sLoadFilePath.empty()) {
+		std::ifstream fin(sLoadFilePath);
+		if (fin.is_open()) {
+			float VelocityX;
+			float VelocityY;
+			float AnimationPositionX;
+			float AnimationPositionY;
+			float LogicPositionX;
+			float LogicPositionY;
+			int MapLevel;
+
+			if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
+				MapLoader.SetMapLevel(MapLevel);
+				Player.Physic().SetAnimationPosition(AnimationPositionX, AnimationPositionY);
+				Player.Physic().SetLogicPosition(LogicPositionX, LogicPositionY);
+				Player.Physic().SetVelocity(VelocityX, VelocityY);
+				fin.close();
+				return true;
+			}
+			else {
+				std::cerr << "Failed to read data from the file." << std::endl;
+			}
+		}
+		else {
+			std::cerr << "Failed to open the selected file for reading." << std::endl;
+		}
+	}
+	else {
+		std::cerr << "User canceled the load operation." << std::endl;
+	}
+
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// UTILITY /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void cApp::ForceSleep(float fTime) 
+{ 
+	Sleep(static_cast<DWORD>(fTime)); 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// END OF FILE ///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////

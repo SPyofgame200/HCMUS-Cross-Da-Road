@@ -92,6 +92,12 @@ public: // Logic-Render Control
 public: // Special
 	void Sleep(float fTime);
 	cZone* GetZone();
+
+public: // Input - Output
+	void Read(std::istream& input);
+	void Write(std::ostream& output) const;
+	friend std::istream& operator>>(std::istream& input, hPlayer& player);
+	friend std::ostream& operator<<(std::ostream& output, const hPlayer& player);
 };
 
 #endif // H_PLAYER_H
