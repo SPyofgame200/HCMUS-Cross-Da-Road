@@ -179,8 +179,15 @@ bool cApp::OnPauseEvent(float fTickTime)
 			ResumeEngine();
 		}
 	}
+	if (IsEnginePause() && Menu.isSaving())
+	{	
+		Menu.UpdateSaveBox();
+		OnGameRender(true);
+		Menu.RenderSaveBox();
+		return false;
 
-	if (IsEnginePause()) { // continue the pause event
+	}
+	else if (IsEnginePause()) { // continue the pause event
 		Menu.UpdatePausing();
 		OnGameRender(true);
 		Menu.RenderPausing();

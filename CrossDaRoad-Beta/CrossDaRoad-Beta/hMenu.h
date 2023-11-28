@@ -48,7 +48,6 @@ public:
 		LOCATION = 0,
 		OK = 1,
 		CANCLE = 2,
-		SAVING,
 	};
 private: /// Target
 	cApp* app;
@@ -70,6 +69,7 @@ private:
 	int nameBoxOption = 0;
 private:
 	SaveBox SaveBoxOption = LOCATION;
+	bool isSave = false;
 private: /// Pause HUD
 	PauseOption ePauseOption; ///< Current option 
 	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
@@ -108,7 +108,7 @@ public: // Checkers
 	bool IsOnGame() const;
 
 public: // Validators
-	void setSaving();
+	bool isSaving();
 private: // Updater helpers
 	bool UpdateNewGame();
 	bool UpdateAppMenu();
