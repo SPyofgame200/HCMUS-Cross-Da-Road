@@ -190,7 +190,7 @@ cPlayerStatus::flag_t cPlayerStatus::Value(EnumType eValue) const
 }
 
 template<typename EnumType>
-typename cPlayerStatus::flag_t& cPlayerStatus::Flag()
+cPlayerStatus::flag_t& cPlayerStatus::Flag()
 {
     static_assert(sizeof(EnumType) == 0, "Flag function not specialized for this enum type");
 }
