@@ -1,7 +1,11 @@
 #include "cPlayerPhysic.h"
 #include "uAppConst.h"
 #include "uAppUtils.h"
-#include <cmath>
+
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
 
 cPlayerPhysic::cPlayerPhysic()
 {
