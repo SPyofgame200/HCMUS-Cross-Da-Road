@@ -65,6 +65,10 @@ public: /// Animation Control
     bool StartAnimation();
     bool NextAnimation(bool bSlowUpdate = true, bool bUpdate = true);
     bool StopAnimation();
+
+public: /// Input - Output
+    void Read(std::istream& input);
+    void Write(std::ostream& output) const;
 };
 
 using frame4_t = cFrame<4>;

@@ -1,6 +1,8 @@
 #ifndef C_PLAYER_PHYSIC_H
 #define C_PLAYER_PHYSIC_H
 
+#include <iostream>
+
 class cPlayerPhysic
 {
 private: // Velocity properties
@@ -55,6 +57,12 @@ public: // Setters
 public: // Synchronizer
 	void SynchronizePosition(bool bAnimToLogic = true);
 	bool OnFixPlayerPosition();
+
+public: // Input - Output
+	void Read(std::istream& input);
+	void Write(std::ostream& output) const;
+	friend std::istream& operator>>(std::istream& input, cPlayerPhysic& playerPhysic);
+	friend std::ostream& operator<<(std::ostream& output, const cPlayerPhysic& playerPhysic);
 };
 
 #endif // C_PLAYER_PHYSIC_H

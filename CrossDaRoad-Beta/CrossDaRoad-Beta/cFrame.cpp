@@ -24,6 +24,8 @@
     template bool cFrame<n>::StartAnimation(); \
     template bool cFrame<n>::NextAnimation(bool bSlowUpdate, bool bUpdate); \
     template bool cFrame<n>::StopAnimation(); \
+    template void cFrame<n>::Read(std::istream& input); \
+    template void cFrame<n>::Write(std::ostream& output) const; \
 
 EXPLICIT_INSTANTIATION(4);
 EXPLICIT_INSTANTIATION(6);
@@ -198,4 +200,14 @@ bool cFrame<FRAME_LIMIT>::StopAnimation()
 {
     nAnimationFrame = GetMaxID();
     return true;
+}
+
+template<const size_t FRAME_LIMIT>
+void cFrame<FRAME_LIMIT>::Read(std::istream& input) {
+    input >> fTime >> fStart >> nAnimationFrame;
+}
+
+template<const size_t FRAME_LIMIT>
+void cFrame<FRAME_LIMIT>::Write(std::ostream& output) const {
+    output << fTime << " " << fStart << " " << nAnimationFrame;
 }

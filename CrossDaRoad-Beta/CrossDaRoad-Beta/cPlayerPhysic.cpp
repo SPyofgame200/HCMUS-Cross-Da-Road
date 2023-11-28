@@ -204,3 +204,29 @@ bool cPlayerPhysic::OnFixPlayerPosition()
 	SetAnimationPosition(fFixedX, fFixedY);
 	return true;
 }
+
+// Implement Read and Write functions for cPlayerPhysic
+void cPlayerPhysic::Read(std::istream& input) {
+	// Read each property from the input stream
+	input >> fFrogVelocityX >> fFrogVelocityY >> fFrogAnimPosX >> fFrogAnimPosY >> fFrogLogicPosX >> fFrogLogicPosY;
+}
+
+void cPlayerPhysic::Write(std::ostream& output) const {
+	// Write each property to the output stream
+	output << fFrogVelocityX << " "
+		<< fFrogVelocityY << " "
+		<< fFrogAnimPosX << " "
+		<< fFrogAnimPosY << " "
+		<< fFrogLogicPosX << " "
+		<< fFrogLogicPosY;
+}
+
+std::istream& operator>>(std::istream& input, cPlayerPhysic& playerPhysic) {
+	playerPhysic.Read(input);
+	return input;
+}
+
+std::ostream& operator<<(std::ostream& output, const cPlayerPhysic& playerPhysic) {
+	playerPhysic.Write(output);
+	return output;
+}

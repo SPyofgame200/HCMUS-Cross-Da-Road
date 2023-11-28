@@ -108,7 +108,6 @@ public: // Checkers
 	bool IsOnGame() const;
 
 public: // Validators
-	static int FixOption(int& value, int limit);
 	void setSaving();
 private: // Updater helpers
 	bool UpdateNewGame();

@@ -60,3 +60,27 @@ bool cPlayerMoment::IsValidID(int nID) const
 {
 	return frame.IsValidID(nID);
 }
+
+// Implement Read and Write functions for cPlayerMoment
+void cPlayerMoment::Read(std::istream& input) {
+	// Read each property from the input stream
+	input >> frame6_id_animation_safe;
+	frame.Read(input);
+}
+
+void cPlayerMoment::Write(std::ostream& output) const {
+	// Write each property to the output stream
+	output << frame6_id_animation_safe << " ";
+	frame.Write(output);
+}
+
+// Implement operator>> and operator<< for cPlayerMoment
+std::istream& operator>>(std::istream& input, cPlayerMoment& playerMoment) {
+	playerMoment.Read(input);
+	return input;
+}
+
+std::ostream& operator<<(std::ostream& output, const cPlayerMoment& playerMoment) {
+	playerMoment.Write(output);
+	return output;
+}

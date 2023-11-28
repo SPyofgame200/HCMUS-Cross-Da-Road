@@ -22,3 +22,21 @@ void cPlayerRecord::SetName(const std::string& Name)
 {
 	this->sName = Name;
 }
+
+void cPlayerRecord::Read(std::istream& input) {
+    input >> sName;
+}
+
+void cPlayerRecord::Write(std::ostream& output) const {
+    output << sName;
+}
+
+std::istream& operator>>(std::istream& input, cPlayerRecord& playerRecord) {
+    playerRecord.Read(input);
+    return input;
+}
+
+std::ostream& operator<<(std::ostream& output, const cPlayerRecord& playerRecord) {
+    playerRecord.Write(output);
+    return output;
+}

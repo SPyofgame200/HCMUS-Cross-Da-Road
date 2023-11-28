@@ -7,6 +7,7 @@
 #ifndef C_PLAYER_STATUS_H
 #define C_PLAYER_STATUS_H
 
+#include <iostream>
 #include <initializer_list>
 
 class cPlayerStatus
@@ -142,6 +143,12 @@ public: /// Animation
 	bool IsIdling() const;
 	bool IsStartJumping() const;
 	bool IsDeath() const;
+
+public: // Input - Output
+	void Read(std::istream& is);
+	void Write(std::ostream& os) const;
+	friend std::istream& operator>>(std::istream& is, cPlayerStatus& playerStatus);
+	friend std::ostream& operator<<(std::ostream& os, const cPlayerStatus& playerStatus);
 };
 
 using PlayerDirection = cPlayerStatus::Direction;

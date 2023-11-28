@@ -327,3 +327,33 @@ bool cPlayerStatus::IsDeath() const
 {
     return (eSituation == DEATH);
 }
+
+void cPlayerStatus::Read(std::istream& is) {
+    // Read each property from the input stream
+    int direction, animation, situation, intention;
+    is >> direction >> animation >> situation >> intention;
+
+    // Set the values read from the stream
+    eDirection = static_cast<Direction>(direction);
+    eAnimation = static_cast<Animation>(animation);
+    eSituation = static_cast<Situation>(situation);
+    eIntention = static_cast<Intention>(intention);
+}
+
+void cPlayerStatus::Write(std::ostream& os) const {
+    // Write each property to the output stream
+    os  << static_cast<int>(eDirection) << " "
+        << static_cast<int>(eAnimation) << " "
+        << static_cast<int>(eSituation) << " "
+        << static_cast<int>(eIntention);
+}
+
+std::istream& operator>>(std::istream& is, cPlayerStatus& playerStatus) {
+    playerStatus.Read(is);
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const cPlayerStatus& playerStatus) {
+    playerStatus.Write(os);
+    return os;
+}
