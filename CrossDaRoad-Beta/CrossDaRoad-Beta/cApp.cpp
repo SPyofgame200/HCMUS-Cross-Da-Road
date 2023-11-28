@@ -8,9 +8,7 @@
 #include "cApp.h"
 #include "cFrameManager.h"
 #include "hPlayerMotion.h"
-#include "hPlayerRender.h"
 #include "hPlayerHitbox.h"
-#include "hPlayerUpdate.h"
 
 //=================================================================================================
 // Include new header files here
