@@ -59,7 +59,7 @@
 Welcome to the "Cross the Road" console game!
 In this text-based adventure, you'll control a character on a daring journey to cross a busy road while avoiding a series of challenging obstacles.
 
-Features:
+**Features:**
 
 - **Traffic Chaos**: The road is teeming with speedy cars. Navigate through the traffic like a pro.
 
