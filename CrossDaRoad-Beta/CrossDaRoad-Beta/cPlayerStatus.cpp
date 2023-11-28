@@ -70,7 +70,7 @@ bool cPlayerStatus::IsIntention(Intention eCompare) const
 
 bool cPlayerStatus::IsDirection(std::initializer_list<Direction> eCompareList) const
 {
-    for (Direction eCompare : eCompareList) {
+    for (const Direction eCompare : eCompareList) {
         if (IsDirection(eCompare)) {
             return true;
         }
@@ -80,7 +80,7 @@ bool cPlayerStatus::IsDirection(std::initializer_list<Direction> eCompareList) c
 
 bool cPlayerStatus::IsAnimation(std::initializer_list<Animation> eCompareList) const
 {
-    for (Animation eCompare : eCompareList) {
+    for (const Animation eCompare : eCompareList) {
         if (IsAnimation(eCompare)) {
             return true;
         }
@@ -90,7 +90,7 @@ bool cPlayerStatus::IsAnimation(std::initializer_list<Animation> eCompareList) c
 
 bool cPlayerStatus::IsSituation(std::initializer_list<Situation> eCompareList) const
 {
-    for (Situation eCompare : eCompareList) {
+    for (const Situation eCompare : eCompareList) {
         if (IsSituation(eCompare)) {
             return true;
         }
@@ -100,7 +100,7 @@ bool cPlayerStatus::IsSituation(std::initializer_list<Situation> eCompareList) c
 
 bool cPlayerStatus::IsIntention(std::initializer_list<Intention> eCompareList) const
 {
-    for (Intention eCompare : eCompareList) {
+    for (const Intention eCompare : eCompareList) {
         if (IsIntention(eCompare)) {
             return true;
         }
@@ -304,7 +304,7 @@ bool cPlayerStatus::IsMove(Intention eValue) const
 
 bool cPlayerStatus::IsMove(std::initializer_list<Intention> eList) const
 {
-    for (Intention eValue : eList) {
+    for (const Intention eValue : eList) {
         if (IsMove(eValue)) {
             return true;
         }

@@ -86,7 +86,7 @@ bool hPlayerUpdate::OnUpdatePlayerJumpContinue() const
         return false;
     }
     if (ptrPlayer->Moment().NextAnimation()) {
-        float fSpeed = 1.0f / ptrPlayer->Moment().FrameLimit();
+	    const float fSpeed = 1.0f / ptrPlayer->Moment().FrameLimit();
         if (ptrPlayer->Status().IsDirection(PlayerDirection::LEFT)) {
             if (!ptrPlayer->Motion().MoveLeft(fSpeed, true)) {
                 return false;

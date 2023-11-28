@@ -184,13 +184,13 @@ void cPlayerPhysic::SetLogicPosition(float fPositionX, float fPositionY)
 void cPlayerPhysic::SynchronizePosition(bool bAnimToLogic)
 {
     if (bAnimToLogic) {
-        float fAnimPosX = GetPlayerAnimationPositionX();
-        float fAnimPosY = GetPlayerAnimationPositionY();
+	    const float fAnimPosX = GetPlayerAnimationPositionX();
+	    const float fAnimPosY = GetPlayerAnimationPositionY();
         SetLogicPosition(fAnimPosX, fAnimPosY);
     }
     else {
-        float fLogicPosX = GetPlayerLogicPositionX();
-        float fLogicPosY = GetPlayerLogicPositionY();
+	    const float fLogicPosX = GetPlayerLogicPositionX();
+	    const float fLogicPosY = GetPlayerLogicPositionY();
         SetAnimationPosition(fLogicPosX, fLogicPosY);
     }
 }

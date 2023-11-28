@@ -21,7 +21,7 @@ bool cPlayerMoment::StartAnimation()
 }
 bool cPlayerMoment::NextAnimation(bool bUpdate)
 {
-    bool result = frame.GetSharedInstance().NextAnimation(bUpdate);
+	const bool result = frame.GetSharedInstance().NextAnimation(bUpdate);
     return result;
 }
 
