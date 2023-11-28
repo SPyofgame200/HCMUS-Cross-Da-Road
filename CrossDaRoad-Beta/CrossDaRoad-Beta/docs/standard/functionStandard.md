@@ -1,26 +1,41 @@
 # Function Standard
 
-## General Cases
+---
+
+## ∅. General Cases
 
 - All functions must named under `PascalCase()`
 - Functions might have their prefix, based on their group tags.
 - Functions might have their suffix, based on the returned type.
-- Here are all possibles tags, each tag indicate a group of function share similarities.
-  - `[Constructors]` initialize object's variables upon creation.
-  - `[Destructors]` cleaning and release resources upon destruction.
-  - `[Initializers]` boolean functions that being used in the `constructors`.
+- We use tags for indicating each group of functions that share similarities.
+- Also, by using tags, we can organize the functions better and search function easier.
+
+- Here are all possibles tags
+  - `[Constructor]` initialize object's variables upon creation.
+  - `[Destructor]` cleaning and release resources upon destruction.
+  - `[Initializer]` boolean functions that being used in the `constructors`.
   - `[Clean-up]` boolean functions that being used in the `destructors`.
   - `[Release]` helper functions for the clean-up for releasing pointer resources
-  - `[Validators]` boolean functions that validates certain actions.
-  - `[Checkers]` boolean functions to check certain conditions.
-  - `[Constant Getters]`
-  - `[Property Getters]`
-  - `[Utility Getters]`
+  - `[Validator]` boolean functions that validates certain actions.
+  - `[Checker]` boolean functions to check certain conditions.
+  - `[Constant Getter]`
+  - `[Property Getter]`
+  - `[Utility Getter]`
   - `[Setters]`
-  - `[File Managements]`
+  - `[File Management]`
+  - `[Data Component]`
+  - `[Handler Component]`
   - `[Input - Output]`
+  - `[Instantce]`
 
-## `[Constructors]`
+- Functions without those same patterns should use these special tag:
+  - `[Custom]` customized on their own, unless specified needed
+  - `[Deprecated]` the function is no longer being used or supported
+  - `[Todo]` the function that is intended to be implemented
+
+---
+
+## A. `[Constructor]`
 
 Constructors are special member functions responsible for initializing the object when it is created.
 
@@ -148,7 +163,9 @@ void Bar::logMessage(const std::string& message)
 }
 ```
 
-## Category: [Destructors]
+---
+
+## B. `[Destructor]`
 
 Destructors handle the cleanup of resources when an object is about to be destroyed.
 
@@ -183,7 +200,7 @@ Foo::~Foo()
 }
 ```
 
-## Category: Initializer
+## C. `[Initializer]`
 
 Initializers are functions responsible for initializing the object's state.
 
