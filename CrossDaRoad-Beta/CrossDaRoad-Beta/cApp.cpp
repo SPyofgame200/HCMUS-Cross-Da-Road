@@ -153,9 +153,9 @@ bool cApp::OnPlayerDeath(float fTickTime)
 {
 	if (Player.Moment().IsStopAnimation()) {
 		if (nLife <= 0) {
-			Menu.UpdateGameOver();
+			Menu.UpdateEndGame();
 			OnGameRender();
-			Menu.RenderGameOver();
+			Menu.RenderEndGame();
 			return false;
 		}
 		ResumeEngine();
