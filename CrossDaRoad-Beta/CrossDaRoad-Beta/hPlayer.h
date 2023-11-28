@@ -21,7 +21,7 @@
 // Include new header files here
 
 //=================================================================================================
-	
+    
 class cApp;
 class cZone;
 class hPlayerHitbox;
@@ -34,70 +34,70 @@ class hPlayerRender;
 class hPlayer
 {
 private: /// Dependency
-	cApp* ptrApp;
+    cApp* ptrApp;
 
 private: /// Componnets handlers
-	static hPlayerHitbox hHitbox;
-	static hPlayerMotion hMotion;
-	static hPlayerUpdate hUpdate;
-	static hPlayerRender hRender;
+    static hPlayerHitbox hHitbox;
+    static hPlayerMotion hMotion;
+    static hPlayerUpdate hUpdate;
+    static hPlayerRender hRender;
 
 private: /// Data management
-	cPlayerStatus status; // handle flag related data
-	cPlayerPhysic physic; // handle physical & collisions
-	cPlayerRecord record; // handle user saved data
-	cPlayerMoment moment; // handle time related data
+    cPlayerStatus status; // handle flag related data
+    cPlayerPhysic physic; // handle physical & collisions
+    cPlayerRecord record; // handle user saved data
+    cPlayerMoment moment; // handle time related data
 
 public: /// Components getters
-	static hPlayerHitbox& Hitbox();
-	static hPlayerMotion& Motion();
-	static hPlayerUpdate& Update();
-	static hPlayerRender& Render();
+    static hPlayerHitbox& Hitbox();
+    static hPlayerMotion& Motion();
+    static hPlayerUpdate& Update();
+    static hPlayerRender& Render();
 
 public: /// Data getters
-	cPlayerStatus& Status();
-	cPlayerPhysic& Physic();
-	cPlayerRecord& Record();
-	cPlayerMoment& Moment();
+    cPlayerStatus& Status();
+    cPlayerPhysic& Physic();
+    cPlayerRecord& Record();
+    cPlayerMoment& Moment();
 
 public: /// Data const getters
-	const cPlayerStatus& Status() const;
-	const cPlayerPhysic& Physic() const;
-	const cPlayerRecord& Record() const;
-	const cPlayerMoment& Moment() const;
+    const cPlayerStatus& Status() const;
+    const cPlayerPhysic& Physic() const;
+    const cPlayerRecord& Record() const;
+    const cPlayerMoment& Moment() const;
 
 public: // Constructors & Destructor
-	hPlayer();
-	hPlayer(cApp* ptrApp);
-	~hPlayer();
+    hPlayer();
+    hPlayer(cApp* ptrApp);
+    ~hPlayer();
 
 public: // Initializer & Clean-up
-	bool SetupTarget(cApp* ptrApp);
-	bool SetupComponents();
+    bool SetupTarget(cApp* ptrApp);
+    bool SetupComponents();
 
 public: // Reseters
-	void Reset();
+    void Reset();
 
 public: // Checkers
-	bool IsPlayerWin() const;
-	bool IsForceKilled() const;
-	bool IsKilled() const;
+    bool IsPlayerWin() const;
+    bool IsForceKilled() const;
+    bool IsKilled() const;
 
 public: // Logic-Render Control
-	bool UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown);
-	bool OnUpdate();
-	bool OnRender();
-	bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
+    bool UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown);
+    bool OnUpdate();
+    bool OnRender();
+    bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
 
 public: // Special
-	void Sleep(float fTime);
-	cZone* GetZone();
+    void Sleep(float fTime);
+    cZone* GetZone();
 
 public: // Input - Output
-	void Read(std::istream& input);
-	void Write(std::ostream& output) const;
-	friend std::istream& operator>>(std::istream& input, hPlayer& player);
-	friend std::ostream& operator<<(std::ostream& output, const hPlayer& player);
+    void Read(std::istream& input);
+    void Write(std::ostream& output) const;
+    friend std::istream& operator>>(std::istream& input, hPlayer& player);
+    friend std::ostream& operator<<(std::ostream& output, const hPlayer& player);
 };
 
 #endif // H_PLAYER_H

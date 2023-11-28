@@ -19,65 +19,65 @@
 class cAssetManager
 {
 private: // Properties
-	std::map<std::string, app::Sprite*> mapSprites; ///< map of sprites that converts string to sprite
-	std::string sDirectoryPath;
-	std::string sFileExtension;
+    std::map<std::string, app::Sprite*> mapSprites; ///< map of sprites that converts string to sprite
+    std::string sDirectoryPath;
+    std::string sFileExtension;
 
 private: // Constructor & Destructor
-	cAssetManager();
-	~cAssetManager();
+    cAssetManager();
+    ~cAssetManager();
 
 private: // Debugging purposes
-	static bool ReportLoadingResult(bool bSuccess, const std::string& sSpriteCategory);
+    static bool ReportLoadingResult(bool bSuccess, const std::string& sSpriteCategory);
 
 public: // Avoid conflicts
-	cAssetManager(cAssetManager const&) = delete;
-	void operator=(cAssetManager const&) = delete;
+    cAssetManager(cAssetManager const&) = delete;
+    void operator=(cAssetManager const&) = delete;
 
 public: // Getters
-	static cAssetManager& GetInstance();
-	app::Sprite* GetSprite(const std::string& sName);
-	std::string GetFileLocation(const std::string& sFileName) const;
+    static cAssetManager& GetInstance();
+    app::Sprite* GetSprite(const std::string& sName);
+    std::string GetFileLocation(const std::string& sFileName) const;
 
 public: // Setters
-	void SetDirectoryPath(const std::string& sPath);
-	void SetFileExtension(const std::string& sExtension);
+    void SetDirectoryPath(const std::string& sPath);
+    void SetFileExtension(const std::string& sExtension);
 
 public: // Game Loaders
-	bool LoadNameBoxSprites();
-	bool LoadMenuSprites();
-	bool LoadContinueSprites();
-	bool LoadSettingSprites();
-	bool LoadAboutUsSprites();
-	bool LoadExitSprites();
-	bool LoadPauseSprites();
-	bool LoadGameOverSprites();
-	bool LoadFontSprites();
-	bool LoadFont1Sprites();
-	bool LoadScoreBarSprites();
+    bool LoadNameBoxSprites();
+    bool LoadMenuSprites();
+    bool LoadContinueSprites();
+    bool LoadSettingSprites();
+    bool LoadAboutUsSprites();
+    bool LoadExitSprites();
+    bool LoadPauseSprites();
+    bool LoadGameOverSprites();
+    bool LoadFontSprites();
+    bool LoadFont1Sprites();
+    bool LoadScoreBarSprites();
 public: 
-	bool LoadSaveSprites();
-	
+    bool LoadSaveSprites();
+    
 private: // Player Loaders
-	bool LoadPlayerIdleSprites();
-	bool LoadPlayerJumpSprites();
-	bool LoadPlayerSwimSprites();
-	bool LoadPlayerDeathSprites();
+    bool LoadPlayerIdleSprites();
+    bool LoadPlayerJumpSprites();
+    bool LoadPlayerSwimSprites();
+    bool LoadPlayerDeathSprites();
 
 private: // Map Loaders
-	bool LoadMapHalloweenSprites();
-	bool LoadMapRiverSideSprites();
-	bool LoadMapIceAgeSprites();
-	bool LoadMapVolcanoSprites();
-	bool LoadMapBeachSprites();
-	bool LoadMapOceanSprites();
+    bool LoadMapHalloweenSprites();
+    bool LoadMapRiverSideSprites();
+    bool LoadMapIceAgeSprites();
+    bool LoadMapVolcanoSprites();
+    bool LoadMapBeachSprites();
+    bool LoadMapOceanSprites();
 
 private: // Loaders
-	bool LoadSprite(const std::string& sName, const std::string& sFileName);
-	bool LoadAnimation(const std::string& sName, const std::string& sFileName, int nMaxFrame);
+    bool LoadSprite(const std::string& sName, const std::string& sFileName);
+    bool LoadAnimation(const std::string& sName, const std::string& sFileName, int nMaxFrame);
 
 public: // Loaders
-	bool LoadAllSprites();
+    bool LoadAllSprites();
 };
 
 #endif // C_ASSET_MANAGER_H
