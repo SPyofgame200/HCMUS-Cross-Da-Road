@@ -38,7 +38,7 @@
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
   - III. Lifecycle Group:
     - `[Initializer]`: Boolean functions used in constructors.
-    - `[Clean-up]`: Boolean functions used in destructors.
+    - `[Disposer]`: Boolean functions used in destructors.
     - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Core]`: Manipulation and control lifecycle core actions.
   - IV. Verification Group:
@@ -83,7 +83,7 @@ private: /// [Constructor] & [Destructor]
   - `[Data Component]` and `[Handler Component]`
   - `[Constructor]` and `[Destructor]`
   - `[Constructor]` and `[Initializer]`
-  - `[Destructor]` and `[Clean-up]`
+  - `[Destructor]` and `[Disposer]`
   - `[Validator]` and `[Checkers]`
   - `[Reseter]` and `[Setter]`
   - `[Getter]` and `[Setter]`
@@ -251,7 +251,7 @@ Destructors handle the cleanup of resources when an object is about to be destro
 - `private` if singletons.
 - `public` if objects.
 - `virtual` if you use inheritance.
-- `final` if it is the final produced class.
+- `final` if it is the final produced class (so that the parent can be destructed).
 
 #### Declaration
 
@@ -321,16 +321,17 @@ Initializers are functions responsible for initializing the object's state.
 
 #### Keyword
 
+- `private` if singletons.
+- `public` if objects.
+
 #### Declaration
 
-- `bool Construct-*()`: Run-time construction, use with caution.
 - `bool Create-*()` Preparing data for the use of lifecycle functions
 - `bool Init-*()` Initialize certain components of the class
 - Note: `*-` indicating prefix noun and `-*` indicating suffix noun
 
 #### Definition
 
-- `bool Class::Construct-*()`: As a replacement for construction
 - `bool Class::Create-*()`
 - `bool Class::Init-*()`
 - Note: `*-` indicating prefix noun and `-*` indicating suffix noun
@@ -338,7 +339,6 @@ Initializers are functions responsible for initializing the object's state.
 #### Requirement
 
 - Always have boolean return type, return true indicating success initialization
-- Return false should come with logigng warning or error messages
 - Should be called from the constructor, but should always used on their own without side-effects
 
 #### Notice
@@ -347,9 +347,8 @@ Initializers are functions responsible for initializing the object's state.
 
 #### Message
 
-- Log Level: `FATAL` - construction failure.
-- Log Level: `ERROR` - creation failure.
-- Log Level: `WARNING` - init failure.
+- Log Level: `FATAL` - creation failure.
+- Log Level: `ERROR` - init failure.
 
 #### Example
 
@@ -464,19 +463,46 @@ int main()
 
 ---
 
-### III-B. `[Clean-up]`
+### III-B. `[Disposer]`
+
+Clean-up are functions responsible for clean-up and release the object's state.
 
 #### Keyword
 
+- `private` if singletons.
+- `public` if objects.
+- `virtual` if you use inheritance (so that the parrent can be cleaned-up)
+
 #### Declaration
+
+- `bool Destroy-*()` Preparing data for the use of lifecycle functions
+- `bool Exit-*()` Initialize certain components of the class
+- `bool Release-*(&ptr)` Helper function for releasing a pointer.
+- `bool Clean-*(&ptr)` Helper function for cleaning up trash values from a pointer.
+- Note: `*-` indicating prefix noun and `-*` indicating suffix noun
 
 #### Definition
 
+- `bool Class::Destroy-*()`
+- `bool Class::Exit-*()`
+- `bool Class::Release-*(&ptr)`
+- `bool Class::Clean-*(&ptr)`
+- Note: `*-` indicating prefix noun and `-*` indicating suffix noun
+
 #### Requirement
+
+- Always have boolean return type, return true indicating success cleaning up and release resources.
+- Should be called from the destructor, but should always used on their own without side-effects
 
 #### Notice
 
+- All member variables using `Init()` must be reinitializable, otherwise use `Create()` instead.
+
 #### Message
+
+- Log Level: `FATAL` - destruction failure.
+- Log Level: `ERROR` - exit failure.
+- Log Level: `WARNING` - release or clean-up failure.
 
 #### Example
 

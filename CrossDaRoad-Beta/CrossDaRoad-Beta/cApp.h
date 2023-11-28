@@ -51,7 +51,7 @@ public: // [Constructor] & [Destructor]
 	cApp();
 	~cApp() override;
 
-protected: // [Initializer] & [Clean-up]
+protected: // [Initializer] & [Disposer]
 	bool GameInit();
 	bool GameExit();
 
