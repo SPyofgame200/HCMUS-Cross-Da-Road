@@ -1,5 +1,10 @@
 #include "cPlayerStatus.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 #define EXPLICIT_INSTANTIATION(Type) \
     template cPlayerStatus::flag_t cPlayerStatus::Value<Type>(Type eValue) const; \
     template void cPlayerStatus::Modify<Type>(Type eValue, bool bValue); \
