@@ -42,7 +42,7 @@ public: /// [Core] Animation controls
     bool StopAnimation();
 
 public: /// [Evaluation]
-    static float CalculateFrameTick(const int nFrameDelay, const float fTickRate);
+    static float CalculateFrameTick(int nFrameDelay, float fTickRate);
     static int CalculateID(int nTickID);
     static int CalculateID(float fTickID);
     static int MinID();
@@ -62,7 +62,7 @@ public: /// [Getter]
 
 public: /// [Handler] Animation updates
     bool UpdateTime(float fCurrentTime);
-    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f);
+    bool UpdateFrame(float fTickTime, int nFrameDelay, float fTickRate = 0.001f);
     bool UpdateLocal();
 
 public: /// [Input] & [Output]
