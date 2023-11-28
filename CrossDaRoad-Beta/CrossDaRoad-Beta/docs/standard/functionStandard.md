@@ -1,72 +1,106 @@
-# Comment Standard
+# Function Standard
 
-## Category: Constructors
+## Category: [Constructors]
 
-```
-class Foo()
+Constructors are special member functions responsible for initializing the object when it is created. They have the same name as the class and do not have a return type. Here's an example of a simple constructor for a class `Foo`:
+
+**Foo.h:**
+```cpp
+#ifndef FOO_H
+#define FOO_H
+
+class Foo
 {
-    Foo();
-}
+public:
+    Foo();  // Constructor declaration
+};
+
+#endif // FOO_H
+```
+
+**Foo.cpp:**
+```cpp
+#include "Foo.h"
 
 Foo::Foo()
 {
+    // Constructor definition
+    // Initialization code goes here
 }
 ```
 
-## Category: Destructor
+## Category: [Destructors]
 
-with "uMessage.h", any destructed class that is being destructed too much will be rate limited and logging into a file instead.
+Destructors handle the cleanup of resources when an object is about to be destroyed. In this example, the destructor of class `Foo` is logging a message using an external logging mechanism provided by the "uMessage.h" header. If a class is destructed excessively, it will be rate-limited, and messages will be logged into a file.
 
-```
+**Foo.h:**
+```cpp
+#ifndef FOO_H
+#define FOO_H
+
 #include "uMessage.h"
-class Foo()
+
+class Foo
 {
-    ~Foo();
-}
+public:
+    ~Foo();  // Destructor declaration
+};
+
+#endif // FOO_H
+```
+
+**Foo.cpp:**
+```cpp
+#include "Foo.h"
 
 Foo::~Foo()
 {
-
+    // Destructor definition
     message::error("~Foo", "is being destructed");
 }
 ```
 
 ## Category: Initializer
 
-```
-Foo::Foo()
+Initializers are functions responsible for initializing the object's state.
+
+**Foo.cpp:**
+```cpp
+void Foo::Create()
 {
-    Create();
+    // Initialization code goes here
 }
 
-Foo::Create()
+Foo::Foo()
 {
-    ...
+    Create();  // Call the initializer in the constructor
 }
 ```
 
 ## Category: Cleaner
 
-```
+Cleaners handle the cleanup of resources before an object is destroyed.
+
+**Foo.cpp:**
+```cpp
+void Foo::Destroy()
+{
+    // Cleanup code goes here
+}
+
 Foo::~Foo()
 {
-    Destroy();
-}
-
-Foo::Destroy()
-{
-    ...
+    Destroy();  // Call the cleaner in the destructor
 }
 ```
 
-## Category: Validators 
+## Category: Validators
 
-Functions should use const
-Prefixes: Can-\*, Validate-\*
-Naming: Verb
+Validators are functions used to check the validity of certain conditions. Function names should use a prefix like "Can-*" or "Validate-*", and they should use `const` if they don't modify the object's state.
 
-```
-Foo::CanMoveUp()
+**Foo.cpp:**
+```cpp
+bool Foo::CanMoveUp() const
 {
     return player.PositionY() + 1 <= TOP_BORDER;
 }
@@ -74,12 +108,11 @@ Foo::CanMoveUp()
 
 ## Category: Checkers
 
-Functions needed to use const
-Prefix: Is-*
-Naming: Verb
+Checkers are functions used to check specific conditions, and they should use `const` if they don't modify the object's state. Function names should use a prefix like "Is-*".
 
-```
-Foo::IsOdd(int x) const
+**Foo.cpp:**
+```cpp
+bool Foo::IsOdd(int x) const
 {
     return (x % 2 != 0);
 }
@@ -89,41 +122,54 @@ Foo::IsOdd(int x) const
 
 ### Category: Constant Getters
 
-Function MUST use const, can use constexpr
-Prefix: Dont have any prefix
-Naming: Properties' noun or self-explainary constexpr values
+Constant getters return values without modifying the object's state. They should use `const` and can use `constexpr`.
 
-### Category: Properties Getters
-
-Functions MUST use consts, shouldnt use constexpr
-Prefix Get-*
-Naming: Get-Noun
-
+**Foo.h:**
+```cpp
+class Foo
+{
+public:
+    int GetX() const;  // Constant getter declaration
+};
 ```
-Foo::GetX() const
+
+**Foo.cpp:**
+```cpp
+int Foo::GetX() const
 {
     return X;
 }
 ```
 
-### Category: Utilities Getters
+### Category: Properties Getters
 
-Mostly for calculations, should use const
-Prefix: Get-\*, Calculate-\*
-Naming: Verb-Noun
+Properties getters return values related to the object's properties. They should use `const` but not `constexpr`.
 
-```
-Foo::CalculateArea()
+**Foo.h:**
+```cpp
+class Foo
 {
+public:
+    int GetPosition() const;  // Property getter declaration
+};
+```
+
+**Foo.cpp:**
+```cpp
+int Foo::GetPosition() const
+{
+    return position;
 }
 ```
 
-## Category: Setters
+### Category: Utilities Getters
 
-## Category: Updaters
+Utilities getters are used for calculations and should use `const`. Function names should use prefixes like "Get-*" or "Calculate-*".
 
-## Category: Loaders
-
-## Category: Savers
-
-## Category: Custom
+**Foo.cpp:**
+```cpp
+int Foo::CalculateArea() const
+{
+    // Calculation code goes here
+}
+```
