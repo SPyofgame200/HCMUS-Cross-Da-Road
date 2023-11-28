@@ -151,6 +151,7 @@ bool hMenu::LoadPauseOption()
 			app->ResumeEngine();
 			break;
 		case APP_SAVE:
+			isSave = true;
 			break;
 		case APP_BACK:
 			app->ResumeEngine();
@@ -226,9 +227,9 @@ int hMenu::FixOption(int& value, int limit)
 	return value;
 }
 
-void hMenu::setSaving()
+bool hMenu::isSaving()
 {
-	ePauseOption = b_SAVING;
+	return isSave;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -632,10 +633,11 @@ bool hMenu::RenderSaveBox() const
 	app->SetPixelMode(app::Pixel::NORMAL);
 
 
-
+	std::cerr << "alpha " << std::endl;
 	app->SetPixelMode(app::Pixel::MASK);
-	if (SaveBoxOption == LOCATION)
-	{
+	if (SaveBoxOption == LOCATION )
+	{	
+		std::cerr << "beta " << std::endl;
 		app->DrawSprite(40, 55, Location);
 
 	}
