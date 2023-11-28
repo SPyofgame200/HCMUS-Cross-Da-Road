@@ -22,24 +22,25 @@
 
 - Tags are utilized to indicate groups of functions that share similarities.
 - Organizing functions with tags enhances clarity and facilitates easier searches.
-- Non-special tag naming is plural for variables declarations and singular for functions.
+- Non-special tag naming must be singular noun.
+- You can add messages after the tag
 
 - Here is a list of possible tags, arranged in the order of declaration in the class:
   - I. Component Group:
-    - `[Static Properties]`: - - -
+    - `[Static Property]`: - - -
     - `[Data Component]`: Manages the main information of the class.
     - `[Handler Component]`: Deals with the handlers of the class.
     - `[Instance]`: Manages instance-related operations.
   - II. Core Group:
-    - `[Friend Properties]`: - - -
-    - `[Member Properties]`: - - -
+    - `[Friend Property]`: - - -
+    - `[Member Property]`: - - -
     - `[Constructor]`: Initializes object variables upon creation.
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
   - III. Lifecycle Group:
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Clean-up]`: Boolean functions used in destructors.
-    - `[Release]`: Helper functions for clean-up and releasing pointer resources.
     - `[Reseter]`: Helper function for resetting certain properties to default states.
+    - `[Core]`: Manipulation and control lifecycle core actions.
   - IV. Verification Group:
     - `[Evaluation]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
@@ -52,15 +53,23 @@
     - `[Event]`: Events functions
   - VI. Data Group:
     - `[File]`: Manages file-related operations.
-    - `[Input]`: Handles input-related functionality.
-    - `[Output]`: Manages output-related functionality.
+    - `[Input]`: Handles input-related functionality only.
+    - `[Output]`: Manages output-related functionality only.
     - `[Debug]`: Special functions for debugging
 
-- Functions without those common patterns should use special tags:
-  - `[Deprecated]`: Functions that are no longer being used or supported.
-  - `[Unused]`: Unused functions or variables.
-  - `[TODO]`: Functions that are intended to be implemented.
-  - `[Placeholder]`: Serve design purposes, allow extensibilities.
+- Functions without those common patterns should use special tags
+  - `[Unused]`:
+    - Unused functions or variables.
+    - Serve design purposes, allow extensibilities.
+  - `[TODO]`:
+    - Functions that are intended to be implemented.
+    - Do not spam the tag unless needed.
+  - `[Utility]`:
+    - Helper functions, should be private, otherwise include a utilities file.
+    - Better to be defined belowest everything
+  - `[Deprecated]`:
+    - Functions that are no longer being used or supported.
+    - Functions that have limited usecase, or contains side-effects
 
 - If the tags are small, you should merge them using `&` in the between the tags
 
@@ -70,15 +79,15 @@ private: /// [Constructor] & [Destructor]
     ~cFrameManager();
 ```
 
-- Tag relation:
+- Tag close relation:
   - `[Data Component]` and `[Handler Component]`
   - `[Constructor]` and `[Destructor]`
+  - `[Constructor]` and `[Initializer]`
+  - `[Destructor]` and `[Clean-up]`
   - `[Validator]` and `[Checkers]`
   - `[Reseter]` and `[Setter]`
   - `[Getter]` and `[Setter]`
   - `[Input]` and `[Output]`
-  - `[Constructor]` with `[Initializer]` `[Loader]`
-  - `[Destructor]` with `[Clean-up]` `[Release]`
 
 ---
 
@@ -94,7 +103,7 @@ private: /// [Constructor] & [Destructor]
 
 ---
 
-### I.A. `[Static Properties]`
+### I.A. `[Static Property]`
 
 ---
 
@@ -118,11 +127,11 @@ private: /// [Constructor] & [Destructor]
 
 ---
 
-### II.A. `[Friend Properties]`
+### II.A. `[Friend Property]`
 
 ---
 
-### II.B. `[Member Properties]`
+### II.B. `[Member Property]`
 
 ---
 
@@ -298,11 +307,11 @@ Foo::~Foo()
 
 ---
 
-### III.C. `[Release]`
+### III.C. `[Reseter]`
 
 ---
 
-### III.D. `[Reseter]`
+### III.D. `[Core]`
 
 ---
 ---
