@@ -1,43 +1,132 @@
-# Function Standard
+# Class Organization
+
+---
+---
+---
+---
+---
+
+## ∅. General
 
 ---
 
-## ∅. General Cases
+### ∅.I. General
 
-- All functions must named under `PascalCase()`
-- Functions might have their prefix, based on their group tags.
-- Functions might have their suffix, based on the returned type.
-- We use tags for indicating each group of functions that share similarities.
-- Also, by using tags, we can organize the functions better and search function easier.
-
-- Here are all possibles tags
-  - `[Constructor]` initialize object's variables upon creation.
-  - `[Destructor]` cleaning and release resources upon destruction.
-  - `[Initializer]` boolean functions that being used in the `constructors`.
-  - `[Loader]` boolean functions that are used to load and extract data.
-  - `[Clean-up]` boolean functions that being used in the `destructors`.
-  - `[Release]` helper functions for the clean-up for releasing pointer resources
-  - `[Validator]` boolean functions that validates certain actions.
-  - `[Checker]` boolean functions to check certain conditions.
-  - `[Constant Getter]`
-  - `[Property Getter]`
-  - `[Utility Getter]`
-  - `[Setters]`
-  - `[File Management]`
-  - `[Data Component]`
-  - `[Handler Component]`
-  - `[Input - Output]`
-  - `[Instantce]`
-
-- Functions without those same patterns should use these special tag:
-  - `[Custom]` customized on their own, unless specified needed
-  - `[Deprecated]` the function is no longer being used or supported
-  - `[Prototype]` the function is just a sketch of design pattern
-  - `[Todo]` the function that is intended to be implemented
+- All functions must be named using `PascalCase()`.
+- Functions may have prefixes based on their group tags.
+- Functions may have suffixes based on the returned type.
 
 ---
 
-## A. `[Constructor]`
+### ∅.II. Class Tags
+
+- Tags are utilized to indicate groups of functions that share similarities.
+- Organizing functions with tags enhances clarity and facilitates easier searches.
+- Non-special tag naming is plural for variables declarations and singular for functions.
+
+- Here is a list of possible tags, arranged in the order of declaration in the class:
+  - I. Component Group:
+    - `[Static Properties]`: - - -
+    - `[Data Component]`: Manages the main information of the class.
+    - `[Handler Component]`: Deals with the handlers of the class.
+    - `[Instance]`: Manages instance-related operations.
+  - II. Core Group:
+    - `[Friend Properties]`: - - -
+    - `[Member Properties]`: - - -
+    - `[Constructor]`: Initializes object variables upon creation.
+    - `[Destructor]`: Manages cleaning and releases resources upon destruction.
+  - III. Lifecycle Group:
+    - `[Initializer]`: Boolean functions used in constructors.
+    - `[Clean-up]`: Boolean functions used in destructors.
+    - `[Release]`: Helper functions for clean-up and releasing pointer resources.
+    - `[Reseter]`: Helper function for resetting certain properties to default states.
+  - IV. Verification Group:
+    - `[Evaluation]`: Calculation function that doesnt mutate the data.
+    - `[Validator]`: Boolean functions that validate certain actions.
+    - `[Checker]`: Boolean functions to check specific conditions.
+    - `[Getter]`: Retrieves data or properties.
+  - V. Action Group:
+    - `[Loader]`: Boolean functions used to load and extract data.
+    - `[Setter]`: Sets data or properties.
+    - `[Handler]`: Handler functions of the events
+    - `[Event]`: Events functions
+  - VI. Data Group:
+    - `[File]`: Manages file-related operations.
+    - `[Input]`: Handles input-related functionality.
+    - `[Output]`: Manages output-related functionality.
+    - `[Debug]`: Special functions for debugging
+
+- Functions without those common patterns should use special tags:
+  - `[Deprecated]`: Functions that are no longer being used or supported.
+  - `[Unused]`: Unused functions or variables.
+  - `[TODO]`: Functions that are intended to be implemented.
+  - `[Placeholder]`: Serve design purposes, allow extensibilities.
+
+- If the tags are small, you should merge them using `&` in the between the tags
+
+```cpp
+private: /// [Constructor] & [Destructor]
+    cFrameManager();
+    ~cFrameManager();
+```
+
+- Tag relation:
+  - `[Data Component]` and `[Handler Component]`
+  - `[Constructor]` and `[Destructor]`
+  - `[Validator]` and `[Checkers]`
+  - `[Reseter]` and `[Setter]`
+  - `[Getter]` and `[Setter]`
+  - `[Input]` and `[Output]`
+  - `[Constructor]` with `[Initializer]` `[Loader]`
+  - `[Destructor]` with `[Clean-up]` `[Release]`
+
+---
+
+### ∅.III. Table of contents
+
+---
+---
+---
+---
+---
+
+## I. Class Components
+
+---
+
+### I.A. `[Static Properties]`
+
+---
+
+### I.B. `[Data Component]`
+
+---
+
+### I.C. `[Handler Component]`
+
+---
+
+### I.D. `[Instance]`
+
+---
+---
+---
+---
+---
+
+## II. Class Cores
+
+---
+
+### II.A. `[Friend Properties]`
+
+---
+
+### II.B. `[Member Properties]`
+
+---
+
+### II.C. `[Constructor]`
 
 Constructors are special member functions responsible for initializing the object when it is created.
 
@@ -87,7 +176,7 @@ Foo::Foo()
 
 ---
 
-## B. `[Destructor]`
+### II.D. `[Destructor]`
 
 Destructors handle the cleanup of resources when an object is about to be destroyed.
 
@@ -130,15 +219,27 @@ Foo::~Foo()
 }
 ```
 
-## C. `[Initializer]`
+---
+---
+---
+---
+---
+
+## III. Class Lifecycles
+
+---
+
+### III.A. `[Initializer]`
 
 Initializers are functions responsible for initializing the object's state.
 
 Function names:
+
 - `[Create-*]`: Loading and preparing data for the use of other functions  
 - `[*-Init]`: Initialize certain components of the class
 
 Requirement:
+
 - Always have boolean return type, return true indicating success initialization
 - Return false should come with logigng warning or error messages
 - Should be called from the constructor, but should always used on their own without side-effects
@@ -173,9 +274,13 @@ int main()
 }
 ```
 
-## D. `[Clean-up]`
+---
 
-Cleaners handle the cleanup of resources before an object is destroyed.
+### III.B. `[Clean-up]`
+
+**Purpose:**
+
+- Handle the destruction.
 
 **Foo.cpp:**
 
@@ -190,6 +295,132 @@ Foo::~Foo()
     Destroy();  // Call the cleaner in the destructor
 }
 ```
+
+---
+
+### III.C. `[Release]`
+
+---
+
+### III.D. `[Reseter]`
+
+---
+---
+---
+---
+---
+
+## IV. Class Verifications
+
+---
+
+### IV.A. `[Validator]`
+
+---
+
+### IV.B. `[Checker]`
+
+---
+
+### IV.C. `[Getter]`
+
+---
+---
+---
+---
+---
+
+## V. Class Action
+
+---
+
+### V.A. `[Loader]`
+
+---
+
+### V.B. `[Setter]`
+
+---
+
+### V.C. `[Handler]`
+
+---
+
+### V.D. `[Event]`
+
+---
+---
+---
+---
+---
+
+## VI. Class Data
+
+---
+
+### VI.A. `[File]`
+
+---
+
+### VI.B. `[Input]`
+
+---
+
+### VI.C. `[Output]`
+
+---
+
+### VI.D. `[Debug]`
+
+---
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
 
 ## Category: Validators
 
