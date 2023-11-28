@@ -141,5 +141,4 @@ bool hPlayerUpdate::OnUpdate()
     else { /// Jump completed
         return OnUpdatePlayerJumpStop();
     }
-    return false;
 }
