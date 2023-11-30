@@ -25,6 +25,7 @@
 ///////////////////////////////////////// COMPONENT HANDLER ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+cApp* hPlayer::ptrApp = nullptr;
 hPlayerMotion hPlayer::hMotion;
 hPlayerRender hPlayer::hRender;
 hPlayerHitbox hPlayer::hHitbox;
@@ -100,14 +101,14 @@ const cPlayerMoment& hPlayer::Moment() const
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Default constructor
-hPlayer::hPlayer() : ptrApp(nullptr)
+hPlayer::hPlayer()
 {
     SetupComponents();
     Reset();
 }
 
 /// @brief Constructor with ptrApp pointer
-hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
+hPlayer::hPlayer(cApp* ptrApp)
 {
     SetupComponents();
     SetupTarget(ptrApp);

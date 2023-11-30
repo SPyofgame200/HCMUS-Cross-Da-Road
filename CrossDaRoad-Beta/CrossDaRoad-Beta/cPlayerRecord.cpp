@@ -18,9 +18,9 @@ std::string cPlayerRecord::GetName() const
 
 /// @brief Setter for player name
 /// @param Name Name of player
-void cPlayerRecord::SetName(const std::string& Name)
+void cPlayerRecord::SetName(const std::string& sName)
 {
-    this->sName = Name;
+    this->sName = sName;
 }
 
 void cPlayerRecord::Read(std::istream& input) {

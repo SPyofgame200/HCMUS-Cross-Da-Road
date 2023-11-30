@@ -6,11 +6,11 @@
 ---
 ---
 
-## ∅. General
+## ∅. General Guidelines
 
 ---
 
-### ∅.I. General
+### ∅.I. General Functions Naming
 
 - All functions must be named using `PascalCase()`.
 - Functions may have prefixes based on their group tags.
@@ -105,13 +105,65 @@ private: /// [Constructor] & [Destructor]
 
 ### I-A. `[Static Property]`
 
+Static properties are attributes or variables that belong to the class itself rather than instances of the class. Those properties are shared among all instances of the class.
+
+#### Pros
+
+- It will be memory efficient if all instances of an object need to share such variables.
+
+#### Cons
+
+- What is the consequences if there are too many class static properties ?
+
+#### Keyword
+
+- `static` must use it to define a static property.
+
+#### Declaration
+
+- `static type var;`
+
+#### Definition
+
+- `type class::var = defaultValue;`
+
+#### Requirement
+
+- If a variable is a dependency pointer for a component, it should also be static. (for example: passing `this` into handler components)
+- Singleton design.
+- What is required to use this static property and not friend nor a member property ?
+
 ---
 
 ### I-B. `[Data Component]`
 
+A Data Component is employed when a class becomes sufficiently complex, featuring a multitude of private member variables that share a close relationship.  In such cases, it is beneficial to segregate the responsibilities and improve the structure by utilizing a separate class to encapsulate and manage this related data.
+
+#### Pros
+
+- Better storage handling capabilities and accessiblities, prevent unauthorized access.
+- Components can be reused, reduce the redundancy, improve integrity and readability.
+- Reduce handler dependencies by injecting the pointer to the data instead of the main class.
+
+#### Cons
+
+- Make the class more complex
+- Increase the code amount.
+
 ---
 
 ### I-C. `[Handler Component]`
+
+When a class is big enough with a bunches of public classes, that have close relation to each other. We might want to separate the concenrs of data handling, by using a class that have a pointer to `this` or `this->dataComponents`. Handler components manage specific functionalities and behaviors.
+
+#### Pros
+
+- Avoid the God Classes.
+- They promote modularity and avoid unintentionally misusing the functions.
+
+#### Cons
+
+- Most of the handler components can not be reused, but sticking to their main class.
 
 ---
 

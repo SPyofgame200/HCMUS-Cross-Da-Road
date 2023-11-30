@@ -25,39 +25,63 @@
 - **/data/save**: Store game save files.
 - **/src**: Contains source code for the game.
   
-## src Structure
-
-### Object Class Files (`cFileName.cpp`)
-
-- These files should contain object classes.
-- Avoid using the global namespace in these files unless it's for debugging purposes.
-
-### Handler Class Files (`hFileName.cpp`)
-
-- These files should contain handler classes for object classes, do not use them as objects.
-- Avoid using the global namespace in these files unless it's for debugging purposes.
-
-### Core Game Class Files (`gFileName.cpp`)
-
-- These files should contain core game classes.
-- Use namespaces when defining classes in these files.
-
-### Utilities Function Files (`uFileName.cpp`)
-
-- These files should contain utility functions, and constants, not classes.
-- Use namespaces when defining functions in these files.
+### Project source codes
 
 ### Header Files
 
 - Each `.cpp` file should have its corresponding `.h` header file, except for `main.cpp`.
 
-## data/maps Structure
+#### Object Class Files (`cFileName.cpp`)
 
-Refer to [Map Standard](mapStandard.md) for more information.
+- These files should contain object classes.
+- Avoid using the global namespace in these files unless it's for debugging purposes.
 
-## Editor
+#### Handler Class Files (`hFileName.cpp`)
+
+- These files should contain handler classes for object classes, do not use them as objects.
+- Avoid using the global namespace in these files unless it's for debugging purposes.
+
+#### Core Game Class Files (`gFileName.cpp`)
+
+- These files should contain core game classes.
+- Use namespaces when defining classes in these files.
+
+#### Utilities Function Files (`uFileName.cpp`)
+
+- These files should contain utility functions, and constants, not classes.
+- Use namespaces when defining functions in these files.
+
+## Project Editor
 
 - **Indentation:** `4 spaces`
+
+> **FAQ:** Why dont we use tabs instead of spaces ?
+>
+> - While tabs are a valid choice, they can lead to inconsistencies in how code appears.
+> - Tab are viewed differently in editors with different tab width settings.
+> - Might confuse project collaborators and reduce team work performance.
+
+> **FAQ:** Why do we use 4 spaces instead of 2 spaces or 8 spaces ?
+>
+> - Enhance code readability, while balancing with the compactness.
+> - 8 spaces might be good but most of the codes are simple and small.
+
+- **Maximum Nested Code Limit:** `3 nested` or `12 indentation (4 scoped)`
+
+> **FAQ:** Why do we use limited code limit ?
+>
+> - Excessive nesting can lead to complex and convoluted logic that is hard to understand.
+> - Reduce the testing and maintain code, improve bug tracking time.
+
+> **FAQ:** What if a code exceeds the nested limit ?
+>
+> - You might considering refactor the code for providing better context:
+>   - Early Returns.
+>   - Guard Clauses.
+>   - Ternary Operators.
+>   - Defining extra variables.
+>   - Switch statements
+>   - Inverted if.
 
 - **Character Limit: `120`** - Allows a broad view of expressive code.
 
@@ -99,3 +123,14 @@ Refer to [Map Standard](mapStandard.md) for more information.
 >
 > - Avoids overly fragmented code by not using functions that are too small.
 > - Prevents an increase in maintenance costs from numerous functions with simple lines.
+
+## Project Guidance
+
+- **IMPORTANT:** All classes must follow `./docs/standard/classStandard.md`
+- Do not use nested ternary operators, considering `if` statements and `switch case` instead.
+- Specialized numbers that are related should be converted into Descripted Enum Values.
+- Store magic numbers in `gConst.h` (for core framework) and `uAppConst.h` (for application).
+- Try to use `const` and `constexpr` variables if possible, except for customization.
+- Using const functions whenever it is possible, excepts for **Setters**
+
+> Warning: Pointers might change the data but can use keyword `const`.

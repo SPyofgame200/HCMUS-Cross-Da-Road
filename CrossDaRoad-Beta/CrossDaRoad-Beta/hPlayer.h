@@ -34,7 +34,7 @@ class hPlayerRender;
 class hPlayer
 {
 private: /// Dependency
-    cApp* ptrApp;
+    static cApp* ptrApp;
 
 private: /// Componnets handlers
     static hPlayerHitbox hHitbox;
