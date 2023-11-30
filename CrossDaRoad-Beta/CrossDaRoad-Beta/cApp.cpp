@@ -421,6 +421,7 @@ std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
 /// @brief Save current game state to file
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const {
+
     const std::string sSaveFilePath = Menu.GetFileLocation() + "/" + playerName + ".txt";
     if (!sSaveFilePath.empty()) {
         std::ofstream fout(sSaveFilePath);

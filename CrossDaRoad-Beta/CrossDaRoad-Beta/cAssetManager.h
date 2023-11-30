@@ -4,7 +4,7 @@
  *
  * This file contains asset manager class that manages assets (sprites, sounds, etc.).
 **/
-
+        
 #ifndef C_ASSET_MANAGER_H
 #define C_ASSET_MANAGER_H
 

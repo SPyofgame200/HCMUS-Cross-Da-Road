@@ -683,7 +683,10 @@ bool hMenu::RenderProceed() const
     int DetaPosX = 70;
     for (auto it : Path)
     {   
+        
         app->DrawBigText1(it.second.Name, PosX, 65);
+        app->DrawBigText1("Lv:" + std::to_string(it.second.Level), PosX, 75);
+        app->DrawBigText1("Life:" + std::to_string(it.second.Life), PosX, 85);
         PosX += DetaPosX;
     }
     app->SetPixelMode(app::Pixel::NORMAL);
