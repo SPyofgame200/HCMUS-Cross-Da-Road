@@ -177,6 +177,7 @@ bool hMenu::LoadSaveOption()
 			}
 			break;
 		case CANCLE:
+            isSave = false;
 			break;
 		case SAVING:
 			break;
@@ -707,11 +708,11 @@ bool hMenu::RenderSaveBox() const
 		app->DrawSprite(40, 55, Cancle);
 	}
 	if (SaveLocation.empty()) {
-		app->DrawBigText("Input file Location", 53, 85);
+		app->DrawBigText("Input file Location", 77, 71);
 	}
 	else
 	{
-		app->DrawBigText(SaveLocation, 53, 85);
+		app->DrawBigText(SaveLocation, 77, 71);
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
 
