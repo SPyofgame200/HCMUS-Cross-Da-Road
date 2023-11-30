@@ -70,7 +70,7 @@ private:
 private:
 	SaveBox SaveBoxOption = LOCATION;
 	bool isSave = false;
-	std::string SaveLocation = "D:/C++/OOP/PROJECT/CrossDaRoad-Beta/CrossDaRoad-Beta/CrossDaRoad-Beta/data/save/";
+	std::string SaveLocation = "./data/save/";
 private: /// Pause HUD
     PauseOption ePauseOption; ///< Current option 
     std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
