@@ -13,7 +13,7 @@
 class cPlayerStatus
 {
 public:
-    static const int EMPTY_FLAG = 0;
+    static constexpr int EMPTY_FLAG = 0;
 
 public: /// @brief Direction enumeration for player movement
     enum Direction
