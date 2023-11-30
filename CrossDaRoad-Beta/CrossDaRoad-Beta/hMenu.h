@@ -15,12 +15,18 @@
 
 //=================================================================================================
 // Include new header files here
-
+#include<map>
 //=================================================================================================
 
 // Forward declaration
 class cApp;
 
+struct info {
+    std::string Name;
+    int Level;
+    int Life;
+    std::string PlayerPath;
+};
 /// @brief Class for menu window management
 class hMenu
 {
@@ -67,6 +73,8 @@ private:
 	int ContinueMenuOption = 0;
 	bool start = false;	
 	int nameBoxOption = 0;
+    std::map < std::string, info> Path;
+    std::string PathLocation = "./data/save/aPath.txt";
 private:
 	SaveBox SaveBoxOption = LOCATION;
 	bool isSave = false;
@@ -111,6 +119,8 @@ public: // Checkers
 public: // Validators
 	bool isSaving();
 	std::string GetFileLocation() const;
+    bool LoadListPlayer();
+    bool SaveListPlayer();
 private: // Updater helpers
     bool UpdateNewGame();
     bool UpdateAppMenu();

@@ -418,26 +418,18 @@ std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
 /// @brief Save current game state to file
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const {
-    const std::string sSaveFilePath = Menu.GetFileLocation() + "/" + playerName + ".bin";
+    const std::string sSaveFilePath = Menu.GetFileLocation() + "/" + playerName + ".txt";
     if (!sSaveFilePath.empty()) {
-        std::ofstream fout(sSaveFilePath, std::ios::binary);
+        std::ofstream fout(sSaveFilePath);
         if (fout.is_open()) {
-            // Writing data to the binary file
-            int mapLevel = MapLoader.GetMapLevel();
-            float playerVelocityX = Player.Physic().GetPlayerVelocityX();
-            float playerVelocityY = Player.Physic().GetPlayerVelocityY();
-            float playerAnimationPosX = Player.Physic().GetPlayerAnimationPositionX();
-            float playerAnimationPosY = Player.Physic().GetPlayerAnimationPositionY();
-            float playerLogicPosX = Player.Physic().GetPlayerLogicPositionX();
-            float playerLogicPosY = Player.Physic().GetPlayerLogicPositionY();
-
-            fout.write(reinterpret_cast<const char*>(&mapLevel), sizeof(int));
-            fout.write(reinterpret_cast<const char*>(&playerVelocityX), sizeof(float));
-            fout.write(reinterpret_cast<const char*>(&playerVelocityY), sizeof(float));
-            fout.write(reinterpret_cast<const char*>(&playerAnimationPosX), sizeof(float));
-            fout.write(reinterpret_cast<const char*>(&playerAnimationPosY), sizeof(float));
-            fout.write(reinterpret_cast<const char*>(&playerLogicPosX), sizeof(float));
-            fout.write(reinterpret_cast<const char*>(&playerLogicPosY), sizeof(float));
+            // Writing data to the text file
+            fout << "MapLevel: " << MapLoader.GetMapLevel() << "\n";
+            fout << "PlayerVelocityX: " << Player.Physic().GetPlayerVelocityX() << "\n";
+            fout << "PlayerVelocityY: " << Player.Physic().GetPlayerVelocityY() << "\n";
+            fout << "PlayerAnimationPosX: " << Player.Physic().GetPlayerAnimationPositionX() << "\n";
+            fout << "PlayerAnimationPosY: " << Player.Physic().GetPlayerAnimationPositionY() << "\n";
+            fout << "PlayerLogicPosX: " << Player.Physic().GetPlayerLogicPositionX() << "\n";
+            fout << "PlayerLogicPosY: " << Player.Physic().GetPlayerLogicPositionY() << "\n";
 
             fout.close();
             std::cout << "Game data saved successfully." << std::endl;
@@ -453,7 +445,6 @@ bool cApp::OnGameSave() const {
         return false;
     }
 }
-
 /// @brief Load game state from file
 /// @return True if game is loaded successfully, false otherwise
 bool cApp::OnGameLoad()

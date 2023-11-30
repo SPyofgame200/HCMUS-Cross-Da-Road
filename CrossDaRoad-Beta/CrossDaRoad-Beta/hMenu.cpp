@@ -118,6 +118,7 @@ bool hMenu::LoadAppOption()
             app->GameInit();
             break;
         case CONTINUE:
+            LoadListPlayer();
             eMenuOption = AppOption::CONTINUE;
             break;
         case SETTINGS:
@@ -255,6 +256,54 @@ bool hMenu::isSaving()
 std::string hMenu::GetFileLocation() const
 {
 	return SaveLocation;
+}
+
+bool hMenu::LoadListPlayer()
+{   
+    int MAX;
+    std::ifstream fin(PathLocation);
+    if (fin.is_open())
+    {   
+        fin >> MAX;
+        
+        for(int i = 0; i < 5; i++)
+        {   
+            info tmp;
+            fin >> tmp.Name;
+            fin >> tmp.Level;
+            fin >> tmp.Life;
+            fin >> tmp.PlayerPath;
+            Path[tmp.Name] = tmp;
+        }
+        fin.close();
+
+    }
+    else
+    {
+        std::cerr << "Unable to open " << PathLocation << " for reading." << std::endl;
+    }
+    return true;
+}
+
+bool hMenu::SaveListPlayer()
+{
+    std::ofstream fout(PathLocation);
+    if (fout.is_open()) {
+        fout << Path.size() << std::endl;
+        for (const auto& pair : Path) {
+            fout << pair.second.Name << "\n";
+            fout << pair.second.Level << "\n";
+            fout << pair.second.Life << "\n";
+            fout << pair.second.PlayerPath << "\n";
+        }
+        fout.close();
+        std::cout << "Data written to " << PathLocation << " successfully." << std::endl;
+        return true;
+    }
+    else {
+        std::cerr << "Unable to open " << PathLocation << " for writing." << std::endl;
+        return false;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -607,7 +656,6 @@ bool hMenu::RenderProceed() const
     app->Clear(app::BLACK);
     if (start)
     {
-        
         return true;
     }
     app->SetPixelMode(app::Pixel::MASK);
@@ -630,6 +678,13 @@ bool hMenu::RenderProceed() const
     else if (ContinueMenuOption % 5 == 4)
     {
         app->DrawSprite(0, 0, Menu5);
+    }
+    int PosX = 15;
+    int DetaPosX = 70;
+    for (auto it : Path)
+    {   
+        app->DrawBigText1(it.second.Name, PosX, 65);
+        PosX += DetaPosX;
     }
     app->SetPixelMode(app::Pixel::NORMAL);
     
