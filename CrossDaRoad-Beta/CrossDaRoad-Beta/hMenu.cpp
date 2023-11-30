@@ -165,6 +165,25 @@ bool hMenu::LoadPauseOption()
 	return true;
 }
 
+bool hMenu::LoadSaveOption()
+{
+	switch (SaveBoxOption)
+	{
+		case OK:
+			if (app->OnGameSave())
+			{
+				app->ResumeEngine();
+				OpenMenu();
+			}
+			break;
+		case CANCLE:
+			break;
+		case SAVING:
+			break;
+	}
+	return true;
+}
+
 /// @brief Close menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
@@ -232,6 +251,11 @@ bool hMenu::isSaving()
 	return isSave;
 }
 
+std::string hMenu::GetFileLocation() const
+{
+	return SaveLocation;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////// UPDATERS ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,7 +264,7 @@ bool hMenu::UpdateNewGame()
 {
 	const bool result = UpdateNameBox();
 	if (nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
-	{
+	{	
 		eMenuOption = APP_GAME;
 		app->GameReset();
 	}
@@ -458,6 +482,42 @@ bool hMenu::UpdateSaveBox()
 	{
 		SaveBoxOption = OK;
 	}
+	else if (app->IsKeyReleased(app::Key::ENTER))
+	{
+		LoadSaveOption();
+	}
+	if (app->IsKeyReleased(app::Key::BACK))
+	{
+		if (SaveLocation.size() > 0)
+			SaveLocation.pop_back();
+		return true;
+	}
+	const std::map<uint16_t, app::Key> mapKeyAlphabet = app::CreateMapKeyAlphabet();
+	char currentKeyA = 'A';
+	for (const auto& it : mapKeyAlphabet)
+	{
+		if (app->IsKeyReleased(it.second))
+		{
+			SaveLocation += currentKeyA;
+			return true;
+		}
+		++currentKeyA;
+	}
+	const std::map<uint16_t, app::Key> mapKeyNumeric = app::CreateMapKeyNumeric();
+	char currentKeyN = '0';
+	for (const auto& it : mapKeyNumeric)
+	{
+		if (app->IsKeyReleased(it.second))
+		{
+			SaveLocation += currentKeyN;
+			return true;
+		}
+		++currentKeyN;
+	}
+	if (app->IsKeyReleased(app::Key::SLASH) && SaveLocation.size() > 1)
+	{
+		SaveLocation += '/';
+	}
 	return true;
 }
 
@@ -620,7 +680,7 @@ bool hMenu::RenderPausing() const
 }
 bool hMenu::RenderSaveBox() const
 {	
-
+	// long = 23
 	const app::Sprite* Location = cAssetManager::GetInstance().GetSprite("saving");
 	const app::Sprite* Ok = cAssetManager::GetInstance().GetSprite("saving_ok");
 	const app::Sprite* Cancle = cAssetManager::GetInstance().GetSprite("saving_cancel");
@@ -633,13 +693,10 @@ bool hMenu::RenderSaveBox() const
 	app->SetPixelMode(app::Pixel::NORMAL);
 
 
-	std::cerr << "alpha " << std::endl;
 	app->SetPixelMode(app::Pixel::MASK);
 	if (SaveBoxOption == LOCATION )
 	{	
-		std::cerr << "beta " << std::endl;
 		app->DrawSprite(40, 55, Location);
-
 	}
 	else if (SaveBoxOption == OK)
 	{
@@ -648,6 +705,13 @@ bool hMenu::RenderSaveBox() const
 	else if (SaveBoxOption == CANCLE)
 	{
 		app->DrawSprite(40, 55, Cancle);
+	}
+	if (SaveLocation.empty()) {
+		app->DrawBigText("Input file Location", 53, 85);
+	}
+	else
+	{
+		app->DrawBigText(SaveLocation, 53, 85);
 	}
 	app->SetPixelMode(app::Pixel::NORMAL);
 

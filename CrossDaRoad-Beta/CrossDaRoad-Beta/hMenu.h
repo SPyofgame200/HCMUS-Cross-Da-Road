@@ -41,13 +41,13 @@ public:
 		RESUMING = 0, ///< Resume game 
 		APP_SAVE = 1, ///< Save game
 		APP_BACK = 2, ///< Back to menu
-		b_SAVING,
 	};
 	enum SaveBox
 	{
 		LOCATION = 0,
 		OK = 1,
 		CANCLE = 2,
+		SAVING = 3,
 	};
 private: /// Target
 	cApp* app;
@@ -65,11 +65,12 @@ private: /// Menu HUD
 	int nAppOptionValue; 						 ///< Current option index
 private: 
 	int ContinueMenuOption = 0;
-	bool start = false;
+	bool start = false;	
 	int nameBoxOption = 0;
 private:
 	SaveBox SaveBoxOption = LOCATION;
 	bool isSave = false;
+	std::string SaveLocation = "D:/C++/OOP/PROJECT/CrossDaRoad-Beta/CrossDaRoad-Beta/CrossDaRoad-Beta/data/save/";
 private: /// Pause HUD
 	PauseOption ePauseOption; ///< Current option 
 	std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window
@@ -99,7 +100,7 @@ public: // Managements
 private: // Loaders
 	bool LoadAppOption();
 	bool LoadPauseOption();
-
+	bool LoadSaveOption();
 private: // Validators
 	static int FixOption(int& value, int limit);
 
@@ -109,6 +110,7 @@ public: // Checkers
 
 public: // Validators
 	bool isSaving();
+	std::string GetFileLocation() const;
 private: // Updater helpers
 	bool UpdateNewGame();
 	bool UpdateAppMenu();

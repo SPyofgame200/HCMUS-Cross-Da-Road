@@ -421,18 +421,27 @@ std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
 /// @return True if game is saved successfully, false otherwise
 bool cApp::OnGameSave() const
 {
-	const std::string FileName = Player.Record().GetName();
-	const std::string sSaveFilePath = GetFilePathLocation(true, FileName);
+	const std::string sSaveFilePath = Menu.GetFileLocation() + "/" + playerName + ".bin";
 	if (!sSaveFilePath.empty()) {
-		std::ofstream fout(sSaveFilePath);
+		std::ofstream fout(sSaveFilePath, std::ios::binary);
 		if (fout.is_open()) {
-			fout << MapLoader.GetMapLevel() << std::endl;
-			fout << Player.Physic().GetPlayerVelocityX() << std::endl;
-			fout << Player.Physic().GetPlayerVelocityY() << std::endl;
-			fout << Player.Physic().GetPlayerAnimationPositionX() << std::endl;
-			fout << Player.Physic().GetPlayerAnimationPositionY() << std::endl;
-			fout << Player.Physic().GetPlayerLogicPositionX() << std::endl;
-			fout << Player.Physic().GetPlayerLogicPositionY();
+			// Writing data to the binary file
+			int mapLevel = MapLoader.GetMapLevel();
+			float playerVelocityX = Player.Physic().GetPlayerVelocityX();
+			float playerVelocityY = Player.Physic().GetPlayerVelocityY();
+			float playerAnimationPosX = Player.Physic().GetPlayerAnimationPositionX();
+			float playerAnimationPosY = Player.Physic().GetPlayerAnimationPositionY();
+			float playerLogicPosX = Player.Physic().GetPlayerLogicPositionX();
+			float playerLogicPosY = Player.Physic().GetPlayerLogicPositionY();
+
+			fout.write(reinterpret_cast<const char*>(&mapLevel), sizeof(int));
+			fout.write(reinterpret_cast<const char*>(&playerVelocityX), sizeof(float));
+			fout.write(reinterpret_cast<const char*>(&playerVelocityY), sizeof(float));
+			fout.write(reinterpret_cast<const char*>(&playerAnimationPosX), sizeof(float));
+			fout.write(reinterpret_cast<const char*>(&playerAnimationPosY), sizeof(float));
+			fout.write(reinterpret_cast<const char*>(&playerLogicPosX), sizeof(float));
+			fout.write(reinterpret_cast<const char*>(&playerLogicPosY), sizeof(float));
+
 			fout.close();
 			return true;
 		}
