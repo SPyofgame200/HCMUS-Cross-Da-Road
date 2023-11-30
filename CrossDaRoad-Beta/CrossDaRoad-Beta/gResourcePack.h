@@ -21,36 +21,36 @@
 
 namespace app
 {
-	/// @brief Class for resource pack management (pack/unpack)
-	class ResourcePack
-	{
-	public:
-		/// @brief  Structure for resource pack entry (file) information (ID, offset, size) and data (stream buffer)
-		struct sEntry : public std::streambuf
-		{
-			uint32_t nID;         ///< File ID in pack
-			uint32_t nFileOffset; ///< File offset in pack
-			uint32_t nFileSize;   ///< File size in pack
-			uint8_t* data;        ///< File data (stream buffer) in pack
-			void _config() { this->setg(reinterpret_cast<char*>(data), reinterpret_cast<char*>(data), reinterpret_cast<char*>(data + nFileSize)); }
-		};
+    /// @brief Class for resource pack management (pack/unpack)
+    class ResourcePack
+    {
+    public:
+        /// @brief  Structure for resource pack entry (file) information (ID, offset, size) and data (stream buffer)
+        struct sEntry : public std::streambuf
+        {
+            uint32_t nID;         ///< File ID in pack
+            uint32_t nFileOffset; ///< File offset in pack
+            uint32_t nFileSize;   ///< File size in pack
+            uint8_t* data;        ///< File data (stream buffer) in pack
+            void _config() { this->setg(reinterpret_cast<char*>(data), reinterpret_cast<char*>(data), reinterpret_cast<char*>(data + nFileSize)); }
+        };
 
-	private:
-		std::map<std::string, sEntry> mapFiles; ///< Map of files in pack (map) (key: file name, value: file entry)
+    private:
+        std::map<std::string, sEntry> mapFiles; ///< Map of files in pack (map) (key: file name, value: file entry)
 
-	public: // Constructor & Destructor
-		ResourcePack();
-		~ResourcePack();
+    public: // Constructor & Destructor
+        ResourcePack();
+        ~ResourcePack();
 
-	public: // Methods for pack/unpack
-		engine::Code AddToPack(const std::string& sFile);
-		engine::Code SavePack(const std::string& sFile);
-		engine::Code LoadPack(const std::string& sFile);
-		engine::Code ClearPack();
+    public: // Methods for pack/unpack
+        engine::Code AddToPack(const std::string& sFile);
+        engine::Code SavePack(const std::string& sFile);
+        engine::Code LoadPack(const std::string& sFile);
+        engine::Code ClearPack();
 
-	public: // Getters
-		app::ResourcePack::sEntry GetStreamBuffer(const std::string& sFile);
-	};
+    public: // Getters
+        app::ResourcePack::sEntry GetStreamBuffer(const std::string& sFile);
+    };
 
 }
 

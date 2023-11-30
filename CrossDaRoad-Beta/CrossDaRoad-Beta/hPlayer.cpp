@@ -32,22 +32,22 @@ hPlayerUpdate hPlayer::hUpdate;
 
 hPlayerMotion& hPlayer::Motion()
 {
-	return hMotion;
+    return hMotion;
 }
 
 hPlayerRender& hPlayer::Render()
 {
-	return hRender;
+    return hRender;
 }
 
 hPlayerHitbox& hPlayer::Hitbox()
 {
-	return hHitbox;
+    return hHitbox;
 }
 
 hPlayerUpdate& hPlayer::Update()
 {
-	return hUpdate;
+    return hUpdate;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,42 +57,42 @@ hPlayerUpdate& hPlayer::Update()
 
 cPlayerStatus& hPlayer::Status()
 {
-	return status;
+    return status;
 }
 
 cPlayerPhysic& hPlayer::Physic()
 {
-	return physic;
+    return physic;
 }
 
 cPlayerRecord& hPlayer::Record()
 {
-	return record;
+    return record;
 }
 
 cPlayerMoment& hPlayer::Moment()
 {
-	return moment;
+    return moment;
 }
 
 const cPlayerStatus& hPlayer::Status() const
 {
-	return status;
+    return status;
 }
 
 const cPlayerPhysic& hPlayer::Physic() const
 {
-	return physic;
+    return physic;
 }
 
 const cPlayerRecord& hPlayer::Record() const
 {
-	return record;
+    return record;
 }
 
 const cPlayerMoment& hPlayer::Moment() const
 {
-	return moment;
+    return moment;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,24 +102,24 @@ const cPlayerMoment& hPlayer::Moment() const
 /// @brief Default constructor
 hPlayer::hPlayer() : ptrApp(nullptr)
 {
-	SetupComponents();
-	Reset();
+    SetupComponents();
+    Reset();
 }
 
 /// @brief Constructor with ptrApp pointer
 hPlayer::hPlayer(cApp* ptrApp) : ptrApp(nullptr)
 {
-	SetupComponents();
-	SetupTarget(ptrApp);
-	Reset();
+    SetupComponents();
+    SetupTarget(ptrApp);
+    Reset();
 }
 
 /// @brief Destructor
 hPlayer::~hPlayer()
 {
-	// No, we are not deleting anything, cApp* ptrApp is controlled by cApp
-	ptrApp = nullptr;
-	std::cerr << "hPlayer::~hPlayer(): Successfully destructed" << std::endl;
+    // No, we are not deleting anything, cApp* ptrApp is controlled by cApp
+    ptrApp = nullptr;
+    std::cerr << "hPlayer::~hPlayer(): Successfully destructed" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,42 +129,42 @@ hPlayer::~hPlayer()
 /// @brief Reset player properties
 void hPlayer::Reset()
 {
-	status.Reset();
-	physic.Reset();
-	record.Reset();
-	moment.Reset();
+    status.Reset();
+    physic.Reset();
+    record.Reset();
+    moment.Reset();
 }
 
 /// @brief Setup ptrApp pointer
 /// @param ptrApp Pointer to ptrApp
 bool hPlayer::SetupTarget(cApp* ptrApp)
 {
-	if (!ptrApp) {
-		return false;
-	}
-	this->ptrApp = ptrApp;
-	return true;
+    if (!ptrApp) {
+        return false;
+    }
+    this->ptrApp = ptrApp;
+    return true;
 }
 
 bool hPlayer::SetupComponents()
 {
-	if (!hHitbox.SetupTarget(this)) {
-		std::cerr << "hPlayer::SetupComponent(): Failed to setup hitbox component" << std::endl;
-		return false;
-	}
-	if (!hMotion.SetupTarget(this)) {
-		std::cerr << "hPlayer::SetupComponent(): Failed to setup motion component" << std::endl;
-		return false;
-	}
-	if (!hUpdate.SetupTarget(this)) {
-		std::cerr << "hPlayer::SetupComponent(): Failed to setup update component" << std::endl;
-		return false;
-	}
-	if (!hRender.SetupTarget(this)) {
-		std::cerr << "hPlayer::SetupComponent(): Failed to setup render component" << std::endl;
-		return false;
-	}
-	return true;
+    if (!hHitbox.SetupTarget(this)) {
+        std::cerr << "hPlayer::SetupComponent(): Failed to setup hitbox component" << std::endl;
+        return false;
+    }
+    if (!hMotion.SetupTarget(this)) {
+        std::cerr << "hPlayer::SetupComponent(): Failed to setup motion component" << std::endl;
+        return false;
+    }
+    if (!hUpdate.SetupTarget(this)) {
+        std::cerr << "hPlayer::SetupComponent(): Failed to setup update component" << std::endl;
+        return false;
+    }
+    if (!hRender.SetupTarget(this)) {
+        std::cerr << "hPlayer::SetupComponent(): Failed to setup render component" << std::endl;
+        return false;
+    }
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,22 +175,22 @@ bool hPlayer::SetupComponents()
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-	if (Status().IsMoveUp() && !Physic().CanMoveUp()) {
-		return true;
-	}
-	const float fPosY = Physic().GetPlayerLogicPositionY();
-	return (fPosY < app_const::TOP_BORDER);
+    if (Status().IsMoveUp() && !Physic().CanMoveUp()) {
+        return true;
+    }
+    const float fPosY = Physic().GetPlayerLogicPositionY();
+    return (fPosY < app_const::TOP_BORDER);
 }
 bool hPlayer::IsForceKilled() const
 {
-	return Physic().IsPlayerOutOfBounds();
+    return Physic().IsPlayerOutOfBounds();
 }
 bool hPlayer::IsKilled() const
 {
-	if (Status().IsJumpAnimation() && Moment().IsJumpingSafe()) {
-		return false;
-	}
-	return Hitbox().IsHit();
+    if (Status().IsJumpAnimation() && Moment().IsJumpingSafe()) {
+        return false;
+    }
+    return Hitbox().IsHit();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,11 +199,11 @@ bool hPlayer::IsKilled() const
 
 bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 {
-	status.Modify(PlayerIntention::GO_LEFT, bLeft);
-	status.Modify(PlayerIntention::GO_RIGHT, bRight);
-	status.Modify(PlayerIntention::GO_UP, bUp);
-	status.Modify(PlayerIntention::GO_DOWN, bDown);
-	return true;
+    status.Modify(PlayerIntention::GO_LEFT, bLeft);
+    status.Modify(PlayerIntention::GO_RIGHT, bRight);
+    status.Modify(PlayerIntention::GO_UP, bUp);
+    status.Modify(PlayerIntention::GO_DOWN, bDown);
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,82 +214,82 @@ bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 /// @return Always true by default
 bool hPlayer::OnUpdate()
 {
-	return hUpdate.OnUpdate();
+    return hUpdate.OnUpdate();
 }
 
 bool hPlayer::OnRender()
 {
-	return hRender.OnRender();
+    return hRender.OnRender();
 }
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
 {
-	const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
-	if (froggy == nullptr) {
-		std::cerr << "WTF, cant found " << sSpriteName << std::endl;
-	}
+    const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
+    if (froggy == nullptr) {
+        std::cerr << "WTF, cant found " << sSpriteName << std::endl;
+    }
 
-	if (bReloadMap) {
-		ptrApp->DrawAllLanes();
-	}
-	ptrApp->SetPixelMode(app::Pixel::MASK);
-	const float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-	const float fPosX = Physic().GetPlayerAnimationPositionX();
-	const float fPosY = Physic().GetPlayerAnimationPositionY();
-	const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
-	const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
-	ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
-	ptrApp->SetPixelMode(app::Pixel::NORMAL);
-	if (bForceRender) {
-		ptrApp->DrawStatusBar();
-		ptrApp->RenderTexture();
-	}
-	return true;
+    if (bReloadMap) {
+        ptrApp->DrawAllLanes();
+    }
+    ptrApp->SetPixelMode(app::Pixel::MASK);
+    constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+    const float fPosX = Physic().GetPlayerAnimationPositionX();
+    const float fPosY = Physic().GetPlayerAnimationPositionY();
+    const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
+    const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
+    ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
+    ptrApp->SetPixelMode(app::Pixel::NORMAL);
+    if (bForceRender) {
+        ptrApp->DrawStatusBar();
+        ptrApp->RenderTexture();
+    }
+    return true;
 }
 
 void hPlayer::Sleep(float fTime)
 {
-	ptrApp->ForceSleep(fTime);
+    ptrApp->ForceSleep(fTime);
 }
 
 cZone* hPlayer::GetZone()
 {
-	if (ptrApp) {
-		return &(ptrApp->Zone);
-	}
-	else {
-		return nullptr; // or handle the case where ptrApp is null
-	}
+    if (ptrApp) {
+        return &(ptrApp->Zone);
+    }
+    else {
+        return nullptr; // or handle the case where ptrApp is null
+    }
 }
 
 void hPlayer::Read(std::istream& input) {
-	input >> status;
-	input >> physic;
-	input >> record;
-	input >> moment;
+    input >> status;
+    input >> physic;
+    input >> record;
+    input >> moment;
 }
 
 void hPlayer::Write(std::ostream& output) const {
-	output << status;
-	output << physic;
-	output << record;
-	output << moment;
+    output << status;
+    output << physic;
+    output << record;
+    output << moment;
 }
 
 std::istream& operator>>(std::istream& input, hPlayer& player) {
-	input >> player.status;
-	input >> player.physic;
-	input >> player.record;
-	input >> player.moment;
-	return input;
+    input >> player.status;
+    input >> player.physic;
+    input >> player.record;
+    input >> player.moment;
+    return input;
 }
 
 std::ostream& operator<<(std::ostream& output, const hPlayer& player) {
-	output << player.status;
-	output << player.physic;
-	output << player.record;
-	output << player.moment;
-	return output;
+    output << player.status;
+    output << player.physic;
+    output << player.record;
+    output << player.moment;
+    return output;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

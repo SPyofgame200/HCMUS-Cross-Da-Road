@@ -7,25 +7,25 @@
 class cPlayerRecord
 {
 private: // Player data 
-	std::string sName;
+    std::string sName;
 
 public: // Constructors & Destructor
-	cPlayerRecord();
+    cPlayerRecord();
 
 public: // Initializer & Clean-up
-	void Reset();
+    void Reset();
 
 public: // Getters
-	std::string GetName() const;
+    std::string GetName() const;
 
 public: // Setters
-	void SetName(const std::string& sName);
+    void SetName(const std::string& sName);
 
 public: // Input - Output
-	void Read(std::istream& input);
-	void Write(std::ostream& output) const;
-	friend std::istream& operator>>(std::istream& input, cPlayerRecord& playerRecord);
-	friend std::ostream& operator<<(std::ostream& output, const cPlayerRecord& playerRecord);
+    void Read(std::istream& input);
+    void Write(std::ostream& output) const;
+    friend std::istream& operator>>(std::istream& input, cPlayerRecord& playerRecord);
+    friend std::ostream& operator<<(std::ostream& output, const cPlayerRecord& playerRecord);
 };
 
 #endif // C_PLAYER_RECORD_H

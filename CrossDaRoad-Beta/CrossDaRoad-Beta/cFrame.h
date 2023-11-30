@@ -20,53 +20,52 @@ constexpr int ID_BASE = 1; /// using 1-based indexes
 template<const size_t FRAME_LIMIT>
 class cFrame
 {
-private: /// Local properties
+public: // [Instance] Shared properties among the objects with the same FRAME_LIMIT
+    template<typename... Args>
+    static cFrame& GetSharedInstance(Args&&... args);
+
+private: // [Member Property]
     float fTime;
     float fStart;
     int nAnimationFrame;
 
-public: /// Shared properties among the same FRAME_LIMIT
-    template<typename... Args>
-    static cFrame& GetSharedInstance(Args&&... args);
-public: /// Constructors & Destructor
+public: // [Constructor] & [Destructor]
     cFrame(float fInitTime = 0);
     ~cFrame();
 
-public: /// Initialization & Clean-up
+public: // [Reseter]
     bool Reset();
 
-public: /// Interface Getters
-    static float GetFrameTick(const int nFrameDelay, const float fTickRate);
-    static int GetID(int nTickID);
-    static int GetID(float fTickID);
-    static int GetMinID();
-    static int GetMaxID();
-    static int GetDefaultID();
-    static int GetLimit();
-    
-public: /// Checkers & Validators
-    bool IsValidID(int nID) const;
-
-public: /// Animation updaters
-    bool UpdateTime(float fCurrentTime);
-    bool UpdateFrame(const float fTickTime, const int nFrameDelay, const float fTickRate = 0.001f);
-    bool UpdateLocal();
-
-public: /// Animation getters
-    int GetAnimationID() const;
-    int GetID() const;
-    int GetTickID() const;
-
-public: /// Animation checker
-    bool IsStartAnimation();
-    bool IsStopAnimation();
-
-public: /// Animation Control
+public: /// [Core] Animation controls
     bool StartAnimation();
     bool NextAnimation(bool bSlowUpdate = true, bool bUpdate = true);
     bool StopAnimation();
 
-public: /// Input - Output
+public: /// [Evaluation]
+    static float CalculateFrameTick(int nFrameDelay, float fTickRate);
+    static int CalculateID(int nTickID);
+    static int CalculateID(float fTickID);
+    static int MinID();
+    static int MaxID();
+    static int DefaultID();
+    static int FrameLimit();
+
+public: // [Checker]
+    bool IsValidID(int nID) const;
+    bool IsStartAnimation();
+    bool IsStopAnimation();
+
+public: /// [Getter]
+    int GetAnimationID() const;
+    int GetID() const;
+    int GetTickID() const;
+
+public: /// [Handler] Animation updates
+    bool UpdateTime(float fCurrentTime);
+    bool UpdateFrame(float fTickTime, int nFrameDelay, float fTickRate = 0.001f);
+    bool UpdateLocal();
+
+public: /// [Input] & [Output]
     void Read(std::istream& input);
     void Write(std::ostream& output) const;
 };

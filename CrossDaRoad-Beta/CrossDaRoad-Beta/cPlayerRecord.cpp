@@ -1,26 +1,31 @@
 #include "cPlayerRecord.h"
 
+//=================================================================================================
+// Include new header files here
+
+//=================================================================================================
+
 cPlayerRecord::cPlayerRecord()
 {
-	Reset();
+    Reset();
 }
 
 void cPlayerRecord::Reset()
 {
-	sName = "";
+    sName = "";
 }
 
 /// @brief Getter for player name
 std::string cPlayerRecord::GetName() const
 {
-	return sName;
+    return sName;
 }
 
 /// @brief Setter for player name
 /// @param Name Name of player
 void cPlayerRecord::SetName(const std::string& Name)
 {
-	this->sName = Name;
+    this->sName = Name;
 }
 
 void cPlayerRecord::Read(std::istream& input) {

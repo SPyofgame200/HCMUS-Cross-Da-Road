@@ -219,7 +219,7 @@ Use Doxygen style comments for all comments.
     /// @param length Length of the padded string
     /// @return Padding string
     /// @example rpad("spyofgame", '*', 5)
-    ///          returns "spyofgame*****"
+    ///       returns "spyofgame*****"
     std::string rpad(const std::string& input, const char paddingChar, const size_t length)
     {
         if (input.length() >= length)
@@ -272,11 +272,11 @@ Use Doxygen style comments for all comments.
     ```cpp
     ...
     //////////////////////////////////////////////////////////////
-    /////////////            SETTERS                 /////////////
+    /////////////         SETTERS                 /////////////
     //////////////////////////////////////////////////////////////
     ...
     //////////////////////////////////////////////////////////////
-    /////////////            GETTERS                 /////////////
+    /////////////         GETTERS                 /////////////
     //////////////////////////////////////////////////////////////
     ...
     ```

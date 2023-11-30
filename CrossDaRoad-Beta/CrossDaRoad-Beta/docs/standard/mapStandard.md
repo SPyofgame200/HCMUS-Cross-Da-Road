@@ -3,9 +3,9 @@
 ## Table of Contents
 
 - [Map Standard](#map-standard)
-	- [Table of Contents](#table-of-contents)
-	- [Map File Name](#map-file-name)
-	- [Map File Data](#map-file-data)
+    - [Table of Contents](#table-of-contents)
+    - [Map File Name](#map-file-name)
+    - [Map File Data](#map-file-data)
 
 ## Map File Name
 
@@ -34,16 +34,16 @@ Using
 
 ```cpp
 struct spriteData {
-	char encode;
-	std::string sSpriteName;
-	std::string sBackgroundName;
-	std::string sCategory;
-	bool isBlocked;
-	bool isDanger;
-	float fPlatform;
-	int32_t nPosX;
-	int32_t nPosY;
-	int32_t nID;
+    char encode;
+    std::string sSpriteName;
+    std::string sBackgroundName;
+    std::string sCategory;
+    bool isBlocked;
+    bool isDanger;
+    float fPlatform;
+    int32_t nPosX;
+    int32_t nPosY;
+    int32_t nID;
 };
 
 std::map<char, SpriteData> mapSprites;
