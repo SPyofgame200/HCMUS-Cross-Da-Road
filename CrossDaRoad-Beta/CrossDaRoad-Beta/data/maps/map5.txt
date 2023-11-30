@@ -1,4 +1,4 @@
-................................................................  0.0
+........o.......................................................  0.0
 ................................................................  0.0
 zxcv..........zxcv.........zxcv...........zxcv............zxcv..  9.0
 bnmp..........bnmp.........bnmp...........bnmp............bnmp..  9.0
@@ -6,7 +6,7 @@ bnmp..........bnmp.........bnmp...........bnmp............bnmp..  9.0
 .......tyui...........tyui..........tyui.........tyui........... -6.0
 ..asd.............asd.........asd..........asd.........asd......  6.0
 ..fgh.............fgh.........fgh..........fgh.........fgh......  6.0
-..jkl.............jkl..........jkl..........jkl.........jkl.....  6.0
+..jkl.............jkl.........jkl..........jkl.........jkl......  6.0
 ................................................................  0.0
 #
 $ . background=deep_ocean
@@ -87,3 +87,6 @@ $ m sprite=shark_left background=deep_ocean spriteFrame=6
 $ p sprite=shark_left background=deep_ocean spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=1
+$ o sprite=treasure_box background=deep_ocean
+: block=false danger=true platformspped=0.0
+: spriteX=0 spriteY=0
