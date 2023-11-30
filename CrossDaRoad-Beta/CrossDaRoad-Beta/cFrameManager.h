@@ -1,5 +1,3 @@
-// cFrameManager.h
-
 #ifndef C_FRAME_MANAGER_H
 #define C_FRAME_MANAGER_H
 
