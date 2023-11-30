@@ -260,13 +260,14 @@ std::string hMenu::GetFileLocation() const
 
 bool hMenu::LoadListPlayer()
 {   
+    Path.clear();
     int MAX;
     std::ifstream fin(PathLocation);
     if (fin.is_open())
     {   
         fin >> MAX;
         
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < MAX; i++)
         {   
             info tmp;
             fin >> tmp.Name;
@@ -276,13 +277,26 @@ bool hMenu::LoadListPlayer()
             Path[tmp.Name] = tmp;
         }
         fin.close();
-
     }
     else
     {
         std::cerr << "Unable to open " << PathLocation << " for reading." << std::endl;
     }
     return true;
+}
+
+void hMenu::SetListPlayer()
+{   
+    info Save;
+    Save.Name = app->playerName;
+    Save.Life = app->nLife;
+    Save.Level = app->MapLoader.GetMapLevel();
+    Save.PlayerPath = SaveLocation + Save.Name + ".txt";
+    if (Path.size() == 5)
+    {   
+        Path.erase(Path.begin());
+    }
+    Path[Save.Name] = Save;
 }
 
 bool hMenu::SaveListPlayer()

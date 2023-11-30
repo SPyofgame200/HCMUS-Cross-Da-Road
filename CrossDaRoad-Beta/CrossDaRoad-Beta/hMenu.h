@@ -121,7 +121,9 @@ public: // Checkers
 public: // Validators
 	bool isSaving();
 	std::string GetFileLocation() const;
+
     bool LoadListPlayer();
+    void SetListPlayer();
     bool SaveListPlayer();
 private: // Updater helpers
     bool UpdateNewGame();

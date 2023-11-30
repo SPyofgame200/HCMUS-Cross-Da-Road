@@ -88,7 +88,7 @@ private: // [Handler]
 
 protected: // [File]
     static std::string GetFilePathLocation(bool isSaven, std::string fileName);
-    bool OnGameSave() const;
+    bool OnGameSave();
     bool OnGameLoad();
 
 private: // [Utility]
