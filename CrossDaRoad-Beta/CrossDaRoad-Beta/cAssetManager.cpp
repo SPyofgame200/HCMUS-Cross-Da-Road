@@ -226,6 +226,10 @@ bool cAssetManager::LoadFont1Sprites()
 bool cAssetManager::LoadScoreBarSprites()
 {
     bool bSuccess = true;
+    bSuccess &= LoadSprite("description1", "description1");
+    bSuccess &= LoadSprite("description2", "description2");
+    bSuccess &= LoadSprite("description3", "description3");
+    bSuccess &= LoadSprite("description4", "description4");
     bSuccess &= LoadAnimation("score_bar", "score_bar", 4);
 
     return ReportLoadingResult(bSuccess, "score bar");

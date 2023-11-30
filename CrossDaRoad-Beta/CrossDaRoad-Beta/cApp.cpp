@@ -51,7 +51,7 @@ bool cApp::GameInit()
     fTimeSinceStart = 0;
     sAppName = APP_NAME;
     nScore = 0;
-    nLife = 3;
+    nLife = 999;
     MapLoader.Init();
     ResumeEngine();
     return true;
@@ -367,6 +367,9 @@ bool cApp::DrawStatusBar()
     SetPixelMode(app::Pixel::MASK);
     DrawBigText(playerName, nPosX_PlayerName, nPosY_PlayerName);
     DrawBigText(MapLoader.ShowMapLevel(), nPosX_level, nPosY_level);
+    SetPixelMode(app::Pixel::NORMAL);
+    SetPixelMode(app::Pixel::MASK);
+    DrawSprite(290, 120, cAssetManager::GetInstance().GetSprite("description" + MapLoader.ShowMapLevel()));
     SetPixelMode(app::Pixel::NORMAL);
     DrawBigText(std::to_string(nLife), nPosX_level, 99);
     return true;
