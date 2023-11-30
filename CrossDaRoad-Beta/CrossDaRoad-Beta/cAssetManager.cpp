@@ -380,9 +380,9 @@ bool cAssetManager::LoadMapOceanSprites()
     bool bSuccess = true;
     bSuccess &= LoadSprite("deep_ocean", "deep_ocean");
     bSuccess &= LoadSprite("treasure_box", "treasure_box");
-    bSuccess &= LoadAnimation("shark", "shark", 6);
+    bSuccess &= LoadAnimation("shark", "shark", 12);
+    bSuccess &= LoadAnimation("shark_left", "shark_left", 12);
     bSuccess &= LoadAnimation("octopus", "octopus", 6);
-    bSuccess &= LoadAnimation("shark_left", "shark_left", 6);
 
     return ReportLoadingResult(bSuccess, "Ocean map");
 }

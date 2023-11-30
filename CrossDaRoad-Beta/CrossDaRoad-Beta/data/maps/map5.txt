@@ -12,28 +12,28 @@ bnmp..........bnmp.........bnmp...........bnmp............bnmp..  9.0
 $ . background=deep_ocean
 : block=false danger=false platformspeed=0.0
 : spriteX=0 spriteY=0
-$ q sprite=shark background=deep_ocean spriteFrame=6
+$ q sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ w sprite=shark background=deep_ocean spriteFrame=6
+$ w sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ e sprite=shark background=deep_ocean spriteFrame=6
+$ e sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ r sprite=shark background=deep_ocean spriteFrame=6
+$ r sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=0
-$ t sprite=shark background=deep_ocean spriteFrame=6
+$ t sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=1
-$ y sprite=shark background=deep_ocean spriteFrame=6
+$ y sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=1
-$ u sprite=shark background=deep_ocean spriteFrame=6
+$ u sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=1
-$ i sprite=shark background=deep_ocean spriteFrame=6
+$ i sprite=shark background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=1
 $ a sprite=octopus background=deep_ocean spriteFrame=6
@@ -63,28 +63,28 @@ $ k sprite=octopus background=deep_ocean spriteFrame=6
 $ l sprite=octopus background=deep_ocean spriteFrame=6
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=2
-$ z sprite=shark_left background=deep_ocean spriteFrame=6
+$ z sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
-$ x sprite=shark_left background=deep_ocean spriteFrame=6
+$ x sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=0
-$ c sprite=shark_left background=deep_ocean spriteFrame=6
+$ c sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=0
-$ v sprite=shark_left background=deep_ocean spriteFrame=6
+$ v sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=0
-$ b sprite=shark_left background=deep_ocean spriteFrame=6
+$ b sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=1
-$ n sprite=shark_left background=deep_ocean spriteFrame=6
+$ n sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=1 spriteY=1
-$ m sprite=shark_left background=deep_ocean spriteFrame=6
+$ m sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=2 spriteY=1
-$ p sprite=shark_left background=deep_ocean spriteFrame=6
+$ p sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=1
 $ o sprite=treasure_box background=deep_ocean
