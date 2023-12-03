@@ -89,7 +89,7 @@ private: // [Handler]
 protected: // [File]
     static std::string GetFilePathLocation(bool isSaven, std::string fileName);
     bool OnGameSave();
-    bool OnGameLoad();
+    bool OnGameLoad(const std::string &pPath);
 
 private: // [Utility]
     void ForceSleep(float fTime);

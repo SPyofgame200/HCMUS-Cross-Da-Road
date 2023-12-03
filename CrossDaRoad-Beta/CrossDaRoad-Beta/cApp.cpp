@@ -453,12 +453,10 @@ bool cApp::OnGameSave(){
 }
 /// @brief Load game state from file
 /// @return True if game is loaded successfully, false otherwise
-bool cApp::OnGameLoad()
+bool cApp::OnGameLoad(const std::string& pPath)
 {
-    const std::string sLoadFilePath = GetFilePathLocation(false, "");
-
-    if (!sLoadFilePath.empty()) {
-        std::ifstream fin(sLoadFilePath);
+    if (!pPath.empty()) {
+        std::ifstream fin(pPath);
         if (fin.is_open()) {
             float VelocityX;
             float VelocityY;

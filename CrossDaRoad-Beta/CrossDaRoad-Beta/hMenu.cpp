@@ -186,6 +186,12 @@ bool hMenu::LoadSaveOption()
 	return true;
 }
 
+bool hMenu::LoadProceedOption()
+{   
+    
+    return true;
+}
+
 /// @brief Close menu on screen
 /// @param app Pointer to application
 /// @return Always return true by default
@@ -265,8 +271,7 @@ bool hMenu::LoadListPlayer()
     std::ifstream fin(PathLocation);
     if (fin.is_open())
     {   
-        fin >> MAX;
-        
+        fin >> MAX; 
         for(int i = 0; i < MAX; i++)
         {   
             info tmp;
@@ -274,7 +279,9 @@ bool hMenu::LoadListPlayer()
             fin >> tmp.Level;
             fin >> tmp.Life;
             fin >> tmp.PlayerPath;
+            tmp.No = i;
             Path[tmp.Name] = tmp;
+            dePath[tmp] = tmp.Name;
         }
         fin.close();
     }
@@ -292,9 +299,15 @@ void hMenu::SetListPlayer()
     Save.Life = app->nLife;
     Save.Level = app->MapLoader.GetMapLevel();
     Save.PlayerPath = SaveLocation + Save.Name + ".txt";
+    if (Path.count(Save.Name) == 1)
+    {
+        Path[Save.Name] = Save;
+    }
     if (Path.size() == 5)
     {   
-        Path.erase(Path.begin());
+        std::string Del = dePath.end()->second;
+        Path.erase(Del);
+        dePath.erase(dePath.end());
     }
     Path[Save.Name] = Save;
 }
@@ -697,7 +710,6 @@ bool hMenu::RenderProceed() const
     int DetaPosX = 70;
     for (auto it : Path)
     {   
-        
         app->DrawBigText1(it.second.Name, PosX, 65);
         app->DrawBigText1("Lv:" + std::to_string(it.second.Level), PosX, 75);
         app->DrawBigText1("Life:" + std::to_string(it.second.Life), PosX, 85);
