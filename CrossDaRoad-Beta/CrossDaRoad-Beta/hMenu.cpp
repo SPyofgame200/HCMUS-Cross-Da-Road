@@ -188,7 +188,11 @@ bool hMenu::LoadSaveOption()
 
 bool hMenu::LoadProceedOption()
 {   
-    
+    switch ()
+    {
+    default:
+        break;
+    }
     return true;
 }
 
@@ -374,6 +378,7 @@ bool hMenu::UpdateProceed()
         FixOption(++ContinueMenuOption, 5);
     }
     if (app->IsKeyReleased(app::Key::ENTER)) {
+        
         eMenuOption = APP_GAME;
     }
     return true;
