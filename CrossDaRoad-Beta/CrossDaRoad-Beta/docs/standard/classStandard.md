@@ -26,22 +26,18 @@
 - You can add messages after the tag
 
 - Here is a list of possible tags, arranged in the order of declaration in the class:
-  - I. Component Group:
-    - `[Static Property]`: - - -
-    - `[Data Component]`: Manages the main information of the class.
-    - `[Handler Component]`: Deals with the handlers of the class.
-    - `[Instance]`: Get the current object or its component uniquely.
-  - II. Core Group:
-    - `[Friend Property]`: - - -
-    - `[Member Property]`: - - -
+  - I. Core Group:
+    - `[Component]`: Manages the main information of the class.
+    - `[Instance]`: Get the current object.
+    - `[Property]`: - - -
+  - III. Lifecycle Group:
     - `[Constructor]`: Initializes object variables upon creation.
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
-  - III. Lifecycle Group:
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Disposer]`: Boolean functions used in destructors.
     - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Core]`: Manipulation and control lifecycle core actions.
-  - IV. Verification Group:
+  - IV.  Group:
     - `[Evaluation]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
     - `[Checker]`: Boolean functions to check specific conditions.
