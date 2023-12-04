@@ -130,7 +130,7 @@ bool hPlayerHitbox::IsBlocked() const
 /// @brief Check if player is on a platform at top left corner
 /// @return True if player is on a platform at top left corner, false otherwise
 bool hPlayerHitbox::IsOnPlatformTopLeft() const
-{
+{   
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
     const bool isOnPlatformTopLeft = ptrPlayer->GetZone()->IsPlatformTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
@@ -170,7 +170,8 @@ bool hPlayerHitbox::IsOnPlatformBottomRight() const
 /// @brief Check if player is on a platform
 /// @return True if player is on a platform, false otherwise
 bool hPlayerHitbox::IsOnPlatform() const
-{
+{   
+
     return IsOnPlatformTopLeft()
         || IsOnPlatformTopRight()
         || IsOnPlatformBottomLeft()

@@ -1,7 +1,0 @@
-MapLevel: 0
-PlayerVelocityX: 1
-PlayerVelocityY: 1
-PlayerAnimationPosX: 8
-PlayerAnimationPosY: 9
-PlayerLogicPosX: 8
-PlayerLogicPosY: 9

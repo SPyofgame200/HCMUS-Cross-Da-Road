@@ -39,6 +39,23 @@ cApp::~cApp()
     std::cerr << "cApp::~cApp(): Successfully destructed" << std::endl;
 }
 
+int cApp::GetLife() const
+{
+    return nLife;
+}
+
+void cApp::SetLife(int Life)
+{
+    nLife = Life;
+}
+
+void cApp::SetPlayerName(std::string Nm)
+{
+    playerName = Nm;
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// INITIALIZER & CLEAN-UP //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +258,8 @@ float cApp::GetPlatformVelocity(const float fElapsedTime) const
 /// @param fElapsedTime Time elapsed since last update
 /// @return Always returns true by default
 bool cApp::OnGameUpdate(const float fElapsedTime)
-{
+{   
+
     Player.UpdateAction(IsMoveLeft(), IsMoveRight(), IsMoveUp(), IsMoveDown());
     Player.OnUpdate();
     if (Player.Hitbox().IsOnPlatform()) { // Frog is moved by platforms
@@ -259,6 +277,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         OnPlayerDeath(fTimeSinceStart);
         return true;
     }
+
     return true;
 }
 /// @brief Update Player when Player is killed
@@ -314,33 +333,33 @@ bool cApp::DrawAllLanes() const
 /// @param x X (int) (in bytes)
 /// @param y Y (int) (in bytes)
 /// @return true if text was drawn successfully, false otherwise
-bool cApp::DrawBigText(const std::string& sText, const int x, const int y)
+bool cApp::DrawBigText(const std::string& sText, const int x, const int y, int space)
 {
     int i = 0;
     for (const auto c : sText) {
         constexpr int nFirstASCII = 32;
         constexpr int nCharsInRow = 16;
-        const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
+        const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH ;
         const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
 
         SetPixelMode(app::Pixel::MASK);
-        DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+        DrawPartialSprite(x + i * app_const::FONT_WIDTH - space * i, y, cAssetManager::GetInstance().GetSprite("font"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
         i++;
         SetPixelMode(app::Pixel::NORMAL);
     }
     return true;
 }
-bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
+bool cApp::DrawBigText1(const std::string& sText, const int x, const int y, int space)
 {
     int i = 0;
     for (const auto c : sText) {
         constexpr int nFirstASCII = 32;
         constexpr int nCharsInRow = 16;
-        const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH;
+        const int nDrawX = ((c - nFirstASCII) % nCharsInRow) * app_const::FONT_WIDTH ;
         const int nDrawY = ((c - nFirstASCII) / nCharsInRow) * app_const::FONT_HEIGHT;
 
         SetPixelMode(app::Pixel::MASK);
-        DrawPartialSprite(x + i * app_const::FONT_WIDTH, y, cAssetManager::GetInstance().GetSprite("font1"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
+        DrawPartialSprite(x + i * app_const::FONT_WIDTH - space * i, y, cAssetManager::GetInstance().GetSprite("font1"), nDrawX, nDrawY, app_const::FONT_WIDTH, app_const::FONT_HEIGHT);
         SetPixelMode(app::Pixel::NORMAL);
         i++;
     }
@@ -429,13 +448,14 @@ bool cApp::OnGameSave(){
         std::ofstream fout(sSaveFilePath);
         if (fout.is_open()) {
             // Writing data to the text file
-            fout << "MapLevel: " << MapLoader.GetMapLevel() << "\n";
-            fout << "PlayerVelocityX: " << Player.Physic().GetPlayerVelocityX() << "\n";
-            fout << "PlayerVelocityY: " << Player.Physic().GetPlayerVelocityY() << "\n";
-            fout << "PlayerAnimationPosX: " << Player.Physic().GetPlayerAnimationPositionX() << "\n";
-            fout << "PlayerAnimationPosY: " << Player.Physic().GetPlayerAnimationPositionY() << "\n";
-            fout << "PlayerLogicPosX: " << Player.Physic().GetPlayerLogicPositionX() << "\n";
-            fout << "PlayerLogicPosY: " << Player.Physic().GetPlayerLogicPositionY() << "\n";
+            fout << MapLoader.GetMapLevel() << "\n";
+            fout << GetLife() << "\n";
+            fout << Player.Physic().GetPlayerVelocityX() << "\n";
+            fout << Player.Physic().GetPlayerVelocityY() << "\n";
+            fout << Player.Physic().GetPlayerAnimationPositionX() << "\n";
+            fout << Player.Physic().GetPlayerAnimationPositionY() << "\n";
+            fout << Player.Physic().GetPlayerLogicPositionX() << "\n";
+            fout << Player.Physic().GetPlayerLogicPositionY() << "\n";
 
             fout.close();
             std::cout << "Game data saved successfully." << std::endl;
@@ -453,12 +473,10 @@ bool cApp::OnGameSave(){
 }
 /// @brief Load game state from file
 /// @return True if game is loaded successfully, false otherwise
-bool cApp::OnGameLoad()
-{
-    const std::string sLoadFilePath = GetFilePathLocation(false, "");
-
-    if (!sLoadFilePath.empty()) {
-        std::ifstream fin(sLoadFilePath);
+bool cApp::OnGameLoad(const std::string& pPath, const std::string& PlayerName)
+{   
+    if (!pPath.empty()) {
+        std::ifstream fin(pPath);
         if (fin.is_open()) {
             float VelocityX;
             float VelocityY;
@@ -467,9 +485,12 @@ bool cApp::OnGameLoad()
             float LogicPositionX;
             float LogicPositionY;
             int MapLevel;
+            int nLife;
 
-            if (fin >> MapLevel >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
+            if (fin >> MapLevel >> nLife >> VelocityX >> VelocityY >> AnimationPositionX >> AnimationPositionY >> LogicPositionX >> LogicPositionY) {
+                SetPlayerName(PlayerName);
                 MapLoader.SetMapLevel(MapLevel);
+                SetLife(nLife);
                 Player.Physic().SetAnimationPosition(AnimationPositionX, AnimationPositionY);
                 Player.Physic().SetLogicPosition(LogicPositionX, LogicPositionY);
                 Player.Physic().SetVelocity(VelocityX, VelocityY);
