@@ -15,7 +15,6 @@ $ ,
 $ p sprite=wall
 : block=false danger=false platformspeed=1.0
 : spriteX=0 spriteY=0
-: duration=4s cooldown=10s chance=0.0000001% summon=l
 $ l sprite=lava_rock spriteFrame=4
 : block=false danger=false platformspeed=0.0
 : spritepos=default

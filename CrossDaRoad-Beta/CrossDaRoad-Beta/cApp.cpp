@@ -68,7 +68,7 @@ bool cApp::GameInit()
     fTimeSinceStart = 0;
     sAppName = APP_NAME;
     nScore = 0;
-    nLife = 3;
+    nLife = 99;
     MapLoader.Init();
     ResumeEngine();
     return true;
