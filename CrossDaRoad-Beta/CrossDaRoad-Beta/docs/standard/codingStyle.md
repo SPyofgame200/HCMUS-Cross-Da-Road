@@ -18,18 +18,18 @@ Coding style is essentially a set of guidelines and conventions that dictate how
 
 In this coding style, we provide to you common fields that require styling and formatting:
 
-- A. [Style Preferences](#a-style-preferences)
-- B. [Naming Rule](#b-naming-rule)
-- C. [Comment Style](#c-comment-style)
-- D. [Identation Style](#d-identation-style)
-- E. [Variable Formatting](#e-variable-formatting)
-- F. [Function Formatting](#f-function-formatting)
+- [A. Style Preferences](#a-style-preferences)
+- [B. Naming Rule](#b-naming-rule)
+- [C. Comment Style](#c-comment-style)
+- [D. Identation Style](#d-identation-style)
+- [E. Variable Formatting](#e-variable-formatting)
+- [F. Function Formatting](#f-function-formatting)
 
 For more question you might ask, see this [Frequently Asked Questions](#z-frequently-asked-questions)
 
 ### Table Of Contents
 
-A. [Style Preferences](#a-style-preferences)
+[A. Style Preferences](#a-style-preferences)
 
 - A.1. [Editor Character: `ASCII Only`](#a1-editor-character-ascii-only)
 - A.2. [Line Length: `120 characters per line`](#a2-line-length-120-characters-per-line)
@@ -39,7 +39,7 @@ A. [Style Preferences](#a-style-preferences)
   - A.4.2. [Message Logging Generator](#a4-2-message-logging-generator)
   - A.4.3. [File Guard](#a4-3-file-guard)
 
-B. [Naming Rule](#b-naming-rule)
+[B. Naming Rule](#b-naming-rule)
 
 - B.1. [File Name: `Mixed Cases`](#b1-file-name-mixed-cases)
 - B.2. [Class Name: `prefixedLowerCamelCase`](#b2-class-name-prefixedlowercamelcase)
@@ -51,7 +51,7 @@ B. [Naming Rule](#b-naming-rule)
 - B.8. [Macro Name](#b8-macro-name)
 - B.9. [Function Name](#b9-function-name)
 
-C. [Comment Style](#c-comment-style)
+[C. Comment Style](#c-comment-style)
 
 - C.1. [Inline Comment: `// simple comment`](#c1-inline-comment-simple-comment)
 - C.2. [Function Comment: `/// @doxygen comments`](#c2-function-comment-doxygen-comments)
@@ -60,14 +60,14 @@ C. [Comment Style](#c-comment-style)
 - C.5. [Block Comment: `/// COMMENT ///`](#c5-block-comment-comment-)
 - C.6. [Scope Comment: `/* Scope */`](#c-6-scope-comment-scope-)
 
-D. [Identation Style](#d-identation-style)
+[D. Identation Style](#d-identation-style)
 
 - D.1. [Indentation Gap: `4 spaces per indent`](#d1-indentation-gap-4-spaces-per-indent)
 - D.2. [Brackets Style: `One True Brace Style`](#d2-brackets-style-one-true-brace-style)
 - D.3. [Brackets Spacing: `Omit Redundant Spaces Only`](#d3-brackets-spacing-omit-redundant-spaces-only)
 - D.4. [Space Padding: `Control Flow Padding Only`](#d4-space-padding-control-flow-padding-only)
 
-E. [Variable Formatting](#e-variable-formatting)
+[E. Variable Formatting](#e-variable-formatting)
 
 - E.1. [Variable Declaration: `Omit Redundant Spaces`](#e1-variable-declaration--omit-redundant-spaces)
   - E.1.1. [Good Cases](#e1-1-good-cases)
@@ -80,7 +80,7 @@ E. [Variable Formatting](#e-variable-formatting)
 - E.3. [Floating Point Format: `Literal value`](#e3-floating-point-format-literal-value)
 - E.4. [Boolean Expression Format: `First Variable Wrapping With Prefix`](#e4-boolean-expression-format-first-variable-wrapping-with-prefix)
 
-F. [Function Formatting](#f-function-formatting)
+[F. Function Formatting](#f-function-formatting)
 
 - F.1. [Function Default Value: `Declaration only`](#f1-function-default-value-declaration-only)
 - F.2. [Function Tag: `Before Function Name`](#f2-function-tag-before-function-name)
@@ -91,18 +91,18 @@ F. [Function Formatting](#f-function-formatting)
 - F.7. [Lambda Expressions](#f8-lambda-expressions)
 - F.8. [Function Max Line Limit `21 lines`](#f8-function-max-line-limit-21-lines)
 
-Z. [Frequently Asked Questions](#z-frequently-asked-questions)
+[Z. Frequently Asked Questions](#z-frequently-asked-questions)
 
-- Z.1. [FAQ#1: Why dont we use tabs identation instead of spaces ?](#faq1-why-dont-we-use-tabs-identation-instead-of-spaces-)
-- Z.2. [FAQ#2: Why do we use identation of 2 spaces or 8 spaces ?](#faq2-why-do-we-use-identation-of-2-spaces-or-8-spaces-)
-- Z.3. [FAQ#3: Why do we use limited code limit ?](#faq3-why-do-we-use-limited-code-limit-)
-- Z.4. [FAQ#4: What if a code exceeds the nested limit ?](#faq4-what-if-a-code-exceeds-the-nested-limit-)
-- Z.5. [FAQ#5: Why use such a high character limit?](#faq5-why-use-such-a-high-character-limit)
-- Z.6. [FAQ#6: Why not use unlimited character limit?](#faq6-why-not-use-unlimited-character-limit)
-- Z.7. [FAQ#7: Why use such a high nested limit?](#faq7-why-use-such-a-high-nested-limit)
-- Z.8. [FAQ#8: Why not use a higher nested limit?](#faq8-why-not-use-a-higher-nested-limit)
-- Z.9. [FAQ#9: Why use such a small line limit?](#faq9-why-use-such-a-small-line-limit)
-- Z.10. [FAQ#10: Why to have different line limits?](#faq10-why-to-have-different-line-limits)
+- [FAQ#1: Why dont we use tabs identation instead of spaces ?](#faq1-why-dont-we-use-tabs-identation-instead-of-spaces-)
+- [FAQ#2: Why do we use identation of 2 spaces or 8 spaces ?](#faq2-why-do-we-use-identation-of-2-spaces-or-8-spaces-)
+- [FAQ#3: Why do we use limited code limit ?](#faq3-why-do-we-use-limited-code-limit-)
+- [FAQ#4: What if a code exceeds the nested limit ?](#faq4-what-if-a-code-exceeds-the-nested-limit-)
+- [FAQ#5: Why use such a high character limit?](#faq5-why-use-such-a-high-character-limit)
+- [FAQ#6: Why not use unlimited character limit?](#faq6-why-not-use-unlimited-character-limit)
+- [FAQ#7: Why use such a high nested limit?](#faq7-why-use-such-a-high-nested-limit)
+- [FAQ#8: Why not use a higher nested limit?](#faq8-why-not-use-a-higher-nested-limit)
+- [FAQ#9: Why use such a small line limit?](#faq9-why-use-such-a-small-line-limit)
+- [FAQ#10: Why to have different line limits?](#faq10-why-to-have-different-line-limits)
 
 ---
 ---
@@ -201,6 +201,11 @@ class Foo
 
 #endif // FOO_H
 ```
+
+---
+
+### A.5 - 
+
 
 ---
 ---
