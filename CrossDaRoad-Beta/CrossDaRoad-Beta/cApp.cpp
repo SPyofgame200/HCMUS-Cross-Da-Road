@@ -56,8 +56,6 @@ void cApp::SetPlayerName(std::string Nm)
     playerName = Nm;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// INITIALIZER & CLEAN-UP //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,12 +64,12 @@ void cApp::SetPlayerName(std::string Nm)
 /// @return True if success, false otherwise
 bool cApp::GameInit()
 {
-    using namespace app_const;
-    fTimeSinceStart = 0;
-    sAppName = APP_NAME;
-    nScore = 0;
-    nLife = 3;
+    sAppName = app_const::APP_NAME;
     MapLoader.Init();
+    cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
+    GameReset();
     ResumeEngine();
     return true;
 }
@@ -91,16 +89,17 @@ bool cApp::GameExit()
 /// @return Always returns true by default
 bool cApp::GameReset()
 {
-    fTimeSinceStart = 0.0f;
-
-    Player.Status().SetSituation(PlayerSituation::ALIVE);
     sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
-    cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
-    cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
-    cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
+    fTimeSinceStart = 0.0f;
+    nScore = 0;
+    nLife = 3;
+
     Player.Reset();
     cFrameManager::GetInstance().Reset();
-
+    return true;
+}
+bool cApp::GameLoad()
+{
     Clear(app::BLACK);
     MapLoader.LoadMapLevel();
     cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());
@@ -108,12 +107,14 @@ bool cApp::GameReset()
     cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str());
     return true;
 }
+
 /// @brief Go to next map level
 /// @return Always returns true by default
 bool cApp::GameNext()
 {
     MapLoader.NextLevel();
     GameReset();
+    GameLoad();
     return true;
 }
 /// @brief Go to previous map level
@@ -122,6 +123,7 @@ bool cApp::GamePrev()
 {
     MapLoader.PrevLevel();
     GameReset();
+    GameLoad();
     return true;
 }
 
@@ -286,6 +288,7 @@ bool cApp::OnPlayerDeath()
         Sleep(150);
     }
     GameReset();
+    GameLoad();
     Player.Reset();
     if (--nLife <= 0) {
         Menu.UpdateEndGame();

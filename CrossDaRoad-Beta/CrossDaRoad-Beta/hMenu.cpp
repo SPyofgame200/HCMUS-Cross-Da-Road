@@ -115,7 +115,6 @@ bool hMenu::LoadAppOption()
     switch (const int nOption = FixOption(nAppOptionValue, nAppOptionLimit)) {
         case NEW_GAME:
             eMenuOption = AppOption::NEW_GAME;
-            app->GameInit();
             break;
         case CONTINUE:
             LoadListPlayer();
@@ -133,6 +132,7 @@ bool hMenu::LoadAppOption()
         case APP_GAME:
             eMenuOption = AppOption::APP_GAME;
             app->GameReset();
+            app->GameLoad();
             break;
         default:
             std::cerr << "hMenu::LoadAppOption(): ";
@@ -194,8 +194,8 @@ bool hMenu::LoadProceedOption()
     {
         if (id++ == ContinueMenuOption)
         {   
-            app->GameInit();
             app->GameReset();
+            app->GameLoad();
             app->OnGameLoad(it.second.PlayerPath, it.first);
             app->MapLoader.LoadMapLevel();
             app->cDangerZone.SetPattern(app->MapLoader.GetDangerPattern().c_str());
@@ -374,6 +374,7 @@ bool hMenu::UpdateNewGame()
 	{	
 		eMenuOption = APP_GAME;
 		app->GameReset();
+        app->GameLoad();
 	}
 	return result;
 }
@@ -655,7 +656,7 @@ bool hMenu::UpdateEndGame()
         app->ResumeEngine();
         if (bPlayAgain) {
             app->GameReset();
-            app->GameInit();
+            app->GameLoad();
             return true;
         }
         else

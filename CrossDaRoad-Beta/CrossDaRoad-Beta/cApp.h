@@ -61,6 +61,7 @@ protected: // [Initializer] & [Disposer]
 
 protected: // [Reseter]
     bool GameReset();
+    bool GameLoad();
     bool GameNext();
     bool GamePrev();
 
