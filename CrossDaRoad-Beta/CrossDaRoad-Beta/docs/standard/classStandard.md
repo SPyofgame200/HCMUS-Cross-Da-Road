@@ -6,6 +6,51 @@
 ---
 ---
 
+## Table of Contents
+
+- [Class Organization](#class-organization)
+  - [Table of Contents](#table-of-contents)
+  - [∅. General Guidelines](#-general-guidelines)
+    - [∅.I. General Functions Naming](#i-general-functions-naming)
+    - [∅.II. Class Tags](#ii-class-tags)
+    - [∅.III. Table of contents](#iii-table-of-contents)
+  - [I. Class Components](#i-class-components)
+    - [I-A. `[Static Property]`](#i-a-static-property)
+    - [I-B. `[Data Component]`](#i-b-data-component)
+    - [I-C. `[Handler Component]`](#i-c-handler-component)
+    - [I-D. `[Instance]`](#i-d-instance)
+  - [II. Class Cores](#ii-class-cores)
+    - [II-A. `[Friend Property]`](#ii-a-friend-property)
+    - [II-B. `[Member Property]`](#ii-b-member-property)
+    - [II-C. `[Constructor]`](#ii-c-constructor)
+    - [II-D. `[Destructor]`](#ii-d-destructor)
+  - [III. Class Lifecycles](#iii-class-lifecycles)
+    - [III-A. `[Initializer]`](#iii-a-initializer)
+    - [III-B. `[Disposer]`](#iii-b-disposer)
+    - [III-C. `[Reseter]`](#iii-c-reseter)
+    - [III-D. `[Core]`](#iii-d-core)
+  - [IV. Class Verifications](#iv-class-verifications)
+    - [IV-A. `[Evaluation]`](#iv-a-evaluation)
+    - [IV-B. `[Validator]`](#iv-b-validator)
+    - [IV-C. `[Checker]`](#iv-c-checker)
+    - [IV-D. `[Getter]`](#iv-d-getter)
+  - [V. Class Action](#v-class-action)
+    - [V-A. `[Loader]`](#v-a-loader)
+    - [V-B. `[Setter]`](#v-b-setter)
+    - [V-C. `[Handler]`](#v-c-handler)
+    - [V-D. `[Event]`](#v-d-event)
+  - [VI. Class Data](#vi-class-data)
+    - [VI-A. `[File]`](#vi-a-file)
+    - [VI-B. `[Input]`](#vi-b-input)
+    - [VI-C. `[Output]`](#vi-c-output)
+    - [VI-D. `[Debug]`](#vi-d-debug)
+  - [Category: Validators](#category-validators)
+  - [Category: Checkers](#category-checkers)
+  - [Category: Getters](#category-getters)
+    - [Category: Constant Getters](#category-constant-getters)
+    - [Category: Properties Getters](#category-properties-getters)
+    - [Category: Utilities Getters](#category-utilities-getters)
+
 ## ∅. General Guidelines
 
 ---
@@ -416,8 +461,8 @@ public: // [Constructor] & [Destructor]
     ~Foo();
 
 public: // [Initializer]
-    bool Init();   
-    bool Create(); 
+    bool Init();
+    bool Create();
 
 public: // [Getter]
     int GetX() const; // Constant getter declaration
