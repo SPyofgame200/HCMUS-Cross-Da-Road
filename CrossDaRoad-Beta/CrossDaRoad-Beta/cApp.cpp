@@ -25,7 +25,9 @@ constexpr float fConst = 2.0f;
 cApp::cApp()
 {
     SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
-    Zone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cDangerZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cBlockedZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cPlatformZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     Player.SetupTarget(this);
     MapDrawer.SetupTarget(this);
     Menu.InitMenu();
@@ -93,17 +95,17 @@ bool cApp::GameReset()
 
     Player.Status().SetSituation(PlayerSituation::ALIVE);
     sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
-    Zone.CreateZone(ScreenWidth(), ScreenHeight());
+    cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
     Player.Reset();
     cFrameManager::GetInstance().Reset();
 
     Clear(app::BLACK);
     MapLoader.LoadMapLevel();
-    Zone.SetPattern(
-        MapLoader.GetPlatformPattern().c_str(),
-        MapLoader.GetDangerPattern().c_str(),
-        MapLoader.GetBlockPattern().c_str()
-    );
+    cDangerZone.SetPattern("", MapLoader.GetDangerPattern().c_str(), "");
+    cBlockedZone.SetPattern("", "", MapLoader.GetBlockPattern().c_str());
+    cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str(), "", "");
     return true;
 }
 /// @brief Go to next map level

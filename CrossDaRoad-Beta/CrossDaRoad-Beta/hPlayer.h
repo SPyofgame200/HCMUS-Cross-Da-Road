@@ -91,7 +91,9 @@ public: // Logic-Render Control
 
 public: // Special
     void Sleep(float fTime);
-    cZone* GetZone();
+    cZone* GetDangerZone();
+    cZone* GetBlockedZone();
+    cZone* GetPlatformZone();
 
 public: // Input - Output
     void Read(std::istream& input);

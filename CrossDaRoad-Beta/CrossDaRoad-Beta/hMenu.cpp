@@ -198,11 +198,9 @@ bool hMenu::LoadProceedOption()
             app->GameReset();
             app->OnGameLoad(it.second.PlayerPath, it.first);
             app->MapLoader.LoadMapLevel();
-            app->Zone.SetPattern(
-                app->MapLoader.GetPlatformPattern().c_str(),
-                app->MapLoader.GetDangerPattern().c_str(),
-                app->MapLoader.GetBlockPattern().c_str()
-            );
+            app->cDangerZone.SetPattern("", app->MapLoader.GetDangerPattern().c_str(), "");
+            app->cBlockedZone.SetPattern("", "", app->MapLoader.GetBlockPattern().c_str());
+            app->cPlatformZone.SetPattern(app->MapLoader.GetPlatformPattern().c_str(), "", "");
             return true;
         }
     }

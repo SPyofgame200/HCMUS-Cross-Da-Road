@@ -28,7 +28,9 @@
 class cApp final : public app::GameEngine
 {
 private: // [Data Component]
-    cZone Zone;
+    cZone cDangerZone;
+    cZone cPlatformZone;
+    cZone cBlockedZone;
     cMapLoader MapLoader;
 
 private: // [Handle Component]

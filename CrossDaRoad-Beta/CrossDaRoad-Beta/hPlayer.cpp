@@ -253,10 +253,28 @@ void hPlayer::Sleep(float fTime)
     ptrApp->ForceSleep(fTime);
 }
 
-cZone* hPlayer::GetZone()
+cZone* hPlayer::GetDangerZone()
 {
     if (ptrApp) {
-        return &(ptrApp->Zone);
+        return &(ptrApp->cDangerZone);
+    }
+    else {
+        return nullptr; // or handle the case where ptrApp is null
+    }
+}
+cZone* hPlayer::GetBlockedZone()
+{
+    if (ptrApp) {
+        return &(ptrApp->cBlockedZone);
+    }
+    else {
+        return nullptr; // or handle the case where ptrApp is null
+    }
+}
+cZone* hPlayer::GetPlatformZone()
+{
+    if (ptrApp) {
+        return &(ptrApp->cPlatformZone);
     }
     else {
         return nullptr; // or handle the case where ptrApp is null
