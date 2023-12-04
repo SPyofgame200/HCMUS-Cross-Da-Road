@@ -279,11 +279,13 @@ bool cApp::OnPlayerDeath()
         Draw(sPlayerName, true, true);
         Sleep(150);
     }
-    GameReset();
-    GameLoad();
-    Player.Reset();
     if (--nLife <= 0) {
         PauseEngine();
+    }
+    else {
+        GameReset();
+        GameLoad();
+        Player.Reset();
     }
     return true;
 }
