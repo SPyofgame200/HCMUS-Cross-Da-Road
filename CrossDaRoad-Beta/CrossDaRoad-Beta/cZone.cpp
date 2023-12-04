@@ -61,25 +61,17 @@ bool cZone::Create()
     Destroy();
     nZoneWidth = 0;
     nZoneHeight = 0;
-    bPlatforms = nullptr;
     bDangers = nullptr;
-    bBlocks = nullptr;
     nCellWidth = 0;
     nCellHeight = 0;
-    sDefaultPlatformPattern = nullptr;
     sDefaultDangerPattern = nullptr;
-    sDefaultBlockPattern = nullptr;
     return true;
 }
 
 bool cZone::Destroy()
 {
-    CleanArray(bPlatforms);
     CleanArray(bDangers);
-    CleanArray(bBlocks);
-    CleanArray(sDefaultPlatformPattern);
     CleanArray(sDefaultDangerPattern);
-    CleanArray(sDefaultBlockPattern);
     return true;
 }
 
@@ -103,12 +95,8 @@ bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, 
     nZoneWidth = nWidth;
     nZoneHeight = nHeight;
     const int nZoneSize = nZoneWidth * nZoneHeight;
-    bPlatforms = new bool[nZoneSize];
     bDangers = new bool[nZoneSize];
-    bBlocks = new bool[nZoneSize];
-    memset(bPlatforms, bPlatform, nZoneSize * sizeof(bool));
     memset(bDangers, bDanger, nZoneSize * sizeof(bool));
-    memset(bBlocks, bBlock, nZoneSize * sizeof(bool));
     return true;
 }
 
@@ -121,16 +109,6 @@ bool cZone::CreateZone(const int nWidth, const int nHeight)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////// CHECKERS ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-
-bool cZone::IsPlatform(const char& graphic, const char* sPlatformPattern)
-{
-    return strchr(sPlatformPattern, graphic) != nullptr;
-}
-
-bool cZone::IsNotPlatform(const char& graphic, const char* sPlatformPattern)
-{
-    return !IsPlatform(graphic, sPlatformPattern);
-}
 
 /// @brief Check if graphic is danger
 /// @param graphic graphic to check 
@@ -148,51 +126,12 @@ bool cZone::IsNotDanger(const char& graphic, const char* sDangerPattern)
 {
     return !IsDanger(graphic, sDangerPattern);
 }
-/// @brief Check if graphic is blocked
-/// @param graphic graphic to check
-/// @param sBlockPattern block pattern to check
-/// @return true if graphic is blocked, false otherwise
-bool cZone::IsBlocked(const char& graphic, const char* sBlockPattern)
-{
-    return strchr(sBlockPattern, graphic) != nullptr;
-}
-/// @brief Check if graphic is unblocked
-/// @param graphic graphic to check
-/// @param sBlockPattern block pattern to check
-bool cZone::IsNotBlocked(const char& graphic, const char* sBlockPattern)
-{
-    return !IsBlocked(graphic, sBlockPattern);
-}
-
-bool cZone::IsPlatform(const char& graphic)
-{
-    return IsPlatform(graphic, sDefaultPlatformPattern);
-}
-
-bool cZone::IsNotPlatform(const char& graphic)
-{
-    return IsNotPlatform(graphic, sDefaultPlatformPattern);
-}
 
 bool cZone::IsDanger(const char& graphic)
 {
     return IsDanger(graphic, sDefaultDangerPattern);
 }
 
-bool cZone::IsNotDanger(const char& graphic)
-{
-    return IsNotDanger(graphic, sDefaultDangerPattern);
-}
-
-bool cZone::IsBlocked(const char& graphic)
-{
-    return IsBlocked(graphic, sDefaultBlockPattern);
-}
-
-bool cZone::IsNotBlocked(const char& graphic)
-{
-    return IsNotBlocked(graphic, sDefaultBlockPattern);
-}
 /// @brief Check if (x, y) is inside the zone
 /// @param x x coordinate 
 /// @param y y coordinate
@@ -206,14 +145,6 @@ bool cZone::IsInside(const int x, const int y) const
 ////////////////////////////// SETTERS /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-bool cZone::SetPlatform(const int nPosX, const int nPosY, const bool bValue) const
-{
-    if (!IsInside(nPosX, nPosY)) {
-        return false;
-    }
-    bPlatforms[nPosY * nZoneWidth + nPosX] = bValue;
-    return true;
-}
 /// @brief Set danger pixel at a position
 /// @param nPosX x coordinate
 /// @param nPosY y coordinate
@@ -228,19 +159,6 @@ bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue)
     return true;
 }
 
-/// @brief Set block pixel at a position
-/// @param nPosX x coordinate
-/// @param nPosY y coordinate
-/// @param bValue value to set (true: block, false: unblock)
-/// @return true if successfully set block pixel (if (nPosX, nPosY) is inside), false otherwise
-bool cZone::SetBlock(const int nPosX, const int nPosY, const bool bValue)
-{
-    if (!IsInside(nPosX, nPosY)) {
-        return false;
-    }
-    bBlocks[nPosY * nZoneWidth + nPosX] = bValue;
-    return true;
-}
 /// @brief Set cell size of the zone
 /// @param nWidth Width of the cell
 /// @param nHeight Height of the cell
@@ -260,45 +178,17 @@ bool cZone::SetCellSize(int nWidth, int nHeight)
 /// @param sDangerPattern Character array of danger pattern
 /// @param sBlockPattern Character array of block pattern
 /// @return True if successfully set danger and block pattern, false otherwise
-bool cZone::SetPattern(const char* sPlatformPattern, const char* sDangerPattern, const char* sBlockPattern)
+bool cZone::SetPattern(const char* sDangerPattern)
 {
-    CleanArray(sDefaultPlatformPattern);
-    sDefaultPlatformPattern = new char[strlen(sPlatformPattern) + 1];
-    strcpy_s(sDefaultPlatformPattern, strlen(sPlatformPattern) + 1, sPlatformPattern);
-
     CleanArray(sDefaultDangerPattern);
     sDefaultDangerPattern = new char[strlen(sDangerPattern) + 1];
     strcpy_s(sDefaultDangerPattern, strlen(sDangerPattern) + 1, sDangerPattern);
-
-    CleanArray(sDefaultBlockPattern);
-    sDefaultBlockPattern = new char[strlen(sBlockPattern) + 1];
-    strcpy_s(sDefaultBlockPattern, strlen(sBlockPattern) + 1, sBlockPattern);
     return true;
 }
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////// FILLERS /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-int cZone::FillPlatform(const char& graphic, const char* sPlatformPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
-{
-    int counter = 0;
-    for (int x = nTopLeftX; x < nBottomRightX; x++) {
-        for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetPlatform(x, y, IsPlatform(graphic, sPlatformPattern));
-        }
-    }
-    return counter;
-}
-int cZone::UnfillPlatform(const char& graphic, const char* sPlatformPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
-{
-    int counter = 0;
-    for (int x = nTopLeftX; x < nBottomRightX; x++) {
-        for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetPlatform(x, y, IsPlatform(graphic, sPlatformPattern));
-        }
-    }
-    return counter;
-}
 /// @brief Fill danger pixels with graphic in the zone
 /// @param nTopLeftX top left x coordinate
 /// @param nTopLeftY top left y coordinate
@@ -336,52 +226,6 @@ int cZone::UnfillDanger(const char& graphic, const char* sDangerPattern, const i
     }
     return counter;
 }
-/// @brief Fill block pixels with graphic in the zone
-/// @param nTopLeftX top left x coordinate
-/// @param nTopLeftY top left y coordinate
-/// @param nBottomRightX bottom right x coordinate
-/// @param nBottomRightY bottom right y coordinate
-/// @param graphic graphic to fill
-/// @param sBlockPattern block pattern to check if graphic is block or not
-/// @return number of block pixels filled
-int cZone::FillBlocked(const char& graphic, const char* sBlockPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
-{
-    int counter = 0;
-    for (int x = nTopLeftX; x < nBottomRightX; x++) {
-        for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetBlock(x, y, IsBlocked(graphic, sBlockPattern));
-        }
-    }
-    return counter;
-}
-/// @brief Fill unblock pixels with graphic in the zone
-/// @param nTopLeftX top left x coordinate
-/// @param nTopLeftY top left y coordinate
-/// @param nBottomRightX bottom right x coordinate
-/// @param nBottomRightY bottom right y coordinate
-/// @param graphic graphic to fill
-/// @param sBlockPattern block pattern to check if graphic is block or not
-/// @return number of unblock pixels filled
-int cZone::UnfillBlocked(const char& graphic, const char* sBlockPattern, int nTopLeftX, int nTopLeftY, int nBottomRightX, int nBottomRightY)
-{
-    int counter = 0;
-    for (int x = nTopLeftX; x < nBottomRightX; x++) {
-        for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetBlock(x, y, IsNotBlocked(graphic, sBlockPattern));
-        }
-    }
-    return counter;
-}
-int cZone::FillPlatform(const char& graphic, const int nTopLeftX, const int nTopLeftY)
-{
-    return FillPlatform(graphic, sDefaultPlatformPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
-}
-
-int cZone::UnfillPlatform(const char& graphic, const int nTopLeftX, const int nTopLeftY)
-{
-    return UnfillPlatform(graphic, sDefaultPlatformPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
-}
-
 /// @brief Fill danger pixels with graphic in the zone
 /// @param graphic Graphic character to fill
 /// @param nTopLeftX x coordinate of top left corner
@@ -400,78 +244,20 @@ int cZone::UnfillDanger(const char& graphic, const int nTopLeftX, const int nTop
 {
     return UnfillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
-/// @brief Fill block pixels with graphic in the zone
-/// @param graphic Graphic character to fill
-/// @param nTopLeftX x coordinate of top left corner
-/// @param nTopLeftY y coordinate of top left corner
-/// @return Number of block pixels filled
-int cZone::FillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
-{
-    return FillBlocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
-}
-/// @brief Fill unblock pixels with graphic in the zone
-/// @param graphic Graphic character to fill
-/// @param nTopLeftX x coordinate of top left corner
-/// @param nTopLeftY y coordinate of top left corner
-/// @return Number of unblock pixels filled
-int cZone::UnfillBlocked(const char& graphic, const int nTopLeftX, const int nTopLeftY)
-{
-    return UnfillBlocked(graphic, sDefaultBlockPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
-}
-
 
 int cZone::Fill(const char& graphic, int nTopLeftX, int nTopLeftY)
 {
     int nChange = 0;
-    nChange += FillPlatform(graphic, nTopLeftX, nTopLeftY);
     nChange += FillDanger(graphic, nTopLeftX, nTopLeftY);
-    nChange += FillBlocked(graphic, nTopLeftX, nTopLeftY);
     return nChange;
 }
 
 int cZone::Unfill(const char& graphic, int nTopLeftX, int nTopLeftY)
 {
     int nChange = 0;
-    nChange += UnfillPlatform(graphic, nTopLeftX, nTopLeftY);
     nChange += UnfillDanger(graphic, nTopLeftX, nTopLeftY);
-    nChange += UnfillBlocked(graphic, nTopLeftX, nTopLeftY);
     return nChange;
 }
-
-////////////////////////////////////////////////////////////////////////
-/////////////////////// PLATFORM ZONE CHECKERS /////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-bool cZone::IsPlatformPixel(const float x, const float y) const
-{
-    const bool isPlatformPixel = bPlatforms[static_cast<int>(y) * nZoneWidth + static_cast<int>(x)];
-    return isPlatformPixel;
-}
-
-bool cZone::IsPlatformTopLeft(const float x, const float y, const int size) const
-{
-    const bool isPlatformTopLeft = IsPlatformPixel(x * static_cast<float>(size) + 1, y * static_cast<float>(size) + 1);
-    return isPlatformTopLeft;
-}
-
-bool cZone::IsPlatformTopRight(const float x, const float y, const int size) const
-{
-    const bool isPlatformTopRight = IsPlatformPixel((x + 1) * static_cast<float>(size) - 1, y * static_cast<float>(size) + 1);
-    return isPlatformTopRight;
-}
-
-bool cZone::IsPlatformBottomLeft(const float x, const float y, const int size) const
-{
-    const bool isPlatformBottomLeft = IsPlatformPixel(x * static_cast<float>(size) + 1, (y + 1) * static_cast<float>(size) - 1);
-    return isPlatformBottomLeft;
-}
-
-bool cZone::IsPlatformBottomRight(const float x, const float y, const int size) const
-{
-    const bool isPlatformBottomRight = IsPlatformPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
-    return isPlatformBottomRight;
-}
-
 
 ////////////////////////////////////////////////////////////////////////
 //////////////////////// DANGER ZONE CHECKERS //////////////////////////
@@ -530,64 +316,6 @@ bool cZone::IsDangerBottomRight(const float x, const float y, const int size) co
     const bool isDangerBottomRight =
         IsDangerPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
     return isDangerBottomRight;
-}
-
-////////////////////////////////////////////////////////////////////////
-//////////////////////// BLOCK ZONE CHECKERS ///////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-/// @brief Check if pixel at (x, y) is block
-/// @param x x coordinate
-/// @param y y coordinate
-/// @return true if pixel at (x, y) is block, false otherwise
-bool cZone::IsBlockedPixel(const float x, const float y) const
-{
-    const bool isBlockPixel = bBlocks[static_cast<int>(y) * nZoneWidth + static_cast<int>(x)];
-    return isBlockPixel;
-}
-
-/// @brief Check if pixel at (x, y) is block (top left) 
-/// @param x x coordinate
-/// @param y y coordinate
-/// @param size size of the pixel
-/// @return true if top left pixel at (x, y) is block, false otherwise
-bool cZone::IsBlockedTopLeft(const float x, const float y, const int size) const
-{
-    const bool isBlockTopLeft = IsBlockedPixel(x * static_cast<float>(size) + 1, y * static_cast<float>(size) + 1);
-    return isBlockTopLeft;
-}
-
-/// @brief Check if pixel at (x, y) is block (top right)
-/// @param x x coordinate
-/// @param y y coordinate
-/// @param size size of the pixel
-/// @return true if top right pixel at (x, y) is block, false otherwise
-bool cZone::IsBlockedTopRight(const float x, const float y, const int size) const
-{
-    const bool isBlockTopRight = IsBlockedPixel((x + 1) * static_cast<float>(size) - 1, y * static_cast<float>(size) + 1);
-    return isBlockTopRight;
-}
-
-/// @brief Check if pixel at (x, y) is block (bottom left)
-/// @param x x coordinate
-/// @param y y coordinate
-/// @param size size of the pixel
-/// @return true if bottom left pixel at (x, y) is block, false otherwise
-bool cZone::IsBlockedBottomLeft(const float x, const float y, const int size) const
-{
-    const bool isBlockBottomLeft = IsBlockedPixel(x * static_cast<float>(size) + 1, (y + 1) * static_cast<float>(size) - 1);
-    return isBlockBottomLeft;
-}
-
-/// @brief Check if pixel at (x, y) is block (bottom right)
-/// @param x x coordinate
-/// @param y y coordinate
-/// @param size size of the pixel
-/// @return true if bottom right pixel at (x, y) is block, false otherwise
-bool cZone::IsBlockedBottomRight(const float x, const float y, const int size) const
-{
-    const bool isBlockBottomRight = IsBlockedPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
-    return isBlockBottomRight;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

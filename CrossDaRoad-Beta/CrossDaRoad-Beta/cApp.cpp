@@ -103,9 +103,9 @@ bool cApp::GameReset()
 
     Clear(app::BLACK);
     MapLoader.LoadMapLevel();
-    cDangerZone.SetPattern("", MapLoader.GetDangerPattern().c_str(), "");
-    cBlockedZone.SetPattern("", "", MapLoader.GetBlockPattern().c_str());
-    cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str(), "", "");
+    cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());
+    cBlockedZone.SetPattern(MapLoader.GetBlockPattern().c_str());
+    cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str());
     return true;
 }
 /// @brief Go to next map level
