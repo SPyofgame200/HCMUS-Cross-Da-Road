@@ -184,10 +184,6 @@ bool cApp::OnRenderEvent()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent(float fTickTime)
 {
-    if (IsEnginePause() && Player.Status().IsDeath()) { /// handle death pausing event
-        return OnPlayerDeath(fTickTime);
-    }
-
     if (IsKeyReleased(app::Key::ESCAPE)) {
         if (Menu.HandlePause(IsEnginePause())) {
             PauseEngine();
@@ -272,39 +268,57 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         return GameNext();
     }
     if (Player.IsForceKilled() || Player.IsKilled()) {
-        --nLife;
         Player.Status().SetSituation(PlayerSituation::DEATH);
-        Player.Moment().StartAnimation();
-        PauseEngine();
-        OnPlayerDeath(fTimeSinceStart);
-        return true;
+        return OnPlayerDeath();
     }
 
     return true;
 }
 /// @brief Update Player when Player is killed
 /// @return Always returns true by default
-bool cApp::OnPlayerDeath(float fTickTime)
+bool cApp::OnPlayerDeath()
 {
-    if (Player.Moment().IsStopAnimation()) {
-        if (nLife <= 0) {
-            Menu.UpdateEndGame();
-            OnGameRender();
-            Menu.RenderEndGame();
-            return false;
-        }
-        ResumeEngine();
-        GameReset();
-        Player.Reset();
-        return true;
+    for (int nID = 1; nID <= 6; ++nID)
+    {
+        const std::string sPlayerName = "froggy_death" + std::to_string(nID);
+        const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
+        Draw(sPlayerName, true, true);
+        Sleep(150);
     }
-    if (Player.Status().IsDeath()) {
-        Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
-        Player.OnUpdate();
-        OnGameRender(true);
-        return false;
+    GameReset();
+    Player.Reset();
+    if (--nLife <= 0) {
+        Menu.UpdateEndGame();
+        OnGameRender();
+        Menu.RenderEndGame();
     }
-    return false;
+    return true;
+}
+
+
+bool cApp::Draw(const std::string& sSpriteName, bool bReloadMap, bool bForceRender)
+{
+    const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
+    if (froggy == nullptr) {
+        std::cerr << "WTF, cant found " << sSpriteName << std::endl;
+    }
+
+    if (bReloadMap) {
+        DrawAllLanes();
+    }
+    SetPixelMode(app::Pixel::MASK);
+    constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+    const float fPosX = Player.Physic().GetPlayerAnimationPositionX();
+    const float fPosY = Player.Physic().GetPlayerAnimationPositionY();
+    const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
+    const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
+    DrawSprite(frogXPosition, frogYPosition, froggy);
+    SetPixelMode(app::Pixel::NORMAL);
+    if (bForceRender) {
+        DrawStatusBar();
+        RenderTexture();
+    }
+    return true;
 }
 
 /// @brief Draw all lanes, render Player, draw cStatus bar

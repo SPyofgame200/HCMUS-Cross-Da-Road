@@ -225,27 +225,7 @@ bool hPlayer::OnRender()
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
 {
-    const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
-    if (froggy == nullptr) {
-        std::cerr << "WTF, cant found " << sSpriteName << std::endl;
-    }
-
-    if (bReloadMap) {
-        ptrApp->DrawAllLanes();
-    }
-    ptrApp->SetPixelMode(app::Pixel::MASK);
-    constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
-    const float fPosX = Physic().GetPlayerAnimationPositionX();
-    const float fPosY = Physic().GetPlayerAnimationPositionY();
-    const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
-    const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
-    ptrApp->DrawSprite(frogXPosition, frogYPosition, froggy);
-    ptrApp->SetPixelMode(app::Pixel::NORMAL);
-    if (bForceRender) {
-        ptrApp->DrawStatusBar();
-        ptrApp->RenderTexture();
-    }
-    return true;
+    return ptrApp->Draw(sSpriteName, bReloadMap, bForceRender);
 }
 
 void hPlayer::Sleep(float fTime)

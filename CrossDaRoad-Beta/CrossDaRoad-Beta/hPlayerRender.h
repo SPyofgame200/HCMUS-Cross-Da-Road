@@ -25,7 +25,6 @@ public: // Player Render
 
 public: // Player Renderers
     bool OnRenderPlayer() const;
-    bool OnRenderPlayerDeath();
     bool OnRender();
 };
 

@@ -81,7 +81,7 @@ protected: // [Evaluation]
 
 protected: // [Event]
     bool OnGameUpdate(float fElapsedTime);
-    bool OnPlayerDeath(float fTickTime);
+    bool OnPlayerDeath();
     bool OnGameRender(bool bRenderPlayer = false);
 
 private: // [Handler]
@@ -89,6 +89,7 @@ private: // [Handler]
     bool DrawBigText(const std::string& sText, int x, int y, int space = 0);
     bool DrawBigText1(const std::string& sText, int x, int y, int space = 0);
     bool DrawStatusBar();
+    bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
 
 protected: // [File]
     static std::string GetFilePathLocation(bool isSaven, std::string fileName);
