@@ -86,6 +86,7 @@ The main menu is the first screen that the player sees when they start the game.
 ![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/new_game.png)
 
 - **Load Game:** Press `ENTER` to select the `Load Game` option. Then select a saved game and press `ENTER` to load the game. Press `ESC` to go back to the main menu.
+![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/load_game.png)
 - **Settings:** Press `ENTER` to select the `Settings` option. Then toggle the `Music` option and press `ENTER` to save the settings. Press `ESC` to go back to the main menu.
 ![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/settings.png)
 
@@ -172,3 +173,4 @@ You can find the source code in the `src` folder and the documentation for devel
 ## 5. Full Documentation
 
 You can find the full documentation for this project [here](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/documentation.md).
+
