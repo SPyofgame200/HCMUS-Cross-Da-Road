@@ -6,7 +6,7 @@ pnpppppnpppppppnppppppppnppppppppppppppnppppppnnpppppnpppppppnpp  0.0
 ....asd.......asd....asd..........asd........asd.......asd......  3.0 
 .....t........................t.............................t... -8.0 
 ..zxc.....zxc.........zxc....zxc......zxc.......zxc......zxc.... -4.0 
-..tt.....tt.......tt.....tt......tt..tt........tt....tt......... -2.0 
+..tt.....tt.......tt.............tt..........tt......tt......... -2.0 
 pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  0.0 
 #
 $ a sprite=crocodile background=soil spriteFrame=6
