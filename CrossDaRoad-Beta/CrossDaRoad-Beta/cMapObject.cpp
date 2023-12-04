@@ -78,7 +78,7 @@ bool MapObject::IsBlocked() const
     return isBlocked;
 }
 
-bool MapObject::IsDanger() const
+bool MapObject::IsEnabled() const
 {
     return isDanger;
 }
@@ -553,7 +553,7 @@ std::string MapObject::ShowFlagData() const
     std::ostringstream oss;
     oss << "Flag: [ ";
     oss << "is_blocked=" << std::boolalpha << IsBlocked() << ", ";
-    oss << "is_danger=" << std::boolalpha << IsDanger() << ", ";
+    oss << "is_danger=" << std::boolalpha << IsEnabled() << ", ";
     oss << "is_platform=" << std::boolalpha << IsPlatform() << " ";
     oss << "]";
     return oss.str();

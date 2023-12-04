@@ -61,17 +61,17 @@ bool cZone::Create()
     Destroy();
     nZoneWidth = 0;
     nZoneHeight = 0;
-    bDangers = nullptr;
+    bMatrix = nullptr;
     nCellWidth = 0;
     nCellHeight = 0;
-    sDefaultDangerPattern = nullptr;
+    sDefaultPattern = nullptr;
     return true;
 }
 
 bool cZone::Destroy()
 {
-    CleanArray(bDangers);
-    CleanArray(sDefaultDangerPattern);
+    CleanArray(bMatrix);
+    CleanArray(sDefaultPattern);
     return true;
 }
 
@@ -95,8 +95,8 @@ bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, 
     nZoneWidth = nWidth;
     nZoneHeight = nHeight;
     const int nZoneSize = nZoneWidth * nZoneHeight;
-    bDangers = new bool[nZoneSize];
-    memset(bDangers, bDanger, nZoneSize * sizeof(bool));
+    bMatrix = new bool[nZoneSize];
+    memset(bMatrix, bDanger, nZoneSize * sizeof(bool));
     return true;
 }
 
@@ -112,24 +112,29 @@ bool cZone::CreateZone(const int nWidth, const int nHeight)
 
 /// @brief Check if graphic is danger
 /// @param graphic graphic to check 
-/// @param sDangerPattern danger pattern to check 
+/// @param sEnablePattern danger pattern to check 
 /// @return true if graphic is danger, false otherwise
-bool cZone::IsDanger(const char& graphic, const char* sDangerPattern)
+bool cZone::IsEnabled(const char& graphic, const char* sEnablePattern)
 {
-    return strchr(sDangerPattern, graphic) != nullptr;
+    return strchr(sEnablePattern, graphic) != nullptr;
 }
 /// @brief Check if graphic is safe
 /// @param graphic graphic to check
-/// @param sDangerPattern danger pattern to check
+/// @param sEnablePattern danger pattern to check
 /// @return true if graphic is safe, false otherwise
-bool cZone::IsNotDanger(const char& graphic, const char* sDangerPattern)
+bool cZone::IsDisabled(const char& graphic, const char* sEnablePattern)
 {
-    return !IsDanger(graphic, sDangerPattern);
+    return !IsEnabled(graphic, sEnablePattern);
 }
 
-bool cZone::IsDanger(const char& graphic)
+bool cZone::IsEnabled(const char& graphic)
 {
-    return IsDanger(graphic, sDefaultDangerPattern);
+    return IsEnabled(graphic, sDefaultPattern);
+}
+
+bool cZone::IsDisabled(const char& graphic)
+{
+    return !IsDisabled(graphic, sDefaultPattern);
 }
 
 /// @brief Check if (x, y) is inside the zone
@@ -155,7 +160,7 @@ bool cZone::SetDanger(const int nPosX, const int nPosY, const bool bValue)
     if (!IsInside(nPosX, nPosY)) {
         return false;
     }
-    bDangers[nPosY * nZoneWidth + nPosX] = bValue;
+    bMatrix[nPosY * nZoneWidth + nPosX] = bValue;
     return true;
 }
 
@@ -175,14 +180,14 @@ bool cZone::SetCellSize(int nWidth, int nHeight)
     return true;
 }
 /// @brief Set danger and block pattern of the zone
-/// @param sDangerPattern Character array of danger pattern
+/// @param sEnablePattern Character array of danger pattern
 /// @param sBlockPattern Character array of block pattern
 /// @return True if successfully set danger and block pattern, false otherwise
-bool cZone::SetPattern(const char* sDangerPattern)
+bool cZone::SetPattern(const char* sEnablePattern)
 {
-    CleanArray(sDefaultDangerPattern);
-    sDefaultDangerPattern = new char[strlen(sDangerPattern) + 1];
-    strcpy_s(sDefaultDangerPattern, strlen(sDangerPattern) + 1, sDangerPattern);
+    CleanArray(sDefaultPattern);
+    sDefaultPattern = new char[strlen(sEnablePattern) + 1];
+    strcpy_s(sDefaultPattern, strlen(sEnablePattern) + 1, sEnablePattern);
     return true;
 }
 ////////////////////////////////////////////////////////////////////////
@@ -195,15 +200,15 @@ bool cZone::SetPattern(const char* sDangerPattern)
 /// @param nBottomRightX bottom right x coordinate
 /// @param nBottomRightY bottom right y coordinate
 /// @param graphic graphic to fill
-/// @param sDangerPattern danger pattern to check if graphic is danger or not
+/// @param sEnablePattern danger pattern to check if graphic is danger or not
 /// @return number of danger pixels filled
-int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
+int cZone::Fill(const char& graphic, const char* sEnablePattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
 
     int counter = 0;
     for (int x = nTopLeftX; x < nBottomRightX; x++) {
         for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetDanger(x, y, IsDanger(graphic, sDangerPattern));
+            counter += SetDanger(x, y, IsEnabled(graphic, sEnablePattern));
         }
     }
     return counter;
@@ -214,14 +219,14 @@ int cZone::FillDanger(const char& graphic, const char* sDangerPattern, const int
 /// @param nBottomRightX x coordinate of bottom right corner
 /// @param nBottomRightY y coordinate of bottom right corner
 /// @param graphic graphic to fill
-/// @param sDangerPattern danger pattern to check if graphic is danger or not
+/// @param sEnablePattern danger pattern to check if graphic is danger or not
 /// @return number of safe pixels filled
-int cZone::UnfillDanger(const char& graphic, const char* sDangerPattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
+int cZone::Unfill(const char& graphic, const char* sEnablePattern, const int nTopLeftX, const int nTopLeftY, const int nBottomRightX, const int nBottomRightY)
 {
     int counter = 0;
     for (int x = nTopLeftX; x < nBottomRightX; x++) {
         for (int y = nTopLeftY; y < nBottomRightY; y++) {
-            counter += SetDanger(x, y, IsNotDanger(graphic, sDangerPattern));
+            counter += SetDanger(x, y, IsDisabled(graphic, sEnablePattern));
         }
     }
     return counter;
@@ -231,32 +236,18 @@ int cZone::UnfillDanger(const char& graphic, const char* sDangerPattern, const i
 /// @param nTopLeftX x coordinate of top left corner
 /// @param nTopLeftY y coordinate of top left corner
 /// @return Number of danger pixels filled
-int cZone::FillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY)
+int cZone::Fill(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
-    return FillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
+    return Fill(graphic, sDefaultPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 /// @brief Fill safe pixels with graphic in the zone
 /// @param graphic Graphic character to fill
 /// @param nTopLeftX x coordinate of top left corner
 /// @param nTopLeftY y coordinate of top left corner
 /// @return Number of safe pixels filled
-int cZone::UnfillDanger(const char& graphic, const int nTopLeftX, const int nTopLeftY)
+int cZone::Unfill(const char& graphic, const int nTopLeftX, const int nTopLeftY)
 {
-    return UnfillDanger(graphic, sDefaultDangerPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
-}
-
-int cZone::Fill(const char& graphic, int nTopLeftX, int nTopLeftY)
-{
-    int nChange = 0;
-    nChange += FillDanger(graphic, nTopLeftX, nTopLeftY);
-    return nChange;
-}
-
-int cZone::Unfill(const char& graphic, int nTopLeftX, int nTopLeftY)
-{
-    int nChange = 0;
-    nChange += UnfillDanger(graphic, nTopLeftX, nTopLeftY);
-    return nChange;
+    return Unfill(graphic, sDefaultPattern, nTopLeftX, nTopLeftY, nTopLeftX + nCellWidth, nTopLeftY + nCellHeight);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -267,9 +258,9 @@ int cZone::Unfill(const char& graphic, int nTopLeftX, int nTopLeftY)
 /// @param x x coordinate
 /// @param y y coordinate
 /// @return true if pixel at (x, y) is danger, false otherwise
-bool cZone::IsDangerPixel(const float x, const float y) const
+bool cZone::IsPixelEnabled(const float x, const float y) const
 {
-    const bool isDangerPixel = bDangers[static_cast<int>(y) * nZoneWidth + static_cast<int>(x)];
+    const bool isDangerPixel = bMatrix[static_cast<int>(y) * nZoneWidth + static_cast<int>(x)];
     return isDangerPixel;
 }
 
@@ -278,9 +269,9 @@ bool cZone::IsDangerPixel(const float x, const float y) const
 /// @param y y coordinate
 /// @param size size of the pixel
 /// @return true if top left pixel at (x, y) is danger, false otherwise
-bool cZone::IsDangerTopLeft(const float x, const float y, const int size) const
+bool cZone::IsTopLeftEnabled(const float x, const float y, const int size) const
 {
-    const bool isDangerTopLeft = IsDangerPixel(x * static_cast<float>(size) + 1, y * static_cast<float>(size) + 1);
+    const bool isDangerTopLeft = IsPixelEnabled(x * static_cast<float>(size) + 1, y * static_cast<float>(size) + 1);
     return isDangerTopLeft;
 }
 
@@ -289,9 +280,9 @@ bool cZone::IsDangerTopLeft(const float x, const float y, const int size) const
 /// @param y y coordinate
 /// @param size size of the pixel
 /// @return true if top right pixel at (x, y) is danger, false otherwise
-bool cZone::IsDangerTopRight(const float x, const float y, const int size) const
+bool cZone::IsTopRightEnabled(const float x, const float y, const int size) const
 {
-    const bool isDangerTopRight = IsDangerPixel((x + 1) * static_cast<float>(size) - 1, y * static_cast<float>(size) + 1);
+    const bool isDangerTopRight = IsPixelEnabled((x + 1) * static_cast<float>(size) - 1, y * static_cast<float>(size) + 1);
     return isDangerTopRight;
 }
 
@@ -300,9 +291,9 @@ bool cZone::IsDangerTopRight(const float x, const float y, const int size) const
 /// @param y y coordinate
 /// @param size size of the pixel
 /// @return true if bottom left pixel at (x, y) is danger, false otherwise
-bool cZone::IsDangerBottomLeft(const float x, const float y, const int size) const
+bool cZone::IsBottomLeftEnabled(const float x, const float y, const int size) const
 {
-    const bool isDangerBottomLeft = IsDangerPixel(x * static_cast<float>(size) + 1, (y + 1) * static_cast<float>(size) - 1);
+    const bool isDangerBottomLeft = IsPixelEnabled(x * static_cast<float>(size) + 1, (y + 1) * static_cast<float>(size) - 1);
     return isDangerBottomLeft;
 }
 
@@ -311,10 +302,10 @@ bool cZone::IsDangerBottomLeft(const float x, const float y, const int size) con
 /// @param y y coordinate
 /// @param size size of the pixel
 /// @return true if bottom right pixel at (x, y) is danger, false otherwise
-bool cZone::IsDangerBottomRight(const float x, const float y, const int size) const
+bool cZone::IsBottomRightEnabled(const float x, const float y, const int size) const
 {
     const bool isDangerBottomRight =
-        IsDangerPixel((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
+        IsPixelEnabled((x + 1) * static_cast<float>(size) - 1, (y + 1) * static_cast<float>(size) - 1);
     return isDangerBottomRight;
 }
 

@@ -95,7 +95,7 @@ void cMapLoader::UpdatePattern()
         if (sprite.IsBlocked()) {
             blockPattern += sprite.GetCode();
         }
-        if (sprite.IsDanger()) {
+        if (sprite.IsEnabled()) {
             dangerPattern += sprite.GetCode();
         }
         std::cout << sprite.ShowData() << std::endl;

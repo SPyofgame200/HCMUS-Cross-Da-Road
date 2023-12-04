@@ -43,7 +43,7 @@ bool hPlayerHitbox::IsHitTopLeft() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
-    const bool isHitTopLeft = ptrPlayer->GetDangerZone()->IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isHitTopLeft = ptrPlayer->GetDangerZone()->IsTopLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isHitTopLeft;
 }
 /// @brief Check if player is hit by danger zone at top right corner
@@ -52,7 +52,7 @@ bool hPlayerHitbox::IsHitTopRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
-    const bool isHitTopRight = ptrPlayer->GetDangerZone()->IsDangerTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isHitTopRight = ptrPlayer->GetDangerZone()->IsTopRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isHitTopRight;
 }
 /// @brief Check if player is hit by danger zone at bottom left corner
@@ -61,7 +61,7 @@ bool hPlayerHitbox::IsHitBottomLeft() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
-    const bool isHitBottomLeft = ptrPlayer->GetDangerZone()->IsDangerBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isHitBottomLeft = ptrPlayer->GetDangerZone()->IsBottomLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isHitBottomLeft;
 }
 /// @brief Check if player is hit by danger zone at bottom right corner
@@ -70,7 +70,7 @@ bool hPlayerHitbox::IsHitBottomRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerLogicPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerLogicPositionY();
-    const bool isHitBottomRight = ptrPlayer->GetDangerZone()->IsDangerBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isHitBottomRight = ptrPlayer->GetDangerZone()->IsBottomRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isHitBottomRight;
 }
 /// @brief Check if player is hit by danger zone
@@ -88,7 +88,7 @@ bool hPlayerHitbox::IsBlockedTopLeft() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isBlockedTopLeft = ptrPlayer->GetBlockedZone()->IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isBlockedTopLeft = ptrPlayer->GetBlockedZone()->IsTopLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isBlockedTopLeft;
 }
 /// @brief Check if player is blocked by block zone at top right corner
@@ -97,7 +97,7 @@ bool hPlayerHitbox::IsBlockedTopRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isBlockedTopRight = ptrPlayer->GetBlockedZone()->IsDangerTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isBlockedTopRight = ptrPlayer->GetBlockedZone()->IsTopRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isBlockedTopRight;
 }
 /// @brief Check if player is blocked by block zone at bottom left corner
@@ -106,7 +106,7 @@ bool hPlayerHitbox::IsBlockedBottomLeft() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isBlockedBottomLeft = ptrPlayer->GetBlockedZone()->IsDangerBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isBlockedBottomLeft = ptrPlayer->GetBlockedZone()->IsBottomLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isBlockedBottomLeft;
 }
 /// @brief Check if player is blocked by block zone at bottom right corner
@@ -115,7 +115,7 @@ bool hPlayerHitbox::IsBlockedBottomRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isBlockedBottomRight = ptrPlayer->GetBlockedZone()->IsDangerBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isBlockedBottomRight = ptrPlayer->GetBlockedZone()->IsBottomRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isBlockedBottomRight;
 }
 /// @brief Check if player is blocked by block zone
@@ -133,7 +133,7 @@ bool hPlayerHitbox::IsOnPlatformTopLeft() const
 {   
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isOnPlatformTopLeft = ptrPlayer->GetPlatformZone()->IsDangerTopLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isOnPlatformTopLeft = ptrPlayer->GetPlatformZone()->IsTopLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isOnPlatformTopLeft;
 }
 
@@ -143,7 +143,7 @@ bool hPlayerHitbox::IsOnPlatformTopRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isOnPlatformTopRight = ptrPlayer->GetPlatformZone()->IsDangerTopRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isOnPlatformTopRight = ptrPlayer->GetPlatformZone()->IsTopRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isOnPlatformTopRight;
 }
 
@@ -153,7 +153,7 @@ bool hPlayerHitbox::IsOnPlatformBottomLeft() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isOnPlatformBottomLeft = ptrPlayer->GetPlatformZone()->IsDangerBottomLeft(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isOnPlatformBottomLeft = ptrPlayer->GetPlatformZone()->IsBottomLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isOnPlatformBottomLeft;
 }
 
@@ -163,7 +163,7 @@ bool hPlayerHitbox::IsOnPlatformBottomRight() const
 {
     const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
     const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
-    const bool isOnPlatformBottomRight = ptrPlayer->GetPlatformZone()->IsDangerBottomRight(fPosX, fPosY, app_const::CELL_SIZE);
+    const bool isOnPlatformBottomRight = ptrPlayer->GetPlatformZone()->IsBottomRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
     return isOnPlatformBottomRight;
 }
 
