@@ -50,6 +50,9 @@ cApp::~cApp()
 bool cApp::GameInit()
 {
     sAppName = app_const::APP_NAME;
+    nScore = 0;
+    nLife = 3;
+
     MapLoader.Init();
     cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
     cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
@@ -76,8 +79,6 @@ bool cApp::GameReset()
 {
     sAppName = app_const::APP_NAME;
     fTimeSinceStart = 0.0f;
-    nScore = 0;
-    nLife = 3;
 
     Player.Reset();
     cFrameManager::GetInstance().Reset();
@@ -147,6 +148,11 @@ bool cApp::OnFixedUpdateEvent(float fTickTime)
 /// @param fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
+    if (Menu.IsOnGame() && nLife <= 0) {
+        Menu.UpdateEndGame();
+        return true;
+    }
+ 
     if (!Menu.Update(fElapsedTime)) {
         return false;
     }
@@ -164,6 +170,12 @@ bool cApp::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateEla
 /// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
 {
+    if (Menu.IsOnGame() && nLife <= 0) {
+        OnGameRender();
+        Menu.RenderEndGame();
+        return true;
+    }
+
     if (!Menu.Render()) {
         return false;
     }
@@ -276,11 +288,7 @@ bool cApp::OnPlayerDeath()
     GameReset();
     GameLoad();
     Player.Reset();
-    if (--nLife <= 0) {
-        Menu.UpdateEndGame();
-        OnGameRender();
-        Menu.RenderEndGame();
-    }
+    --nLife;
     return true;
 }
 
