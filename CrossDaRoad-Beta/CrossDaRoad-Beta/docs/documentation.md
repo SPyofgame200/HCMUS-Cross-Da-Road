@@ -282,21 +282,21 @@ Welcome to the "Cross the Road" console game! In this text-based adventure, you'
 
 The main menu is the first screen that the player sees when they start the game. It contains the following options: `New Game`, `Load Game`, `Settings`, `About us`, and `Exit`.
 
-![Alt text](./screenshots/main_menu.png)
+![Alt text](./report/screenshots/main_menu.png)
 
 - **New Game:** Press `ENTER` to select the `New Game` option. Then enter your name in the input field and press `ENTER` to start a new game. Press `ESC` to go back to the main menu. (Use `Arrow Keys` to navigate between input field and `Start` button.)
-![Alt text](./screenshots/new_game.png)
+![Alt text](./report/screenshots/new_game.png)
 - **Load Game:** Press `ENTER` to select the `Load Game` option. Then select a saved game and press `ENTER` to load the game. Press `ESC` to go back to the main menu.
 - **Settings:** Press `ENTER` to select the `Settings` option. Then toggle the `Music` option and press `ENTER` to save the settings. Press `ESC` to go back to the main menu.
-![Alt text](./screenshots/settings.png)
+![Alt text](./report/screenshots/settings.png)
 - **About us:** Press `ENTER` to select the `About us` option. Then press `ESC` to go back to the main menu.
   ![Alt text](screenshots/about_us.png)
 
 - **Exit:** Press `ENTER` to select the `Exit` option. Then press `ENTER` to exit the game. Press `ESC` to go back to the main menu. (Use `Arrow Keys` to navigate between `Yes` and `No` options.)
-![Alt text](./screenshots/exit.png)
+![Alt text](./report/screenshots/exit.png)
 
 By click `ESC` when playing game, you can pause the game, and go to `Pause` menu. The `Pause` menu is the screen that the player sees when they pause the game. It contains the following options: `Resume`, `Save`, and `Menu` (use `Arrow Keys` to navigate between options).
-![Alt text](./screenshots/pause_menu.png)
+![Alt text](./report/screenshots/pause_menu.png)
 
 - **Resume:** Press `ENTER` to select the `Resume` option to continue the game. Press `ESC` to turn on the `Pause` menu.
 - **Save:** Press `ENTER` to select the `Save` option. Then choose location to save the game. Press `ENTER` to save the game. Press `ESC` to turn on the `Pause` menu.
@@ -325,7 +325,7 @@ By click `ESC` when playing game, you can pause the game, and go to `Pause` menu
 
 ### 4.4 Game Interface
 
-![Alt text](./screenshots/in_game.png)
+![Alt text](./report/screenshots/in_game.png)
 The in-game interface consists of the following elements:
 
 - **Window Title:** The window title display at the top of the window. It contains the following information:
@@ -333,12 +333,12 @@ The in-game interface consists of the following elements:
   - **Map level:** current level of the game.
   - **Map description:**  description of the current level and show how to win this level.
   - **FPS:** current FPS of the game.
-  ![Alt text](./screenshots/window_title.png)
+  ![Alt text](./report/screenshots/window_title.png)
 - **Status Bar:** The status bar display at the right side of the window. It contains the following information:
   - **Map level:** current level of the game.
   - **Health:** current health of the player.
   - **Description:** description of the current level and show how to win this level.
-  ![Alt text](./screenshots/status_bar.png)
+  ![Alt text](./report/screenshots/status_bar.png)
 - **Main screen:** The main in-game screen display at the left side of the window. It contains the following information:
   - **Game objects:** game objects in the current level.
     - **Dangerous objects:** dangerous objects in the current level. The player will lose health when colliding with these objects (such as penguins, mammoth, alligator, devil, etc.)
@@ -347,7 +347,7 @@ The in-game interface consists of the following elements:
     - **Dangerous platforms:** dangerous platforms in the current level. The player will lose health when moving through these objects (such as river, lava, etc.)
     - **Friendly moving platforms:** friendly moving platforms in the current level. The player can move through these objects with different speeds (such as logs, moving ice, moving rocks, etc.)
   - **Player:** display as a frog. The player can move up, down, left, and right using `W`, `S`, `A`, `D` keys.
-  ![Alt text](./screenshots/game.png)
+  ![Alt text](./report/screenshots/game.png)
 
 ### 4.5 Tips and Strategies
 
@@ -387,7 +387,7 @@ Refer to the [3.1 Overview - Directory Structure](#31-overview---directory-struc
 
 ### 5.4 Coding Conventions and Standards
 
-Refer to the [Coding Standard](../codingStandard.md) for information about the coding conventions and standards.
+Refer to the [Coding Standard](./standard/codingStandard.md) for information about the coding conventions and standards.
 
 Refer to the [Function Standard](../functionStandard.md) for information about the function standard.
 
@@ -397,7 +397,7 @@ Refer to the [3. System Architecture](#3-system-architecture) for information ab
 
 ### 5.6 Documentation and Comments Standards
 
-Refer to the `Comment Style` section of [Coding Standard](../codingStandard.md) for information about the documentation and comments standards.
+Refer to the `Comment Style` section of [Coding Standard](./standard/codingStandard.md) for information about the documentation and comments standards.
 
 ## 6. Libraries and Dependencies
 

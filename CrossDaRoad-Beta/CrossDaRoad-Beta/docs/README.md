@@ -2,7 +2,6 @@
 
 ## Table of Contents
 
- [Project Standard for developers](#project-standard-for-developers)
 - [Project Standard for developers](#project-standard-for-developers)
   - [Table of Contents](#table-of-contents)
   - [Directory Structure](#directory-structure)
@@ -13,7 +12,7 @@
 
 ## Directory Structure
 
-> Refer to [Directory Structure](directoryStructure.md) for more information.
+> Refer to [Directory Structure](./standard/directoryStructure.md) for more information.
 
 ## Dependencies and Requirements
 
@@ -31,6 +30,4 @@
 
 ## Coding Standard
 
-> Refer to [Coding Standard](codingStyleGuide.md) for more information.
-
-
+> Refer to [Coding Standard](./standard/codingStandard.md) for more information.
