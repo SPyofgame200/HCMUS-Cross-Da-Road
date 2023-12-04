@@ -155,6 +155,28 @@ The in-game interface consists of the following elements:
 - Try to avoid dangerous objects and dangerous platforms.
 - Try to move through friendly platforms and friendly moving platforms.
 
+### 3.6 Game Map
+
+- **Map 1:**
+
+![Map 1](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_1.png)
+
+- **Map 2:**
+
+![Map 2](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_2.png)
+
+- **Map 3:**
+
+![Map 3](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_3.png)
+
+- **Map 4:**
+
+![Map 4](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_4.png)
+
+- **Map 5:**
+
+![Map 5](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_5.png)
+
 ### 3.7 Saving and Loading
 
 - **Save:** Press `ESC` to pause the game. Then press `ENTER` to select the `Save` option. Then choose location to save the game. Press `ENTER` to save the game. Press `ESC` to turn on the `Pause` menu.
