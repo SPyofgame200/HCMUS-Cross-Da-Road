@@ -24,11 +24,16 @@
 class cApp;
 
 struct info {
+    int No;
     std::string Name;
     int Level;
     int Life;
     std::string PlayerPath;
+    bool operator<(const info& other) const {
+        return No < other.No;
+    }
 };
+
 /// @brief Class for menu window management
 class hMenu
 {
@@ -75,7 +80,9 @@ private:
 	int ContinueMenuOption = 0;
 	bool start = false;	
 	int nameBoxOption = 0;
-    std::map < std::string, info> Path;
+    
+    std::map<std::string, info> Path;
+    std::map<info, std::string> dePath;
     std::string PathLocation = "./data/save/aPath.txt";
 private:
 	SaveBox SaveBoxOption = LOCATION;
@@ -91,10 +98,11 @@ private: /// Game Over HUD
     bool bPlayAgain = true;
 
 public: // Constructor & Destructor
+    
     hMenu();
     hMenu(cApp* app);
     ~hMenu();
-
+    
 public: // Initialization & Clean-up
     bool SetupTarget(cApp* app);
     bool InitMenu();
@@ -111,6 +119,7 @@ private: // Loaders
 	bool LoadAppOption();
 	bool LoadPauseOption();
 	bool LoadSaveOption();
+    bool LoadProceedOption();
 private: // Validators
     static int FixOption(int& value, int limit);
 
