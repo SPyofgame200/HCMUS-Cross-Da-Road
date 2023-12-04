@@ -7,8 +7,8 @@
 - **/data/music**: Store game music.
 - **/data/save**: Store game save files.
 - **/src**: Contains source code for the game.
-  
-### Project source codes
+
+## Project source codes
 
 ### Header Files
 
