@@ -28,7 +28,6 @@
     - [3.9 Game State Management](#39-game-state-management)
     - [3.10 Concurrency and Multithreading](#310-concurrency-and-multithreading)
     - [3.11 Data Storage and Persistence](#311-data-storage-and-persistence)
-      - [Data Storage Structure](#data-storage-structure)
   - [4. User Guide](#4-user-guide)
     - [4.1 Getting Started](#41-getting-started)
     - [4.2 Controls](#42-controls)
@@ -156,7 +155,7 @@ This game is inspired by the classic arcade game "Frogger" (1981).
 - **Game State Management:** The game engine manages the game states.
 - **Concurrency and Multithreading:** The game engine uses multithreading to handle user input and rendering.
 - **Data Storage and Persistence:** The game engine stores and loads game data.
-- [**Directory Structure**](../projectStandard.md): The directory structure of the project.
+- [**Directory Structure**](./standard/directoryStructure.md): The directory structure of the project.
 
 ### 3.2 Class Diagram (UML)
 
@@ -287,10 +286,11 @@ The main menu is the first screen that the player sees when they start the game.
 - **New Game:** Press `ENTER` to select the `New Game` option. Then enter your name in the input field and press `ENTER` to start a new game. Press `ESC` to go back to the main menu. (Use `Arrow Keys` to navigate between input field and `Start` button.)
 ![Alt text](./report/screenshots/new_game.png)
 - **Load Game:** Press `ENTER` to select the `Load Game` option. Then select a saved game and press `ENTER` to load the game. Press `ESC` to go back to the main menu.
+![Alt text](./report/screenshots/load_game.png)
 - **Settings:** Press `ENTER` to select the `Settings` option. Then toggle the `Music` option and press `ENTER` to save the settings. Press `ESC` to go back to the main menu.
 ![Alt text](./report/screenshots/settings.png)
 - **About us:** Press `ENTER` to select the `About us` option. Then press `ESC` to go back to the main menu.
-  ![Alt text](screenshots/about_us.png)
+  ![Alt text](./report/screenshots/about_us.png)
 
 - **Exit:** Press `ENTER` to select the `Exit` option. Then press `ENTER` to exit the game. Press `ESC` to go back to the main menu. (Use `Arrow Keys` to navigate between `Yes` and `No` options.)
 ![Alt text](./report/screenshots/exit.png)
