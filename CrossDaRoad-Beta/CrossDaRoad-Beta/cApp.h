@@ -38,12 +38,12 @@ private: // [Handle Component]
     hPlayer Player;
     hMapDrawer MapDrawer;
 
-private: // [Friend Property]
+private: // [Property] Friend
     friend class hMenu;
     friend class hPlayer;
     friend class hMapDrawer;
 
-private: // [Member Property]
+private: // [Property] Member
     std::string playerName;
     int nScore = 0;
     int nLife;
@@ -52,9 +52,7 @@ private: // [Member Property]
 public: // [Constructor] & [Destructor]
     cApp();
     ~cApp() override;
-    int GetLife() const;
-    void SetLife(int Life);
-    void SetPlayerName(std::string Nm);
+
 protected: // [Initializer] & [Disposer]
     bool GameInit();
     bool GameExit();
@@ -99,6 +97,9 @@ protected: // [File]
 
 private: // [Utility]
     void ForceSleep(float fTime);
+    int GetLife() const;
+    void SetLife(int Life);
+    void SetPlayerName(std::string Nm);
 };
 
 #endif // C_APP_H

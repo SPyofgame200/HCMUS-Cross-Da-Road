@@ -72,27 +72,27 @@
 
 - Here is a list of possible tags, arranged in the order of declaration in the class:
   - I. Core Group:
-    - `[Component]`: Manages the main information of the class.
-    - `[Instance]`: Get the current object.
     - `[Property]`: - - -
+    - `[Component]`: Manages the main information of the class.
+    - `[Accessor]`: Get the current object or its components.
   - III. Lifecycle Group:
     - `[Constructor]`: Initializes object variables upon creation.
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Disposer]`: Boolean functions used in destructors.
-    - `[Reseter]`: Helper function for resetting certain properties to default states.
-    - `[Core]`: Manipulation and control lifecycle core actions.
-  - IV.  Group:
-    - `[Evaluation]`: Calculation function that doesnt mutate the data.
+  - IV. Evaluation Group:
+    - `[Calculator]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
     - `[Checker]`: Boolean functions to check specific conditions.
     - `[Getter]`: Retrieves class data and properties.
   - V. Action Group:
-    - `[Loader]`: Boolean functions used to load and extract data.
+    - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Setter]`: Sets data or properties.
-    - `[Handler]`: Handler functions of the events
-    - `[Event]`: Events functions
-  - VI. Data Group:
+  - VI. Events Group:
+    - `[Core]`: Core events controller.
+    - `[Event]`: Events functions.
+    - `[Handler]`: Handler functions of the events.
+  - VII. Data Group:
     - `[File]`: Manages file-related operations.
     - `[Input]`: Handles class data input functionality.
     - `[Output]`: Manages class data output functionality.
@@ -134,6 +134,28 @@ private: /// [Constructor] & [Destructor]
 
 ### ∅.III. Table of contents
 
+## G. Class
+
+### G.1 - Class Tag
+
+### G.2 - Class Properties: `[Property]`
+
+> Declare properties in order:
+>
+> - Static Properties.
+> - Friend Properties.
+> - Member Properties.
+> - Unused Properties.
+
+### G.3 - Class Components: `[Component]`
+
+> Declare components in order:
+>
+> - Data Component
+> - Handler Component
+
+### G.4 - Class Instance
+
 ---
 ---
 ---
@@ -144,7 +166,7 @@ private: /// [Constructor] & [Destructor]
 
 ---
 
-### I-A. `[Static Property]`
+### I-A. `[Property]`
 
 Static properties are attributes or variables that belong to the class itself rather than instances of the class. Those properties are shared among all instances of the class.
 

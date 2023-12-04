@@ -41,21 +41,6 @@ cApp::~cApp()
     std::cerr << "cApp::~cApp(): Successfully destructed" << std::endl;
 }
 
-int cApp::GetLife() const
-{
-    return nLife;
-}
-
-void cApp::SetLife(int Life)
-{
-    nLife = Life;
-}
-
-void cApp::SetPlayerName(std::string Nm)
-{
-    playerName = Nm;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// INITIALIZER & CLEAN-UP //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -538,6 +523,22 @@ bool cApp::OnGameLoad(const std::string& pPath, const std::string& PlayerName)
 void cApp::ForceSleep(float fTime) 
 { 
     Sleep(static_cast<DWORD>(fTime)); 
+}
+
+
+int cApp::GetLife() const
+{
+    return nLife;
+}
+
+void cApp::SetLife(int Life)
+{
+    nLife = Life;
+}
+
+void cApp::SetPlayerName(std::string Nm)
+{
+    playerName = Nm;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
