@@ -50,7 +50,9 @@ private: // [Member Property]
 public: // [Constructor] & [Destructor]
     cApp();
     ~cApp() override;
-
+    int GetLife() const;
+    void SetLife(int Life);
+    void SetPlayerName(std::string Nm);
 protected: // [Initializer] & [Disposer]
     bool GameInit();
     bool GameExit();
@@ -82,14 +84,14 @@ protected: // [Event]
 
 private: // [Handler]
     bool DrawAllLanes() const;
-    bool DrawBigText(const std::string& sText, int x, int y);
-    bool DrawBigText1(const std::string& sText, int x, int y);
+    bool DrawBigText(const std::string& sText, int x, int y, int space = 0);
+    bool DrawBigText1(const std::string& sText, int x, int y, int space = 0);
     bool DrawStatusBar();
 
 protected: // [File]
     static std::string GetFilePathLocation(bool isSaven, std::string fileName);
     bool OnGameSave();
-    bool OnGameLoad(const std::string &pPath);
+    bool OnGameLoad(const std::string& pPath, const std::string& PlayerName);
 
 private: // [Utility]
     void ForceSleep(float fTime);

@@ -172,7 +172,8 @@ bool hMenu::LoadSaveOption()
 	{
 		case OK:
 			if (app->OnGameSave())
-			{
+			{   
+                isSave = false;
 				app->ResumeEngine();
 				OpenMenu();
 			}
@@ -188,12 +189,24 @@ bool hMenu::LoadSaveOption()
 
 bool hMenu::LoadProceedOption()
 {   
-    switch ()
+    int id = 0;
+    for (auto it :Path)
     {
-    default:
-        break;
+        if (id++ == ContinueMenuOption)
+        {   
+            app->GameInit();
+            app->GameReset();
+            app->OnGameLoad(it.second.PlayerPath, it.first);
+            app->MapLoader.LoadMapLevel();
+            app->Zone.SetPattern(
+                app->MapLoader.GetPlatformPattern().c_str(),
+                app->MapLoader.GetDangerPattern().c_str(),
+                app->MapLoader.GetBlockPattern().c_str()
+            );
+            return true;
+        }
     }
-    return true;
+    return false;
 }
 
 /// @brief Close menu on screen
@@ -275,17 +288,26 @@ bool hMenu::LoadListPlayer()
     std::ifstream fin(PathLocation);
     if (fin.is_open())
     {   
-        fin >> MAX; 
-        for(int i = 0; i < MAX; i++)
-        {   
-            info tmp;
-            fin >> tmp.Name;
-            fin >> tmp.Level;
-            fin >> tmp.Life;
-            fin >> tmp.PlayerPath;
-            tmp.No = i;
-            Path[tmp.Name] = tmp;
-            dePath[tmp] = tmp.Name;
+        if (fin >> MAX)
+        {
+            for(int i = 0; i < MAX; i++)
+            {   
+                info tmp;
+                if (fin >> tmp.Name >> tmp.Level >> tmp.Life >> tmp.PlayerPath)
+                {
+                    tmp.No = i;
+                    Path[tmp.Name] = tmp;
+                    dePath[tmp] = tmp.Name;
+                }
+                else
+                {
+                    std::cerr << "Can read data " << PathLocation << std::endl;
+                }
+            }
+        }
+        else 
+        {
+            std::cerr << "No save data found" << std::endl;
         }
         fin.close();
     }
@@ -293,26 +315,31 @@ bool hMenu::LoadListPlayer()
     {
         std::cerr << "Unable to open " << PathLocation << " for reading." << std::endl;
     }
+
     return true;
 }
 
 void hMenu::SetListPlayer()
 {   
+
     info Save;
     Save.Name = app->playerName;
     Save.Life = app->nLife;
     Save.Level = app->MapLoader.GetMapLevel();
     Save.PlayerPath = SaveLocation + Save.Name + ".txt";
+
     if (Path.count(Save.Name) == 1)
     {
         Path[Save.Name] = Save;
     }
     if (Path.size() == 5)
     {   
-        std::string Del = dePath.end()->second;
+        std::cerr << "SetListPlayer: " << std::endl;
+        std::string Del = dePath.rbegin()->second;
         Path.erase(Del);
-        dePath.erase(dePath.end());
+        dePath.erase(dePath.rbegin()->first);
     }
+
     Path[Save.Name] = Save;
 }
 
@@ -321,11 +348,12 @@ bool hMenu::SaveListPlayer()
     std::ofstream fout(PathLocation);
     if (fout.is_open()) {
         fout << Path.size() << std::endl;
+
         for (const auto& pair : Path) {
             fout << pair.second.Name << "\n";
             fout << pair.second.Level << "\n";
             fout << pair.second.Life << "\n";
-            fout << pair.second.PlayerPath << "\n";
+            fout << pair.second.PlayerPath << "\n"; 
         }
         fout.close();
         std::cout << "Data written to " << PathLocation << " successfully." << std::endl;
@@ -377,10 +405,19 @@ bool hMenu::UpdateProceed()
     if (app->IsKeyReleased(app::Key::RIGHT)) {
         FixOption(++ContinueMenuOption, 5);
     }
-    if (app->IsKeyReleased(app::Key::ENTER)) {
-        
-        eMenuOption = APP_GAME;
+    if (app->IsKeyReleased(app::Key::ESCAPE))
+    {
+        eMenuOption = APP_MENU;
     }
+    if (app->IsKeyReleased(app::Key::ENTER)) {
+        if (LoadProceedOption())
+        {
+            eMenuOption = APP_GAME;
+        }
+        else
+            std::cerr << "Unable to load proceed option." << std::endl;
+    }
+
     return true;
 }
 
@@ -470,6 +507,11 @@ bool hMenu::UpdateNameBox()
     }
     if (app->IsKeyReleased(app::Key::UP)) {
         nameBoxOption--;
+    }
+    if (app->IsKeyReleased(app::Key::ESCAPE))
+    {
+        eMenuOption = APP_MENU;
+        return true;
     }
     if (app->IsKeyReleased(app::Key::BACK))
     {
@@ -648,6 +690,7 @@ bool hMenu::Update(const float fElapsedTime)
             return UpdateAppMenu();
         case AppOption::APP_GAME:
             return app->OnGameUpdate(fElapsedTime);
+            std::cerr << "Update" << std::endl;
         default:
             std::cerr << "hMenu::Update(fElapsedTime=" << fElapsedTime << "):";
             std::cerr << "Menu went wrong" << std::endl;
@@ -711,13 +754,18 @@ bool hMenu::RenderProceed() const
     {
         app->DrawSprite(0, 0, Menu5);
     }
-    int PosX = 15;
-    int DetaPosX = 70;
+    int PosX = 20;
+    int DetaPosX = 66;
     for (auto it : Path)
     {   
-        app->DrawBigText1(it.second.Name, PosX, 65);
-        app->DrawBigText1("Lv:" + std::to_string(it.second.Level), PosX, 75);
-        app->DrawBigText1("Life:" + std::to_string(it.second.Life), PosX, 85);
+        if (it.second.Name.size() <= 6) {
+            app->DrawBigText1(it.second.Name, PosX, 65,1);
+        }
+        else {
+            app->DrawBigText1(it.second.Name, PosX, 65,3);
+        }
+        app->DrawBigText1("Level:" + std::to_string(it.second.Level), PosX, 75,2);
+        app->DrawBigText1("Life:" + std::to_string(it.second.Life), PosX, 85,2);
         PosX += DetaPosX;
     }
     app->SetPixelMode(app::Pixel::NORMAL);
