@@ -2,10 +2,9 @@
 
 ## Table of Contents
 
-- [Map Standard](#map-standard)
-  - [Table of Contents](#table-of-contents)
-  - [Map File Name](#map-file-name)
-  - [Map File Data](#map-file-data)
+- [Table of Contents](#table-of-contents)
+- [Map File Name](#map-file-name)
+- [Map File Data](#map-file-data)
 
 ## Map File Name
 
