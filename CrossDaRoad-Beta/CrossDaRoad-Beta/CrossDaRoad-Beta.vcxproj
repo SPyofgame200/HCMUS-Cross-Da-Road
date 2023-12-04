@@ -243,6 +243,7 @@
     <None Include="docs\mapStandard.md" />
     <None Include="docs\README.md" />
     <None Include="docs\standard\codingStandard.md" />
+    <None Include="docs\standard\codingStyle.md" />
     <None Include="docs\standard\documentation.md" />
     <None Include="docs\standard\classStandard.md" />
     <None Include="docs\standard\mapStandard.md" />

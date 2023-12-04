@@ -49,7 +49,7 @@ namespace app
         ifs.seekg(0, std::ios::beg);
 
         // Create entry
-        sEntry e;
+        Entry e;
         e.data = nullptr;
         e.nFileSize = static_cast<uint32_t>(p);
 
@@ -128,7 +128,7 @@ namespace app
             for (size_t j = 0; j < nFilePathSize; j++)
                 sFileName[j] = ifs.get();
 
-            sEntry e;
+            Entry e;
             e.data = nullptr;
             ifs.read(reinterpret_cast<char*>(&e.nID), sizeof(uint32_t));
             ifs.read(reinterpret_cast<char*>(&e.nFileSize), sizeof(uint32_t));
@@ -167,7 +167,7 @@ namespace app
     /// @brief Get stream buffer for file in pack (map)
     /// @param sFile File name
     /// @return Stream buffer for file in pack (map)
-    app::ResourcePack::sEntry ResourcePack::GetStreamBuffer(const std::string& sFile)
+    app::ResourcePack::Entry ResourcePack::GetStreamBuffer(const std::string& sFile)
     {
         return mapFiles[sFile];
     }

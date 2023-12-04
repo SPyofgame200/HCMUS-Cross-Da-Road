@@ -58,42 +58,42 @@ hPlayerUpdate& hPlayer::Update()
 
 cPlayerStatus& hPlayer::Status()
 {
-    return status;
+    return cStatus;
 }
 
 cPlayerPhysic& hPlayer::Physic()
 {
-    return physic;
+    return cPhysic;
 }
 
 cPlayerRecord& hPlayer::Record()
 {
-    return record;
+    return cRecord;
 }
 
 cPlayerMoment& hPlayer::Moment()
 {
-    return moment;
+    return cMoment;
 }
 
 const cPlayerStatus& hPlayer::Status() const
 {
-    return status;
+    return cStatus;
 }
 
 const cPlayerPhysic& hPlayer::Physic() const
 {
-    return physic;
+    return cPhysic;
 }
 
 const cPlayerRecord& hPlayer::Record() const
 {
-    return record;
+    return cRecord;
 }
 
 const cPlayerMoment& hPlayer::Moment() const
 {
-    return moment;
+    return cMoment;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,10 +130,10 @@ hPlayer::~hPlayer()
 /// @brief Reset player properties
 void hPlayer::Reset()
 {
-    status.Reset();
-    physic.Reset();
-    record.Reset();
-    moment.Reset();
+    cStatus.Reset();
+    cPhysic.Reset();
+    cRecord.Reset();
+    cMoment.Reset();
 }
 
 /// @brief Setup ptrApp pointer
@@ -200,10 +200,10 @@ bool hPlayer::IsKilled() const
 
 bool hPlayer::UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown)
 {
-    status.Modify(PlayerIntention::GO_LEFT, bLeft);
-    status.Modify(PlayerIntention::GO_RIGHT, bRight);
-    status.Modify(PlayerIntention::GO_UP, bUp);
-    status.Modify(PlayerIntention::GO_DOWN, bDown);
+    cStatus.Modify(PlayerIntention::GO_LEFT, bLeft);
+    cStatus.Modify(PlayerIntention::GO_RIGHT, bRight);
+    cStatus.Modify(PlayerIntention::GO_UP, bUp);
+    cStatus.Modify(PlayerIntention::GO_DOWN, bDown);
     return true;
 }
 
@@ -264,32 +264,32 @@ cZone* hPlayer::GetZone()
 }
 
 void hPlayer::Read(std::istream& input) {
-    input >> status;
-    input >> physic;
-    input >> record;
-    input >> moment;
+    input >> cStatus;
+    input >> cPhysic;
+    input >> cRecord;
+    input >> cMoment;
 }
 
 void hPlayer::Write(std::ostream& output) const {
-    output << status;
-    output << physic;
-    output << record;
-    output << moment;
+    output << cStatus;
+    output << cPhysic;
+    output << cRecord;
+    output << cMoment;
 }
 
 std::istream& operator>>(std::istream& input, hPlayer& player) {
-    input >> player.status;
-    input >> player.physic;
-    input >> player.record;
-    input >> player.moment;
+    input >> player.cStatus;
+    input >> player.cPhysic;
+    input >> player.cRecord;
+    input >> player.cMoment;
     return input;
 }
 
 std::ostream& operator<<(std::ostream& output, const hPlayer& player) {
-    output << player.status;
-    output << player.physic;
-    output << player.record;
-    output << player.moment;
+    output << player.cStatus;
+    output << player.cPhysic;
+    output << player.cRecord;
+    output << player.cMoment;
     return output;
 }
 

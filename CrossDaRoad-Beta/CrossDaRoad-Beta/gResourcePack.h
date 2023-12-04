@@ -26,7 +26,7 @@ namespace app
     {
     public:
         /// @brief  Structure for resource pack entry (file) information (ID, offset, size) and data (stream buffer)
-        struct sEntry : public std::streambuf
+        struct Entry : public std::streambuf
         {
             uint32_t nID;         ///< File ID in pack
             uint32_t nFileOffset; ///< File offset in pack
@@ -36,7 +36,7 @@ namespace app
         };
 
     private:
-        std::map<std::string, sEntry> mapFiles; ///< Map of files in pack (map) (key: file name, value: file entry)
+        std::map<std::string, Entry> mapFiles; ///< Map of files in pack (map) (key: file name, value: file entry)
 
     public: // Constructor & Destructor
         ResourcePack();
@@ -49,7 +49,7 @@ namespace app
         engine::Code ClearPack();
 
     public: // Getters
-        app::ResourcePack::sEntry GetStreamBuffer(const std::string& sFile);
+        app::ResourcePack::Entry GetStreamBuffer(const std::string& sFile);
     };
 
 }

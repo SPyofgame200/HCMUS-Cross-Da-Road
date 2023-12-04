@@ -286,7 +286,7 @@ bool cApp::OnPlayerDeath(float fTickTime)
     return false;
 }
 
-/// @brief Draw all lanes, render Player, draw status bar
+/// @brief Draw all lanes, render Player, draw cStatus bar
 /// @return Always returns true by default
 bool cApp::OnGameRender(bool bRenderPlayer)
 {
@@ -347,7 +347,7 @@ bool cApp::DrawBigText1(const std::string& sText, const int x, const int y)
     return true;
 }
 
-/// @brief Draw the status bar beside the game map
+/// @brief Draw the cStatus bar beside the game map
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
