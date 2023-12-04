@@ -28,11 +28,11 @@
 
 enum Button
 {
-    IDLING,                ///< The button is waiting for the next status
+    IDLING,                ///< The button is waiting for the next cStatus
     PRESSED,            ///< The button was actively pressed    
     HOLDING,            ///< The button is being continuously held down
     RELEASED,            ///< The button was released after being pressed
-    DISABLED_IDLING,    ///< The button is wating for the next status, even though being disabled
+    DISABLED_IDLING,    ///< The button is wating for the next cStatus, even though being disabled
     DISABLED_PRESSED,   ///< The button was pressed, but it is disabled
     DISABLED_HOLDING,   ///< The button is being held, but it is disabled
     DISABLED_RELEASED,    ///< The button was released, but it is disabled

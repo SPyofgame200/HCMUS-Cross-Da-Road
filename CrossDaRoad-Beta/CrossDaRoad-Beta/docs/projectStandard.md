@@ -6,6 +6,20 @@
 ---
 ---
 
+## Table of Contents
+
+- [Project Standard](#project-standard)
+  - [Table of Contents](#table-of-contents)
+  - [The meaning of the project standard](#the-meaning-of-the-project-standard)
+  - [The goals of the project standard](#the-goals-of-the-project-standard)
+    - [Rule Clarity and Memorability](#rule-clarity-and-memorability)
+    - [Reader-Friendly Code](#reader-friendly-code)
+    - [Community Consistency](#community-consistency)
+    - [Safe and Understandable Code](#safe-and-understandable-code)
+    - [Big-Picture Perspective](#big-picture-perspective)
+    - [Common-Sense Application](#common-sense-application)
+  - [Project Guidance](#project-guidance)
+
 ## The meaning of the project standard
 
 Coding standards are rules for writing code that help developers work together better. These rules make sure everyone uses the same style when writing code, which makes it easier for everyone to read and understand.

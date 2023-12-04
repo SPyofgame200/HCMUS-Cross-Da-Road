@@ -43,10 +43,10 @@ private: /// Componnets handlers
     static hPlayerRender hRender;
 
 private: /// Data management
-    cPlayerStatus status; // handle flag related data
-    cPlayerPhysic physic; // handle physical & collisions
-    cPlayerRecord record; // handle user saved data
-    cPlayerMoment moment; // handle time related data
+    cPlayerStatus cStatus; // handle flag related data
+    cPlayerPhysic cPhysic; // handle physical & collisions
+    cPlayerRecord cRecord; // handle user saved data
+    cPlayerMoment cMoment; // handle time related data
 
 public: /// Components getters
     static hPlayerHitbox& Hitbox();
@@ -91,7 +91,9 @@ public: // Logic-Render Control
 
 public: // Special
     void Sleep(float fTime);
-    cZone* GetZone();
+    cZone* GetDangerZone();
+    cZone* GetBlockedZone();
+    cZone* GetPlatformZone();
 
 public: // Input - Output
     void Read(std::istream& input);

@@ -277,5 +277,8 @@
     <None Include="docs\standard\projectStandard.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="docs\standard\codingStyle.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

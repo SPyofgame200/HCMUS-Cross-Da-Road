@@ -6,6 +6,51 @@
 ---
 ---
 
+## Table of Contents
+
+- [Class Organization](#class-organization)
+  - [Table of Contents](#table-of-contents)
+  - [∅. General Guidelines](#-general-guidelines)
+    - [∅.I. General Functions Naming](#i-general-functions-naming)
+    - [∅.II. Class Tags](#ii-class-tags)
+    - [∅.III. Table of contents](#iii-table-of-contents)
+  - [I. Class Components](#i-class-components)
+    - [I-A. `[Static Property]`](#i-a-static-property)
+    - [I-B. `[Data Component]`](#i-b-data-component)
+    - [I-C. `[Handler Component]`](#i-c-handler-component)
+    - [I-D. `[Instance]`](#i-d-instance)
+  - [II. Class Cores](#ii-class-cores)
+    - [II-A. `[Friend Property]`](#ii-a-friend-property)
+    - [II-B. `[Member Property]`](#ii-b-member-property)
+    - [II-C. `[Constructor]`](#ii-c-constructor)
+    - [II-D. `[Destructor]`](#ii-d-destructor)
+  - [III. Class Lifecycles](#iii-class-lifecycles)
+    - [III-A. `[Initializer]`](#iii-a-initializer)
+    - [III-B. `[Disposer]`](#iii-b-disposer)
+    - [III-C. `[Reseter]`](#iii-c-reseter)
+    - [III-D. `[Core]`](#iii-d-core)
+  - [IV. Class Verifications](#iv-class-verifications)
+    - [IV-A. `[Evaluation]`](#iv-a-evaluation)
+    - [IV-B. `[Validator]`](#iv-b-validator)
+    - [IV-C. `[Checker]`](#iv-c-checker)
+    - [IV-D. `[Getter]`](#iv-d-getter)
+  - [V. Class Action](#v-class-action)
+    - [V-A. `[Loader]`](#v-a-loader)
+    - [V-B. `[Setter]`](#v-b-setter)
+    - [V-C. `[Handler]`](#v-c-handler)
+    - [V-D. `[Event]`](#v-d-event)
+  - [VI. Class Data](#vi-class-data)
+    - [VI-A. `[File]`](#vi-a-file)
+    - [VI-B. `[Input]`](#vi-b-input)
+    - [VI-C. `[Output]`](#vi-c-output)
+    - [VI-D. `[Debug]`](#vi-d-debug)
+  - [Category: Validators](#category-validators)
+  - [Category: Checkers](#category-checkers)
+  - [Category: Getters](#category-getters)
+    - [Category: Constant Getters](#category-constant-getters)
+    - [Category: Properties Getters](#category-properties-getters)
+    - [Category: Utilities Getters](#category-utilities-getters)
+
 ## ∅. General Guidelines
 
 ---
@@ -26,28 +71,38 @@
 - You can add messages after the tag
 
 - Here is a list of possible tags, arranged in the order of declaration in the class:
-  - I. Core Group:
+  - I. Data Group:
+    - `[Alias]`: Define aliases with keyword `using`, `typedef`
+    - `[Property]`: Internal independent data.
     - `[Component]`: Manages the main information of the class.
-    - `[Instance]`: Get the current object.
-    - `[Property]`: - - -
   - III. Lifecycle Group:
+    - `[Instance]`: Get the current object or its components.
     - `[Constructor]`: Initializes object variables upon creation.
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Disposer]`: Boolean functions used in destructors.
-    - `[Reseter]`: Helper function for resetting certain properties to default states.
-    - `[Core]`: Manipulation and control lifecycle core actions.
-  - IV.  Group:
-    - `[Evaluation]`: Calculation function that doesnt mutate the data.
+  - IV. Operator Group:
+    - `[Unary]`
+    - `[Arithmetic]`
+    - `[Compound]`
+    - `[Relational]`
+    - `[Logical]`
+    - `[Bitwise]`
+    - `[Casting]`
+  - V. Accessor Group:
+    - `[Calculator]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
     - `[Checker]`: Boolean functions to check specific conditions.
     - `[Getter]`: Retrieves class data and properties.
-  - V. Action Group:
-    - `[Loader]`: Boolean functions used to load and extract data.
+    - `[Viewer]`: Show the content data without changing.
+  - VI. Mutator Group:
+    - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Setter]`: Sets data or properties.
-    - `[Handler]`: Handler functions of the events
-    - `[Event]`: Events functions
-  - VI. Data Group:
+    - `[Handler]`: Modify internal states, including: loader, saver, updater, render, post-processing.
+  - VII. Events Group:
+    - `[Core]`: Core events controller.
+    - `[Event]`: Events functions.
+  - VIII. Stream Group:
     - `[File]`: Manages file-related operations.
     - `[Input]`: Handles class data input functionality.
     - `[Output]`: Manages class data output functionality.
@@ -89,6 +144,38 @@ private: /// [Constructor] & [Destructor]
 
 ### ∅.III. Table of contents
 
+## G. Class
+
+### G.1 - Class Tag
+
+### G.2 - Class Alias
+
+> Declare aliases in order:
+>
+> `using`
+> `typedef`
+>
+> Do not alias for namespace, or atleast prefer private use with comments.
+
+### G.3 - Class Properties: `[Property]`
+
+> Declare properties in order:
+>
+> - Extern Properties.
+> - Static Properties.
+> - Friend Properties.
+> - Member Properties.
+> - Unused Properties.
+
+### G.4 - Class Components: `[Component]`
+
+> Declare components in order:
+>
+> - Data Component
+> - Handler Component
+
+### G.5 - Class Instance
+
 ---
 ---
 ---
@@ -99,7 +186,7 @@ private: /// [Constructor] & [Destructor]
 
 ---
 
-### I-A. `[Static Property]`
+### I-A. `[Property]`
 
 Static properties are attributes or variables that belong to the class itself rather than instances of the class. Those properties are shared among all instances of the class.
 
@@ -416,8 +503,8 @@ public: // [Constructor] & [Destructor]
     ~Foo();
 
 public: // [Initializer]
-    bool Init();   
-    bool Create(); 
+    bool Init();
+    bool Create();
 
 public: // [Getter]
     int GetX() const; // Constant getter declaration

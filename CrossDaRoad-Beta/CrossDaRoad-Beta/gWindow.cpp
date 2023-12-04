@@ -17,7 +17,7 @@ namespace app
     //////////////////////////////////////// PROPERTIES ///////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    GameEngine* Window::sge = nullptr;
+    GameEngine* Window::ptrGameEngine = nullptr;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////// CONSTRUCTOR & DESTRUCTOR ////////////////////////////////////////
@@ -27,14 +27,14 @@ namespace app
     Window::Window()
     {
         windowHandler = nullptr;
-        this->sge = nullptr;
+        this->ptrGameEngine = nullptr;
     }
 
     /// @brief Parameterized constructor with a pointer to the game engine
-    /// @param sge Pointer to the game engine
-    Window::Window(GameEngine* sge)
+    /// @param ptrGameEngine Pointer to the game engine
+    Window::Window(GameEngine* ptrGameEngine)
     {
-        Create(sge);
+        Create(ptrGameEngine);
     }
     /// @brief Destructor
     Window::~Window()
@@ -48,30 +48,30 @@ namespace app
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     /// @brief Create the window
-    /// @param sge Pointer to the game engine
+    /// @param ptrGameEngine Pointer to the game engine
     /// @return True if the window was created successfully, false otherwise
-    bool Window::Create(GameEngine* sge)
+    bool Window::Create(GameEngine* ptrGameEngine)
     {
         // Setup Window Target for Event Handling
-        if (!SetupTarget(sge)) {
-            std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+        if (!SetupTarget(ptrGameEngine)) {
+            std::cerr << "Window::WindowCreate(*ptrGameEngine" << (ptrGameEngine == nullptr ? "= nullptr" : "") << "):";
             std::cerr << "Failed to setup a window target" << std::endl;
             return false;
         }
 
         // Register the window class
         if (!RegisterWindowClass()) {
-            std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+            std::cerr << "Window::WindowCreate(*ptrGameEngine" << (ptrGameEngine == nullptr ? "= nullptr" : "") << "):";
             std::cerr << "Failed to register a window class" << std::endl;
             return false;
         }
 
         // Update viewport
-        sge->CreateViewport();
+        ptrGameEngine->CreateViewport();
 
         // Create the main window
         if (!CreateMainWindow()) {
-            std::cerr << "Window::WindowCreate(*sge" << (sge == nullptr ? "= nullptr" : "") << "):";
+            std::cerr << "Window::WindowCreate(*ptrGameEngine" << (ptrGameEngine == nullptr ? "= nullptr" : "") << "):";
             std::cerr << "Failed to create a main window" << std::endl;
             return false;
         }
@@ -185,14 +185,14 @@ namespace app
     }
 
     /// @brief Initialize the window target
-    /// @param sge Pointer to the game engine
+    /// @param ptrGameEngine Pointer to the game engine
     /// @return True if the window target was initialized successfully, false otherwise
-    bool Window::SetupTarget(GameEngine* sge)
+    bool Window::SetupTarget(GameEngine* ptrGameEngine)
     {
-        if (sge == nullptr) {
+        if (ptrGameEngine == nullptr) {
             return false;
         }
-        this->sge = sge;
+        this->ptrGameEngine = ptrGameEngine;
         return true;
     }
 
@@ -253,7 +253,7 @@ namespace app
         constexpr int windowY = 27;
 
         // Calculate the window client size
-        RECT windowRect = { 0, 0, sge->WindowWidth(), sge->WindowHeight() };
+        RECT windowRect = { 0, 0, ptrGameEngine->WindowWidth(), ptrGameEngine->WindowHeight() };
         AdjustWindowRectEx(&windowRect, style, FALSE, extendedStyle);
         const int width = windowRect.right - windowRect.left;
         const int height = windowRect.bottom - windowRect.top;
@@ -269,7 +269,7 @@ namespace app
             nullptr,                  // Handle to parent window (none in this case)
             nullptr,                  // Handle to menu (none in this case)
             GetModuleHandle(nullptr), // Handle to application instance
-            sge // Pointer to user-defined data (typically used for storing object instance)
+            ptrGameEngine // Pointer to user-defined data (typically used for storing object instance)
         );
         return true;
     }
@@ -287,27 +287,27 @@ namespace app
     /// @return  0 if the message was handled, -1 otherwise
     LRESULT CALLBACK Window::WindowEvent(const HWND windowHandler, const UINT uMsg, const WPARAM wParam, const LPARAM lParam)
     {
-        if (uMsg == WM_CREATE) { // *sge is now existed, extract the app pointer from lParam
+        if (uMsg == WM_CREATE) { // *ptrGameEngine is now existed, extract the app pointer from lParam
             const LPCREATESTRUCT windowInfo = reinterpret_cast<LPCREATESTRUCT>(lParam);
-            sge = static_cast<GameEngine*>(windowInfo->lpCreateParams);
-            sge->OnTriggerEvent(engine::CREATE_WINDOW_EVENT);
+            ptrGameEngine = static_cast<GameEngine*>(windowInfo->lpCreateParams);
+            ptrGameEngine->OnTriggerEvent(engine::CREATE_WINDOW_EVENT);
             return 0;
         }
 
-        if (!sge) {
+        if (!ptrGameEngine) {
             std::cerr << "Window::WindowEvent():";
-            std::cerr << "something went wrong, *sge is unexpected a nullptr after the WM_CREATE event" << std::endl;
+            std::cerr << "something went wrong, *ptrGameEngine is unexpected a nullptr after the WM_CREATE event" << std::endl;
             return -1;
         }
 
         // Handle Window Event
-        sge->OnTriggerEvent(engine::PRE_WINDOW_UPDATE_EVENT);
+        ptrGameEngine->OnTriggerEvent(engine::PRE_WINDOW_UPDATE_EVENT);
         const bool bNoEvent = !HandleWindowEvent(uMsg, wParam, lParam);
-        sge->OnTriggerEvent(engine::POST_WINDOW_UPDATE_EVENT);
+        ptrGameEngine->OnTriggerEvent(engine::POST_WINDOW_UPDATE_EVENT);
 
         // Calling handling function on default
         if (bNoEvent) {
-            sge->OnTriggerEvent(engine::NO_WINDOW_UPDATE_EVENT);
+            ptrGameEngine->OnTriggerEvent(engine::NO_WINDOW_UPDATE_EVENT);
             return DefWindowProc(windowHandler, uMsg, wParam, lParam);
         }
         return 0;
@@ -354,11 +354,11 @@ namespace app
     {
         switch (uMsg) {
             case WM_CLOSE:
-                sge->bEngineRunning = false;
+                ptrGameEngine->bEngineRunning = false;
                 return true;
             case WM_DESTROY:
-                sge->OnTriggerEvent(engine::DESTROY_WINDOW_EVENT);
-                sge->OnForceDestroyEvent();
+                ptrGameEngine->OnTriggerEvent(engine::DESTROY_WINDOW_EVENT);
+                ptrGameEngine->OnForceDestroyEvent();
                 PostQuitMessage(0);
                 return true;
         }
@@ -373,16 +373,16 @@ namespace app
     {
         switch (uMsg) {
             case WM_SETFOCUS:
-                sge->keyboard.SetFocus(true);
+                ptrGameEngine->keyboard.SetFocus(true);
                 return true;
             case WM_KILLFOCUS:
-                sge->keyboard.SetFocus(false);
+                ptrGameEngine->keyboard.SetFocus(false);
                 return true;
             case WM_KEYDOWN:
-                sge->keyboard.UpdateKey(wParam, true);
+                ptrGameEngine->keyboard.UpdateKey(wParam, true);
                 return true;
             case WM_KEYUP:
-                sge->keyboard.UpdateKey(wParam, false);
+                ptrGameEngine->keyboard.UpdateKey(wParam, false);
                 return true;
         }
         return false;
@@ -403,13 +403,13 @@ namespace app
                 break;
             case SIZE_MINIMIZED:
                 std::cerr << "The window is minimized: Automatically pausing the game" << std::endl;
-                sge->OnForcePauseEvent();
+                ptrGameEngine->OnForcePauseEvent();
                 break;
             case SIZE_RESTORED:
                 std::cerr << "The window is reopened (width=" << width << ", height=" << height << ")" << std::endl;
                 break;
         }
-        sge->OnTriggerEvent(engine::RESIZE_WINDOW_EVENT);
+        ptrGameEngine->OnTriggerEvent(engine::RESIZE_WINDOW_EVENT);
         return true;
     }
 

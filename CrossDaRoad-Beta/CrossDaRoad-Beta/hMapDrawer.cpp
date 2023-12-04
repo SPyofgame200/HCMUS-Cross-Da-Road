@@ -212,7 +212,9 @@ bool hMapDrawer::DrawGraphic(const GraphicCell &Cell, const std::string& sName, 
 
 void hMapDrawer::SetHitBox(const GraphicCell& Cell) const
 {
-    app->Zone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+    app->cDangerZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+    app->cBlockedZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+    app->cPlatformZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
 }
 //=================================================================================================
 

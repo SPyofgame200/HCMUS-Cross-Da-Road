@@ -24,15 +24,15 @@ namespace app
     {
     private: /// Properties
         HWND windowHandler;
-        static GameEngine* sge;
+        static GameEngine* ptrGameEngine;
 
     public: // Constructors & Destructor
         Window();
-        Window(GameEngine* sge);
+        Window(GameEngine* ptrGameEngine);
         ~Window();
 
     public: // Constructor & Destructor functions
-        bool Create(GameEngine* sge);
+        bool Create(GameEngine* ptrGameEngine);
         bool Destroy() const;
 
     public: // Getters
@@ -47,7 +47,7 @@ namespace app
         static bool HandleMessage();
 
     private: /// Internalities
-        bool SetupTarget(GameEngine* sge);
+        bool SetupTarget(GameEngine* ptrGameEngine);
         static bool RegisterWindowClass();
         bool CreateMainWindow();
 

@@ -28,7 +28,9 @@
 class cApp final : public app::GameEngine
 {
 private: // [Data Component]
-    cZone Zone;
+    cZone cDangerZone;
+    cZone cPlatformZone;
+    cZone cBlockedZone;
     cMapLoader MapLoader;
 
 private: // [Handle Component]
@@ -36,12 +38,12 @@ private: // [Handle Component]
     hPlayer Player;
     hMapDrawer MapDrawer;
 
-private: // [Friend Property]
+private: // [Property] Friend
     friend class hMenu;
     friend class hPlayer;
     friend class hMapDrawer;
 
-private: // [Member Property]
+private: // [Property] Member
     std::string playerName;
     int nScore = 0;
     int nLife;
@@ -50,15 +52,14 @@ private: // [Member Property]
 public: // [Constructor] & [Destructor]
     cApp();
     ~cApp() override;
-    int GetLife() const;
-    void SetLife(int Life);
-    void SetPlayerName(std::string Nm);
+
 protected: // [Initializer] & [Disposer]
     bool GameInit();
     bool GameExit();
 
 protected: // [Reseter]
     bool GameReset();
+    bool GameLoad();
     bool GameNext();
     bool GamePrev();
 
@@ -79,7 +80,7 @@ protected: // [Evaluation]
 
 protected: // [Event]
     bool OnGameUpdate(float fElapsedTime);
-    bool OnPlayerDeath(float fTickTime);
+    bool OnPlayerDeath();
     bool OnGameRender(bool bRenderPlayer = false);
 
 private: // [Handler]
@@ -87,6 +88,7 @@ private: // [Handler]
     bool DrawBigText(const std::string& sText, int x, int y, int space = 0);
     bool DrawBigText1(const std::string& sText, int x, int y, int space = 0);
     bool DrawStatusBar();
+    bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
 
 protected: // [File]
     static std::string GetFilePathLocation(bool isSaven, std::string fileName);
@@ -95,6 +97,9 @@ protected: // [File]
 
 private: // [Utility]
     void ForceSleep(float fTime);
+    int GetLife() const;
+    void SetLife(int Life);
+    void SetPlayerName(std::string Nm);
 };
 
 #endif // C_APP_H

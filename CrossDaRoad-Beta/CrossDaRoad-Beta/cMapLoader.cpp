@@ -95,7 +95,7 @@ void cMapLoader::UpdatePattern()
         if (sprite.IsBlocked()) {
             blockPattern += sprite.GetCode();
         }
-        if (sprite.IsDanger()) {
+        if (sprite.IsEnabled()) {
             dangerPattern += sprite.GetCode();
         }
         std::cout << sprite.ShowData() << std::endl;
@@ -220,7 +220,7 @@ std::string cMapLoader::ShowMapLevel() const
 /// @brief Getter for map info in string
 std::string cMapLoader::ShowMapInfo() const
 {
-    const std::string info = "- Level<" + ShowMapLevel() + ">: " + GetMapName() + " | describe: " + GetMapDescription();
+    const std::string info = "- Level<" + ShowMapLevel() + ">: \"" + GetMapName() + " map \" - ";// +" | describe: " + GetMapDescription();
     return info;
 }
 

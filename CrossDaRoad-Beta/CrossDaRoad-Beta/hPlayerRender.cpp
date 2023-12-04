@@ -75,25 +75,8 @@ bool hPlayerRender::OnRenderPlayer() const
     return true;
 }
 
-/// @brief Render player death animation to screen
-/// @return Always true by default
-bool hPlayerRender::OnRenderPlayerDeath()
-{
-    const int nID = ptrPlayer->Moment().GetAnimationID();
-    const std::string sPlayerName = "froggy_death" + std::to_string(nID);
-    const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
-    ptrPlayer->Draw(sPlayerName, true, true);
-    if (ptrPlayer->Moment().NextAnimation()) {
-        return true;
-    }
-    return true;
-}
-
 bool hPlayerRender::OnRender()
 {
-    if (ptrPlayer->Status().IsDeath()) {
-        return OnRenderPlayerDeath();
-    }
     if (ptrPlayer->Status().IsIdling()) {
         return OnRenderPlayerIdle();
     }

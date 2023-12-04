@@ -151,7 +151,7 @@ namespace app
         return false;
     }
 
-    /// @brief Called in each game loop, for initializations, physic updates and hardware interactions
+    /// @brief Called in each game loop, for initializations, cPhysic updates and hardware interactions
     /// @param fTickTime The current time since the engine creation.
     /// @return Always returns false by default.
     bool GameEngine::OnFixedUpdateEvent(float fTickTime)

@@ -25,11 +25,13 @@ constexpr float fConst = 2.0f;
 cApp::cApp()
 {
     SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
-    Zone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cDangerZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cBlockedZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cPlatformZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     Player.SetupTarget(this);
     MapDrawer.SetupTarget(this);
     Menu.InitMenu();
-    GameInit();
+    GameInit(); 
 }
 /// @brief Default destructor exit menu and game
 cApp::~cApp()
@@ -39,23 +41,6 @@ cApp::~cApp()
     std::cerr << "cApp::~cApp(): Successfully destructed" << std::endl;
 }
 
-int cApp::GetLife() const
-{
-    return nLife;
-}
-
-void cApp::SetLife(int Life)
-{
-    nLife = Life;
-}
-
-void cApp::SetPlayerName(std::string Nm)
-{
-    playerName = Nm;
-}
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// INITIALIZER & CLEAN-UP //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,12 +49,14 @@ void cApp::SetPlayerName(std::string Nm)
 /// @return True if success, false otherwise
 bool cApp::GameInit()
 {
-    using namespace app_const;
-    fTimeSinceStart = 0;
-    sAppName = APP_NAME;
+    sAppName = app_const::APP_NAME;
     nScore = 0;
-    nLife = 99;
+    nLife = 3;
     MapLoader.Init();
+    cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
+    GameReset();
     ResumeEngine();
     return true;
 }
@@ -89,29 +76,31 @@ bool cApp::GameExit()
 /// @return Always returns true by default
 bool cApp::GameReset()
 {
+    sAppName = app_const::APP_NAME;
     fTimeSinceStart = 0.0f;
 
-    Player.Status().SetSituation(PlayerSituation::ALIVE);
-    sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
-    Zone.CreateZone(ScreenWidth(), ScreenHeight());
     Player.Reset();
     cFrameManager::GetInstance().Reset();
-
-    Clear(app::BLACK);
-    MapLoader.LoadMapLevel();
-    Zone.SetPattern(
-        MapLoader.GetPlatformPattern().c_str(),
-        MapLoader.GetDangerPattern().c_str(),
-        MapLoader.GetBlockPattern().c_str()
-    );
     return true;
 }
+bool cApp::GameLoad()
+{
+    sAppName = app_const::APP_NAME + std::string(1, ' ') + MapLoader.ShowMapInfo();
+    Clear(app::BLACK);
+    MapLoader.LoadMapLevel();
+    cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());
+    cBlockedZone.SetPattern(MapLoader.GetBlockPattern().c_str());
+    cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str());
+    return true;
+}
+
 /// @brief Go to next map level
 /// @return Always returns true by default
 bool cApp::GameNext()
 {
     MapLoader.NextLevel();
     GameReset();
+    GameLoad();
     return true;
 }
 /// @brief Go to previous map level
@@ -120,6 +109,7 @@ bool cApp::GamePrev()
 {
     MapLoader.PrevLevel();
     GameReset();
+    GameLoad();
     return true;
 }
 
@@ -157,6 +147,11 @@ bool cApp::OnFixedUpdateEvent(float fTickTime)
 /// @param fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
+    if (Menu.IsOnGame() && nLife <= 0) {
+        Menu.UpdateEndGame();
+        return true;
+    }
+ 
     if (!Menu.Update(fElapsedTime)) {
         return false;
     }
@@ -174,6 +169,12 @@ bool cApp::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateEla
 /// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
 {
+    if (Menu.IsOnGame() && nLife <= 0) {
+        OnGameRender();
+        Menu.RenderEndGame();
+        return true;
+    }
+
     if (!Menu.Render()) {
         return false;
     }
@@ -182,10 +183,6 @@ bool cApp::OnRenderEvent()
 /// @brief Event that called when application is paused
 bool cApp::OnPauseEvent(float fTickTime)
 {
-    if (IsEnginePause() && Player.Status().IsDeath()) { /// handle death pausing event
-        return OnPlayerDeath(fTickTime);
-    }
-
     if (IsKeyReleased(app::Key::ESCAPE)) {
         if (Menu.HandlePause(IsEnginePause())) {
             PauseEngine();
@@ -270,42 +267,57 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         return GameNext();
     }
     if (Player.IsForceKilled() || Player.IsKilled()) {
-        --nLife;
         Player.Status().SetSituation(PlayerSituation::DEATH);
-        Player.Moment().StartAnimation();
-        PauseEngine();
-        OnPlayerDeath(fTimeSinceStart);
-        return true;
+        return OnPlayerDeath();
     }
 
     return true;
 }
 /// @brief Update Player when Player is killed
 /// @return Always returns true by default
-bool cApp::OnPlayerDeath(float fTickTime)
+bool cApp::OnPlayerDeath()
 {
-    if (Player.Moment().IsStopAnimation()) {
-        if (nLife <= 0) {
-            Menu.UpdateEndGame();
-            OnGameRender();
-            Menu.RenderEndGame();
-            return false;
-        }
-        ResumeEngine();
-        GameReset();
-        Player.Reset();
-        return true;
+    for (int nID = 1; nID <= 6; ++nID)
+    {
+        const std::string sPlayerName = "froggy_death" + std::to_string(nID);
+        const auto froggy = cAssetManager::GetInstance().GetSprite(sPlayerName);
+        Draw(sPlayerName, true, true);
+        Sleep(150);
     }
-    if (Player.Status().IsDeath()) {
-        Player.Moment().UpdateFrame(fTickTime, GetFrameDelay());
-        Player.OnUpdate();
-        OnGameRender(true);
-        return false;
-    }
-    return false;
+    GameReset();
+    GameLoad();
+    Player.Reset();
+    --nLife;
+    return true;
 }
 
-/// @brief Draw all lanes, render Player, draw status bar
+
+bool cApp::Draw(const std::string& sSpriteName, bool bReloadMap, bool bForceRender)
+{
+    const auto froggy = cAssetManager::GetInstance().GetSprite(sSpriteName);
+    if (froggy == nullptr) {
+        std::cerr << "WTF, cant found " << sSpriteName << std::endl;
+    }
+
+    if (bReloadMap) {
+        DrawAllLanes();
+    }
+    SetPixelMode(app::Pixel::MASK);
+    constexpr float nCellSize = static_cast<float>(app_const::CELL_SIZE);
+    const float fPosX = Player.Physic().GetPlayerAnimationPositionX();
+    const float fPosY = Player.Physic().GetPlayerAnimationPositionY();
+    const int32_t frogXPosition = static_cast<int32_t>(fPosX * nCellSize);
+    const int32_t frogYPosition = static_cast<int32_t>(fPosY * nCellSize);
+    DrawSprite(frogXPosition, frogYPosition, froggy);
+    SetPixelMode(app::Pixel::NORMAL);
+    if (bForceRender) {
+        DrawStatusBar();
+        RenderTexture();
+    }
+    return true;
+}
+
+/// @brief Draw all lanes, render Player, draw cStatus bar
 /// @return Always returns true by default
 bool cApp::OnGameRender(bool bRenderPlayer)
 {
@@ -366,7 +378,7 @@ bool cApp::DrawBigText1(const std::string& sText, const int x, const int y, int 
     return true;
 }
 
-/// @brief Draw the status bar beside the game map
+/// @brief Draw the cStatus bar beside the game map
 /// @return Always returns true by default
 bool cApp::DrawStatusBar()
 {
@@ -519,6 +531,22 @@ bool cApp::OnGameLoad(const std::string& pPath, const std::string& PlayerName)
 void cApp::ForceSleep(float fTime) 
 { 
     Sleep(static_cast<DWORD>(fTime)); 
+}
+
+
+int cApp::GetLife() const
+{
+    return nLife;
+}
+
+void cApp::SetLife(int Life)
+{
+    nLife = Life;
+}
+
+void cApp::SetPlayerName(std::string Nm)
+{
+    playerName = Nm;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
