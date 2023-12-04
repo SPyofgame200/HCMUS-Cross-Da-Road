@@ -74,7 +74,7 @@ bool cApp::GameExit()
 /// @return Always returns true by default
 bool cApp::GameReset()
 {
-    sAppName = "Cross Da Road " + MapLoader.ShowMapInfo();
+    sAppName = app_const::APP_NAME;
     fTimeSinceStart = 0.0f;
     nScore = 0;
     nLife = 3;
@@ -85,6 +85,7 @@ bool cApp::GameReset()
 }
 bool cApp::GameLoad()
 {
+    sAppName = app_const::APP_NAME + std::string(1, ' ') + MapLoader.ShowMapInfo();
     Clear(app::BLACK);
     MapLoader.LoadMapLevel();
     cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());

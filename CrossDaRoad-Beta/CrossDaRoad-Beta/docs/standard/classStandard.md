@@ -81,20 +81,28 @@
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Disposer]`: Boolean functions used in destructors.
-  - IV. Accessor Group:
+  - IV. Operator Group:
+    - `[Unary]`
+    - `[Arithmetic]`
+    - `[Compound]`
+    - `[Relational]`
+    - `[Logical]`
+    - `[Bitwise]`
+    - `[Casting]`
+  - V. Accessor Group:
     - `[Calculator]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
     - `[Checker]`: Boolean functions to check specific conditions.
     - `[Getter]`: Retrieves class data and properties.
     - `[Viewer]`: Show the content data without changing.
-  - V. Mutator Group:
+  - VI. Mutator Group:
     - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Setter]`: Sets data or properties.
     - `[Handler]`: Modify internal states, including: loader, saver, updater, render, post-processing.
-  - VI. Events Group:
+  - VII. Events Group:
     - `[Core]`: Core events controller.
     - `[Event]`: Events functions.
-  - VII. Stream Group:
+  - VIII. Stream Group:
     - `[File]`: Manages file-related operations.
     - `[Input]`: Handles class data input functionality.
     - `[Output]`: Manages class data output functionality.

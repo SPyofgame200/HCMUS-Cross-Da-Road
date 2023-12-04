@@ -220,7 +220,7 @@ std::string cMapLoader::ShowMapLevel() const
 /// @brief Getter for map info in string
 std::string cMapLoader::ShowMapInfo() const
 {
-    const std::string info = "- Level<" + ShowMapLevel() + ">: " + GetMapName() + " | describe: " + GetMapDescription();
+    const std::string info = "- Level<" + ShowMapLevel() + ">: \"" + GetMapName() + " map \" - ";// +" | describe: " + GetMapDescription();
     return info;
 }
 
