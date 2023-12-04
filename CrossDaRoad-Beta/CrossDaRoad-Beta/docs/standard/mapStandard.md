@@ -3,9 +3,9 @@
 ## Table of Contents
 
 - [Map Standard](#map-standard)
-    - [Table of Contents](#table-of-contents)
-    - [Map File Name](#map-file-name)
-    - [Map File Data](#map-file-data)
+  - [Table of Contents](#table-of-contents)
+  - [Map File Name](#map-file-name)
+  - [Map File Data](#map-file-data)
 
 ## Map File Name
 
@@ -59,7 +59,7 @@ x....x.....x....x... 0
 x................x.. 0
 #
 $ x sprite=block
-: block=true danger=false platformspeed=0.0 
+: block=true danger=false platformspeed=0.0
 : drawY=0 drawX=0
 $ . sprite=road
 : block=false platformspeed=0.0 danger=false
@@ -67,7 +67,7 @@ $ . sprite=road
 $ < background=road sprite=car1
 : platformspeed=5.0 block=false danger=true
 $ @ sprite=car2 background=road
-: danger=true block=false platformspeed=5.0 
+: danger=true block=false platformspeed=5.0
 : drawY=1 drawX=0 id = 0
 #
 music="ncs0"
