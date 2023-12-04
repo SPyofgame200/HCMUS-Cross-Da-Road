@@ -31,7 +31,7 @@ cApp::cApp()
     Player.SetupTarget(this);
     MapDrawer.SetupTarget(this);
     Menu.InitMenu();
-    GameInit();
+    GameInit(); 
 }
 /// @brief Default destructor exit menu and game
 cApp::~cApp()

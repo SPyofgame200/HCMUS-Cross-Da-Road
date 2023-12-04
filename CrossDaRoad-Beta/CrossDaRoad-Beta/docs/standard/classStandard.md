@@ -71,28 +71,30 @@
 - You can add messages after the tag
 
 - Here is a list of possible tags, arranged in the order of declaration in the class:
-  - I. Core Group:
-    - `[Property]`: - - -
+  - I. Data Group:
+    - `[Alias]`: Define aliases with keyword `using`, `typedef`
+    - `[Property]`: Internal independent data.
     - `[Component]`: Manages the main information of the class.
-    - `[Accessor]`: Get the current object or its components.
   - III. Lifecycle Group:
+    - `[Instance]`: Get the current object or its components.
     - `[Constructor]`: Initializes object variables upon creation.
     - `[Destructor]`: Manages cleaning and releases resources upon destruction.
     - `[Initializer]`: Boolean functions used in constructors.
     - `[Disposer]`: Boolean functions used in destructors.
-  - IV. Evaluation Group:
+  - IV. Accessor Group:
     - `[Calculator]`: Calculation function that doesnt mutate the data.
     - `[Validator]`: Boolean functions that validate certain actions.
     - `[Checker]`: Boolean functions to check specific conditions.
     - `[Getter]`: Retrieves class data and properties.
-  - V. Action Group:
+    - `[Viewer]`: Show the content data without changing.
+  - V. Mutator Group:
     - `[Reseter]`: Helper function for resetting certain properties to default states.
     - `[Setter]`: Sets data or properties.
+    - `[Handler]`: Modify internal states, including: loader, saver, updater, render, post-processing.
   - VI. Events Group:
     - `[Core]`: Core events controller.
     - `[Event]`: Events functions.
-    - `[Handler]`: Handler functions of the events.
-  - VII. Data Group:
+  - VII. Stream Group:
     - `[File]`: Manages file-related operations.
     - `[Input]`: Handles class data input functionality.
     - `[Output]`: Manages class data output functionality.
@@ -138,23 +140,33 @@ private: /// [Constructor] & [Destructor]
 
 ### G.1 - Class Tag
 
-### G.2 - Class Properties: `[Property]`
+### G.2 - Class Alias
+
+> Declare aliases in order:
+>
+> `using`
+> `typedef`
+>
+> Do not alias for namespace, or atleast prefer private use with comments.
+
+### G.3 - Class Properties: `[Property]`
 
 > Declare properties in order:
 >
+> - Extern Properties.
 > - Static Properties.
 > - Friend Properties.
 > - Member Properties.
 > - Unused Properties.
 
-### G.3 - Class Components: `[Component]`
+### G.4 - Class Components: `[Component]`
 
 > Declare components in order:
 >
 > - Data Component
 > - Handler Component
 
-### G.4 - Class Instance
+### G.5 - Class Instance
 
 ---
 ---
