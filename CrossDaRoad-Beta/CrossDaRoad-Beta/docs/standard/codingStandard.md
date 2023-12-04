@@ -2,21 +2,17 @@
 
 ## Table of Contents
 
-- [Project Code Standards](#project-code-standards)
-  - [Table of Contents](#table-of-contents)
-  - [Why Code Standards?](#why-code-standards)
-  - [Basic Code Standards](#basic-code-standards)
-    - [Coding Style](#coding-style)
-    - [Naming Conventions](#naming-conventions)
-      - [File Name](#file-name)
-        - [Object Class Files (cFileName.cpp)](#object-class-files-cfilenamecpp)
-        - [Core Game Class Files (gFileName.cpp)](#core-game-class-files-gfilenamecpp)
-        - [Utilities Function Files (uFileName.cpp)](#utilities-function-files-ufilenamecpp)
-      - [Variable Name](#variable-name)
-      - [Constant Name](#constant-name)
-      - [Scope Name](#scope-name)
-      - [Function Name](#function-name)
-    - [Comment Style](#comment-style)
+- [Table of Contents](#table-of-contents)
+- [Why Code Standards?](#why-code-standards)
+- [Basic Code Standards](#basic-code-standards)
+  - [Coding Style](#coding-style)
+  - [Naming Conventions](#naming-conventions)
+    - [File Name](#file-name)
+    - [Variable Name](#variable-name)
+    - [Constant Name](#constant-name)
+    - [Scope Name](#scope-name)
+    - [Function Name](#function-name)
+  - [Comment Style](#comment-style)
   
 ## Why Code Standards?
 

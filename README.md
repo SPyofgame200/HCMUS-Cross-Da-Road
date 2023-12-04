@@ -86,6 +86,7 @@ The main menu is the first screen that the player sees when they start the game.
 ![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/new_game.png)
 
 - **Load Game:** Press `ENTER` to select the `Load Game` option. Then select a saved game and press `ENTER` to load the game. Press `ESC` to go back to the main menu.
+![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/load_game.png)
 - **Settings:** Press `ENTER` to select the `Settings` option. Then toggle the `Music` option and press `ENTER` to save the settings. Press `ESC` to go back to the main menu.
 ![Alt text](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/settings.png)
 
@@ -154,6 +155,28 @@ The in-game interface consists of the following elements:
 - Try to avoid dangerous objects and dangerous platforms.
 - Try to move through friendly platforms and friendly moving platforms.
 
+### 3.6 Game Map
+
+- **Map 1:**
+
+![Map 1](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_1.png)
+
+- **Map 2:**
+
+![Map 2](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_2.png)
+
+- **Map 3:**
+
+![Map 3](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_3.png)
+
+- **Map 4:**
+
+![Map 4](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_4.png)
+
+- **Map 5:**
+
+![Map 5](CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/screenshots/map_5.png)
+
 ### 3.7 Saving and Loading
 
 - **Save:** Press `ESC` to pause the game. Then press `ENTER` to select the `Save` option. Then choose location to save the game. Press `ENTER` to save the game. Press `ESC` to turn on the `Pause` menu.
@@ -172,3 +195,4 @@ You can find the source code in the `src` folder and the documentation for devel
 ## 5. Full Documentation
 
 You can find the full documentation for this project [here](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/documentation.md).
+
