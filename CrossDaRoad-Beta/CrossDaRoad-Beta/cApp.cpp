@@ -148,11 +148,6 @@ bool cApp::OnFixedUpdateEvent(float fTickTime)
 /// @param fElapsedTime - Time elapsed since last update
 bool cApp::OnUpdateEvent(const float fElapsedTime)
 {
-    if (Menu.IsOnGame() && nLife <= 0) {
-        Menu.UpdateEndGame();
-        return true;
-    }
- 
     if (!Menu.Update(fElapsedTime)) {
         return false;
     }
@@ -170,12 +165,6 @@ bool cApp::OnLateUpdateEvent(float fTickTime, float fElapsedTime, float fLateEla
 /// @return True if game is rendering, false otherwise
 bool cApp::OnRenderEvent()
 {
-    if (Menu.IsOnGame() && nLife <= 0) {
-        OnGameRender();
-        Menu.RenderEndGame();
-        return true;
-    }
-
     if (!Menu.Render()) {
         return false;
     }
@@ -192,7 +181,13 @@ bool cApp::OnPauseEvent(float fTickTime)
             ResumeEngine();
         }
     }
-    if (IsEnginePause() && Menu.isSaving())
+    if (IsEnginePause() && nLife <= 0) {
+        Menu.UpdateEndGame();
+        OnGameRender();
+        Menu.RenderEndGame();
+        return false;
+    }
+    else if (IsEnginePause() && Menu.isSaving())
     {    
         Menu.UpdateSaveBox();
         OnGameRender(true);
@@ -288,7 +283,9 @@ bool cApp::OnPlayerDeath()
     GameReset();
     GameLoad();
     Player.Reset();
-    --nLife;
+    if (--nLife <= 0) {
+        PauseEngine();
+    }
     return true;
 }
 
