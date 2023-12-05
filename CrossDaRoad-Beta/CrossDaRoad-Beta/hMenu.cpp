@@ -655,7 +655,7 @@ bool hMenu::UpdateEndGame()
     else if (app->IsKeyReleased(app::Key::ENTER)) {
         app->ResumeEngine();
         if (bPlayAgain) {
-            app->GameReset();
+            app->GameInit();
             app->GameLoad();
             return true;
         }
