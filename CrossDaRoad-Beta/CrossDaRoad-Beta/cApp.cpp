@@ -27,6 +27,7 @@ cApp::cApp()
     SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
     cDangerZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     cBlockedZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cWinningZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     cPlatformZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     Player.SetupTarget(this);
     MapDrawer.SetupTarget(this);
@@ -55,6 +56,7 @@ bool cApp::GameInit()
     MapLoader.Init();
     cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
     cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cWinningZone.CreateZone(ScreenWidth(), ScreenHeight());
     cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
     GameReset();
     ResumeEngine();
@@ -79,10 +81,15 @@ bool cApp::GameReset()
     sAppName = app_const::APP_NAME;
     fTimeSinceStart = 0.0f;
 
+    cDangerZone.Reset();
+    cBlockedZone.Reset();
+    cWinningZone.Reset();
+    cPlatformZone.Reset();
     Player.Reset();
     cFrameManager::GetInstance().Reset();
     return true;
 }
+
 bool cApp::GameLoad()
 {
     sAppName = app_const::APP_NAME + std::string(1, ' ') + MapLoader.ShowMapInfo();
@@ -90,6 +97,7 @@ bool cApp::GameLoad()
     MapLoader.LoadMapLevel();
     cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());
     cBlockedZone.SetPattern(MapLoader.GetBlockPattern().c_str());
+    cWinningZone.SetPattern(MapLoader.GetWinningPattern().c_str());
     cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str());
     return true;
 }

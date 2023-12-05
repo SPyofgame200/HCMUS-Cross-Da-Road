@@ -28,7 +28,8 @@ private:
 
 private:
     MapObject currentSprite; ///< Current sprite data
-    std::string platformPattern; ///< Danger pattern for map
+    std::string platformPattern; ///< Platform pattern for map
+    std::string winningPattern; ///< Winning pattern for map
     std::string dangerPattern; ///< Danger pattern for map
     std::string blockPattern; ///< Block pattern for map
     int nMapLevel; ///< Current map level
@@ -54,6 +55,7 @@ public: // Getters
     int GetMapCount() const;
     MapObject GetSpriteData(char graphic) const;
     std::string GetPlatformPattern() const;
+    std::string GetWinningPattern() const;
     std::string GetDangerPattern() const;
     std::string GetBlockPattern() const;
     std::string GetMapName(int nLevel) const;

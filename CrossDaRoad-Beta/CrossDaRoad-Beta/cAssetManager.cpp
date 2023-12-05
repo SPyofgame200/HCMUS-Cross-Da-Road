@@ -176,6 +176,7 @@ bool cAssetManager::LoadAboutUsSprites()
 bool cAssetManager::LoadExitSprites()
 {
     bool bSuccess = true;
+    bSuccess &= LoadSprite("you_win", "you_win");
     bSuccess &= LoadSprite("exit_no", "exit_no");
     bSuccess &= LoadSprite("exit_yes", "exit_yes");
 

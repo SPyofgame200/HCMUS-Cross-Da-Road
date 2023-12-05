@@ -200,6 +200,7 @@ bool hMenu::LoadProceedOption()
             app->MapLoader.LoadMapLevel();
             app->cDangerZone.SetPattern(app->MapLoader.GetDangerPattern().c_str());
             app->cBlockedZone.SetPattern(app->MapLoader.GetBlockPattern().c_str());
+            app->cWinningZone.SetPattern(app->MapLoader.GetBlockPattern().c_str());
             app->cPlatformZone.SetPattern(app->MapLoader.GetPlatformPattern().c_str());
             return true;
         }

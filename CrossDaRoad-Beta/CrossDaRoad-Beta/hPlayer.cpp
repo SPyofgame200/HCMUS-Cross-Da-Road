@@ -260,6 +260,15 @@ cZone* hPlayer::GetPlatformZone()
         return nullptr; // or handle the case where ptrApp is null
     }
 }
+cZone* hPlayer::GetWinningZone()
+{
+    if (ptrApp) {
+        return &(ptrApp->cPlatformZone);
+    }
+    else {
+        return nullptr; // or handle the case where ptrApp is null
+    }
+}
 
 void hPlayer::Read(std::istream& input) {
     input >> cStatus;

@@ -214,6 +214,7 @@ void hMapDrawer::SetHitBox(const GraphicCell& Cell) const
 {
     app->cDangerZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
     app->cBlockedZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
+    app->cWinningZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
     app->cPlatformZone.Fill(Cell.graphic, Cell.nColPos, Cell.nRowPos);
 }
 //=================================================================================================

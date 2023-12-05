@@ -93,6 +93,7 @@ public: // Special
     void Sleep(float fTime);
     cZone* GetDangerZone();
     cZone* GetBlockedZone();
+    cZone* GetWinningZone();
     cZone* GetPlatformZone();
 
 public: // Input - Output

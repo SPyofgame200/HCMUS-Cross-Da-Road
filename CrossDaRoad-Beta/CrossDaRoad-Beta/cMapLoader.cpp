@@ -51,8 +51,10 @@ void cMapLoader::Destruct()
     vecLanes.clear();
     vecMapNames.clear();
     vecMapDescriptions.clear();
-    dangerPattern.clear();
     blockPattern.clear();
+    dangerPattern.clear();
+    winningPattern.clear();
+    platformPattern.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,9 +86,10 @@ void cMapLoader::PrevLevel()
 /// @brief Update pattern of danger and block
 void cMapLoader::UpdatePattern()
 {
-    platformPattern.clear();
-    dangerPattern.clear();
     blockPattern.clear();
+    dangerPattern.clear();
+    winningPattern.clear();
+    platformPattern.clear();
     for (const auto& pair : mapSprites) {
         const auto& sprite = pair.second;
         if (sprite.IsPlatform()) {
@@ -98,9 +101,13 @@ void cMapLoader::UpdatePattern()
         if (sprite.IsEnabled()) {
             dangerPattern += sprite.GetCode();
         }
+        if (sprite.IsWinning()) {
+            winningPattern += sprite.GetCode();
+        }
         std::cout << sprite.ShowData() << std::endl;
     }
     std::cout << "Platform Pattern: \"" << platformPattern << "\"" << std::endl;
+    std::cout << "Winning Pattern: \"" << winningPattern << "\"" << std::endl;
     std::cout << "Danger Pattern: \"" << dangerPattern << "\"" << std::endl;
     std::cout << "Block Pattern: \"" << blockPattern << "\"" << std::endl;
 }
@@ -177,6 +184,11 @@ std::string cMapLoader::GetPlatformPattern() const
 std::string cMapLoader::GetDangerPattern() const
 {
     return dangerPattern;
+}
+/// @brief Getter for danger pattern
+std::string cMapLoader::GetWinningPattern() const
+{
+    return winningPattern;
 }
 /// @brief Getter for block pattern
 std::string cMapLoader::GetBlockPattern() const

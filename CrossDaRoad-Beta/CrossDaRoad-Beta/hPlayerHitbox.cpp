@@ -127,6 +127,52 @@ bool hPlayerHitbox::IsBlocked() const
         || IsBlockedBottomLeft()
         || IsBlockedBottomRight();
 }
+
+/// @brief Check if player is blocked by block zone at top left corner
+/// @return True if player is blocked by block zone at top left corner, false otherwise
+bool hPlayerHitbox::IsWinningTopLeft() const
+{
+    const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+    const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+    const bool isWinningTopLeft = ptrPlayer->GetWinningZone()->IsTopLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
+    return isWinningTopLeft;
+}
+/// @brief Check if player is blocked by block zone at top right corner
+/// @return True if player is blocked by block zone at top right corner, false otherwise
+bool hPlayerHitbox::IsWinningTopRight() const
+{
+    const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+    const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+    const bool isWinningTopRight = ptrPlayer->GetWinningZone()->IsTopRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
+    return isWinningTopRight;
+}
+/// @brief Check if player is blocked by block zone at bottom left corner
+/// @return True if player is blocked by block zone at bottom left corner, false otherwise
+bool hPlayerHitbox::IsWinningBottomLeft() const
+{
+    const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+    const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+    const bool isWinningBottomLeft = ptrPlayer->GetWinningZone()->IsBottomLeftEnabled(fPosX, fPosY, app_const::CELL_SIZE);
+    return isWinningBottomLeft;
+}
+/// @brief Check if player is blocked by block zone at bottom right corner
+/// @return True if player is blocked by block zone at bottom right corner, false otherwise
+bool hPlayerHitbox::IsWinningBottomRight() const
+{
+    const float fPosX = ptrPlayer->Physic().GetPlayerAnimationPositionX();
+    const float fPosY = ptrPlayer->Physic().GetPlayerAnimationPositionY();
+    const bool isWinningBottomRight = ptrPlayer->GetWinningZone()->IsBottomRightEnabled(fPosX, fPosY, app_const::CELL_SIZE);
+    return isWinningBottomRight;
+}
+/// @brief Check if player is blocked by block zone
+/// @return True if player is blocked by block zone, false otherwise
+bool hPlayerHitbox::IsWinning() const
+{
+    return IsWinningTopLeft()
+        || IsWinningTopRight()
+        || IsWinningBottomLeft()
+        || IsWinningBottomRight();
+}
 /// @brief Check if player is on a platform at top left corner
 /// @return True if player is on a platform at top left corner, false otherwise
 bool hPlayerHitbox::IsOnPlatformTopLeft() const
