@@ -38,6 +38,7 @@ private: // Identity attributes
     std::string sCategory;      ///< Category, allow categorize configuration if needed
 
 private: // Flag attributes
+    bool isWinning;             ///< If the player will win the game to move here
     bool isBlocked;             ///< If the player shouldn't be able to move here
     bool isDanger;              ///< If the player should be killed to move here
 
@@ -76,6 +77,7 @@ public: // Initializer & Cleanup
 public: // Checkers
     bool IsBlocked() const;
     bool IsEnabled() const;
+    bool IsWinning() const;
     bool IsPlatform() const;
 
 public: // Getters
