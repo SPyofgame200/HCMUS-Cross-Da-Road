@@ -52,7 +52,7 @@ $ , sprite=water category="environment"
 : block=false danger=true platformspeed=0.0
 : spriteX=0 spriteY=0
 $ j sprite=ice
-: block=false danger=false platformspeed=100.0
+: block=false danger=false platformspeed=90.0
 : spriteX=0 spriteY=0
 $ . background=ice
 : block=false danger=false platformspeed=0.0
