@@ -155,11 +155,13 @@ public: // Updaters
     bool UpdatePausing();
     bool UpdateSaveBox();
     bool UpdateEndGame();
+    bool UpdateWinGame();
 
 public: // Renderers
     bool RenderPausing() const;
     bool RenderSaveBox() const;
     bool RenderEndGame() const;
+    bool RenderWinGame() const;
 
 public:
     bool Update(float fElapsedTime);

@@ -176,7 +176,7 @@ bool hPlayer::SetupComponents()
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-    if (Status().IsMoveUp() && !Physic().CanMoveUp()) {
+    if (Status().IsMoveUp() && !Physic().CanMoveUp()) { /// Win by moving above the top lane
         return true;
     }
     const float fPosY = Physic().GetPlayerLogicPositionY();

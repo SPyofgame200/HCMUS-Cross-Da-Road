@@ -188,27 +188,33 @@ bool cApp::OnPauseEvent(float fTickTime)
             ResumeEngine();
         }
     }
-    if (IsEnginePause() && nLife <= 0) {
+    if (!IsEnginePause()) {  // succesfully handle the pause event
+        return true;
+    }
+
+    if (nLife <= 0) {
         Menu.UpdateEndGame();
         OnGameRender();
         Menu.RenderEndGame();
-        return false;
     }
-    else if (IsEnginePause() && Menu.isSaving())
+    else if (Menu.isSaving())
     {    
         Menu.UpdateSaveBox();
         OnGameRender(true);
         Menu.RenderSaveBox();
-        return false;
-
     }
-    else if (IsEnginePause()) { // continue the pause event
+    else if (Player.Hitbox().IsWinning())
+    {
+		Menu.UpdateWinGame();
+		OnGameRender(true);
+		Menu.RenderWinGame();
+    }
+    else { // continue the pause event
         Menu.UpdatePausing();
         OnGameRender(true);
         Menu.RenderPausing();
-        return false;
     }
-    return true; // succesfully handle the pause event
+    return false;
 }
 /// @brief Event that called when application is force paused
 /// @return True if pause event was handled successfully, false otherwise
@@ -266,6 +272,10 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
         Player.Motion().PlatformDetector();
     }
+    if (Player.Hitbox().IsWinning()) {
+        PauseEngine();
+        return true;
+    }
     if (Player.IsPlayerWin()) {
         return GameNext();
     }
@@ -273,9 +283,9 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         Player.Status().SetSituation(PlayerSituation::DEATH);
         return OnPlayerDeath();
     }
-
     return true;
 }
+
 /// @brief Update Player when Player is killed
 /// @return Always returns true by default
 bool cApp::OnPlayerDeath()
