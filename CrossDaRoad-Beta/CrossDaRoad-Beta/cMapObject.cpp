@@ -42,6 +42,7 @@ bool MapObject::Create()
     sCategory = EMPTY_NAME;
     /// Flag
     isBlocked = DISABLED;
+    isWinning = DISABLED;
     isDanger = DISABLED;
     /// Sprite
     sSpriteName = EMPTY_NAME;

@@ -200,7 +200,7 @@ bool hMenu::LoadProceedOption()
             app->MapLoader.LoadMapLevel();
             app->cDangerZone.SetPattern(app->MapLoader.GetDangerPattern().c_str());
             app->cBlockedZone.SetPattern(app->MapLoader.GetBlockPattern().c_str());
-            app->cWinningZone.SetPattern(app->MapLoader.GetBlockPattern().c_str());
+            app->cWinningZone.SetPattern(app->MapLoader.GetWinningPattern().c_str());
             app->cPlatformZone.SetPattern(app->MapLoader.GetPlatformPattern().c_str());
             return true;
         }
@@ -917,7 +917,7 @@ bool hMenu::RenderWinGame() const
     app->SetPixelMode(app::Pixel::NORMAL);
 
     app->SetPixelMode(app::Pixel::MASK);
-    app->DrawSprite(120, 45, cAssetManager::GetInstance().GetSprite("you_win"));
+    app->DrawSprite(70, 15, cAssetManager::GetInstance().GetSprite("you_win"));
     app->SetPixelMode(app::Pixel::NORMAL);
 
     app->SetPixelMode(app::Pixel::MASK);

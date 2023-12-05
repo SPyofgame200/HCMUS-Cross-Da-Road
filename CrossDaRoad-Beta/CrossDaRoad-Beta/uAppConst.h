@@ -20,7 +20,7 @@ namespace app_const
 
     constexpr const char* APP_NAME = "Cross Da Road";          ///< Application name (Cross Da Road)
     constexpr const char* GAME_NAME = "Playing Cross Da Road"; ///< Game name (Playing Cross Da Road)
-    constexpr int GAME_LEVEL_INIT = 1;                         ///< Initial game level (0)
+    constexpr int GAME_LEVEL_INIT = 1;                         ///< Initial game level (1)
 
     constexpr int MAP_WIDTH_LIMIT = 64; ///< Map width limit (64) (in pixels)
 

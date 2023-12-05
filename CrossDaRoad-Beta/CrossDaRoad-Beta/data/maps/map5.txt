@@ -88,5 +88,5 @@ $ p sprite=shark_left background=deep_ocean spriteFrame=12
 : block=false danger=true platformspeed=0.0
 : spriteX=3 spriteY=1
 $ o sprite=treasure_box background=deep_ocean
-: block=false danger=true platformspped=0.0
+: block=false danger=false platformspped=0.0 winning=true
 : spriteX=0 spriteY=0

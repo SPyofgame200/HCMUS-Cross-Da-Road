@@ -274,6 +274,7 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
     }
     if (Player.Hitbox().IsWinning()) {
         PauseEngine();
+        std::cerr << "Successfully pause engine" << std::endl;
         return true;
     }
     if (Player.IsPlayerWin()) {

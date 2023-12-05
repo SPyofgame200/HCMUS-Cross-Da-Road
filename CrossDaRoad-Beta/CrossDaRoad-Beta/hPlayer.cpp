@@ -263,7 +263,7 @@ cZone* hPlayer::GetPlatformZone()
 cZone* hPlayer::GetWinningZone()
 {
     if (ptrApp) {
-        return &(ptrApp->cPlatformZone);
+        return &(ptrApp->cWinningZone);
     }
     else {
         return nullptr; // or handle the case where ptrApp is null

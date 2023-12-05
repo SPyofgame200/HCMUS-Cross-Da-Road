@@ -231,6 +231,7 @@ bool cAssetManager::LoadScoreBarSprites()
     bSuccess &= LoadSprite("description2", "description2");
     bSuccess &= LoadSprite("description3", "description3");
     bSuccess &= LoadSprite("description4", "description4");
+    bSuccess &= LoadSprite("description5", "description5");
     bSuccess &= LoadAnimation("score_bar", "score_bar", 4);
 
     return ReportLoadingResult(bSuccess, "score bar");
