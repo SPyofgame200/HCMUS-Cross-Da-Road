@@ -40,7 +40,7 @@ Coding standards are rules for writing code that help developers work together b
 
 ### A.2 - Benefits of coding standards ?
 
-When there are clear coding standards, developers don't waste time arguing about how to write code – they can focus on getting work done efficiently. These standards also make the codebase better in the long run because it's easier to maintain. As a game project grows, these rules help the code adapt and scale properly. They're also like a guide for new developers, making it quick and easy for them to understand the project.
+When there are clear coding standards, developers don't waste time arguing about how to write code – they can focus on getting work done efficiently. These standards also make the codebase better in the long run because it's easier to maintain. As a game project grows, these rules help the code adapt and scale properly, making it quick and easy for developers to understand the project.
 
 ---
 ---
@@ -50,27 +50,25 @@ When there are clear coding standards, developers don't waste time arguing about
 
 ## B. The goals of the project standard
 
-The project standard has specific goals to provide a clear framework and guidelines for developers, ensuring a standardized and efficient approach to coding practices. These goals serve as a foundation for creating rules that are easy to remember, promoting a shared understanding among developers. It focuses on coding conventions, formatting styles without restricting the usage of features.
-
-It's important to note that this guide is not a tutorial for using C++ effectively, but rather a team guideline for better project development, assuming readers already have a basic understanding of the C++ language.
+The project standard has specific goals to provide a clear framework and guidelines for developers, ensuring a standardized and efficient approach to coding practices. These goals serve as a foundation for creating rules that are easy to remember, promoting a shared understanding of coding conventions among developers without restricting the usage of features. It's important to note that this guide is not a tutorial for using C++ effectively, but rather a team guideline for better project development, assuming readers already have a basic understanding of the C++ language.
 
 ---
 
-### B.1 - Clarity and Memorability
+### B.1 - Coherence Memorizing
 
-One of the project standard goals is to create rules that are essential and easy for everyone to remember. This ensures that developers can recall and apply the rules effortlessly, promoting a shared understanding of coding practices. While certain code styles might goes out of sync, it should be better.
+One of the project standard goals is to create rules that are essential and easy for everyone to remember. This ensures that developers can recall and apply the rules effortlessly, promoting a shared understanding of coding practices. While certain code styles might goes out of sync (read Project Vision), it should be noted that periodic reviews and updates to the coding standards are encouraged.
 
 ---
 
 ### B.2 - Reader-Friendly
 
-It is a recommendation that the code should be reader-friendly, so less time will be spent on understanding and questioning about it. This means maintaining consistency in the code's style throughout the project, making it easier for others to read and understand, fostering a collaborative and efficient coding environment.
+It's a good idea to make your code easy to read so people don't have to spend a lot of time trying to understand it. This involves keeping the style of your code the same across the whole project, making it simpler for others to read and understand. However, it's important not to stick to an old style just for the sake of consistency; you should also consider the benefits of newer styles and how the code might naturally move towards them over time.
 
 ---
 
 ### B.3 - Community Consistency
 
-The project standard promotes consistency with the larger C++ community when applicable, aligning with community practices. Encouraging the use of common sense, it suggests following community rules and seeking help when things are unclear. By doing so, developers contribute to a broader coding culture and leverage widely accepted conventions. This promotes a pragmatic and collaborative coding environment, fostering a culture of shared knowledge and continuous improvement.
+The project standard encourages alignment with the broader C++ community, emphasizing consistency with community practices. It advises using common sense, following community rules, and seeking help when needed. This approach fosters a collaborative coding environment, contributing to a shared knowledge culture and continuous improvement.
 
 ---
 
@@ -80,9 +78,9 @@ To maintain code quality, the standard warns against using surprising or dangero
 
 ---
 
-### B.5 - Big-Picture Perspective
+### B.5 - Project Vision
 
-The guide emphasizes the importance of considering the big picture of the project's production. It empowers developers to improve aspects of the project when needed, promoting a forward-thinking and adaptive approach to coding practices.
+The guide empowers developers to adopt a forward-thinking and adaptive approach to coding practices by emphasizing the importance of considering the big picture of the project's production and encouraging improvements as needed. Performance optimizations can sometimes be necessary and appropriate, even when they conflict with the other principles of this document. Certain simple functions might require effective error handling and a comprehensive logging mechanism to ensure robustness, even if they necessitate trade-offs with performance and code modularity.
 
 ---
 ---
