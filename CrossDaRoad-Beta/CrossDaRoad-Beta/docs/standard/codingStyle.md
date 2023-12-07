@@ -1303,8 +1303,6 @@ For more, please read `classStandard.md`
 >
 > When a class is big enough with a bunches of public classes, that have close relation to each other. We might want to separate the concenrs of data handling, by using a class that have a pointer to `this` or `this->dataComponents`. Handler components manage specific functionalities and behaviors.
 
-### G.5 - Class Instance: `[Instance]`
-
 ## Z. Frequently Asked Questions
 
 ### `FAQ#1:` Why dont we use tabs identation instead of spaces ?
