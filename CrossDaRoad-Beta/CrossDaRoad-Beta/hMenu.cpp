@@ -949,7 +949,7 @@ bool hMenu::Render() const
         case AppOption::APP_MENU:
             return RenderAppMenu();
         case AppOption::APP_GAME:
-            app->Player.OnRender();
+            app->Player.OnRender(app->IsWaterEnvironment());
             return app->OnGameRender(true);
         default:
             std::cerr << "hMenu::Render(*app):";

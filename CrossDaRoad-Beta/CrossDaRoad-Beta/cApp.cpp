@@ -341,7 +341,7 @@ bool cApp::OnGameRender(bool bRenderPlayer)
 {
     DrawAllLanes();
     if (bRenderPlayer) {
-        Player.OnRender();
+        Player.OnRender(IsWaterEnvironment());
     }
     DrawStatusBar();
     return true;
@@ -565,6 +565,11 @@ void cApp::SetLife(int Life)
 void cApp::SetPlayerName(std::string Nm)
 {
     playerName = Nm;
+}
+
+bool cApp::IsWaterEnvironment()
+{
+    return MapLoader.GetMapLevel() == 5;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

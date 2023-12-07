@@ -218,9 +218,9 @@ bool hPlayer::OnUpdate()
     return hUpdate.OnUpdate();
 }
 
-bool hPlayer::OnRender()
+bool hPlayer::OnRender(bool bSwim)
 {
-    return hRender.OnRender();
+    return hRender.OnRender(bSwim);
 }
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)

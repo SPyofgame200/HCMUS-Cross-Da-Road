@@ -18,14 +18,14 @@ public: // Initializer & Clean-up
     bool SetupTarget(hPlayer* ptrPlayer);
 
 public: // Player Render 
-    bool OnRenderPlayerIdle() const;
-    bool OnRenderPlayerJumpStart() const;
-    bool OnRenderPlayerJumpContinue() const;
-    bool OnRenderPlayerJumpStop() const;
+    bool OnRenderPlayerIdle(bool bSwim = false) const;
+    bool OnRenderPlayerJumpStart(bool bSwim = false) const;
+    bool OnRenderPlayerJumpContinue(bool bSwim = false) const;
+    bool OnRenderPlayerJumpStop(bool bSwim = false) const;
 
 public: // Player Renderers
-    bool OnRenderPlayer() const;
-    bool OnRender();
+    bool OnRenderPlayer(bool bSwim = false) const;
+    bool OnRender(bool bSwim = false) const;
 };
 
 #endif // H_PLAYER_RENDER_H
