@@ -101,6 +101,7 @@ private: // [Utility]
     int GetLife() const;
     void SetLife(int Life);
     void SetPlayerName(std::string Nm);
+    bool IsWaterEnvironment();
 };
 
 #endif // C_APP_H
