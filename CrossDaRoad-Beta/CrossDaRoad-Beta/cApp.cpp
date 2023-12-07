@@ -52,7 +52,7 @@ bool cApp::GameInit()
 {
     sAppName = app_const::APP_NAME;
     nScore = 0;
-    nLife = 5;
+    nLife = 10;
     MapLoader.Init();
     cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
     cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());

@@ -280,7 +280,8 @@ bool cAssetManager::LoadPlayerSwimSprites()
     bSuccess &= LoadAnimation("froggy_swim_left", "froggy_swim_left", 6);
     bSuccess &= LoadAnimation("froggy_swim_idle", "froggy_swim_idle", 6);
     bSuccess &= LoadAnimation("froggy_swim_idle_left", "froggy_swim_idle_left", 6);
-
+    bSuccess &= LoadSprite("froggy_swim_idle", "froggy_swim_idle");
+    bSuccess &= LoadSprite("froggy_swim_idle_left", "froggy_swim_idle_left");
     return ReportLoadingResult(bSuccess, "player swim");
 }
 /// @brief Load all player death sprites
@@ -449,6 +450,7 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadPlayerIdleSprites();
     bSuccess &= LoadPlayerJumpSprites();
     bSuccess &= LoadPlayerDeathSprites();
+    bSuccess &= LoadPlayerSwimSprites();
     bSuccess &= LoadMapHalloweenSprites();
     bSuccess &= LoadMapRiverSideSprites();
     bSuccess &= LoadMapIceAgeSprites();

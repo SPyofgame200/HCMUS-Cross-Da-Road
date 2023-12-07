@@ -69,21 +69,18 @@ bool hPlayerRender::OnRenderPlayer(bool bSwim) const
     const bool bMove = (ptrPlayer->Status().IsJumpAnimation());
     std::string sPlayerState;
     std::string sPlayerDirection;
-    std::string sPlayerAnimationID;
     if (bSwim)
     {
         sPlayerState = std::string(bMove ? "_swim" : "_swim_idle");
         sPlayerDirection = std::string(bLeft ? "_left" : "");
-        sPlayerAnimationID = (bMove ? std::to_string(nID) : "");
     }
     else
     {
         sPlayerState = std::string(bMove ? "_jump" : "");
         sPlayerDirection = std::string(bLeft ? "_left" : "");
-        sPlayerAnimationID = (bMove ? std::to_string(nID) : "");
     }
+    const std::string sPlayerAnimationID = (bMove ? std::to_string(nID) : "");
 	const std::string sPlayerName = "froggy" + sPlayerState + sPlayerDirection + sPlayerAnimationID;
-    std::cout << "is swimming = " << std::boolalpha << bSwim << " -> Animation = " << sPlayerName << std::endl;
 	ptrPlayer->Draw(sPlayerName);
     return true;
 }
