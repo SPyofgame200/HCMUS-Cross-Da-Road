@@ -373,7 +373,9 @@ bool hMenu::UpdateNewGame()
 	if (nameBoxOption % 2 != 0 && app->IsKeyReleased(app::Key::ENTER) && !app->playerName.empty())
 	{	
 		eMenuOption = APP_GAME;
-		app->GameReset();
+        nameBoxOption = 0;
+        app->GameInit();
+        app->GameReset();
         app->GameLoad();
 	}
 	return result;
