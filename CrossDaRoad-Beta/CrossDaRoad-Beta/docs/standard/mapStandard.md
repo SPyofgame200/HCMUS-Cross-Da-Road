@@ -14,41 +14,64 @@ For example:
 
 - `map0.txt`
 - `map27.txt`
-
-Negative id can be considered as an easter egg, but not implemented yet
+Negative ids can be considered as an easter egg but have not been implemented yet.
 
 ## Map File Data
 
-In each map, the data should be like this, in order for the game to read it
+The map utilizes objects to control graphic and map objects, defined as follows:
 
 ```cpp
-sMapLane[i] fVelocity[i]
-#
-$ char[i] sprite=sSpriteName[i] background=sBackgroundName[i] category=sCategory[i]
-: block=isBlocked[i] danger=isDanger[i] platformspeed=fPlatform[i] 
-: drawX=nPosX[i] drawY=nPosY[i]
-```
+struct GraphicCell
+{
+    char graphic;            ///< Character representing the graphic
+    int nRowPos;             ///< Row of the cell
+    int nColPos;             ///< Column of the cell
 
-Using
-
-```cpp
-struct spriteData {
-    char encode;
-    std::string sSpriteName;
-    std::string sBackgroundName;
-    std::string sCategory;
-    bool isBlocked;
-    bool isDanger;
-    float fPlatform;
-    int32_t nPosX;
-    int32_t nPosY;
-    int32_t nID;
+    // Constructors & Destructor
+    GraphicCell();
+    GraphicCell(char graphic, int nRowPos, int nColPos);
+    ~GraphicCell();
 };
 
-std::map<char, SpriteData> mapSprites;
+class MapObject
+{
+private: // Identity attributes
+    char code;                ///< Sprite code chacters for map editor
+    std::string sCategory;      ///< Category, allow categorize configuration if needed
+
+private: // Flag attributes
+    bool isWinning;             ///< If the player will win the game to move here
+    bool isBlocked;             ///< If the player shouldn't be able to move here
+    bool isDanger;              ///< If the player should be killed to move here
+
+private: // Sprite attributes
+    std::string sSpriteName;    ///< Sprite name (*.png), for sprite loading
+    int32_t nSpritePosX;        ///< X initial position for drawing sprite
+    int32_t nSpritePosY;        ///< Y initial position for drawing sprite
+    int32_t nSpriteFrame;       ///< The number of frame the sprite run, for animation
+    
+private: // Background attributes
+    std::string sBackgroundName;///< Background name (*.png), for sprite's background
+    int32_t nBackgroundPosX;    ///< X initial position for drawing background
+    int32_t nBackgroundPosY;    ///< Y initial position for drawing background
+    int32_t nBackgroundFrame;   ///< The number of frame the background run, for animation
+    
+private: // Lane attributes
+    float fPlatformDrag;        ///< Platform dragging speed if the player land on them
+
+private: // Summon attributes
+    char summon;                ///< The chance of summoning another sprite with encoded = summon
+    float fDuration;            ///< The duration (in seconds) of that sprite to be appeared
+    float fCooldown;            ///< The cooldown durations for the two consecutive summoning
+    float fChance;              ///< The probability of summoning in each second
+    float fPredelay;            ///< The first delayed duration before the summon happened
+    int32_t nSummonLimit;        ///< The limitation of summons
+}
+
+std::map<char, MapObject> mapSprites;
 ```
 
-For example
+We use `attribute=value` style in order to extract data from a txt file.
 
 ```cpp
 x....x.............x 0
@@ -70,18 +93,4 @@ $ @ sprite=car2 background=road
 : drawY=1 drawX=0 id = 0
 #
 music="ncs0"
-```
-
-The prefix of each defines its type, in another way
-
-```cpp
-string[0] float[0]
-string[1] float[1]
-...
-string[N] float[N]
-#
-float[0] char[0] char[0] string[0] string[0] int[0] int[0]
-float[1] char[1] char[1] string[1] string[1] int[1] int[1]
-...
-float[N] char[N] char[N] string[N] string[N] int[N] int[N]
 ```

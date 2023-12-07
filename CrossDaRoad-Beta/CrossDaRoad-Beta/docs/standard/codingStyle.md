@@ -204,8 +204,7 @@ class Foo
 
 ---
 
-### A.5 - 
-
+### A.5 -
 
 ---
 ---
@@ -1204,6 +1203,107 @@ digits.erase(std::remove_if(digits.begin(), digits.end(), [&to_remove](int i) {
 > - Simple functions: `3 lines` - Like `GetFunction()`, `IsFunction()`, `CanFunction()`, ...
 > - Calculation functions: `8 lines`
 > - Module functions: `13 lines`
+
+---
+
+## G. Class Format
+
+For more, please read `classStandard.md`
+
+### G.1 - Class Tags
+
+- All member functions must be named using `PascalCase()`.
+- Functions may have prefixes based on their group tags.
+- Functions may have suffixes based on the returned type.
+- Tags are utilized to indicate groups of functions that share similarities.
+- Organizing functions with tags enhances clarity and facilitates easier searches.
+- Non-special tag naming must be singular noun.
+- You can add messages after the tag
+- Here is a list of possible tags, arranged in the order of declaration in the class:
+  - I. Data Group:
+    - `[Alias]`: Define aliases with keyword `using`, `typedef`
+    - `[Property]`: Internal independent data.
+    - `[Component]`: Manages the main information of the class.
+  - III. Lifecycle Group:
+    - `[Instance]`: Get the current object or its components.
+    - `[Constructor]`: Initializes object variables upon creation.
+    - `[Destructor]`: Manages cleaning and releases resources upon destruction.
+    - `[Initializer]`: Boolean functions used in constructors.
+    - `[Disposer]`: Boolean functions used in destructors.
+  - IV. Operator Group:
+    - `[Unary]`:
+    - `[Arithmetic]`:
+    - `[Compound]`:
+    - `[Relational]`:
+    - `[Logical]`:
+    - `[Bitwise]`:
+    - `[Casting]`:
+  - V. Accessor Group:
+    - `[Calculator]`: Calculation function that doesnt mutate the data.
+    - `[Validator]`: Boolean functions that validate certain actions.
+    - `[Checker]`: Boolean functions to check specific conditions.
+    - `[Getter]`: Retrieves class data and properties.
+    - `[Viewer]`: Show the content data without changing.
+  - VI. Mutator Group:
+    - `[Reseter]`: Helper function for resetting certain properties to default states.
+    - `[Setter]`: Sets data or properties.
+    - `[Handler]`: Modify internal states, including: loader, saver, updater, render, post-processing.
+  - VII. Events Group:
+    - `[Core]`: Core events controller.
+    - `[Event]`: Events functions.
+  - VIII. Stream Group:
+    - `[File]`: Manages file-related operations.
+    - `[Input]`: Handles class data input functionality.
+    - `[Output]`: Manages class data output functionality.
+    - `[Debug]`: Special functions for debugging
+
+- Functions without those common patterns should use special tags
+  - `[Unused]`:
+    - Unused functions or variables.
+    - Serve design purposes, allow extensibilities.
+  - `[TODO]`:
+    - Functions that are intended to be implemented.
+    - Do not spam the tag unless needed.
+  - `[Utility]`:
+    - Helper functions, should be private, otherwise include a utilities file.
+    - Better to be defined belowest everything
+  - `[Deprecated]`:
+    - Functions that are no longer being used or supported.
+    - Functions that have limited usecase, or contains side-effects
+
+- If the tags are small, you should merge them using `&` in the between the tags
+
+### G.2 - Class Aliases: `[Alias]`
+
+> Declare aliases in order:
+>
+> `using`
+> `typedef`
+>
+> Do not alias for namespace, or atleast prefer private use with comments.
+
+### G.3 - Class Properties: `[Property]`
+
+> Declare properties in order:
+>
+> - Extern Properties.
+> - Static Properties.
+> - Friend Properties.
+> - Member Properties.
+> - Unused Properties.
+
+### G.4 - Class Components: `[Component]`
+
+> Declare components in order:
+>
+> - Data Component
+> - Handler Component
+>
+> A Data Component is employed when a class becomes sufficiently complex, featuring a multitude of private member variables that share a close relationship.  In such cases, it is beneficial to segregate the responsibilities and improve the structure by utilizing a separate class to encapsulate and manage this related data.
+>
+> When a class is big enough with a bunches of public classes, that have close relation to each other. We might want to separate the concenrs of data handling, by using a class that have a pointer to `this` or `this->dataComponents`. Handler components manage specific functionalities and behaviors.
+
+### G.5 - Class Instance: `[Instance]`
 
 ## Z. Frequently Asked Questions
 
