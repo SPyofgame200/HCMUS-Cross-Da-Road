@@ -15,7 +15,7 @@ AAAAADFAS
 1
 2
 ./data/save/AAAAADFAS.txt
-KHOI
+HUY
 1
-2
-./data/save/KHOI.txt
+4
+./data/save/HUY.txt

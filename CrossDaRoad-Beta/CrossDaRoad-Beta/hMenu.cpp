@@ -200,6 +200,7 @@ bool hMenu::LoadProceedOption()
             app->MapLoader.LoadMapLevel();
             app->cDangerZone.SetPattern(app->MapLoader.GetDangerPattern().c_str());
             app->cBlockedZone.SetPattern(app->MapLoader.GetBlockPattern().c_str());
+            app->cWinningZone.SetPattern(app->MapLoader.GetWinningPattern().c_str());
             app->cPlatformZone.SetPattern(app->MapLoader.GetPlatformPattern().c_str());
             return true;
         }
@@ -671,6 +672,31 @@ bool hMenu::UpdateEndGame()
     return true; // successfully handle the game over event;
 }
 
+bool hMenu::UpdateWinGame()
+{
+    if (app->IsKeyReleased(app::Key::RIGHT)) {
+        bPlayAgain = false;
+    }
+    else if (app->IsKeyReleased(app::Key::LEFT)) {
+        bPlayAgain = true;
+    }
+    else if (app->IsKeyReleased(app::Key::ENTER)) {
+        app->ResumeEngine();
+        if (bPlayAgain) {
+            app->GameInit();
+            app->GameLoad();
+            return true;
+        }
+        else
+        {
+            OpenMenu();
+            eMenuOption = AppOption::APP_MENU;
+            return true;
+        }
+    }
+    return true; // successfully handle the win game event;
+}
+
 /// @brief Update all app screen (menu, pause, about us, exit)
 /// @param fElapsedTime Time elapsed since last frame
 /// @return True if update successfully, false otherwise
@@ -881,6 +907,31 @@ bool hMenu::RenderEndGame() const
     app->SetPixelMode(app::Pixel::NORMAL);
     return true;
 }
+/// @brief Win game and display you win window on screen
+/// @return Always return true by default
+bool hMenu::RenderWinGame() const
+{
+    /// Overlay
+    app->SetPixelMode(app::Pixel::ALPHA);
+    app->SetBlendFactor(170.0f / 255.0f);
+    app->DrawSprite(0, 0, cAssetManager::GetInstance().GetSprite("black_alpha"));
+    app->SetBlendFactor(255.0f / 255.0f);
+    app->SetPixelMode(app::Pixel::NORMAL);
+
+    app->SetPixelMode(app::Pixel::MASK);
+    app->DrawSprite(70, 15, cAssetManager::GetInstance().GetSprite("you_win"));
+    app->SetPixelMode(app::Pixel::NORMAL);
+
+    app->SetPixelMode(app::Pixel::MASK);
+    if (bPlayAgain) {
+        app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_yes"));
+    }
+    else {
+        app->DrawSprite(113, 75, cAssetManager::GetInstance().GetInstance().GetSprite("play_again_no"));
+    }
+    app->SetPixelMode(app::Pixel::NORMAL);
+    return true;
+}
 
 /// @brief Render all app screen (menu, pause, about us, exit)
 /// @return True if render successfully, false otherwise
@@ -900,7 +951,7 @@ bool hMenu::Render() const
         case AppOption::APP_MENU:
             return RenderAppMenu();
         case AppOption::APP_GAME:
-            app->Player.OnRender();
+            app->Player.OnRender(app->IsWaterEnvironment());
             return app->OnGameRender(true);
         default:
             std::cerr << "hMenu::Render(*app):";

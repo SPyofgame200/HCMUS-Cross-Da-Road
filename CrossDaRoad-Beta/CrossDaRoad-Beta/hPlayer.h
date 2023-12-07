@@ -86,13 +86,14 @@ public: // Checkers
 public: // Logic-Render Control
     bool UpdateAction(bool bLeft, bool bRight, bool bUp, bool bDown);
     bool OnUpdate();
-    bool OnRender();
+    bool OnRender(bool bSwim = false);
     bool Draw(const std::string& sSpriteName, bool bReloadMap = false, bool bForceRender = false);
 
 public: // Special
     void Sleep(float fTime);
     cZone* GetDangerZone();
     cZone* GetBlockedZone();
+    cZone* GetWinningZone();
     cZone* GetPlatformZone();
 
 public: // Input - Output

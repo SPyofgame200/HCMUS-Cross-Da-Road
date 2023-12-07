@@ -36,58 +36,68 @@ bool hPlayerRender::SetupTarget(hPlayer* ptrPlayer)
 ///////////////////////////////////////// PLAYER RENDERER ///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool hPlayerRender::OnRenderPlayerIdle() const
+bool hPlayerRender::OnRenderPlayerIdle(bool bSwim) const
 {
-    OnRenderPlayer();
+    OnRenderPlayer(bSwim);
     return true;
 }
 
-bool hPlayerRender::OnRenderPlayerJumpStart() const
+bool hPlayerRender::OnRenderPlayerJumpStart(bool bSwim) const
 {
-    OnRenderPlayer();
+    OnRenderPlayer(bSwim);
     return true;
 }
 
-bool hPlayerRender::OnRenderPlayerJumpContinue() const
+bool hPlayerRender::OnRenderPlayerJumpContinue(bool bSwim) const
 {
-    OnRenderPlayer();
+    OnRenderPlayer(bSwim);
     return true;
 }
 
-bool hPlayerRender::OnRenderPlayerJumpStop() const
+bool hPlayerRender::OnRenderPlayerJumpStop(bool bSwim) const
 {
-    OnRenderPlayer();
+    OnRenderPlayer(bSwim);
     return true;
 }
 
 /// @brief Render player animation to screen
 /// @return Always true by default
-bool hPlayerRender::OnRenderPlayer() const
+bool hPlayerRender::OnRenderPlayer(bool bSwim) const
 {
     const int nID = ptrPlayer->Moment().GetAnimationID();
-    const bool isLeft = (ptrPlayer->Status().IsLeftDirection());
-    const bool isJump = (ptrPlayer->Status().IsJumpAnimation());
-    const std::string sPlayerState = std::string(isJump ? "_jump" : "");
-    const std::string sPlayerDirection = std::string(isLeft ? "_left" : "");
-    const std::string sPlayerID = (isJump ? std::to_string(nID) : "");
-    const std::string sPlayerName = "froggy" + sPlayerState + sPlayerDirection + sPlayerID;
-    ptrPlayer->Draw(sPlayerName);
+    const bool bLeft = (ptrPlayer->Status().IsLeftDirection());
+    const bool bMove = (ptrPlayer->Status().IsJumpAnimation());
+    std::string sPlayerState;
+    std::string sPlayerDirection;
+    if (bSwim)
+    {
+        sPlayerState = std::string(bMove ? "_swim" : "_swim_idle");
+        sPlayerDirection = std::string(bLeft ? "_left" : "");
+    }
+    else
+    {
+        sPlayerState = std::string(bMove ? "_jump" : "");
+        sPlayerDirection = std::string(bLeft ? "_left" : "");
+    }
+    const std::string sPlayerAnimationID = (bMove ? std::to_string(nID) : "");
+	const std::string sPlayerName = "froggy" + sPlayerState + sPlayerDirection + sPlayerAnimationID;
+	ptrPlayer->Draw(sPlayerName);
     return true;
 }
 
-bool hPlayerRender::OnRender()
+bool hPlayerRender::OnRender(bool bSwim) const
 {
     if (ptrPlayer->Status().IsIdling()) {
-        return OnRenderPlayerIdle();
+        return OnRenderPlayerIdle(bSwim);
     }
     if (ptrPlayer->Status().IsStartJumping()) {
-        return OnRenderPlayerJumpStart();
+        return OnRenderPlayerJumpStart(bSwim);
     }
     if (!ptrPlayer->Moment().IsJumpingStop()) {
-        return OnRenderPlayerJumpContinue();
+        return OnRenderPlayerJumpContinue(bSwim);
     }
     else { /// Jump completed
-        return OnRenderPlayerJumpStop();
+        return OnRenderPlayerJumpStop(bSwim);
     }
 }
 

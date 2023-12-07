@@ -27,6 +27,7 @@ cApp::cApp()
     SetDefaultTargetSize(app_const::SPRITE_WIDTH, app_const::SPRITE_HEIGHT);
     cDangerZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     cBlockedZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
+    cWinningZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     cPlatformZone.SetCellSize(app_const::CELL_SIZE, app_const::CELL_SIZE);
     Player.SetupTarget(this);
     MapDrawer.SetupTarget(this);
@@ -51,10 +52,11 @@ bool cApp::GameInit()
 {
     sAppName = app_const::APP_NAME;
     nScore = 0;
-    nLife = 3;
+    nLife = 10;
     MapLoader.Init();
     cDangerZone.CreateZone(ScreenWidth(), ScreenHeight());
     cBlockedZone.CreateZone(ScreenWidth(), ScreenHeight());
+    cWinningZone.CreateZone(ScreenWidth(), ScreenHeight());
     cPlatformZone.CreateZone(ScreenWidth(), ScreenHeight());
     GameReset();
     ResumeEngine();
@@ -79,10 +81,15 @@ bool cApp::GameReset()
     sAppName = app_const::APP_NAME;
     fTimeSinceStart = 0.0f;
 
+    cDangerZone.Reset();
+    cBlockedZone.Reset();
+    cWinningZone.Reset();
+    cPlatformZone.Reset();
     Player.Reset();
     cFrameManager::GetInstance().Reset();
     return true;
 }
+
 bool cApp::GameLoad()
 {
     sAppName = app_const::APP_NAME + std::string(1, ' ') + MapLoader.ShowMapInfo();
@@ -90,6 +97,7 @@ bool cApp::GameLoad()
     MapLoader.LoadMapLevel();
     cDangerZone.SetPattern(MapLoader.GetDangerPattern().c_str());
     cBlockedZone.SetPattern(MapLoader.GetBlockPattern().c_str());
+    cWinningZone.SetPattern(MapLoader.GetWinningPattern().c_str());
     cPlatformZone.SetPattern(MapLoader.GetPlatformPattern().c_str());
     return true;
 }
@@ -180,27 +188,33 @@ bool cApp::OnPauseEvent(float fTickTime)
             ResumeEngine();
         }
     }
-    if (IsEnginePause() && nLife <= 0) {
+    if (!IsEnginePause()) {  // succesfully handle the pause event
+        return true;
+    }
+
+    if (nLife <= 0) {
         Menu.UpdateEndGame();
         OnGameRender();
         Menu.RenderEndGame();
-        return false;
     }
-    else if (IsEnginePause() && Menu.isSaving())
+    else if (Menu.isSaving())
     {    
         Menu.UpdateSaveBox();
         OnGameRender(true);
         Menu.RenderSaveBox();
-        return false;
-
     }
-    else if (IsEnginePause()) { // continue the pause event
+    else if (Player.Hitbox().IsWinning())
+    {
+		Menu.UpdateWinGame();
+		OnGameRender(true);
+		Menu.RenderWinGame();
+    }
+    else { // continue the pause event
         Menu.UpdatePausing();
         OnGameRender(true);
         Menu.RenderPausing();
-        return false;
     }
-    return true; // succesfully handle the pause event
+    return false;
 }
 /// @brief Event that called when application is force paused
 /// @return True if pause event was handled successfully, false otherwise
@@ -258,6 +272,11 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         Player.Motion().PlatformMove(-GetPlatformVelocity(fElapsedTime), 0);
         Player.Motion().PlatformDetector();
     }
+    if (Player.Hitbox().IsWinning()) {
+        PauseEngine();
+        std::cerr << "Successfully pause engine" << std::endl;
+        return true;
+    }
     if (Player.IsPlayerWin()) {
         return GameNext();
     }
@@ -265,9 +284,9 @@ bool cApp::OnGameUpdate(const float fElapsedTime)
         Player.Status().SetSituation(PlayerSituation::DEATH);
         return OnPlayerDeath();
     }
-
     return true;
 }
+
 /// @brief Update Player when Player is killed
 /// @return Always returns true by default
 bool cApp::OnPlayerDeath()
@@ -322,7 +341,7 @@ bool cApp::OnGameRender(bool bRenderPlayer)
 {
     DrawAllLanes();
     if (bRenderPlayer) {
-        Player.OnRender();
+        Player.OnRender(IsWaterEnvironment());
     }
     DrawStatusBar();
     return true;
@@ -546,6 +565,11 @@ void cApp::SetLife(int Life)
 void cApp::SetPlayerName(std::string Nm)
 {
     playerName = Nm;
+}
+
+bool cApp::IsWaterEnvironment()
+{
+    return MapLoader.GetMapLevel() == 5;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

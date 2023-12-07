@@ -176,7 +176,7 @@ bool hPlayer::SetupComponents()
 /// @return True if player is win, false otherwise
 bool hPlayer::IsPlayerWin() const
 {
-    if (Status().IsMoveUp() && !Physic().CanMoveUp()) {
+    if (Status().IsMoveUp() && !Physic().CanMoveUp()) { /// Win by moving above the top lane
         return true;
     }
     const float fPosY = Physic().GetPlayerLogicPositionY();
@@ -218,9 +218,9 @@ bool hPlayer::OnUpdate()
     return hUpdate.OnUpdate();
 }
 
-bool hPlayer::OnRender()
+bool hPlayer::OnRender(bool bSwim)
 {
-    return hRender.OnRender();
+    return hRender.OnRender(bSwim);
 }
 
 bool hPlayer::Draw(const std::string &sSpriteName, bool bReloadMap, bool bForceRender)
@@ -255,6 +255,15 @@ cZone* hPlayer::GetPlatformZone()
 {
     if (ptrApp) {
         return &(ptrApp->cPlatformZone);
+    }
+    else {
+        return nullptr; // or handle the case where ptrApp is null
+    }
+}
+cZone* hPlayer::GetWinningZone()
+{
+    if (ptrApp) {
+        return &(ptrApp->cWinningZone);
     }
     else {
         return nullptr; // or handle the case where ptrApp is null

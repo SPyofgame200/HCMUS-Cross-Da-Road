@@ -37,8 +37,10 @@ public: /// Initializer & Cleanup
     bool Destroy();
 
 public: // Constructor functions
-    bool CreateZone(int nWidth, int nHeight, bool bDanger, bool bBlock, bool bPlatform);
-    bool CreateZone(int nWidth, int nHeight);
+    bool CreateZone(int nWidth, int nHeight, bool bValue = false);
+
+public: // Reseters
+    bool Reset(bool bValue = false);
 
 public: // Checkers
     bool IsEnabled(const char& graphic, const char* sEnablePattern);

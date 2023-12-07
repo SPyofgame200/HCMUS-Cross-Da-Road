@@ -190,9 +190,9 @@ The in-game interface consists of the following elements:
 
 ## 4. Developer Guide
 
-You can find the source code in the `src` folder and the documentation for developers in the section **`5. Developer Guide`** of [Full Documentation](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/documentation.md).
+You can find the source code in the `src` folder and the documentation for developers in the section **`5. Developer Guide`** of [Full Documentation](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/documentation.md).
 
 ## 5. Full Documentation
 
-You can find the full documentation for this project [here](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/report/documentation.md).
+You can find the full documentation for this project [here](./CrossDaRoad-Beta/CrossDaRoad-Beta/docs/documentation.md).
 

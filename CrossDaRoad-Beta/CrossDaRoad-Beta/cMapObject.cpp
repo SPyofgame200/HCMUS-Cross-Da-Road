@@ -42,6 +42,7 @@ bool MapObject::Create()
     sCategory = EMPTY_NAME;
     /// Flag
     isBlocked = DISABLED;
+    isWinning = DISABLED;
     isDanger = DISABLED;
     /// Sprite
     sSpriteName = EMPTY_NAME;
@@ -81,6 +82,11 @@ bool MapObject::IsBlocked() const
 bool MapObject::IsEnabled() const
 {
     return isDanger;
+}
+
+bool MapObject::IsWinning() const
+{
+    return isWinning;
 }
 
 bool MapObject::IsPlatform() const
@@ -447,6 +453,9 @@ bool MapObject::SetFlagAttribute(const std::string& sAttribute, const std::strin
     if (sAttribute == "danger") {
         return ExtractFlag(isDanger, sValue);
     }
+    if (sAttribute == "winning") {
+        return ExtractFlag(isWinning, sValue);
+    }
     return false;
 }
 bool MapObject::SetSpriteAttribute(const std::string& sAttribute, const std::string& sValue)
@@ -554,6 +563,7 @@ std::string MapObject::ShowFlagData() const
     oss << "Flag: [ ";
     oss << "is_blocked=" << std::boolalpha << IsBlocked() << ", ";
     oss << "is_danger=" << std::boolalpha << IsEnabled() << ", ";
+    oss << "is_winning=" << std::boolalpha << IsWinning() << ", ";
     oss << "is_platform=" << std::boolalpha << IsPlatform() << " ";
     oss << "]";
     return oss.str();

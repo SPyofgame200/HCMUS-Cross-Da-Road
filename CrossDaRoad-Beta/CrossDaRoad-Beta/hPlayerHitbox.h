@@ -31,6 +31,13 @@ public: // Blockage detection
     bool IsBlockedBottomRight() const;
     bool IsBlocked() const;
 
+public: // Winning detection
+    bool IsWinningTopLeft() const;
+    bool IsWinningTopRight() const;
+    bool IsWinningBottomLeft() const;
+    bool IsWinningBottomRight() const;
+    bool IsWinning() const;
+
 public: // Platform detection
     bool IsOnPlatformTopLeft() const;
     bool IsOnPlatformTopRight() const;

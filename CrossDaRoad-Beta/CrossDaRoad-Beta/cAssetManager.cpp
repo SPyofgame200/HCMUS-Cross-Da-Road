@@ -176,6 +176,7 @@ bool cAssetManager::LoadAboutUsSprites()
 bool cAssetManager::LoadExitSprites()
 {
     bool bSuccess = true;
+    bSuccess &= LoadSprite("you_win", "you_win");
     bSuccess &= LoadSprite("exit_no", "exit_no");
     bSuccess &= LoadSprite("exit_yes", "exit_yes");
 
@@ -230,6 +231,7 @@ bool cAssetManager::LoadScoreBarSprites()
     bSuccess &= LoadSprite("description2", "description2");
     bSuccess &= LoadSprite("description3", "description3");
     bSuccess &= LoadSprite("description4", "description4");
+    bSuccess &= LoadSprite("description5", "description5");
     bSuccess &= LoadAnimation("score_bar", "score_bar", 4);
 
     return ReportLoadingResult(bSuccess, "score bar");
@@ -278,7 +280,8 @@ bool cAssetManager::LoadPlayerSwimSprites()
     bSuccess &= LoadAnimation("froggy_swim_left", "froggy_swim_left", 6);
     bSuccess &= LoadAnimation("froggy_swim_idle", "froggy_swim_idle", 6);
     bSuccess &= LoadAnimation("froggy_swim_idle_left", "froggy_swim_idle_left", 6);
-
+    bSuccess &= LoadSprite("froggy_swim_idle", "froggy_swim_idle");
+    bSuccess &= LoadSprite("froggy_swim_idle_left", "froggy_swim_idle_left");
     return ReportLoadingResult(bSuccess, "player swim");
 }
 /// @brief Load all player death sprites
@@ -447,6 +450,7 @@ bool cAssetManager::LoadAllSprites()
     bSuccess &= LoadPlayerIdleSprites();
     bSuccess &= LoadPlayerJumpSprites();
     bSuccess &= LoadPlayerDeathSprites();
+    bSuccess &= LoadPlayerSwimSprites();
     bSuccess &= LoadMapHalloweenSprites();
     bSuccess &= LoadMapRiverSideSprites();
     bSuccess &= LoadMapIceAgeSprites();

@@ -85,7 +85,7 @@ bool cZone::Destroy()
 /// @param bDanger value to set danger pixels (true: danger, false: safe)
 /// @param bBlock value to set block pixels (true: block, false: unblock)
 /// @return true if successfully created zone, false otherwise
-bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, const bool bBlock, const bool bPlatform)
+bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bValue)
 {
     if (nWidth <= 0 || nHeight <= 0) {
         std::cerr << "cZone::CreateZone(width = " << nWidth << ", height = " << nHeight << "): ";
@@ -96,14 +96,20 @@ bool cZone::CreateZone(const int nWidth, const int nHeight, const bool bDanger, 
     nZoneHeight = nHeight;
     const int nZoneSize = nZoneWidth * nZoneHeight;
     bMatrix = new bool[nZoneSize];
-    memset(bMatrix, bDanger, nZoneSize * sizeof(bool));
+    Reset(bValue);
     return true;
 }
 
-/// @brief Create zone with size nWidth x nHeight, set danger and block pixels to safe and unblock
-bool cZone::CreateZone(const int nWidth, const int nHeight)
+bool cZone::Reset(bool bValue)
 {
-    return CreateZone(nWidth, nHeight, false, false, false);
+    if (nZoneWidth <= 0 || nZoneHeight <= 0) {
+        std::cerr << "cZone::Reset(" << bValue << "): ";
+        std::cerr << "Invalid zone size, expected positive integer size";
+        return false;
+    }
+    const int nZoneSize = nZoneWidth * nZoneHeight;
+    memset(bMatrix, bValue, nZoneSize * sizeof(bool));
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////

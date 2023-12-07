@@ -29,8 +29,9 @@ class cApp final : public app::GameEngine
 {
 private: // [Data Component]
     cZone cDangerZone;
-    cZone cPlatformZone;
     cZone cBlockedZone;
+    cZone cWinningZone;
+    cZone cPlatformZone;
     cMapLoader MapLoader;
 
 private: // [Handle Component]
@@ -100,6 +101,7 @@ private: // [Utility]
     int GetLife() const;
     void SetLife(int Life);
     void SetPlayerName(std::string Nm);
+    bool IsWaterEnvironment();
 };
 
 #endif // C_APP_H
