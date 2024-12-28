@@ -83,11 +83,11 @@ private:
     
     std::map<std::string, info> Path;
     std::map<info, std::string> dePath;
-    std::string PathLocation = "./data/save/aPath.txt";
+    std::string PathLocation = "./assets/save/aPath.txt";
 private:
 	SaveBox SaveBoxOption = LOCATION;
 	bool isSave = false;
-	std::string SaveLocation = "./data/save/";
+	std::string SaveLocation = "./assets/save/";
 private: /// Pause HUD
     PauseOption ePauseOption; ///< Current option 
     std::string sPauseOptionLabels[3] = { "resume", "save", "exit" };  ///< PauseOption labels for pause window

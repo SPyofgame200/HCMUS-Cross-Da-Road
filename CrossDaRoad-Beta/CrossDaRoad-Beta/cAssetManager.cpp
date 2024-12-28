@@ -6,9 +6,10 @@
  *
 **/
 
-
 #include "cAssetManager.h"
 #include "cMessageManager.h"
+#include <filesystem>
+#include <iostream>
 
 //=================================================================================================
 // Include new header files here
@@ -31,7 +32,7 @@ cAssetManager::~cAssetManager()
     mapSprites.clear();
     sDirectoryPath.clear();
     sFileExtension.clear();
-    std::cerr << "cAssetManager::~cAssetManager(): Successfully destructed" << std::endl;
+    LOG_MESSAGE("cAssetManager::~cAssetManager(): Successfully destructed");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -48,10 +49,9 @@ cAssetManager& cAssetManager::GetInstance()
 /// @param sName Name of sprite stored in mapSprites
 app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 {
+    std::string filePath = GetFileLocation(sName);
     if (mapSprites.find(sName) == mapSprites.end()) {
-        ERROR_MESSAGE(
-            "Failed to use sprite - Name: \"" << sName << "\""
-        );
+        ERROR_MESSAGE("Failed to find the sprite from preloaded database - Name: \"" << sName << "\" from path: \"" << filePath << "\"");
         return nullptr;
     }
     else {
@@ -62,7 +62,8 @@ app::Sprite* cAssetManager::GetSprite(const std::string& sName)
 /// @param sFileName Name of file
 std::string cAssetManager::GetFileLocation(const std::string& sFileName) const
 {
-    return sDirectoryPath + "/" + sFileName + "." + sFileExtension;
+    std::string relativePath = sDirectoryPath + "/" + sFileName + "." + sFileExtension;
+    return relativePath;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,11 +94,11 @@ void cAssetManager::SetFileExtension(const std::string& sExtension)
 bool cAssetManager::ReportLoadingResult(bool bSuccess, const std::string& sSpriteCategory)
 {
     if (bSuccess) {
-        std::cout << "Successfully loaded all " << sSpriteCategory << " sprites" << std::endl;
+        LOG_MESSAGE("Successfully loaded all " << sSpriteCategory << " sprites");
         return true;
     }
     else {
-        std::cerr << "Failed to load some " << sSpriteCategory << " sprites" << std::endl;
+        LOG_MESSAGE("Failed to load some " << sSpriteCategory << " sprites");
         return false;
     }
 }
@@ -238,7 +239,7 @@ bool cAssetManager::LoadScoreBarSprites()
 }
 
 bool cAssetManager::LoadSaveSprites()
-{   
+{
     bool bSuccess = true;
     bSuccess &= LoadSprite("saving", "saving");
     bSuccess &= LoadSprite("saving_cancel", "saving_cancel");
@@ -401,18 +402,35 @@ bool cAssetManager::LoadMapOceanSprites()
 bool cAssetManager::LoadSprite(const std::string& sName, const std::string& sFileName)
 {
     auto* spr = new app::Sprite(GetFileLocation(sFileName));
-    if (spr == nullptr || spr->GetData() == nullptr) {
-        /*
-        LOG_ERROR(
-            "Can not load sprite - Name: " << sName << ", Filename: " << sFileName
-            << ", Location: " << GetFileLocation(sFileName)
+    if (spr == nullptr) {
+        ERROR_MESSAGE(
+            "Failed to allocate memory for sprite - Name: \"" << sName
+            << "\", Filename: \"" << sFileName
+            << "\", Location: \"" << GetFileLocation(sFileName) << "\""
         );
-        */
         return false;
     }
+
+    if (spr->GetData() == nullptr) {
+        ERROR_MESSAGE(
+            "Failed to load sprite data - Name: \"" << sName
+            << "\", Filename: \"" << sFileName
+            << "\", Location: \"" << GetFileLocation(sFileName) << "\""
+        );
+        delete spr; // Free memory to avoid leaks
+        return false;
+    }
+
     mapSprites[sName] = spr;
+    LOG_MESSAGE(
+        "Successfully loaded sprite - Name: \"" << sName
+        << "\", Filename: \"" << sFileName
+        << "\", Location: \"" << GetFileLocation(sFileName) << "\""
+    );
+
     return true;
 }
+
 /// @brief Load particular animation of sprites
 /// @param sName Name of animation that will be stored in map of sprites
 /// @param sFileName Name of file that contains animation of sprites
@@ -431,7 +449,7 @@ bool cAssetManager::LoadAnimation(const std::string& sName, const std::string& s
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadAllSprites()
 {
-    SetDirectoryPath("./data/assets");
+    SetDirectoryPath("./assets/assets");
     SetFileExtension("png");
 
     bool bSuccess = true;

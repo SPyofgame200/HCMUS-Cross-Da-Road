@@ -234,12 +234,12 @@ class Foo
 
 > Data Filenames should be lower snake case, might have unsigned integer suffix as animation ID
 >
-> - `./data/assets/*.png`: Asset Files, including: characters, entities, backgrounds, frontground, underlay, projectiles, ...
-> - `./data/icons/*<id>.png`: Branding Files, including: icon, favicon, logo, avatars, banners, splash screen, thumbnails, infographics, ...
-> - `./data/maps/map*.txt`: Map Files, contains the map data of each level.
-> - `./data/report/log*.txt`: Log Files, for debugging purposes.
-> - `./data/musics/ncs*.wav`: Sound Files, we use ncs to avoid copyright.
-> - `./data/save/*.txt`: Saved Data Files, for loading and saving player data.
+> - `./assets/assets/*.png`: Asset Files, including: characters, entities, backgrounds, frontground, underlay, projectiles, ...
+> - `./assets/icons/*<id>.png`: Branding Files, including: icon, favicon, logo, avatars, banners, splash screen, thumbnails, infographics, ...
+> - `./assets/maps/map*.txt`: Map Files, contains the map data of each level.
+> - `./assets/report/log*.txt`: Log Files, for debugging purposes.
+> - `./assets/musics/ncs*.wav`: Sound Files, we use ncs to avoid copyright.
+> - `./assets/save/*.txt`: Saved Data Files, for loading and saving player data.
 
 ---
 

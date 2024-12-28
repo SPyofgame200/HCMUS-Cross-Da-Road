@@ -57,8 +57,8 @@ namespace engine
 
     constexpr const char* ENGINE_NAME = "GAME_ENGINE";
     constexpr const wchar_t* ENGINE_WIDE_NAME = L"GAME_ENGINE";
-    constexpr const char* ICON_FILE_PATH = "data/icons/icon.ico";
-    constexpr const char* FAVICON_FILE_PATH = "data/icons/favicon.ico";
+    constexpr const char* ICON_FILE_PATH = "assets/icons/icon.ico";
+    constexpr const char* FAVICON_FILE_PATH = "assets/icons/favicon.ico";
 
     /// @brief Enumeration of ticks in the game engine (for event handling)
     enum Triggerer

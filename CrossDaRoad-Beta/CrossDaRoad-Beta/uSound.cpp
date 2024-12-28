@@ -67,7 +67,7 @@ namespace app_sound
     /// @return Always returns true by default
     bool PlayMusic(const std::string& musicName, const std::string& alias)
     {
-        const std::string audioFilePath = "data/musics/" + musicName + ".wav";
+        const std::string audioFilePath = "assets/musics/" + musicName + ".wav";
         PlayWAV(audioFilePath);
         return true;
     }

@@ -261,7 +261,7 @@ The game engine stores and loads game data. The game engine uses the following t
 
 The game engine stores game data in the following structure:
 
-- **data/**
+- **assets/**
   - **assets/** (contains game assets)
     - ***.png**
   - **icons/** (contains game icons)

@@ -362,7 +362,7 @@ bool cAssetManager::LoadAnimation(const std::string& sName, const std::string& s
 /// @return True if loading is successful, false otherwise
 bool cAssetManager::LoadAllSprites()
 {
-    SetDirectoryPath("./data/assets");
+    SetDirectoryPath("./assets/assets");
     SetFileExtension("png");
 
     bool bSuccess = true;

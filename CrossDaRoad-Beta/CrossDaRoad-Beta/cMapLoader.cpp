@@ -41,7 +41,7 @@ cMapLoader::~cMapLoader()
 void cMapLoader::Init()
 {
     nMapLevel = app_const::GAME_LEVEL_INIT;
-    LoadMapName("data/maps/mapNames.txt");
+    LoadMapName("assets/maps/mapNames.txt");
 }
 
 /// @brief Destruct properties of map loader
@@ -369,12 +369,12 @@ bool cMapLoader::LoadMapName(const std::string& sFileName)
 bool cMapLoader::LoadMapLevel(const int& nMapLevel)
 {
     MapClear();
-    const std::string& sFileName = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
+    const std::string& sFileName = "assets/maps/map" + std::to_string(nMapLevel) + ".txt";
     std::ifstream ifs(sFileName);
     if (!ifs.is_open()) {
         std::cout << "Failed to open file: " << sFileName << std::endl;
         std::cerr << "Error state: " << ifs.rdstate() << std::endl;
-        const std::string& s_file_name = "data/maps/map" + std::to_string(nMapLevel) + ".txt";
+        const std::string& s_file_name = "assets/maps/map" + std::to_string(nMapLevel) + ".txt";
         std::cout << "File Path: " << s_file_name << std::endl;
         return false;
     }

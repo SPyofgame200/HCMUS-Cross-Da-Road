@@ -444,7 +444,7 @@ std::string cApp::GetFilePathLocation(bool isSave, std::string fileName)
     ofn.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
     ofn.lpstrFile = szFileNameW;
     ofn.nMaxFile = MAX_PATH;
-    ofn.lpstrInitialDir = L"./data/save";
+    ofn.lpstrInitialDir = L"./assets/save";
     ofn.lpstrDefExt = L"txt";
 
 

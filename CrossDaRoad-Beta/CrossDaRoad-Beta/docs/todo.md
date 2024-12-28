@@ -4,9 +4,9 @@
 {
     @Directory
     {
-        [x] Move all assets to data/assets/
+        [x] Move all assets to assets/assets/
             % finished 20/10/2023
-        [x] Move all maps to data/maps/
+        [x] Move all maps to assets/maps/
             % finished 20/10/2023
         [ ] Move the game engine files (g-*.cpp, g-*.h) into another folders
         [ ] Move the object class files (c-*.cpp, c-*.h) into another folders
@@ -15,8 +15,8 @@
     @Map
     {
         [x] Successfully load the map to the console
-        [x] Load map data from "data/maps/map<id>.txt"
-        [x] Load map names from "data/maps/mapNames.txt"
+        [x] Load map data from "assets/maps/map<id>.txt"
+        [x] Load map names from "assets/maps/mapNames.txt"
         [x] Switching map upon winning a level
         [x] Read platform information from the map 
             - platform = moveable object and lift player
